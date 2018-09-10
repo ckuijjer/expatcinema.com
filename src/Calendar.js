@@ -42,15 +42,17 @@ const Calendar = () => (
       <>
         <h3>{date}</h3>
         {screenings.map(screening => (
-          <Screening>
-            <Time>
-              {screening.date
-                .setLocale('en-GB')
-                .toLocaleString(DateTime.TIME_24_SIMPLE)}
-            </Time>
-            <Title>{screening.title}</Title>
-            <Cinema>{screening.cinema}</Cinema>
-          </Screening>
+          <a href={screening.url}>
+            <Screening>
+              <Time>
+                {screening.date
+                  .setLocale('en-GB')
+                  .toLocaleString(DateTime.TIME_24_SIMPLE)}
+              </Time>
+              <Title>{screening.title}</Title>
+              <Cinema>{screening.cinema}</Cinema>
+            </Screening>
+          </a>
         ))}
       </>
     ))}
