@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "http://www.expatcinema.com",
   "dependencies": {
+    "axios": "^0.18.0",
     "emotion": "^9.2.8",
     "gh-pages": "^1.2.0",
     "luxon": "^1.3.3",
