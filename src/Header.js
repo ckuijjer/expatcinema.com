@@ -1,12 +1,15 @@
 import React from 'react'
 import styled from 'react-emotion'
 
-const Title = styled('div')({
-  fontSize: 48,
+const Title = styled('h1')({
+  fontSize: 32,
+  marginBottom: 0,
 })
 
-const SubTitle = styled('div')({
-  fontSize: 32,
+const SubTitle = styled('h2')({
+  marginTop: 0,
+  marginBottom: 24,
+  fontSize: 24,
 })
 
 const Header = () => (

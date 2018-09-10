@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
-
+import styled from 'react-emotion'
 import Calendar from './Calendar'
 import Header from './Header'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Header />
-        <Calendar />
-      </div>
-    )
-  }
-}
+const Container = styled('div')({
+  marginLeft: 40,
+  marginRight: 40,
+})
+
+const App = () => (
+  <Container>
+    <Header />
+    <Calendar />
+  </Container>
+)
 
 export default App
