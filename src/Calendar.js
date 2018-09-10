@@ -7,9 +7,9 @@ import { screenings } from './data'
 
 const Screening = styled('div')({
   display: 'grid',
-  gridTemplateColumns: '[time] 80px [rest] auto',
-  gridColumnGap: 32,
-  marginBottom: 16,
+  gridTemplateColumns: '[time] 60px [rest] auto',
+  gridColumnGap: 12,
+  marginBottom: 20,
 })
 
 const Time = styled('div')({
