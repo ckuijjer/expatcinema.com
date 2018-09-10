@@ -2,67 +2,68 @@
   {
     "title": "Dogman",
     "date": "2018-09-13T21:00:00.000Z",
-    "url": "https://kinorotterdam.nl/film/expat-arthouse-dogman/"
+    "url": "https://kinorotterdam.nl/film/expat-arthouse-dogman/",
+    "cinema": "Kino"
   },
   {
     "title": "Tampopo",
     "date": "2018-09-12T16:15:00.000Z",
     "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Tampopo/1682",
-    "theater": "Kijkhuis"
+    "cinema": "Kijkhuis"
   },
   {
     "title": "Klanken van oorsprong",
     "date": "2018-09-12T09:00:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/klanken-van-oorsprong-engels-ondertiteld",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   },
   {
     "title": "Tampopo",
     "date": "2018-09-12T10:30:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/tampopo-engelse-ondertiteling",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   },
   {
     "title": "Den skyldige",
     "date": "2018-09-12T11:00:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   },
   {
     "title": "The reports on Sarah and Saleem",
     "date": "2018-09-12T11:45:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/reports-on-sarah-and-saleem-engelse-ondertiteling",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   },
   {
     "title": "3 days in Quiberon",
     "date": "2018-09-12T12:45:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   },
   {
     "title": "Plaire, aimer et courir vite",
     "date": "2018-09-12T14:15:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/plaire-aimer-et-courir-vite-engels-ondertiteld",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   },
   {
     "title": "3 Faces",
     "date": "2018-09-12T14:30:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-faces-engelse-ondertiteling",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   },
   {
     "title": "3 days in Quiberon",
     "date": "2018-09-12T16:45:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   },
   {
     "title": "Benzinho",
     "date": "2018-09-12T16:45:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/benzinho-engels-ondertiteld",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   },
   {
     "title": "Plaire, aimer et courir vite",
@@ -73,12 +74,12 @@
     "title": "The reports on Sarah and Saleem",
     "date": "2018-09-12T18:45:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/reports-on-sarah-and-saleem-engelse-ondertiteling",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   },
   {
     "title": "Den skyldige",
     "date": "2018-09-12T19:00:00.000Z",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "theater": "Filmhuis Den Haag"
+    "cinema": "Filmhuis Den Haag"
   }
 ]
