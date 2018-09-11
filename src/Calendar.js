@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import styled from 'react-emotion'
 import { groupBy } from 'ramda'
 import JSONStringify from './JSONStringify'
+import Log from './Log'
 import { screenings } from './data'
 
 const Screening = styled('div')({
@@ -28,6 +29,7 @@ const Cinema = styled('div')({
 // sort the screenings by date and time
 // group by date
 // inject some dates? e.g. the coming week? by doing an intersection with a static list of coming days?
+// has to be a string, not a DateTime object, as keys to an Object (e.g. groupedScreenings) have to be a string
 const groupByDate = groupBy(screening => screening.date.toISODate())
 
 const groupedScreenings = groupByDate(
@@ -36,11 +38,42 @@ const groupedScreenings = groupByDate(
     .sort((a, b) => a.date - b.date),
 ) // sort by date ascending
 
+// todo: this should be easier
+const getToday = () => {
+  const { year, month, day } = DateTime.fromMillis(Date.now())
+  return DateTime.fromObject({ year, month, day })
+}
+
+const RelativeDate = ({ children }) => {
+  const date = DateTime.fromISO(children)
+  const today = getToday()
+
+  const diff = date.diff(today, 'days').values.days
+
+  // today
+  // tomorrow
+  // thursday ... wednesday
+  // thursday 20 september
+  let relativeDate = date.toFormat('EEEE d MMMM')
+  if (diff < 7) {
+    if (diff === 0) {
+      relativeDate = 'Today'
+    } else if (diff === 1) {
+      relativeDate = 'Tomorrow'
+    } else {
+      relativeDate = date.toFormat('EEEE')
+    }
+  }
+
+  return <h3>{relativeDate}</h3>
+}
+
 const Calendar = () => (
   <>
+    <Log>{groupedScreenings}</Log>
     {Object.entries(groupedScreenings).map(([date, screenings]) => (
       <>
-        <h3>{date}</h3>
+        <RelativeDate>{date}</RelativeDate>
         {screenings.map(screening => (
           <a href={screening.url}>
             <Screening>
