@@ -3,7 +3,6 @@ import { DateTime } from 'luxon'
 import styled from 'react-emotion'
 import { groupBy } from 'ramda'
 import JSONStringify from './JSONStringify'
-import Log from './Log'
 import { screenings } from './data'
 
 const Screening = styled('div')({
