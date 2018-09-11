@@ -70,7 +70,6 @@ const RelativeDate = ({ children }) => {
 
 const Calendar = () => (
   <>
-    <Log>{groupedScreenings}</Log>
     {Object.entries(groupedScreenings).map(([date, screenings]) => (
       <>
         <RelativeDate>{date}</RelativeDate>
