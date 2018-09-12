@@ -1,0 +1,16 @@
+{
+  "name": "hello-expat-cinema-scraping",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "luxon": "^1.3.3",
+    "ramda": "^0.25.0",
+    "x-ray": "^2.3.3"
+  }
+}
