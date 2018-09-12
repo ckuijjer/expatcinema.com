@@ -67,6 +67,16 @@ const RelativeDate = ({ children }) => {
   return <h3>{relativeDate}</h3>
 }
 
+const A = styled('a')({
+  display: 'block',
+  textDecoration: 'none',
+  color: '#333',
+
+  ':hover': {
+    textDecoration: 'underline',
+  },
+})
+
 const Calendar = () => (
   <>
     {Object.entries(groupedScreenings).map(([date, screenings]) => (
@@ -74,7 +84,7 @@ const Calendar = () => (
         <section>
           <RelativeDate>{date}</RelativeDate>
           {screenings.map(screening => (
-            <a href={screening.url}>
+            <A href={screening.url}>
               <Screening>
                 <Time>
                   {screening.date
@@ -84,7 +94,7 @@ const Calendar = () => (
                 <Title>{screening.title}</Title>
                 <Cinema>{screening.cinema}</Cinema>
               </Screening>
-            </a>
+            </A>
           ))}
         </section>
       </>
