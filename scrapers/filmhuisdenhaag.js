@@ -10,6 +10,22 @@ const log = name => arg => {
   return arg
 }
 
+const monthToNumber = month =>
+  [
+    'jan',
+    'feb',
+    'maa',
+    'apr',
+    'mei',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'okt',
+    'nov',
+    'dec',
+  ].indexOf(month) + 1
+
 const extractFromMoviePage = ({ url }) => {
   return xray(url, 'body', [
     {
@@ -36,12 +52,23 @@ const extractFromMoviePage = ({ url }) => {
 
       const dates = []
       for (var i = 0; i < groupedTimeTable.length; i = i + 2) {
-        const date = groupedTimeTable[i][0].replace(/^\w+\s/, '') // 'wo 12 sep' => '12 sep'
+        const [dayOfWeek, dayString, monthString] = groupedTimeTable[
+          i
+        ][0].split(' ')
+        const day = Number(dayString)
+        const month = monthToNumber(monthString)
         const times = groupedTimeTable[i + 1]
 
         times.forEach(time => {
+          const [hour, minute] = time.split('.').map(x => Number(x))
+
           dates.push(
-            DateTime.fromFormat(`${date} ${time}`, 'd LLL H.mm')
+            DateTime.fromObject({
+              day,
+              month,
+              hour,
+              minute,
+            })
               .toUTC()
               .toISO(),
           ) // create a iso8601 using the date and the time
@@ -85,6 +112,5 @@ const extractFromMainPage = () => {
 extractFromMainPage().then(console.log)
 
 // extractFromMoviePage({
-//   url:
-//     'https://www.filmhuisdenhaag.nl/agenda/event/reports-on-sarah-and-saleem-engelse-ondertiteling',
+//   url: 'https://www.filmhuisdenhaag.nl/agenda/event/autumn-sonata',
 // }).then(console.log)
