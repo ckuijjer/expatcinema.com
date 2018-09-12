@@ -47,7 +47,7 @@ const RelativeDate = ({ children }) => {
   const date = DateTime.fromISO(children)
   const today = getToday()
 
-  const diff = date.diff(today, 'days').values.days
+  const diff = date.diff(today, 'days').days
 
   // today
   // tomorrow
@@ -71,20 +71,22 @@ const Calendar = () => (
   <>
     {Object.entries(groupedScreenings).map(([date, screenings]) => (
       <>
-        <RelativeDate>{date}</RelativeDate>
-        {screenings.map(screening => (
-          <a href={screening.url}>
-            <Screening>
-              <Time>
-                {screening.date
-                  .setLocale('en-GB')
-                  .toLocaleString(DateTime.TIME_24_SIMPLE)}
-              </Time>
-              <Title>{screening.title}</Title>
-              <Cinema>{screening.cinema}</Cinema>
-            </Screening>
-          </a>
-        ))}
+        <section>
+          <RelativeDate>{date}</RelativeDate>
+          {screenings.map(screening => (
+            <a href={screening.url}>
+              <Screening>
+                <Time>
+                  {screening.date
+                    .setLocale('en-GB')
+                    .toLocaleString(DateTime.TIME_24_SIMPLE)}
+                </Time>
+                <Title>{screening.title}</Title>
+                <Cinema>{screening.cinema}</Cinema>
+              </Screening>
+            </a>
+          ))}
+        </section>
       </>
     ))}
     {/* <JSONStringify>{{ screenings, groupedScreenings }}</JSONStringify> */}
