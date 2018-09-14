@@ -25,6 +25,12 @@ const Cinema = styled('div')({
   gridColumnStart: 'rest',
 })
 
+// todo: this should be easier
+const getToday = () => {
+  const { year, month, day } = DateTime.fromMillis(Date.now())
+  return DateTime.fromObject({ year, month, day })
+}
+
 // sort the screenings by date and time
 // group by date
 // inject some dates? e.g. the coming week? by doing an intersection with a static list of coming days?
@@ -34,14 +40,9 @@ const groupByDate = groupBy(screening => screening.date.toISODate())
 const groupedScreenings = groupByDate(
   screenings
     .map(x => ({ ...x, date: DateTime.fromISO(x.date) })) // use luxon on the date
+    .filter(x => x.date >= getToday())
     .sort((a, b) => a.date - b.date),
 ) // sort by date ascending
-
-// todo: this should be easier
-const getToday = () => {
-  const { year, month, day } = DateTime.fromMillis(Date.now())
-  return DateTime.fromObject({ year, month, day })
-}
 
 const RelativeDate = ({ children }) => {
   const date = DateTime.fromISO(children)
