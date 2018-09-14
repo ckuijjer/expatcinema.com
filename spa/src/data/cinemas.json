@@ -8,5 +8,10 @@
     "name": "Filmhuis Den Haag",
     "city": "Den Haag",
     "url": "https://www.filmhuisdenhaag.nl/"
+  },
+  {
+    "name": "Kino",
+    "city": "Rotterdam",
+    "url": "https://www.kinorotterdam.nl/"
   }
 ]
