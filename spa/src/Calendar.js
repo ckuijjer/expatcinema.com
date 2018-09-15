@@ -52,17 +52,12 @@ const RelativeDate = ({ children }) => {
 
   // today
   // tomorrow
-  // thursday ... wednesday
   // thursday 20 september
   let relativeDate = date.toFormat('EEEE d MMMM')
-  if (diff < 7) {
-    if (diff === 0) {
-      relativeDate = 'Today'
-    } else if (diff === 1) {
-      relativeDate = 'Tomorrow'
-    } else {
-      relativeDate = date.toFormat('EEEE')
-    }
+  if (diff === 0) {
+    relativeDate = 'Today'
+  } else if (diff === 1) {
+    relativeDate = 'Tomorrow'
   }
 
   return <h3>{relativeDate}</h3>
