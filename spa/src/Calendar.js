@@ -4,6 +4,8 @@ import styled from 'react-emotion'
 import { groupBy } from 'ramda'
 import JSONStringify from './JSONStringify'
 import { screenings } from './data'
+import RelativeDate from './RelativeDate'
+import getToday from './getToday'
 
 const Screening = styled('div')({
   display: 'grid',
@@ -25,12 +27,6 @@ const Cinema = styled('div')({
   gridColumnStart: 'rest',
 })
 
-// todo: this should be easier
-const getToday = () => {
-  const { year, month, day } = DateTime.fromMillis(Date.now())
-  return DateTime.fromObject({ year, month, day })
-}
-
 // sort the screenings by date and time
 // group by date
 // inject some dates? e.g. the coming week? by doing an intersection with a static list of coming days?
@@ -43,25 +39,6 @@ const groupedScreenings = groupByDate(
     .filter(x => x.date >= getToday())
     .sort((a, b) => a.date - b.date),
 ) // sort by date ascending
-
-const RelativeDate = ({ children }) => {
-  const date = DateTime.fromISO(children)
-  const today = getToday()
-
-  const diff = date.diff(today, 'days').days
-
-  // today
-  // tomorrow
-  // thursday 20 september
-  let relativeDate = date.toFormat('EEEE d MMMM')
-  if (diff === 0) {
-    relativeDate = 'Today'
-  } else if (diff === 1) {
-    relativeDate = 'Tomorrow'
-  }
-
-  return <h3>{relativeDate}</h3>
-}
 
 const A = styled('a')({
   display: 'block',
