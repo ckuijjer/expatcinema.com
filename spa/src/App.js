@@ -11,7 +11,7 @@ const Container = styled('div')({
 const InnerContainer = styled('div')({
   marginLeft: 20,
   marginRight: 20,
-  width: 900,
+  width: 800,
 })
 
 const App = () => (

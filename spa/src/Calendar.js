@@ -64,6 +64,10 @@ const A = styled('a')({
   },
 })
 
+const DaySection = styled('div')({
+  marginBottom: 40,
+})
+
 const Calendar = () => (
   <>
     {Object.entries(groupedScreenings)
@@ -75,7 +79,7 @@ const Calendar = () => (
         return x
       })
       .map(([date, screenings]) => (
-        <section key={date}>
+        <DaySection key={date}>
           <RelativeDate>{date}</RelativeDate>
           {screenings.length ? (
             screenings.map(screening => (
@@ -92,9 +96,9 @@ const Calendar = () => (
               </A>
             ))
           ) : (
-            <i>Nothing</i>
+            <i>No movies found</i>
           )}
-        </section>
+        </DaySection>
       ))}
     {/* <JSONStringify>{{ screenings, groupedScreenings }}</JSONStringify> */}
   </>
