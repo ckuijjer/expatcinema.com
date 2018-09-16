@@ -4,14 +4,22 @@ import Calendar from './Calendar'
 import Header from './Header'
 
 const Container = styled('div')({
-  marginLeft: 40,
-  marginRight: 40,
+  display: 'flex',
+  justifyContent: 'center',
+})
+
+const InnerContainer = styled('div')({
+  marginLeft: 20,
+  marginRight: 20,
+  width: 900,
 })
 
 const App = () => (
   <Container>
-    <Header />
-    <Calendar />
+    <InnerContainer>
+      <Header />
+      <Calendar />
+    </InnerContainer>
   </Container>
 )
 
