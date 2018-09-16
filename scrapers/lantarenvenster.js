@@ -37,8 +37,10 @@ const monthToNumber = month =>
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
-const extractFromMoviePage = ({ url }) =>
-  xray(url, '.page-content-aside', {
+const extractFromMoviePage = ({ url }) => {
+  console.log(`extracting ${url}`)
+
+  return xray(url, '.page-content-aside', {
     title: '.wp_theatre_prod_title',
     subtitles: '.wp_theatre_prod_languages_subtitles | trim',
     screenings: xray('.wpt_production_login_form tr', [
@@ -48,7 +50,7 @@ const extractFromMoviePage = ({ url }) =>
       },
     ]),
   })
-    .then(log('details'))
+    .then(log(`extracted xray ${url}:`))
     .then(movie => {
       if (!hasEnglishSubtitles(movie)) return []
 
@@ -71,13 +73,16 @@ const extractFromMoviePage = ({ url }) =>
                   month,
                   hour,
                   minute,
-                }),
+                })
+                  .toUTC()
+                  .toISO(),
               }
             })
         })
         .reduce(flatten, [])
     })
-    .then(log('extracted'))
+    .then(log(`extracted done ${url}:`))
+}
 
 const extractFromMainPage = () => {
   return (
@@ -95,6 +100,7 @@ const extractFromMainPage = () => {
       .then(log('main page'))
       .then(results => Promise.all(results.map(extractFromMoviePage)))
       // .then(results => results.filter(x => x))
+      .then(log('before flatten'))
       .then(results => results.reduce(flatten, []))
       .then(log('done'))
   )
@@ -105,7 +111,7 @@ const extractFromMainPage = () => {
 			Engels ondertiteld		</div> */
 }
 
-extractFromMainPage()
+// extractFromMainPage()
 
 // Promise.resolve([
 //   {
@@ -124,6 +130,6 @@ extractFromMainPage()
 // extractFromMoviePage({
 //   url: 'https://www.lantarenvenster.nl/programma/think-again-junpei/',
 // })
-// extractFromMoviePage({
-//   url: 'https://www.lantarenvenster.nl/programma/la-priere/',
-// })
+extractFromMoviePage({
+  url: 'https://www.lantarenvenster.nl/programma/kanazawa-shutter-girl/',
+})

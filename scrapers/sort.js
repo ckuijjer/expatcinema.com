@@ -8,8 +8,8 @@ const R = require('ramda')
 
 const sort = R.sortWith([
   (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),
-  R.ascend(R.prop('title')),
   R.ascend(R.prop('cinema')),
+  R.ascend(R.prop('title')),
   R.ascend(R.prop('url')),
 ])
 
