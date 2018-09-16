@@ -40,6 +40,20 @@ const groupedScreenings = groupByDate(
     .sort((a, b) => a.date - b.date),
 ) // sort by date ascending
 
+// Add the days in the next week that don't have a screening
+const thisWeek = Array(7)
+  .fill()
+  .map((x, i) =>
+    getToday()
+      .plus({ days: i })
+      .toISODate(),
+  )
+  .forEach(date => {
+    if (!groupedScreenings[date]) {
+      groupedScreenings[date] = []
+    }
+  })
+
 const A = styled('a')({
   display: 'block',
   textDecoration: 'none',
@@ -52,26 +66,36 @@ const A = styled('a')({
 
 const Calendar = () => (
   <>
-    {Object.entries(groupedScreenings).map(([date, screenings]) => (
-      <>
-        <section>
+    {Object.entries(groupedScreenings)
+      .sort(([a], [b]) => {
+        return DateTime.fromISO(a) - DateTime.fromISO(b)
+      }) // sort by date
+      .map(x => {
+        console.log('😳', x)
+        return x
+      })
+      .map(([date, screenings]) => (
+        <section key={date}>
           <RelativeDate>{date}</RelativeDate>
-          {screenings.map(screening => (
-            <A href={screening.url}>
-              <Screening>
-                <Time>
-                  {screening.date
-                    .setLocale('en-GB')
-                    .toLocaleString(DateTime.TIME_24_SIMPLE)}
-                </Time>
-                <Title>{screening.title}</Title>
-                <Cinema>{screening.cinema}</Cinema>
-              </Screening>
-            </A>
-          ))}
+          {screenings.length ? (
+            screenings.map(screening => (
+              <A href={screening.url}>
+                <Screening>
+                  <Time>
+                    {screening.date
+                      .setLocale('en-GB')
+                      .toLocaleString(DateTime.TIME_24_SIMPLE)}
+                  </Time>
+                  <Title>{screening.title}</Title>
+                  <Cinema>{screening.cinema}</Cinema>
+                </Screening>
+              </A>
+            ))
+          ) : (
+            <i>Nothing</i>
+          )}
         </section>
-      </>
-    ))}
+      ))}
     {/* <JSONStringify>{{ screenings, groupedScreenings }}</JSONStringify> */}
   </>
 )
