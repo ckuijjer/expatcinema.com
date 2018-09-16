@@ -12,6 +12,7 @@ const Screening = styled('div')({
   gridTemplateColumns: '[time] 60px [rest] auto',
   gridColumnGap: 12,
   marginBottom: 20,
+  lineHeight: 1.4,
 })
 
 const Time = styled('div')({
@@ -74,10 +75,6 @@ const Calendar = () => (
       .sort(([a], [b]) => {
         return DateTime.fromISO(a) - DateTime.fromISO(b)
       }) // sort by date
-      .map(x => {
-        console.log('😳', x)
-        return x
-      })
       .map(([date, screenings]) => (
         <DaySection key={date}>
           <RelativeDate>{date}</RelativeDate>
