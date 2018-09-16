@@ -218,52 +218,62 @@
   {
     "title": "Think Again, Junpei",
     "url": "https://www.lantarenvenster.nl/programma/think-again-junpei/",
-    "date": "2018-09-27T14:30:00.000+02:00"
+    "date": "2018-09-27T14:30:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "Destiny, The Tale of Kamakura",
     "url": "https://www.lantarenvenster.nl/programma/destiny-the-tale-of-kamakura/",
-    "date": "2018-09-27T19:00:00.000+02:00"
+    "date": "2018-09-27T19:00:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "Tremble All You Want",
     "url": "https://www.lantarenvenster.nl/programma/tremble-all-you-want/",
-    "date": "2018-09-27T19:00:00.000+02:00"
+    "date": "2018-09-27T19:00:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "Liverleaf",
     "url": "https://www.lantarenvenster.nl/programma/liverleaf/",
-    "date": "2018-09-27T21:45:00.000+02:00"
+    "date": "2018-09-27T21:45:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "Pumpkin and Mayonnaise",
     "url": "https://www.lantarenvenster.nl/programma/pumpkin-and-mayonnaise/",
-    "date": "2018-09-27T22:00:00.000+02:00"
+    "date": "2018-09-27T22:00:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "Liverleaf",
     "url": "https://www.lantarenvenster.nl/programma/liverleaf/",
-    "date": "2018-09-28T14:00:00.000+02:00"
+    "date": "2018-09-28T14:00:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "The Scythian Lamb",
     "url": "https://www.lantarenvenster.nl/programma/the-scythian-lamb/",
-    "date": "2018-09-28T16:45:00.000+02:00"
+    "date": "2018-09-28T16:45:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "Dear Etranger",
     "url": "https://www.lantarenvenster.nl/programma/dear-etranger/",
-    "date": "2018-09-28T19:15:00.000+02:00"
+    "date": "2018-09-28T19:15:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "Foreboding",
     "url": "https://www.lantarenvenster.nl/programma/foreboding/",
-    "date": "2018-09-28T21:30:00.000+02:00"
+    "date": "2018-09-28T21:30:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "Think Again, Junpei",
     "url": "https://www.lantarenvenster.nl/programma/think-again-junpei/",
-    "date": "2018-09-29T16:45:00.000+02:00"
+    "date": "2018-09-29T16:45:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "date": "2018-09-29T19:30:00.000Z",
@@ -274,17 +284,20 @@
   {
     "title": "Tremble All You Want",
     "url": "https://www.lantarenvenster.nl/programma/tremble-all-you-want/",
-    "date": "2018-09-30T12:30:00.000+02:00"
+    "date": "2018-09-30T12:30:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "River's Edge",
     "url": "https://www.lantarenvenster.nl/programma/rivers-edge/",
-    "date": "2018-09-30T17:00:00.000+02:00"
+    "date": "2018-09-30T17:00:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "title": "The Scythian Lamb",
     "url": "https://www.lantarenvenster.nl/programma/the-scythian-lamb/",
-    "date": "2018-09-30T21:45:00.000+02:00"
+    "date": "2018-09-30T21:45:00.000+02:00",
+    "cinema": "Lantarenvenster"
   },
   {
     "date": "2018-10-06T19:30:00.000Z",

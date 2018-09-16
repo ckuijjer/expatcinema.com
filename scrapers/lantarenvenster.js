@@ -65,6 +65,7 @@ const extractFromMoviePage = ({ url }) =>
               return {
                 title: movie.title,
                 url,
+                cinema: 'Lantarenvenster',
                 date: DateTime.fromObject({
                   day,
                   month,

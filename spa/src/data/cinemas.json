@@ -13,5 +13,10 @@
     "name": "Kino",
     "city": "Rotterdam",
     "url": "https://www.kinorotterdam.nl/"
+  },
+  {
+    "name": "Lantarenvenster",
+    "city": "Rotterdam",
+    "url": "https://www.lantarenvenster.nl/"
   }
 ]
