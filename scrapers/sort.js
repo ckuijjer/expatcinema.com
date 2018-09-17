@@ -27,7 +27,7 @@ stdin.on('data', function(chunk) {
 stdin.on('end', function() {
   const input = JSON.parse(inputChunks.join())
 
-  const output = sort(input)
+  const output = sort(R.uniq(input))
 
   console.log(JSON.stringify(output, null, 2))
 })
