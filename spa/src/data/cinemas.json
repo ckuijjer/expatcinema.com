@@ -18,5 +18,15 @@
     "name": "Lantarenvenster",
     "city": "Rotterdam",
     "url": "https://www.lantarenvenster.nl/"
+  },
+  {
+    "name": "Lab111",
+    "city": "Amsterdam",
+    "url": "https://www.lab111.nl/"
+  },
+  {
+    "name": "Eye",
+    "city": "Amsterdam",
+    "url": "https://www.eyefilm.nl/en"
   }
 ]

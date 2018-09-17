@@ -108,6 +108,18 @@
     "date": "2018-09-16T12:00:00.000Z"
   },
   {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eyefilm",
+    "date": "2018-09-17T13:00:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eyefilm",
+    "date": "2018-09-17T15:30:00.000Z"
+  },
+  {
     "title": "Tales From Earthsea",
     "url": "https://www.lab111.nl/movie/tales-from-earthsea/",
     "cinema": "Lab111",
@@ -142,6 +154,12 @@
     "url": "https://www.lab111.nl/movie/howls-moving-castle/",
     "cinema": "Lab111",
     "date": "2018-09-18T17:00:00.000Z"
+  },
+  {
+    "title": "David Safarian: Notwithstanding",
+    "url": "https://www.eyefilm.nl/en/film/david-safarian-notwithstanding",
+    "cinema": "Eyefilm",
+    "date": "2018-09-18T17:15:00.000Z"
   },
   {
     "title": "Tampopo",
@@ -192,6 +210,12 @@
     "date": "2018-09-19T13:00:00.000Z"
   },
   {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eyefilm",
+    "date": "2018-09-19T13:15:00.000Z"
+  },
+  {
     "title": "3 days in Quiberon",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
     "cinema": "Filmhuis Den Haag",
@@ -202,6 +226,12 @@
     "url": "https://www.lab111.nl/movie/tampopo/",
     "cinema": "Lab111",
     "date": "2018-09-19T14:30:00.000Z"
+  },
+  {
+    "title": "Rey",
+    "url": "https://www.eyefilm.nl/en/film/rey",
+    "cinema": "Eyefilm",
+    "date": "2018-09-19T14:45:00.000Z"
   },
   {
     "title": "3 Faces",
@@ -240,6 +270,42 @@
     "date": "2018-09-19T19:30:00.000Z"
   },
   {
+    "title": "Amsterdam Wildlife",
+    "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
+    "cinema": "Eyefilm",
+    "date": "2018-09-20T11:00:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eyefilm",
+    "date": "2018-09-20T15:30:00.000Z"
+  },
+  {
+    "title": "28:94 Local Time",
+    "url": "https://www.eyefilm.nl/en/film/2894-local-time",
+    "cinema": "Eyefilm",
+    "date": "2018-09-20T16:45:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eyefilm",
+    "date": "2018-09-21T11:15:00.000Z"
+  },
+  {
+    "title": "Intimate Lighting",
+    "url": "https://www.eyefilm.nl/en/film/intimate-lighting",
+    "cinema": "Eyefilm",
+    "date": "2018-09-21T14:00:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eyefilm",
+    "date": "2018-09-21T15:45:00.000Z"
+  },
+  {
     "title": "The Cat Returns",
     "url": "https://www.lab111.nl/movie/the-cat-returns/",
     "cinema": "Lab111",
@@ -264,6 +330,24 @@
     "date": "2018-09-21T19:15:00.000Z"
   },
   {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eyefilm",
+    "date": "2018-09-22T08:30:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eyefilm",
+    "date": "2018-09-22T10:45:00.000Z"
+  },
+  {
+    "title": "The Reports on Sarah and Saleem",
+    "url": "https://www.eyefilm.nl/en/film/the-reports-on-sarah-and-saleem",
+    "cinema": "Eyefilm",
+    "date": "2018-09-22T14:30:00.000Z"
+  },
+  {
     "title": "Revenge",
     "url": "https://www.lab111.nl/movie/revenge/",
     "cinema": "Lab111",
@@ -274,6 +358,12 @@
     "url": "https://www.lab111.nl/movie/castle-in-the-sky/",
     "cinema": "Lab111",
     "date": "2018-09-22T16:30:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eyefilm",
+    "date": "2018-09-22T17:00:00.000Z"
   },
   {
     "title": "The Seventh Seal",
@@ -294,10 +384,22 @@
     "date": "2018-09-22T19:15:00.000Z"
   },
   {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eyefilm",
+    "date": "2018-09-23T12:30:00.000Z"
+  },
+  {
     "date": "2018-09-23T13:00:00.000Z",
     "title": "Two-weeks-only: Your Name",
     "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eyefilm",
+    "date": "2018-09-23T14:45:00.000Z"
   },
   {
     "title": "Revenge",
@@ -316,6 +418,24 @@
     "url": "https://www.lab111.nl/movie/tampopo/",
     "cinema": "Lab111",
     "date": "2018-09-23T19:15:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eyefilm",
+    "date": "2018-09-24T08:45:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eyefilm",
+    "date": "2018-09-24T11:15:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eyefilm",
+    "date": "2018-09-24T14:30:00.000Z"
   },
   {
     "title": "Revenge",
@@ -342,16 +462,34 @@
     "date": "2018-09-24T19:45:00.000Z"
   },
   {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eyefilm",
+    "date": "2018-09-25T08:45:00.000Z"
+  },
+  {
     "date": "2018-09-25T17:30:00.000Z",
     "title": "Tokyo Stories: Akira (1988) 30th Anniversary",
     "url": "https://kinorotterdam.nl/film/akira/",
     "cinema": "Kino"
   },
   {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eyefilm",
+    "date": "2018-09-25T19:00:00.000Z"
+  },
+  {
     "title": "The reports on Sarah and Saleem",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/reports-on-sarah-and-saleem-engelse-ondertiteling",
     "cinema": "Filmhuis Den Haag",
     "date": "2018-09-26T08:30:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eyefilm",
+    "date": "2018-09-26T11:15:00.000Z"
   },
   {
     "title": "Sir",
@@ -412,6 +550,12 @@
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
     "cinema": "Filmhuis Den Haag",
     "date": "2018-09-26T18:45:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eyefilm",
+    "date": "2018-09-26T19:00:00.000Z"
   },
   {
     "title": "Den skyldige",
@@ -540,6 +684,12 @@
     "date": "2018-09-28T14:45:00.000Z"
   },
   {
+    "title": "BFFE - The Departure",
+    "url": "https://www.eyefilm.nl/en/film/bffe-the-departure",
+    "cinema": "Eyefilm",
+    "date": "2018-09-28T17:00:00.000Z"
+  },
+  {
     "title": "Persona",
     "url": "https://www.lab111.nl/movie/persona/",
     "cinema": "Lab111",
@@ -574,6 +724,12 @@
     "url": "https://www.lantarenvenster.nl/programma/being-natural/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-28T17:30:00.000Z"
+  },
+  {
+    "title": "BFFE - Stalker",
+    "url": "https://www.eyefilm.nl/en/film/bffe-stalker",
+    "cinema": "Eyefilm",
+    "date": "2018-09-28T19:30:00.000Z"
   },
   {
     "title": "Foreboding",
@@ -636,6 +792,12 @@
     "date": "2018-09-29T14:30:00.000Z"
   },
   {
+    "title": "BFFE - Kalachakra: The Enlightenment",
+    "url": "https://www.eyefilm.nl/en/film/bffe-kalachakra-the-enlightenment",
+    "cinema": "Eyefilm",
+    "date": "2018-09-29T14:45:00.000Z"
+  },
+  {
     "title": "Think Again, Junpei",
     "url": "https://www.lantarenvenster.nl/programma/think-again-junpei/",
     "cinema": "Lantarenvenster",
@@ -652,6 +814,12 @@
     "url": "https://www.lantarenvenster.nl/programma/filmbrunch-mori-the-artists-habitat/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-29T15:00:00.000Z"
+  },
+  {
+    "title": "BFFE - The Venerable W.",
+    "url": "https://www.eyefilm.nl/en/film/bffe-the-venerable-w",
+    "cinema": "Eyefilm",
+    "date": "2018-09-29T17:00:00.000Z"
   },
   {
     "title": "Flower and Sword",
@@ -676,6 +844,12 @@
     "url": "https://www.lantarenvenster.nl/programma/the-trial-2/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-29T17:15:00.000Z"
+  },
+  {
+    "title": "BFFE - Barley Fields on the Other Side of the Mountain",
+    "url": "https://www.eyefilm.nl/en/film/bffe-barley-fields-on-the-other-side-of-the-mountain",
+    "cinema": "Eyefilm",
+    "date": "2018-09-29T19:15:00.000Z"
   },
   {
     "date": "2018-09-29T19:30:00.000Z",
@@ -712,6 +886,18 @@
     "url": "https://www.lantarenvenster.nl/programma/brave-storm/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-29T21:59:00.000Z"
+  },
+  {
+    "title": "BFFE - Sunshine that Can Move Mountains",
+    "url": "https://www.eyefilm.nl/en/film/bffe-sunshine-that-can-move-mountains",
+    "cinema": "Eyefilm",
+    "date": "2018-09-30T08:15:00.000Z"
+  },
+  {
+    "title": "BFFE - Honeygiver Among the Dogs",
+    "url": "https://www.eyefilm.nl/en/film/bffe-honeygiver-among-the-dogs",
+    "cinema": "Eyefilm",
+    "date": "2018-09-30T10:15:00.000Z"
   },
   {
     "title": "Mori, the Artist's Habitat",
@@ -768,6 +954,12 @@
     "date": "2018-09-30T15:15:00.000Z"
   },
   {
+    "title": "BFFE - Zen for Nothing",
+    "url": "https://www.eyefilm.nl/en/film/bffe-zen-for-nothing",
+    "cinema": "Eyefilm",
+    "date": "2018-09-30T17:00:00.000Z"
+  },
+  {
     "title": "Traditional Japanese Live Narration: Benshi",
     "url": "https://www.lantarenvenster.nl/programma/traditional-japanese-live-narration-benshi/",
     "cinema": "Lantarenvenster",
@@ -790,6 +982,12 @@
     "url": "https://www.lantarenvenster.nl/programma/mary-and-the-witchs-flower/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-30T17:45:00.000Z"
+  },
+  {
+    "title": "BFFE - Sound of Silence + Light for Freedom",
+    "url": "https://www.eyefilm.nl/en/film/bffe-sound-of-silence-light-for-freedom",
+    "cinema": "Eyefilm",
+    "date": "2018-09-30T19:00:00.000Z"
   },
   {
     "title": "Black Cat Mansion",
@@ -858,6 +1056,18 @@
     "date": "2018-10-03T17:00:00.000Z"
   },
   {
+    "title": "Jigoku",
+    "url": "https://www.eyefilm.nl/en/film/jigoku",
+    "cinema": "Eyefilm",
+    "date": "2018-10-05T17:00:00.000Z"
+  },
+  {
+    "title": "Black Cat Mansion",
+    "url": "https://www.eyefilm.nl/en/film/black-cat-mansion",
+    "cinema": "Eyefilm",
+    "date": "2018-10-06T13:00:00.000Z"
+  },
+  {
     "title": "iAFF 2018: Short films",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/i-aff-2018-short-films",
     "cinema": "Filmhuis Den Haag",
@@ -868,6 +1078,12 @@
     "url": "https://www.lab111.nl/movie/wild-strawberries/",
     "cinema": "Lab111",
     "date": "2018-10-06T17:00:00.000Z"
+  },
+  {
+    "title": "The  Ghost of Yotsuya",
+    "url": "https://www.eyefilm.nl/en/film/the-ghost-of-yotsuya",
+    "cinema": "Eyefilm",
+    "date": "2018-10-06T19:30:00.000Z"
   },
   {
     "date": "2018-10-06T19:30:00.000Z",
@@ -912,6 +1128,12 @@
     "cinema": "Kino"
   },
   {
+    "title": "The Adventures of Tobisuke",
+    "url": "https://www.eyefilm.nl/en/film/the-adventures-of-tobisuke",
+    "cinema": "Eyefilm",
+    "date": "2018-10-07T19:30:00.000Z"
+  },
+  {
     "title": "The Cat Returns",
     "url": "https://www.lab111.nl/movie/the-cat-returns/",
     "cinema": "Lab111",
@@ -934,6 +1156,12 @@
     "title": "Tokyo Stories: Funeral Parade of Roses (1969)",
     "url": "https://kinorotterdam.nl/film/tokyo-stories-funeral-parade-of-roses-1969/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Works and Words: film and art from 1970’s Central Europe",
+    "url": "https://www.eyefilm.nl/en/film/works-and-words-film-and-art-from-1970%E2%80%99s-central-europe",
+    "cinema": "Eyefilm",
+    "date": "2018-10-09T18:30:00.000Z"
   },
   {
     "title": "Persona",
