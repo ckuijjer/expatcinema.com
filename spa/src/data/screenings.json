@@ -216,64 +216,244 @@
     "cinema": "Kino"
   },
   {
+    "title": "Jaar, lament of the images",
+    "url": "https://www.lantarenvenster.nl/programma/jaar-lament-of-the-images/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-26T17:30:00.000Z"
+  },
+  {
+    "title": "Cyclops",
+    "url": "https://www.lantarenvenster.nl/programma/cyclops/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T12:30:00.000Z"
+  },
+  {
     "title": "Think Again, Junpei",
     "url": "https://www.lantarenvenster.nl/programma/think-again-junpei/",
-    "date": "2018-09-27T14:30:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T12:30:00.000Z"
+  },
+  {
+    "title": "Ice Cream and the Sound of Raindrops",
+    "url": "https://www.lantarenvenster.nl/programma/ice-cream-and-the-sound-of-raindrops/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T14:00:00.000Z"
+  },
+  {
+    "title": "Kanazawa Shutter Girl",
+    "url": "https://www.lantarenvenster.nl/programma/kanazawa-shutter-girl/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T14:45:00.000Z"
+  },
+  {
+    "title": "Brave Storm",
+    "url": "https://www.lantarenvenster.nl/programma/brave-storm/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T15:00:00.000Z"
   },
   {
     "title": "Destiny, The Tale of Kamakura",
     "url": "https://www.lantarenvenster.nl/programma/destiny-the-tale-of-kamakura/",
-    "date": "2018-09-27T19:00:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T17:00:00.000Z"
   },
   {
     "title": "Tremble All You Want",
     "url": "https://www.lantarenvenster.nl/programma/tremble-all-you-want/",
-    "date": "2018-09-27T19:00:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T17:00:00.000Z"
+  },
+  {
+    "title": "Recall",
+    "url": "https://www.lantarenvenster.nl/programma/recall/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T17:15:00.000Z"
+  },
+  {
+    "title": "The Name",
+    "url": "https://www.lantarenvenster.nl/programma/the-name/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T17:30:00.000Z"
+  },
+  {
+    "title": "The Adventure of Tobisuke",
+    "url": "https://www.lantarenvenster.nl/programma/the-adventure-of-tobisuke/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T19:30:00.000Z"
   },
   {
     "title": "Liverleaf",
     "url": "https://www.lantarenvenster.nl/programma/liverleaf/",
-    "date": "2018-09-27T21:45:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T19:45:00.000Z"
   },
   {
     "title": "Pumpkin and Mayonnaise",
     "url": "https://www.lantarenvenster.nl/programma/pumpkin-and-mayonnaise/",
-    "date": "2018-09-27T22:00:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-27T20:00:00.000Z"
   },
   {
     "title": "Liverleaf",
     "url": "https://www.lantarenvenster.nl/programma/liverleaf/",
-    "date": "2018-09-28T14:00:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T12:00:00.000Z"
+  },
+  {
+    "title": "Moon and Thunder",
+    "url": "https://www.lantarenvenster.nl/programma/moon-and-thunder/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T12:15:00.000Z"
+  },
+  {
+    "title": "Dynamite Graffiti",
+    "url": "https://www.lantarenvenster.nl/programma/dynamite-graffiti/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T14:00:00.000Z"
+  },
+  {
+    "title": "Mary and the Witch’s Flower",
+    "url": "https://www.lantarenvenster.nl/programma/mary-and-the-witchs-flower/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T14:30:00.000Z"
   },
   {
     "title": "The Scythian Lamb",
     "url": "https://www.lantarenvenster.nl/programma/the-scythian-lamb/",
-    "date": "2018-09-28T16:45:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T14:45:00.000Z"
+  },
+  {
+    "title": "Vibration: The Yellow Monkey",
+    "url": "https://www.lantarenvenster.nl/programma/vibration-the-yellow-monkey/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T14:45:00.000Z"
+  },
+  {
+    "title": "Okko's Inn",
+    "url": "https://www.lantarenvenster.nl/programma/okkos-inn/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T17:00:00.000Z"
+  },
+  {
+    "title": "The Blood of Wolves",
+    "url": "https://www.lantarenvenster.nl/programma/the-blood-of-wolves/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T17:00:00.000Z"
   },
   {
     "title": "Dear Etranger",
     "url": "https://www.lantarenvenster.nl/programma/dear-etranger/",
-    "date": "2018-09-28T19:15:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T17:15:00.000Z"
+  },
+  {
+    "title": "Being Natural",
+    "url": "https://www.lantarenvenster.nl/programma/being-natural/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T17:30:00.000Z"
   },
   {
     "title": "Foreboding",
     "url": "https://www.lantarenvenster.nl/programma/foreboding/",
-    "date": "2018-09-28T21:30:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T19:30:00.000Z"
+  },
+  {
+    "title": "Jigoku",
+    "url": "https://www.lantarenvenster.nl/programma/jigoku/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T19:45:00.000Z"
+  },
+  {
+    "title": "Death Row Family",
+    "url": "https://www.lantarenvenster.nl/programma/death-row-family/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T20:00:00.000Z"
+  },
+  {
+    "title": "One Cut of the Dead",
+    "url": "https://www.lantarenvenster.nl/programma/one-cut-of-the-dead/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-28T21:59:00.000Z"
+  },
+  {
+    "title": "The Name",
+    "url": "https://www.lantarenvenster.nl/programma/the-name/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T10:00:00.000Z"
+  },
+  {
+    "title": "Kanazawa Shutter Girl",
+    "url": "https://www.lantarenvenster.nl/programma/kanazawa-shutter-girl/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T10:15:00.000Z"
+  },
+  {
+    "title": "Dynamite Graffiti",
+    "url": "https://www.lantarenvenster.nl/programma/dynamite-graffiti/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T12:00:00.000Z"
+  },
+  {
+    "title": "Okko's Inn",
+    "url": "https://www.lantarenvenster.nl/programma/okkos-inn/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T12:30:00.000Z"
+  },
+  {
+    "title": "Being Natural",
+    "url": "https://www.lantarenvenster.nl/programma/being-natural/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T12:45:00.000Z"
+  },
+  {
+    "title": "Pom Poko",
+    "url": "https://www.lantarenvenster.nl/programma/pom-poko/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T14:30:00.000Z"
   },
   {
     "title": "Think Again, Junpei",
     "url": "https://www.lantarenvenster.nl/programma/think-again-junpei/",
-    "date": "2018-09-29T16:45:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T14:45:00.000Z"
+  },
+  {
+    "title": "Blank 13",
+    "url": "https://www.lantarenvenster.nl/programma/blank-13/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T15:00:00.000Z"
+  },
+  {
+    "title": "Mori, the Artist's Habitat",
+    "url": "https://www.lantarenvenster.nl/programma/filmbrunch-mori-the-artists-habitat/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T15:00:00.000Z"
+  },
+  {
+    "title": "Flower and Sword",
+    "url": "https://www.lantarenvenster.nl/programma/flower-and-sword/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T17:00:00.000Z"
+  },
+  {
+    "title": "Of Love & Law",
+    "url": "https://www.lantarenvenster.nl/programma/of-love-law/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T17:00:00.000Z"
+  },
+  {
+    "title": "Inuyashiki",
+    "url": "https://www.lantarenvenster.nl/programma/inuyashiki/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T17:15:00.000Z"
+  },
+  {
+    "title": "The Trial",
+    "url": "https://www.lantarenvenster.nl/programma/the-trial-2/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T17:15:00.000Z"
   },
   {
     "date": "2018-09-29T19:30:00.000Z",
@@ -282,22 +462,142 @@
     "cinema": "Kino"
   },
   {
+    "title": "Tokyo Vampire Hotel",
+    "url": "https://www.lantarenvenster.nl/programma/tokyo-vampire-hotel/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T19:30:00.000Z"
+  },
+  {
+    "title": "Call Boy",
+    "url": "https://www.lantarenvenster.nl/programma/call-boy/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T19:45:00.000Z"
+  },
+  {
+    "title": "Recall",
+    "url": "https://www.lantarenvenster.nl/programma/recall/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T19:45:00.000Z"
+  },
+  {
+    "title": "The Ghost of Yotsuya",
+    "url": "https://www.lantarenvenster.nl/programma/the-ghost-of-yotsuya/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T20:00:00.000Z"
+  },
+  {
+    "title": "Brave Storm",
+    "url": "https://www.lantarenvenster.nl/programma/brave-storm/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-29T21:59:00.000Z"
+  },
+  {
+    "title": "Mori, the Artist's Habitat",
+    "url": "https://www.lantarenvenster.nl/programma/filmbrunch-mori-the-artists-habitat/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T10:30:00.000Z"
+  },
+  {
     "title": "Tremble All You Want",
     "url": "https://www.lantarenvenster.nl/programma/tremble-all-you-want/",
-    "date": "2018-09-30T12:30:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T10:30:00.000Z"
+  },
+  {
+    "title": "Blank 13",
+    "url": "https://www.lantarenvenster.nl/programma/blank-13/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T10:45:00.000Z"
+  },
+  {
+    "title": "Moon and Thunder",
+    "url": "https://www.lantarenvenster.nl/programma/moon-and-thunder/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T12:00:00.000Z"
+  },
+  {
+    "title": "Flower and Sword",
+    "url": "https://www.lantarenvenster.nl/programma/flower-and-sword/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T12:30:00.000Z"
+  },
+  {
+    "title": "The Trial",
+    "url": "https://www.lantarenvenster.nl/programma/the-trial-2/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T12:30:00.000Z"
+  },
+  {
+    "title": "Ice Cream and the Sound of Raindrops",
+    "url": "https://www.lantarenvenster.nl/programma/ice-cream-and-the-sound-of-raindrops/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T14:30:00.000Z"
   },
   {
     "title": "River's Edge",
     "url": "https://www.lantarenvenster.nl/programma/rivers-edge/",
-    "date": "2018-09-30T17:00:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T15:00:00.000Z"
+  },
+  {
+    "title": "A Letter to Momo",
+    "url": "https://www.lantarenvenster.nl/programma/a-letter-to-momo/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T15:15:00.000Z"
+  },
+  {
+    "title": "Traditional Japanese Live Narration: Benshi",
+    "url": "https://www.lantarenvenster.nl/programma/traditional-japanese-live-narration-benshi/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T17:00:00.000Z"
+  },
+  {
+    "title": "Rokuroku: The Promise of the Witch",
+    "url": "https://www.lantarenvenster.nl/programma/rokuroku-the-promise-of-the-witch/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T17:15:00.000Z"
+  },
+  {
+    "title": "Room Laundering",
+    "url": "https://www.lantarenvenster.nl/programma/room-laundering/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T17:30:00.000Z"
+  },
+  {
+    "title": "Mary and the Witch’s Flower",
+    "url": "https://www.lantarenvenster.nl/programma/mary-and-the-witchs-flower/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T17:45:00.000Z"
+  },
+  {
+    "title": "Black Cat Mansion",
+    "url": "https://www.lantarenvenster.nl/programma/black-cat-mansion/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T19:30:00.000Z"
+  },
+  {
+    "title": "Cyclops",
+    "url": "https://www.lantarenvenster.nl/programma/cyclops/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T19:45:00.000Z"
   },
   {
     "title": "The Scythian Lamb",
     "url": "https://www.lantarenvenster.nl/programma/the-scythian-lamb/",
-    "date": "2018-09-30T21:45:00.000+02:00",
-    "cinema": "Lantarenvenster"
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T19:45:00.000Z"
+  },
+  {
+    "title": "Death Row Family",
+    "url": "https://www.lantarenvenster.nl/programma/death-row-family/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-09-30T20:00:00.000Z"
+  },
+  {
+    "title": "Aan niets overleden",
+    "url": "https://www.lantarenvenster.nl/programma/aan-niets-overleden/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-02T17:30:00.000Z"
   },
   {
     "date": "2018-10-06T19:30:00.000Z",
