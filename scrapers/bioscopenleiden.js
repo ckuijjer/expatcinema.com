@@ -31,26 +31,26 @@ xray('https://www.bioscopenleiden.nl', '.schedule .tab-content li', [
             },
           ])
             .then(log('movie page'))
-            .then(results => results.map(r => ({ ...r, url: x.url }))) // add the movie page's url
             .then(results =>
-              results.map(r => ({
-                ...r,
-                title: r.title.replace('Expat Cinema: ', ''), // Remove Expat Cinema from the title
-              })),
-            )
-            .then(results =>
-              results.map(r => {
-                const { date, time, ...rest } = r
-                return {
-                  ...rest,
-                  date: DateTime.fromFormat(`${date} ${time}`, 'd MMMM H:mm')
-                    .toUTC()
-                    .toISO(), // create a iso8601 using the date and the time
-                }
-              }),
+              results
+                .map(r => ({ ...r, url: x.url })) // add the movie page's url
+                .map(r => ({
+                  ...r,
+                  title: r.title.replace('Expat Cinema: ', ''), // Remove Expat Cinema from the title
+                }))
+                .map(r => {
+                  const { date, time, ...rest } = r
+                  return {
+                    ...rest,
+                    date: DateTime.fromFormat(`${date} ${time}`, 'd MMMM H:mm')
+                      .toUTC()
+                      .toISO(), // create a iso8601 using the date and the time
+                  }
+                }),
             )
         }),
     )
+      .then(R.flatten)
       .then(R.uniq) // remove duplicates
       .then(console.log)
   })
