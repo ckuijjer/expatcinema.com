@@ -1,18 +1,20 @@
 const Xray = require('x-ray')
 const R = require('ramda')
 const { DateTime } = require('luxon')
+const debug = require('debug')('lantarenvenster')
+
+const debugPromise = (format, ...debugArgs) => arg => {
+  debug(format, ...debugArgs, arg)
+  return arg
+}
 
 const xray = Xray({
   filters: {
     trim: value => (typeof value === 'string' ? value.trim() : value),
   },
 })
-
-const DEBUG = true
-const log = name => arg => {
-  DEBUG && console.log(name, JSON.stringify(arg, null, 2))
-  return arg
-}
+  .concurrency(3)
+  .throttle(3, 300)
 
 const hasEnglishSubtitles = ({ subtitles }) =>
   subtitles === 'Engels ondertiteld'
@@ -38,7 +40,7 @@ const monthToNumber = month =>
 const flatten = (acc, cur) => [...acc, ...cur]
 
 const extractFromMoviePage = ({ url }) => {
-  console.log(`extracting ${url}`)
+  debug('extracting %s', url)
 
   return xray(url, '.page-content-aside', {
     title: '.wp_theatre_prod_title',
@@ -50,7 +52,7 @@ const extractFromMoviePage = ({ url }) => {
       },
     ]),
   })
-    .then(log(`extracted xray ${url}:`))
+    .then(debugPromise('extracted xray %s: %j', url))
     .then(movie => {
       if (!hasEnglishSubtitles(movie)) return []
 
@@ -81,7 +83,7 @@ const extractFromMoviePage = ({ url }) => {
         })
         .reduce(flatten, [])
     })
-    .then(log(`extracted done ${url}:`))
+    .then(debugPromise('extracting done %s: %O', url))
 }
 
 const extractFromMainPage = () => {
@@ -97,12 +99,12 @@ const extractFromMainPage = () => {
       ],
     )
       .then(R.uniq) // as the agenda has lots of duplicate movie urls, make it unique
-      .then(log('main page'))
+      .then(debugPromise('main page: %j'))
       .then(results => Promise.all(results.map(extractFromMoviePage)))
       // .then(results => results.filter(x => x))
-      .then(log('before flatten'))
+      .then(debugPromise('before flatten: %j'))
       .then(results => results.reduce(flatten, []))
-      .then(log('done'))
+      .then(x => console.log(JSON.stringify(x, null, 2)))
   )
 }
 
@@ -111,7 +113,7 @@ const extractFromMainPage = () => {
 			Engels ondertiteld		</div> */
 }
 
-// extractFromMainPage()
+extractFromMainPage()
 
 // Promise.resolve([
 //   {
@@ -130,6 +132,6 @@ const extractFromMainPage = () => {
 // extractFromMoviePage({
 //   url: 'https://www.lantarenvenster.nl/programma/think-again-junpei/',
 // })
-extractFromMoviePage({
-  url: 'https://www.lantarenvenster.nl/programma/kanazawa-shutter-girl/',
-})
+// extractFromMoviePage({
+//   url: 'https://www.lantarenvenster.nl/programma/kanazawa-shutter-girl/',
+// })
