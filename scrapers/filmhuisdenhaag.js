@@ -3,10 +3,10 @@ const xray = Xray()
 const R = require('ramda')
 const { DateTime } = require('luxon')
 
-const DEBUG = false
+const debug = require('debug')('filmhuisdenhaag')
 
-const log = name => arg => {
-  DEBUG && console.log(name, arg)
+const debugPromise = (format, ...debugArgs) => arg => {
+  debug(format, ...debugArgs, arg)
   return arg
 }
 
@@ -33,55 +33,73 @@ const extractFromMoviePage = ({ url }) => {
       timetable: ['.timetable__date,.timetable__time'], // it's kinda shitty that x-ray only returns text and no subtree of the DOM
     },
   ])
-    .then(log('movie page'))
-    .then(results => results.map(r => ({ ...r, url }))) // add the movie page's url
-    .map(r => {
-      // timetable is e.g. [ 'wo 12 sep', '13.45', '20.45', 'wo 19 sep', '13.45', '20.45' ]
-      // and needs to be parsed: first detect date vs time, then see which belongs together, then combine
-      const { timetable, ...rest } = r
+    .then(debugPromise('extracting %s', url))
+    .then(
+      results =>
+        results
+          .map(movie => {
+            // timetable is e.g. [ 'wo 12 sep', '13.45', '20.45', 'wo 19 sep', '13.45', '20.45' ]
+            // and needs to be parsed: first detect date vs time, then see which belongs together, then combine
+            const { timetable, title } = movie
 
-      // it's a time if it's of the form e.g. 13.45
-      const isTime = x => !!x.match(/\d+.\d+/)
+            debug('movie %j', movie)
 
-      // group them together if they're both times (in theory this would not be good, but as there's never two dates after each other, who cares)
-      // output is e.g. [[ 'wo 12 sep' ], ['13.45', '20.45'], [ 'wo 19 sep' ], [ '13.45', '20.45' ]]
-      const groupedTimeTable = R.groupWith(
-        (a, b) => isTime(a) && isTime(b),
-        timetable,
-      )
+            // it's a time if it's of the form e.g. 13.45
+            const isTime = x => !!x.match(/\d+.\d+/)
 
-      const dates = []
-      for (var i = 0; i < groupedTimeTable.length; i = i + 2) {
-        const [dayOfWeek, dayString, monthString] = groupedTimeTable[
-          i
-        ][0].split(' ')
-        const day = Number(dayString)
-        const month = monthToNumber(monthString)
-        const times = groupedTimeTable[i + 1]
+            // group them together if they're both times (in theory this would not be good, but as there's never two dates after each other, who cares)
+            // output is e.g. [[ 'wo 12 sep' ], ['13.45', '20.45'], [ 'wo 19 sep' ], [ '13.45', '20.45' ]]
+            const groupedTimeTable = R.groupWith(
+              (a, b) => isTime(a) && isTime(b),
+              timetable,
+            )
 
-        times.forEach(time => {
-          const [hour, minute] = time.split('.').map(x => Number(x))
+            debug('groupedTimeTable %j', groupedTimeTable)
 
-          dates.push(
-            DateTime.fromObject({
-              day,
-              month,
-              hour,
-              minute,
-            })
-              .toUTC()
-              .toISO(),
-          ) // create a iso8601 using the date and the time
-        })
-      }
+            const dates = []
+            for (var i = 0; i < groupedTimeTable.length; i = i + 2) {
+              const [dayOfWeek, dayString, monthString] = groupedTimeTable[
+                i
+              ][0].split(/\s+/)
+              const day = Number(dayString)
+              const month = monthToNumber(monthString)
+              const times = groupedTimeTable[i + 1]
 
-      return dates.map(date => ({
-        ...rest,
-        cinema: 'Filmhuis Den Haag',
-        date,
-      }))
-    })
-    .reduce((acc, cur) => [...acc, ...cur], []) // flatten, as there's can be more than one screening per page
+              debug('day, month, times %j', {
+                dayString,
+                monthString,
+                day,
+                month,
+                times,
+              })
+
+              times.forEach(time => {
+                const [hour, minute] = time.split('.').map(x => Number(x))
+
+                debug('hour, minute, time %j', { hour, minute, time })
+
+                dates.push(
+                  DateTime.fromObject({
+                    day,
+                    month,
+                    hour,
+                    minute,
+                  })
+                    .toUTC()
+                    .toISO(),
+                ) // create a iso8601 using the date and the time
+              })
+            }
+
+            return dates.map(date => ({
+              title,
+              url,
+              cinema: 'Filmhuis Den Haag',
+              date,
+            }))
+          })
+          .reduce((acc, cur) => [...acc, ...cur], []), // flatten, as there's can be more than one screening per page
+    )
 }
 
 const extractFromMainPage = () => {
@@ -94,7 +112,7 @@ const extractFromMainPage = () => {
       hasEnglishSubtitlesIndicator2: '.event-listed__header-group .label',
     },
   ])
-    .then(log('main page'))
+    .then(debugPromise('main page'))
     .then(results =>
       Promise.all(
         results
@@ -112,5 +130,5 @@ const extractFromMainPage = () => {
 extractFromMainPage().then(console.log)
 
 // extractFromMoviePage({
-//   url: 'https://www.filmhuisdenhaag.nl/agenda/event/autumn-sonata',
+//   url: 'https://www.filmhuisdenhaag.nl/agenda/event/somebody-clap-for-me',
 // }).then(console.log)
