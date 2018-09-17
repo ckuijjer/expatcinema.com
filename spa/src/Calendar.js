@@ -69,6 +69,8 @@ const DaySection = styled('div')({
   marginBottom: 40,
 })
 
+const NoMoviesFoundToday = () => <i>No movies found</i>
+
 const Calendar = () => (
   <>
     {Object.entries(groupedScreenings)
@@ -93,7 +95,7 @@ const Calendar = () => (
               </A>
             ))
           ) : (
-            <i>No movies found</i>
+            <NoMoviesFoundToday />
           )}
         </DaySection>
       ))}
