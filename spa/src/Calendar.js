@@ -1,11 +1,9 @@
 import React from 'react'
 import { DateTime } from 'luxon'
 import styled from 'react-emotion'
-import { groupBy } from 'ramda'
 import JSONStringify from './JSONStringify'
-import { screenings } from './data'
 import RelativeDate from './RelativeDate'
-import getToday from './getToday'
+import screenings from './screenings'
 
 const Screening = styled('div')({
   display: 'grid',
@@ -28,33 +26,6 @@ const Cinema = styled('div')({
   gridColumnStart: 'rest',
 })
 
-// sort the screenings by date and time
-// group by date
-// inject some dates? e.g. the coming week? by doing an intersection with a static list of coming days?
-// has to be a string, not a DateTime object, as keys to an Object (e.g. groupedScreenings) have to be a string
-const groupByDate = groupBy(screening => screening.date.toISODate())
-
-const groupedScreenings = groupByDate(
-  screenings
-    .map(x => ({ ...x, date: DateTime.fromISO(x.date) })) // use luxon on the date
-    .filter(x => x.date >= getToday())
-    .sort((a, b) => a.date - b.date),
-) // sort by date ascending
-
-// Add the days in the next week that don't have a screening
-const thisWeek = Array(7)
-  .fill()
-  .map((x, i) =>
-    getToday()
-      .plus({ days: i })
-      .toISODate(),
-  )
-  .forEach(date => {
-    if (!groupedScreenings[date]) {
-      groupedScreenings[date] = []
-    }
-  })
-
 const A = styled('a')({
   display: 'block',
   textDecoration: 'none',
@@ -73,7 +44,7 @@ const NoMoviesFoundToday = () => <i>No movies found</i>
 
 const Calendar = () => (
   <>
-    {Object.entries(groupedScreenings)
+    {Object.entries(screenings)
       .sort(([a], [b]) => {
         return DateTime.fromISO(a) - DateTime.fromISO(b)
       }) // sort by date
@@ -90,7 +61,7 @@ const Calendar = () => (
                       .toLocaleString(DateTime.TIME_24_SIMPLE)}
                   </Time>
                   <Title>{screening.title}</Title>
-                  <Cinema>{screening.cinema}</Cinema>
+                  <Cinema>{screening.cinema.name}</Cinema>
                 </Screening>
               </A>
             ))
@@ -99,7 +70,7 @@ const Calendar = () => (
           )}
         </DaySection>
       ))}
-    {/* <JSONStringify>{{ screenings, groupedScreenings }}</JSONStringify> */}
+    {/* <JSONStringify>{{ screenings }}</JSONStringify> */}
   </>
 )
 

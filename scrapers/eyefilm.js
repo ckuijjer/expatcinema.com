@@ -48,7 +48,7 @@ const extractFromMoviePage = ({ url }) => {
             return {
               title: movie.title,
               url,
-              cinema: 'Eyefilm',
+              cinema: 'Eye',
               date: DateTime.fromFormat(`${date} ${time}`, 'dd MMM yyyy H:mm')
                 .toUTC()
                 .toISO(),
@@ -84,5 +84,6 @@ extractFromMainPage()
 // })
 
 // extractFromMoviePage({
-//   url: 'https://www.eyefilm.nl/en/film/3-faces?program_id=11851109',
+//   url:
+//     'https://www.eyefilm.nl/en/film/works-and-words-film-and-art-from-1970%E2%80%99s-central-europe?program_id=11850975',
 // })
