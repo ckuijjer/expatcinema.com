@@ -24,6 +24,7 @@ const Title = styled('div')({
 const Cinema = styled('div')({
   fontSize: 20,
   gridColumnStart: 'rest',
+  color: '#777',
 })
 
 const A = styled('a')({
@@ -61,7 +62,9 @@ const Calendar = () => (
                       .toLocaleString(DateTime.TIME_24_SIMPLE)}
                   </Time>
                   <Title>{screening.title}</Title>
-                  <Cinema>{screening.cinema.name}</Cinema>
+                  <Cinema>
+                    {screening.cinema.name} - {screening.cinema.city}
+                  </Cinema>
                 </Screening>
               </A>
             ))
