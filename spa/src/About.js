@@ -12,8 +12,8 @@ const About = () => (
   <Container>
     Expat Cinema uses a combination of automated and manual techniques to find
     english subtitled movie screenings at the following cinemas. Amsterdam: Eye,
-    Lab111 - Den Haag: Filmhuis Den Haag - Leiden: Kijkhuis - Rotterdam: Kino,
-    Lantarenvenster.
+    Kriterion, Lab111 - Den Haag: Filmhuis Den Haag - Leiden: Kijkhuis -
+    Rotterdam: Kino, Lantarenvenster.
   </Container>
 )
 

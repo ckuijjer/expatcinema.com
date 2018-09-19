@@ -14,6 +14,12 @@ To get debugging output from x-ray and x-ray-crawler
 DEBUG=x-ray,x-ray-crawler node lantarenvenster.js
 ```
 
+or to get all debugging output
+
+```
+DEBUG=* node lantarenvenster.js
+```
+
 ## Issues
 
 - x-ray

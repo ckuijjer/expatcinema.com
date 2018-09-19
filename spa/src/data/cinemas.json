@@ -28,5 +28,10 @@
     "name": "Eye",
     "city": "Amsterdam",
     "url": "https://www.eyefilm.nl/en"
+  },
+  {
+    "name": "Kriterion",
+    "city": "Amsterdam",
+    "url": "https://kriterion.nl"
   }
 ]

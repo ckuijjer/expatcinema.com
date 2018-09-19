@@ -270,6 +270,12 @@
     "date": "2018-09-19T19:30:00.000Z"
   },
   {
+    "title": "Oldboy",
+    "url": "https://kriterion.nl/films/oldboy",
+    "cinema": "Kriterion",
+    "date": "2018-09-19T20:00:00.000Z"
+  },
+  {
     "title": "Amsterdam Wildlife",
     "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
     "cinema": "Eye",
@@ -328,6 +334,12 @@
     "url": "https://www.lab111.nl/movie/tampopo/",
     "cinema": "Lab111",
     "date": "2018-09-21T19:15:00.000Z"
+  },
+  {
+    "title": "Lady Vengeance",
+    "url": "https://kriterion.nl/films/lady-vengeance",
+    "cinema": "Kriterion",
+    "date": "2018-09-21T20:00:00.000Z"
   },
   {
     "title": "Living the Light – Robby Müller",
@@ -562,6 +574,12 @@
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
     "cinema": "Filmhuis Den Haag",
     "date": "2018-09-26T19:00:00.000Z"
+  },
+  {
+    "title": "Radio Voorwaarts",
+    "url": "https://kriterion.nl/films/radio-voorwaarts",
+    "cinema": "Kriterion",
+    "date": "2018-09-26T19:30:00.000Z"
   },
   {
     "title": "Tampopo",
@@ -1056,10 +1074,52 @@
     "date": "2018-10-03T17:00:00.000Z"
   },
   {
+    "title": "CJ: River's Edge",
+    "url": "https://kriterion.nl/films/cj-river-s-edge",
+    "cinema": "Kriterion",
+    "date": "2018-10-04T15:00:00.000Z"
+  },
+  {
+    "title": "CJ: Room Laundering",
+    "url": "https://kriterion.nl/films/cj-room-laundering",
+    "cinema": "Kriterion",
+    "date": "2018-10-04T17:15:00.000Z"
+  },
+  {
+    "title": "CJ: The Scythian Lamb",
+    "url": "https://kriterion.nl/films/cj-the-scythian-lamb",
+    "cinema": "Kriterion",
+    "date": "2018-10-04T19:30:00.000Z"
+  },
+  {
+    "title": "CJ: Pumpkin and Mayonnaise",
+    "url": "https://kriterion.nl/films/cj-pumpkin-and-mayonnaise",
+    "cinema": "Kriterion",
+    "date": "2018-10-05T15:00:00.000Z"
+  },
+  {
     "title": "Jigoku",
     "url": "https://www.eyefilm.nl/en/film/jigoku",
     "cinema": "Eye",
     "date": "2018-10-05T17:00:00.000Z"
+  },
+  {
+    "title": "CJ: Dear Etranger",
+    "url": "https://kriterion.nl/films/cj-dear-etranger",
+    "cinema": "Kriterion",
+    "date": "2018-10-05T17:00:00.000Z"
+  },
+  {
+    "title": "CJ: Foreboding",
+    "url": "https://kriterion.nl/films/cj-foreboding",
+    "cinema": "Kriterion",
+    "date": "2018-10-05T19:30:00.000Z"
+  },
+  {
+    "title": "CJ: Brave Storm",
+    "url": "https://kriterion.nl/films/cj-brave-storm",
+    "cinema": "Kriterion",
+    "date": "2018-10-05T21:59:00.000Z"
   },
   {
     "title": "Black Cat Mansion",
