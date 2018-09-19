@@ -73,7 +73,6 @@ const Calendar = () => (
           )}
         </DaySection>
       ))}
-    {/* <JSONStringify>{{ screenings }}</JSONStringify> */}
   </>
 )
 
