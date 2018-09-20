@@ -9,8 +9,8 @@ const Screening = styled('div')({
   display: 'grid',
   gridTemplateColumns: '[time] 60px [rest] auto',
   gridColumnGap: 12,
-  marginBottom: 20,
   lineHeight: 1.4,
+  padding: 8,
 })
 
 const Time = styled('div')({
@@ -22,7 +22,7 @@ const Title = styled('div')({
 })
 
 const Cinema = styled('div')({
-  fontSize: 20,
+  fontSize: 16,
   gridColumnStart: 'rest',
   color: '#777',
 })
@@ -33,7 +33,8 @@ const A = styled('a')({
   color: '#333',
 
   ':hover': {
-    textDecoration: 'underline',
+    backgroundColor: '#f6f6f6',
+    borderRadius: 8,
   },
 })
 
@@ -63,7 +64,9 @@ const Calendar = () => (
                   </Time>
                   <Title>{screening.title}</Title>
                   <Cinema>
-                    {screening.cinema.name} - {screening.cinema.city}
+                    {screening.cinema.name}
+                    <br />
+                    {screening.cinema.city}
                   </Cinema>
                 </Screening>
               </A>
