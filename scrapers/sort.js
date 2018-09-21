@@ -1,8 +1,5 @@
 #!/usr/bin/env node
-
-// Reads JSON from stdin and writes equivalent
-// nicely-formatted JSON to stdout.
-
+const fs = require('fs')
 const { DateTime } = require('luxon')
 const R = require('ramda')
 
@@ -13,21 +10,9 @@ const sort = R.sortWith([
   R.ascend(R.prop('url')),
 ])
 
-var stdin = process.stdin,
-  stdout = process.stdout,
-  inputChunks = []
+const data = fs.readFileSync('/dev/stdin', 'utf-8')
 
-stdin.resume()
-stdin.setEncoding('utf8')
+const input = JSON.parse(data)
+const output = sort(R.uniq(input))
 
-stdin.on('data', function(chunk) {
-  inputChunks.push(chunk)
-})
-
-stdin.on('end', function() {
-  const input = JSON.parse(inputChunks.join())
-
-  const output = sort(R.uniq(input))
-
-  console.log(JSON.stringify(output, null, 2))
-})
+console.log(JSON.stringify(output, null, 2))

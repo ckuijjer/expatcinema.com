@@ -78,10 +78,9 @@ const extractFromMainPage = () => {
     .then(results => Promise.all(results.map(extractFromMoviePage)))
     .then(debugPromise('before flatten: %j'))
     .then(results => results.reduce(flatten, []))
-    .then(x => console.log(JSON.stringify(x, null, 2)))
 }
 
-extractFromMainPage()
+module.exports = extractFromMainPage
 
 // https://kriterion.nl/films/styx
 // https://kriterion.nl/films/cool-japan-perfect-blue-1997

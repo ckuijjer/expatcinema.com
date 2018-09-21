@@ -104,7 +104,6 @@ const extractFromMainPage = () => {
       // .then(results => results.filter(x => x))
       .then(debugPromise('before flatten: %j'))
       .then(results => results.reduce(flatten, []))
-      .then(x => console.log(JSON.stringify(x, null, 2)))
   )
 }
 
@@ -113,7 +112,7 @@ const extractFromMainPage = () => {
 			Engels ondertiteld		</div> */
 }
 
-extractFromMainPage()
+module.exports = extractFromMainPage
 
 // Promise.resolve([
 //   {

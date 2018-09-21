@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "DEBUG=* node index.js 2> output/$(date -u +\"%Y-%m-%dT%H:%M:%SZ\").log",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -11,6 +12,7 @@
   "dependencies": {
     "debug": "^4.0.1",
     "luxon": "^1.3.3",
+    "prettier": "^1.14.3",
     "ramda": "^0.25.0",
     "x-ray": "^2.3.3"
   }
