@@ -1,13 +1,16 @@
 const Xray = require('x-ray')
-const xray = Xray()
 const R = require('ramda')
 const { DateTime } = require('luxon')
 
-const DEBUG = false
-const log = name => arg => {
-  DEBUG && console.log(name, JSON.stringify(arg, null, 2))
+const debug = require('debug')('combined scraper')
+
+const debugPromise = (format, ...debugArgs) => arg => {
+  debug(format, ...debugArgs, arg)
   return arg
 }
+const xray = Xray()
+  .concurrency(3)
+  .throttle(3, 300)
 
 const monthToNumber = month =>
   [
@@ -96,7 +99,7 @@ const extractFromMainPage = () => {
       url: '.film-hover .content a@href',
     },
   ])
-    .then(log('main page'))
+    .then(debugPromise('main page'))
     .then(R.uniq) // as the agenda has lots of duplicate movie urls, make it unique
     .then(results => Promise.all(results.map(extractFromMoviePage)))
     .then(results => results.filter(x => x))
@@ -117,7 +120,9 @@ const extractFromMainPage = () => {
   // .then(results => results.reduce((acc, cur) => [...acc, ...cur], [])) // flatten, as there's can be more than one screening per page
 }
 
-extractFromMainPage().then(console.log)
+module.exports = extractFromMainPage
+
+// extractFromMainPage().then(console.log)
 
 // extractFromMoviePage({
 //   // url:

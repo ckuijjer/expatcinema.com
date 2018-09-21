@@ -101,10 +101,9 @@ const extractFromMainPage = () => {
     .then(results => Promise.all(results.map(extractFromMoviePage)))
     .then(debugPromise('before flatten: %j'))
     .then(results => results.reduce(flatten, []))
-    .then(x => console.log(JSON.stringify(x, null, 2)))
 }
 
-extractFromMainPage()
+module.exports = extractFromMainPage
 
 // extractFromMoviePage({
 //   url: 'https://www.lab111.nl/movie/tampopo/',

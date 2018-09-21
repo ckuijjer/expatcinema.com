@@ -1,5 +1,4 @@
 const Xray = require('x-ray')
-const xray = Xray()
 const R = require('ramda')
 const { DateTime } = require('luxon')
 
@@ -9,6 +8,10 @@ const debugPromise = (format, ...debugArgs) => arg => {
   debug(format, ...debugArgs, arg)
   return arg
 }
+
+const xray = Xray()
+  .concurrency(3)
+  .throttle(3, 300)
 
 const monthToNumber = month =>
   [
@@ -127,7 +130,9 @@ const extractFromMainPage = () => {
     .then(results => results.reduce((acc, cur) => [...acc, ...cur], [])) // flatten, as there's can be more than one screening per page
 }
 
-extractFromMainPage().then(console.log)
+module.exports = extractFromMainPage
+
+// extractFromMainPage().then(console.log)
 
 // extractFromMoviePage({
 //   url: 'https://www.filmhuisdenhaag.nl/agenda/event/somebody-clap-for-me',
