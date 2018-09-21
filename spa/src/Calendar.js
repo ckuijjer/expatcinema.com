@@ -10,7 +10,7 @@ const Screening = styled('div')({
   gridTemplateColumns: '[time] 60px [rest] auto',
   gridColumnGap: 12,
   lineHeight: 1.4,
-  padding: 12,
+  padding: 10,
 })
 
 const Time = styled('div')({
@@ -31,12 +31,12 @@ const A = styled('a')({
   display: 'block',
   textDecoration: 'none',
   color: '#333',
-  marginLeft: -12,
-  marginRight: -12,
+  marginLeft: -10,
+  marginRight: -10,
 
   ':hover': {
     backgroundColor: '#f6f6f6',
-    borderRadius: 12,
+    borderRadius: 10,
   },
 })
 
