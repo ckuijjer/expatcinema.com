@@ -19,17 +19,17 @@ const groupedScreenings = groupByDate(
 
 // Add the days in the next week that don't have a screening
 // TODO: this should be render logic
-Array(7)
-  .fill()
-  .map((x, i) =>
-    getToday()
-      .plus({ days: i })
-      .toISODate(),
-  )
-  .forEach(date => {
-    if (!groupedScreenings[date]) {
-      groupedScreenings[date] = []
-    }
-  })
+// Array(7)
+//   .fill()
+//   .map((x, i) =>
+//     getToday()
+//       .plus({ days: i })
+//       .toISODate(),
+//   )
+//   .forEach(date => {
+//     if (!groupedScreenings[date]) {
+//       groupedScreenings[date] = []
+//     }
+//   })
 
 export default groupedScreenings

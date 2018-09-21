@@ -44,8 +44,6 @@ const DaySection = styled('div')({
   marginBottom: 40,
 })
 
-const NoMoviesFoundToday = () => <i>No movies found</i>
-
 const Calendar = () => (
   <>
     {Object.entries(screenings)
@@ -55,27 +53,23 @@ const Calendar = () => (
       .map(([date, screenings]) => (
         <DaySection key={date}>
           <RelativeDate>{date}</RelativeDate>
-          {screenings.length ? (
-            screenings.map(screening => (
-              <A href={screening.url}>
-                <Screening>
-                  <Time>
-                    {screening.date
-                      .setLocale('en-GB')
-                      .toLocaleString(DateTime.TIME_24_SIMPLE)}
-                  </Time>
-                  <Title>{screening.title}</Title>
-                  <Cinema>
-                    {screening.cinema.name}
-                    <br />
-                    {screening.cinema.city}
-                  </Cinema>
-                </Screening>
-              </A>
-            ))
-          ) : (
-            <NoMoviesFoundToday />
-          )}
+          {screenings.map(screening => (
+            <A href={screening.url}>
+              <Screening>
+                <Time>
+                  {screening.date
+                    .setLocale('en-GB')
+                    .toLocaleString(DateTime.TIME_24_SIMPLE)}
+                </Time>
+                <Title>{screening.title}</Title>
+                <Cinema>
+                  {screening.cinema.name}
+                  <br />
+                  {screening.cinema.city}
+                </Cinema>
+              </Screening>
+            </A>
+          ))}
         </DaySection>
       ))}
   </>
