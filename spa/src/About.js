@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'react-emotion'
 
 const Container = styled('div')({
-  marginTop: 20,
-  paddingTop: 20,
-  paddingBottom: 20,
+  marginTop: 16,
+  paddingTop: 16,
+  paddingBottom: 16,
   color: '#999',
   lineHeight: 1.4,
 })

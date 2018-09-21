@@ -9,8 +9,8 @@ const Container = styled('div')({})
 const Content = styled('div')({
   margin: '0 auto',
 
-  paddingLeft: 20,
-  paddingRight: 20,
+  paddingLeft: 16,
+  paddingRight: 16,
   maxWidth: 960,
 })
 
