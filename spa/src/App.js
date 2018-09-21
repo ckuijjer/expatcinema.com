@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'react-emotion'
+
 import About from './About'
 import Calendar from './Calendar'
+import Filter from './Filter'
 import Header from './Header'
 
 const Container = styled('div')({})
@@ -19,6 +21,7 @@ const App = () => (
     <Container>
       <Content>
         <Header />
+        <Filter />
         <Calendar />
       </Content>
     </Container>
