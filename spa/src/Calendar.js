@@ -1,8 +1,10 @@
 import React from 'react'
 import { DateTime } from 'luxon'
 import styled from 'react-emotion'
+
 import JSONStringify from './JSONStringify'
 import RelativeDate from './RelativeDate'
+import Time from './Time'
 import screenings from './screenings'
 
 const Screening = styled('div')({
@@ -11,10 +13,6 @@ const Screening = styled('div')({
   gridColumnGap: 12,
   lineHeight: 1.4,
   padding: 10,
-})
-
-const Time = styled('div')({
-  fontSize: 20,
 })
 
 const Title = styled('div')({
@@ -44,34 +42,30 @@ const DaySection = styled('div')({
   marginBottom: 40,
 })
 
+const screeningsByDate = Object.entries(screenings).sort(([a], [b]) => {
+  return DateTime.fromISO(a) - DateTime.fromISO(b)
+}) // sort by date
+
 const Calendar = () => (
   <>
-    {Object.entries(screenings)
-      .sort(([a], [b]) => {
-        return DateTime.fromISO(a) - DateTime.fromISO(b)
-      }) // sort by date
-      .map(([date, screenings]) => (
-        <DaySection key={date}>
-          <RelativeDate>{date}</RelativeDate>
-          {screenings.map(screening => (
-            <A href={screening.url}>
-              <Screening>
-                <Time>
-                  {screening.date
-                    .setLocale('en-GB')
-                    .toLocaleString(DateTime.TIME_24_SIMPLE)}
-                </Time>
-                <Title>{screening.title}</Title>
-                <Cinema>
-                  {screening.cinema.name}
-                  <br />
-                  {screening.cinema.city}
-                </Cinema>
-              </Screening>
-            </A>
-          ))}
-        </DaySection>
-      ))}
+    {screeningsByDate.map(([date, screenings]) => (
+      <DaySection key={date}>
+        <RelativeDate>{date}</RelativeDate>
+        {screenings.map(screening => (
+          <A href={screening.url}>
+            <Screening>
+              <Time>{screening.date}</Time>
+              <Title>{screening.title}</Title>
+              <Cinema>
+                {screening.cinema.name}
+                <br />
+                {screening.cinema.city}
+              </Cinema>
+            </Screening>
+          </A>
+        ))}
+      </DaySection>
+    ))}
   </>
 )
 

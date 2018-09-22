@@ -16,21 +16,33 @@ const Content = styled('div')({
   maxWidth: 960,
 })
 
-const App = () => (
-  <>
-    <Container>
-      <Content>
-        <Header />
-        <Filter />
-        <Calendar />
-      </Content>
-    </Container>
-    <Container style={{ backgroundColor: '#fbfbfb' }}>
-      <Content>
-        <About />
-      </Content>
-    </Container>
-  </>
-)
+class App extends React.Component {
+  state = {
+    search: '',
+  }
+
+  handleChange = e => {
+    this.setState({ search: e.target.value })
+  }
+
+  render() {
+    return (
+      <>
+        <Container>
+          <Content>
+            <Header />
+            {/* <Filter value={this.state.search} onChange={this.handleChange} /> */}
+            <Calendar />
+          </Content>
+        </Container>
+        <Container style={{ backgroundColor: '#fbfbfb' }}>
+          <Content>
+            <About />
+          </Content>
+        </Container>
+      </>
+    )
+  }
+}
 
 export default App
