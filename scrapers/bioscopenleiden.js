@@ -18,45 +18,46 @@ const extractFromMainPage = () =>
     },
   ])
     .then(debugPromise('main page'))
-    .then(results => {
-      Promise.all(
-        results
-          .filter(x => x.title && x.title.startsWith('Expat Cinema'))
-          .map(x => {
-            return xray(x.url, 'body', [
-              {
-                title: '.h-title',
-                date: '.sub-date',
-                time: '.time',
-                cinema: '.building',
-              },
-            ])
-              .then(debugPromise('movie page'))
-              .then(results =>
-                results
-                  .map(r => ({ ...r, url: x.url })) // add the movie page's url
-                  .map(r => ({
-                    ...r,
-                    title: r.title.replace('Expat Cinema: ', ''), // Remove Expat Cinema from the title
-                  }))
-                  .map(r => {
-                    const { date, time, ...rest } = r
-                    return {
-                      ...rest,
-                      date: DateTime.fromFormat(
-                        `${date} ${time}`,
-                        'd MMMM H:mm',
-                      )
-                        .toUTC()
-                        .toISO(), // create a iso8601 using the date and the time
-                    }
-                  }),
-              )
-          }),
-      )
-        .then(R.flatten)
-        .then(R.uniq) // remove duplicates
-    })
+    .then(
+      results =>
+        Promise.all(
+          results
+            .filter(x => x.title && x.title.startsWith('Expat Cinema'))
+            .map(x => {
+              return xray(x.url, 'body', [
+                {
+                  title: '.h-title',
+                  date: '.sub-date',
+                  time: '.time',
+                  cinema: '.building',
+                },
+              ])
+                .then(debugPromise('movie page'))
+                .then(results =>
+                  results
+                    .map(r => ({ ...r, url: x.url })) // add the movie page's url
+                    .map(r => ({
+                      ...r,
+                      title: r.title.replace('Expat Cinema: ', ''), // Remove Expat Cinema from the title
+                    }))
+                    .map(r => {
+                      const { date, time, ...rest } = r
+                      return {
+                        ...rest,
+                        date: DateTime.fromFormat(
+                          `${date} ${time}`,
+                          'd MMMM H:mm',
+                        )
+                          .toUTC()
+                          .toISO(), // create a iso8601 using the date and the time
+                      }
+                    }),
+                )
+            }),
+        )
+          .then(R.flatten)
+          .then(R.uniq), // remove duplicates
+    )
 
 module.exports = extractFromMainPage
 
