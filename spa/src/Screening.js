@@ -26,6 +26,9 @@ const Container = styled('div')({
 
 const Title = styled('div')({
   fontSize: 20,
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
 })
 
 const Cinema = styled('div')({
