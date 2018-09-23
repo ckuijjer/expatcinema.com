@@ -35,12 +35,12 @@ class App extends React.Component {
         <Container>
           <Content>
             <Header />
-            {/* <TextFilter
+            <TextFilter
               value={this.state.search}
               onChange={this.handleSearch}
-            /> */}
+            />
             <CityFilter onChange={this.handleCityChange} />
-            <Calendar cities={this.state.cities} />
+            <Calendar cities={this.state.cities} search={this.state.search} />
           </Content>
         </Container>
         {/* <Container style={{ backgroundColor: '#fbfbfb' }}>

@@ -12,9 +12,24 @@ const screeningsByDate = Object.entries(screenings).sort(([a], [b]) => {
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
-const Calendar = ({ cities }) => {
+const Calendar = ({ cities, search }) => {
   const rows = screeningsByDate
     .map(([date, screenings]) => {
+      // filter on text
+      const filteredScreenings = screenings.filter(
+        screening =>
+          search.length === 0 ||
+          screening.title.toLowerCase().includes(search.toLowerCase()) ||
+          screening.cinema.name.toLowerCase().includes(search.toLowerCase()) ||
+          screening.cinema.city.toLowerCase().includes(search.toLowerCase()),
+      )
+      if (filteredScreenings.length) {
+        return [date, filteredScreenings]
+      }
+    })
+    .filter(x => x)
+    .map(([date, screenings]) => {
+      // filter on city
       const filteredScreenings = screenings.filter(
         screening =>
           cities.length === 0 || cities.includes(screening.cinema.city),
@@ -35,15 +50,6 @@ const Calendar = ({ cities }) => {
     })
     .reduce(flatten, [])
 
-  // function rowRenderer ({
-  //   index,       // Index of row
-  //   isScrolling, // The List is currently being scrolled
-  //   isVisible,   // This row is visible within the List (eg it is not an overscanned row)
-  //   key,         // Unique key within array of rendered rows
-  //   parent,      // Reference to the parent List (instance)
-  //   style        // Style object to be applied to row (to position it);
-  //                // This must be passed through to the rendered row element.
-  // }) {
   const renderRow = ({ index, key, style }) => {
     const row = rows[index]
 
