@@ -10,13 +10,6 @@ const Container = styled('div')({
   marginBottom: 12,
 })
 
-const Header = styled('div')({
-  display: 'inline-block',
-  fontSize: 24,
-  color: '#000',
-  paddingRight: 8,
-})
-
 const CityCheckbox = styled('div')(({ value }) => ({
   display: 'inline-block',
   fontSize: 24,
