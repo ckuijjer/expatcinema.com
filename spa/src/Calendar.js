@@ -46,26 +46,37 @@ const screeningsByDate = Object.entries(screenings).sort(([a], [b]) => {
   return DateTime.fromISO(a) - DateTime.fromISO(b)
 }) // sort by date
 
-const Calendar = () => (
+const Calendar = ({ cities }) => (
   <>
-    {screeningsByDate.map(([date, screenings]) => (
-      <DaySection key={date}>
-        <RelativeDate>{date}</RelativeDate>
-        {screenings.map(screening => (
-          <A href={screening.url}>
-            <Screening>
-              <Time>{screening.date}</Time>
-              <Title>{screening.title}</Title>
-              <Cinema>
-                {screening.cinema.name}
-                <br />
-                {screening.cinema.city}
-              </Cinema>
-            </Screening>
-          </A>
-        ))}
-      </DaySection>
-    ))}
+    {screeningsByDate.map(([date, screenings]) => {
+      const filteredScreenings = screenings.filter(
+        screening =>
+          cities.length === 0 || cities.includes(screening.cinema.city),
+      )
+
+      if (filteredScreenings.length) {
+        return (
+          <DaySection key={date}>
+            <RelativeDate>{date}</RelativeDate>
+            {filteredScreenings.map(screening => (
+              <A href={screening.url}>
+                <Screening>
+                  <Time>{screening.date}</Time>
+                  <Title>{screening.title}</Title>
+                  <Cinema>
+                    {screening.cinema.name}
+                    <br />
+                    {screening.cinema.city}
+                  </Cinema>
+                </Screening>
+              </A>
+            ))}
+          </DaySection>
+        )
+      } else {
+        return null
+      }
+    })}
   </>
 )
 
