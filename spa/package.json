@@ -12,7 +12,8 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-emotion": "^9.2.8",
-    "react-scripts": "2.0.0-next.a671462c"
+    "react-scripts": "2.0.0-next.a671462c",
+    "react-virtualized": "^9.20.1"
   },
   "scripts": {
     "start": "react-scripts start",
