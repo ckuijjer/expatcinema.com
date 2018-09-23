@@ -29,7 +29,7 @@ const writeToFileAndContinue = filename => data => {
 
 Promise.all(
   [
-    //'bioscopenleiden',
+    'bioscopenleiden',
     'eyefilm',
     'filmhuisdenhaag',
     'kinorotterdam',
