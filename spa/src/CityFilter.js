@@ -17,9 +17,10 @@ const CityCheckbox = styled('div')(({ value }) => ({
   paddingRight: 8,
   cursor: 'pointer',
 
-  ':hover': {
-    color: '#0650d0',
-  },
+  // TODO: :hover stays turned on after clicking on mobile
+  // ':hover': {
+  //   color: '#0650d0',
+  // },
 }))
 
 class CityFilter extends React.Component {
