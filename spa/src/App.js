@@ -43,11 +43,11 @@ class App extends React.Component {
             <Calendar cities={this.state.cities} />
           </Content>
         </Container>
-        <Container style={{ backgroundColor: '#fbfbfb' }}>
+        {/* <Container style={{ backgroundColor: '#fbfbfb' }}>
           <Content>
             <About />
           </Content>
-        </Container>
+        </Container> */}
       </>
     )
   }
