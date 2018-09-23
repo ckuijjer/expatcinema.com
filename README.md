@@ -20,6 +20,12 @@ or to get all debugging output
 DEBUG=* node lantarenvenster.js
 ```
 
+or to run all of the scrapers and add them to the data directory
+
+```
+DEBUG=* node index.js 2> output/`date -u +"%Y-%m-%dT%H:%M:%SZ"`_all.log
+```
+
 ## Issues
 
 - x-ray
