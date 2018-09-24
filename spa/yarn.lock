@@ -1420,6 +1420,14 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.1.tgz#53f349bb986ab273d601175aa1b25a655ab90ee3"
 
+"@nx-js/observer-util@^4.1.1", "@nx-js/observer-util@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@nx-js/observer-util/-/observer-util-4.2.0.tgz#ec9e2f903dda94cc3d8ac077617bc369f2ad2d6e"
+
+"@nx-js/queue-util@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@nx-js/queue-util/-/queue-util-1.1.1.tgz#cd4fafebd88df5c8a2435929feca209e1d3881ff"
+
 "@webassemblyjs/ast@1.4.3":
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.4.3.tgz#3b3f6fced944d8660273347533e6d4d315b5934a"
@@ -7342,6 +7350,19 @@ react-dom@^16.5.2:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     schedule "^0.5.0"
+
+react-easy-params@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-easy-params/-/react-easy-params-2.0.2.tgz#30f8a4d6eb9d3169d9ed9eee5e8a8b427b21f63b"
+  dependencies:
+    "@nx-js/observer-util" "^4.2.0"
+    "@nx-js/queue-util" "^1.1.1"
+
+react-easy-state@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-easy-state/-/react-easy-state-5.1.0.tgz#eb7219d491f2fc98e26b00d6ae6163493935d6f0"
+  dependencies:
+    "@nx-js/observer-util" "^4.1.1"
 
 react-emotion@^9.2.8:
   version "9.2.8"
