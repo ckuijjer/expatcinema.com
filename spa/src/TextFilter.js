@@ -1,6 +1,8 @@
 import React from 'react'
+import { view } from 'react-easy-state'
+import { params } from 'react-easy-params'
 
-const Filter = ({ value, onChange }) => (
+const TextFilter = () => (
   <input
     placeholder="Type to search"
     style={{
@@ -12,9 +14,9 @@ const Filter = ({ value, onChange }) => (
       border: '1px solid #aaa',
     }}
     autoFocus
-    value={value}
-    onChange={onChange}
+    value={params.search || ''}
+    onChange={e => (params.search = e.target.value)}
   />
 )
 
-export default Filter
+export default view(TextFilter)

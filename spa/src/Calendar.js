@@ -1,6 +1,8 @@
 import React from 'react'
 import { DateTime } from 'luxon'
 import { AutoSizer, List, WindowScroller } from 'react-virtualized'
+import { view } from 'react-easy-state'
+import { params } from 'react-easy-params'
 
 import RelativeDate from './RelativeDate'
 import Screening from './Screening'
@@ -12,7 +14,9 @@ const screeningsByDate = Object.entries(screenings).sort(([a], [b]) => {
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
-const Calendar = ({ cities, search }) => {
+const Calendar = () => {
+  const { search = '', cities = [] } = params
+
   const rows = screeningsByDate
     .map(([date, screenings]) => {
       // filter on text
@@ -94,4 +98,4 @@ const Calendar = ({ cities, search }) => {
   )
 }
 
-export default Calendar
+export default view(Calendar)

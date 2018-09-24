@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { view } from 'react-easy-state'
+import { params } from 'react-easy-params'
 
 import { cinemas } from './data'
 
@@ -23,48 +25,30 @@ const CityCheckbox = styled('div')(({ value }) => ({
   // },
 }))
 
-class CityFilter extends React.Component {
-  state = {
-    selected: [],
+const toggle = city => {
+  const set = new Set(params.cities || [])
+
+  if (set.has(city)) {
+    set.delete(city)
+  } else {
+    set.add(city)
   }
 
-  toggle = city => {
-    this.setState(({ selected }) => {
-      const set = new Set(selected)
-
-      if (set.has(city)) {
-        set.delete(city)
-      } else {
-        set.add(city)
-      }
-
-      const newSelected = [...set].sort()
-
-      // TODO: this is really wrong, likely the CityFilter needs to become fully controlled, or it needs
-      // to start using Redux
-      this.props.onChange(newSelected)
-
-      return {
-        selected: newSelected,
-      }
-    })
-  }
-
-  render() {
-    return (
-      <Container>
-        {cities.map(city => (
-          <CityCheckbox
-            key={city}
-            onClick={() => this.toggle(city)}
-            value={this.state.selected.includes(city)}
-          >
-            {city}
-          </CityCheckbox>
-        ))}
-      </Container>
-    )
-  }
+  params.cities = [...set].sort()
 }
 
-export default CityFilter
+const CityFilter = () => (
+  <Container>
+    {cities.map(city => (
+      <CityCheckbox
+        key={city}
+        onClick={() => toggle(city)}
+        value={(params.cities || []).includes(city)}
+      >
+        {city}
+      </CityCheckbox>
+    ))}
+  </Container>
+)
+
+export default view(CityFilter)
