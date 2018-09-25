@@ -17,14 +17,20 @@ DEBUG=x-ray,x-ray-crawler node lantarenvenster.js
 or to get all debugging output
 
 ```
-DEBUG=* node lantarenvenster.js
+DEBUG=*,-resolve node lantarenvenster.js
 ```
 
 or to run all of the scrapers and add them to the data directory
 
 ```
-DEBUG=* node index.js 2> output/`date -u +"%Y-%m-%dT%H:%M:%SZ"`_all.log
+DEBUG=*,-resolve node index.js 2> output/`date -u +"%Y-%m-%dT%H:%M:%SZ"`_all.log
 ```
+
+and to do some simple analysis on the output file
+
+- socket hangup - `ls -t output/*_all.log | head -1|xargs grep -i 'socket hang up'`
+- promise rejection - `ls -t output/*_all.log | head -1|xargs grep -i UnhandledPromiseRejectionWarning`
+- status code other than 200
 
 ## Issues
 

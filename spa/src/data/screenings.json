@@ -678,6 +678,12 @@
     "date": "2018-09-26T19:45:00.000Z"
   },
   {
+    "title": "Amsterdam Wildlife",
+    "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
+    "cinema": "Eye",
+    "date": "2018-09-27T11:00:00.000Z"
+  },
+  {
     "title": "Cyclops",
     "url": "https://www.lantarenvenster.nl/programma/cyclops/",
     "cinema": "Lantarenvenster",
@@ -702,16 +708,40 @@
     "date": "2018-09-27T14:00:00.000Z"
   },
   {
+    "title": "Revenge",
+    "url": "https://www.lab111.nl/movie/revenge/",
+    "cinema": "Lab111",
+    "date": "2018-09-27T14:30:00.000Z"
+  },
+  {
+    "date": "2018-09-27T14:35:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Kanazawa Shutter Girl",
     "url": "https://www.lantarenvenster.nl/programma/kanazawa-shutter-girl/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-27T14:45:00.000Z"
   },
   {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-09-27T15:00:00.000Z"
+  },
+  {
     "title": "Brave Storm",
     "url": "https://www.lantarenvenster.nl/programma/brave-storm/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-27T15:00:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-09-27T17:00:00.000Z"
   },
   {
     "title": "Destiny, The Tale of Kamakura",
@@ -736,6 +766,18 @@
     "url": "https://www.lantarenvenster.nl/programma/the-name/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-27T17:30:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-09-27T19:15:00.000Z"
+  },
+  {
+    "date": "2018-09-27T19:25:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
   },
   {
     "title": "The Adventure of Tobisuke",
@@ -774,10 +816,22 @@
     "date": "2018-09-28T14:00:00.000Z"
   },
   {
+    "title": "Revenge",
+    "url": "https://www.lab111.nl/movie/revenge/",
+    "cinema": "Lab111",
+    "date": "2018-09-28T14:30:00.000Z"
+  },
+  {
     "title": "Mary and the Witch’s Flower",
     "url": "https://www.lantarenvenster.nl/programma/mary-and-the-witchs-flower/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-28T14:30:00.000Z"
+  },
+  {
+    "date": "2018-09-28T14:35:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
   },
   {
     "title": "The Scythian Lamb",
@@ -790,6 +844,12 @@
     "url": "https://www.lantarenvenster.nl/programma/vibration-the-yellow-monkey/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-28T14:45:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-09-28T15:45:00.000Z"
   },
   {
     "title": "BFFE - The Departure",
@@ -834,6 +894,12 @@
     "date": "2018-09-28T17:30:00.000Z"
   },
   {
+    "date": "2018-09-28T19:25:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
+  },
+  {
     "title": "BFFE - Stalker",
     "url": "https://www.eyefilm.nl/en/film/bffe-stalker",
     "cinema": "Eye",
@@ -844,6 +910,12 @@
     "url": "https://www.lantarenvenster.nl/programma/foreboding/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-28T19:30:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-09-28T19:45:00.000Z"
   },
   {
     "title": "Jigoku",
@@ -858,10 +930,22 @@
     "date": "2018-09-28T20:00:00.000Z"
   },
   {
+    "date": "2018-09-28T21:50:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
+  },
+  {
     "title": "One Cut of the Dead",
     "url": "https://www.lantarenvenster.nl/programma/one-cut-of-the-dead/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-28T21:59:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-09-29T09:15:00.000Z"
   },
   {
     "title": "The Name",
@@ -874,6 +958,12 @@
     "url": "https://www.lantarenvenster.nl/programma/kanazawa-shutter-girl/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-29T10:15:00.000Z"
+  },
+  {
+    "title": "Amsterdam Wildlife",
+    "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
+    "cinema": "Eye",
+    "date": "2018-09-29T10:30:00.000Z"
   },
   {
     "title": "Dynamite Graffiti",
@@ -894,10 +984,22 @@
     "date": "2018-09-29T12:45:00.000Z"
   },
   {
+    "title": "The Reports on Sarah and Saleem",
+    "url": "https://www.eyefilm.nl/en/film/the-reports-on-sarah-and-saleem",
+    "cinema": "Eye",
+    "date": "2018-09-29T14:30:00.000Z"
+  },
+  {
     "title": "Pom Poko",
     "url": "https://www.lantarenvenster.nl/programma/pom-poko/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-29T14:30:00.000Z"
+  },
+  {
+    "date": "2018-09-29T14:35:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
   },
   {
     "title": "BFFE - Kalachakra: The Enlightenment",
@@ -924,6 +1026,12 @@
     "date": "2018-09-29T15:00:00.000Z"
   },
   {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-09-29T15:45:00.000Z"
+  },
+  {
     "title": "BFFE - The Venerable W.",
     "url": "https://www.eyefilm.nl/en/film/bffe-the-venerable-w",
     "cinema": "Eye",
@@ -942,6 +1050,12 @@
     "date": "2018-09-29T17:00:00.000Z"
   },
   {
+    "title": "Revenge",
+    "url": "https://www.lab111.nl/movie/revenge/",
+    "cinema": "Lab111",
+    "date": "2018-09-29T17:15:00.000Z"
+  },
+  {
     "title": "Inuyashiki",
     "url": "https://www.lantarenvenster.nl/programma/inuyashiki/",
     "cinema": "Lantarenvenster",
@@ -957,6 +1071,12 @@
     "title": "BFFE - Barley Fields on the Other Side of the Mountain",
     "url": "https://www.eyefilm.nl/en/film/bffe-barley-fields-on-the-other-side-of-the-mountain",
     "cinema": "Eye",
+    "date": "2018-09-29T19:15:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
     "date": "2018-09-29T19:15:00.000Z"
   },
   {
@@ -990,10 +1110,22 @@
     "date": "2018-09-29T20:00:00.000Z"
   },
   {
+    "title": "Het is waar maar niet hier",
+    "url": "https://kriterion.nl/films/het-is-waar-maar-niet-hier",
+    "cinema": "Kriterion",
+    "date": "2018-09-29T20:30:00.000Z"
+  },
+  {
     "title": "Brave Storm",
     "url": "https://www.lantarenvenster.nl/programma/brave-storm/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-29T21:59:00.000Z"
+  },
+  {
+    "date": "2018-09-29T22:00:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
   },
   {
     "title": "BFFE - Sunshine that Can Move Mountains",
@@ -1032,6 +1164,12 @@
     "date": "2018-09-30T12:00:00.000Z"
   },
   {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-09-30T12:30:00.000Z"
+  },
+  {
     "title": "Flower and Sword",
     "url": "https://www.lantarenvenster.nl/programma/flower-and-sword/",
     "cinema": "Lantarenvenster",
@@ -1050,6 +1188,12 @@
     "date": "2018-09-30T14:30:00.000Z"
   },
   {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-09-30T14:45:00.000Z"
+  },
+  {
     "title": "River's Edge",
     "url": "https://www.lantarenvenster.nl/programma/rivers-edge/",
     "cinema": "Lantarenvenster",
@@ -1062,6 +1206,12 @@
     "date": "2018-09-30T15:15:00.000Z"
   },
   {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-09-30T16:45:00.000Z"
+  },
+  {
     "title": "BFFE - Zen for Nothing",
     "url": "https://www.eyefilm.nl/en/film/bffe-zen-for-nothing",
     "cinema": "Eye",
@@ -1072,6 +1222,12 @@
     "url": "https://www.lantarenvenster.nl/programma/traditional-japanese-live-narration-benshi/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-30T17:00:00.000Z"
+  },
+  {
+    "title": "Revenge",
+    "url": "https://www.lab111.nl/movie/revenge/",
+    "cinema": "Lab111",
+    "date": "2018-09-30T17:15:00.000Z"
   },
   {
     "title": "Rokuroku: The Promise of the Witch",
@@ -1098,10 +1254,28 @@
     "date": "2018-09-30T19:00:00.000Z"
   },
   {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-09-30T19:15:00.000Z"
+  },
+  {
+    "title": "Perfect Blue",
+    "url": "https://kriterion.nl/films/perfect-blue",
+    "cinema": "Kriterion",
+    "date": "2018-09-30T19:30:00.000Z"
+  },
+  {
     "title": "Black Cat Mansion",
     "url": "https://www.lantarenvenster.nl/programma/black-cat-mansion/",
     "cinema": "Lantarenvenster",
     "date": "2018-09-30T19:30:00.000Z"
+  },
+  {
+    "date": "2018-09-30T19:45:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
   },
   {
     "title": "Cyclops",
@@ -1122,16 +1296,70 @@
     "date": "2018-09-30T20:00:00.000Z"
   },
   {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-01T08:30:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-10-01T14:30:00.000Z"
+  },
+  {
     "title": "When Marnie Was There",
     "url": "https://www.lab111.nl/movie/when-marnie-was-there/",
     "cinema": "Lab111",
     "date": "2018-10-01T14:30:00.000Z"
   },
   {
+    "date": "2018-10-01T14:35:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Winter Light",
     "url": "https://www.lab111.nl/movie/winter-light/",
     "cinema": "Lab111",
     "date": "2018-10-01T17:00:00.000Z"
+  },
+  {
+    "title": "Revenge",
+    "url": "https://www.lab111.nl/movie/revenge/",
+    "cinema": "Lab111",
+    "date": "2018-10-01T17:15:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-01T19:15:00.000Z"
+  },
+  {
+    "date": "2018-10-01T19:25:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-02T08:40:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-02T09:45:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-10-02T12:00:00.000Z"
   },
   {
     "title": "Pom Poko",
@@ -1158,16 +1386,94 @@
     "date": "2018-10-02T17:30:00.000Z"
   },
   {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-02T19:45:00.000Z"
+  },
+  {
+    "title": "Den skyldige",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-03T08:15:00.000Z"
+  },
+  {
+    "title": "Herfstsonate",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/autumn-sonata",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-03T08:15:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-03T08:45:00.000Z"
+  },
+  {
+    "title": "3 days in Quiberon",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-03T10:15:00.000Z"
+  },
+  {
+    "title": "Sir",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sir-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-03T12:30:00.000Z"
+  },
+  {
+    "date": "2018-10-03T12:40:00.000Z",
+    "title": "Two-weeks-only: Your Name (EN subs)",
+    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-10-03T12:45:00.000Z"
+  },
+  {
+    "title": "Den skyldige",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-03T13:15:00.000Z"
+  },
+  {
     "title": "Castle In The Sky",
     "url": "https://www.lab111.nl/movie/castle-in-the-sky/",
     "cinema": "Lab111",
     "date": "2018-10-03T14:30:00.000Z"
   },
   {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-10-03T14:45:00.000Z"
+  },
+  {
+    "title": "Dogman",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/dogman-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-03T15:15:00.000Z"
+  },
+  {
+    "title": "Sir",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sir-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-03T16:45:00.000Z"
+  },
+  {
     "title": "Cries And Whispers",
     "url": "https://www.lab111.nl/movie/cries-and-whispers/",
     "cinema": "Lab111",
     "date": "2018-10-03T17:00:00.000Z"
+  },
+  {
+    "title": "Dogman",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/dogman-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-03T19:30:00.000Z"
   },
   {
     "title": "CJ: River's Edge",
@@ -1260,6 +1566,12 @@
     "date": "2018-10-06T17:00:00.000Z"
   },
   {
+    "date": "2018-10-06T17:30:00.000Z",
+    "title": "Tokyo Stories: Youth of the Beast (1963)",
+    "url": "https://kinorotterdam.nl/film/tokyo-stories-youth-of-the-beast-1963/",
+    "cinema": "Kino"
+  },
+  {
     "title": "The  Ghost of Yotsuya",
     "url": "https://www.eyefilm.nl/en/film/the-ghost-of-yotsuya",
     "cinema": "Eye",
@@ -1341,6 +1653,12 @@
     "title": "Sprekend Nederland",
     "url": "https://www.eyefilm.nl/en/film/sprekend-nederland",
     "cinema": "Eye",
+    "date": "2018-10-07T17:00:00.000Z"
+  },
+  {
+    "title": "Kiss Me Not",
+    "url": "https://www.lantarenvenster.nl/programma/kiss-me-not/",
+    "cinema": "Lantarenvenster",
     "date": "2018-10-07T17:00:00.000Z"
   },
   {
@@ -2070,6 +2388,12 @@
     "date": "2018-10-16T19:30:00.000Z"
   },
   {
+    "title": "Silvana",
+    "url": "https://www.lab111.nl/movie/silvana/",
+    "cinema": "Lab111",
+    "date": "2018-10-17T16:30:00.000Z"
+  },
+  {
     "title": "Suzanne Ciani: A Life In Waves",
     "url": "https://www.lab111.nl/movie/suzanne-ciani-a-life-in-waves/",
     "cinema": "Lab111",
@@ -2190,6 +2514,24 @@
     "cinema": "Kino"
   },
   {
+    "title": "Kom En Zie (Idi I Smotri)",
+    "url": "https://www.lab111.nl/movie/idi-i-smotri/",
+    "cinema": "Lab111",
+    "date": "2018-10-24T19:30:00.000Z"
+  },
+  {
+    "title": "Kom En Zie (Idi I Smotri)",
+    "url": "https://www.lab111.nl/movie/idi-i-smotri/",
+    "cinema": "Lab111",
+    "date": "2018-10-25T16:30:00.000Z"
+  },
+  {
+    "title": "Tetsuo",
+    "url": "https://www.eyefilm.nl/en/film/tetsuo",
+    "cinema": "Eye",
+    "date": "2018-10-25T17:15:00.000Z"
+  },
+  {
     "title": "Herfstsonate",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/autumn-sonata",
     "cinema": "Filmhuis Den Haag",
@@ -2218,6 +2560,12 @@
     "title": "Tokyo Stories: Youth of the Beast (1963)",
     "url": "https://kinorotterdam.nl/film/tokyo-stories-youth-of-the-beast-1963/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Kom En Zie (Idi I Smotri)",
+    "url": "https://www.lab111.nl/movie/idi-i-smotri/",
+    "cinema": "Lab111",
+    "date": "2018-10-27T19:30:00.000Z"
   },
   {
     "date": "2018-10-28T16:00:00.000Z",
@@ -2262,16 +2610,34 @@
     "date": "2018-11-05T18:00:00.000Z"
   },
   {
+    "title": "The Testament (Haedut)",
+    "url": "https://www.lantarenvenster.nl/programma/the-testament-haedut/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-11-06T18:30:00.000Z"
+  },
+  {
     "title": "The Virgin Spring",
     "url": "https://www.lab111.nl/movie/the-virgin-spring/",
     "cinema": "Lab111",
     "date": "2018-11-07T18:00:00.000Z"
   },
   {
+    "title": "Ghost in the Shell",
+    "url": "https://www.eyefilm.nl/en/film/ghost-in-the-shell",
+    "cinema": "Eye",
+    "date": "2018-11-08T18:15:00.000Z"
+  },
+  {
     "title": "Autumn Sonata",
     "url": "https://www.lab111.nl/movie/autumn-sonata/",
     "cinema": "Lab111",
     "date": "2018-11-10T15:30:00.000Z"
+  },
+  {
+    "title": "Ghost in the Shell",
+    "url": "https://www.eyefilm.nl/en/film/ghost-in-the-shell",
+    "cinema": "Eye",
+    "date": "2018-11-12T20:15:00.000Z"
   },
   {
     "title": "The Seventh Seal",
