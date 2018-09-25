@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { view } from 'react-easy-state'
-import { params } from 'react-easy-params'
+import { storage } from 'react-easy-params'
 
 import { cinemas } from './data'
 
@@ -26,7 +26,7 @@ const CityCheckbox = styled('div')(({ value }) => ({
 }))
 
 const toggle = city => {
-  const set = new Set(params.cities || [])
+  const set = new Set(storage.cities || [])
 
   if (set.has(city)) {
     set.delete(city)
@@ -34,7 +34,7 @@ const toggle = city => {
     set.add(city)
   }
 
-  params.cities = [...set].sort()
+  storage.cities = [...set].sort()
 }
 
 const CityFilter = () => (
@@ -43,7 +43,7 @@ const CityFilter = () => (
       <CityCheckbox
         key={city}
         onClick={() => toggle(city)}
-        value={(params.cities || []).includes(city)}
+        value={(storage.cities || []).includes(city)}
       >
         {city}
       </CityCheckbox>

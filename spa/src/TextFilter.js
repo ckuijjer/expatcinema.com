@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { view } from 'react-easy-state'
-import { params } from 'react-easy-params'
+import { params, setParams } from 'react-easy-params'
 
 import Cross from './Cross'
 
@@ -26,9 +26,17 @@ const ClearButton = styled('div')({
   top: 8,
   width: 32,
   height: 32,
-  // backgroundColor: '#0650d0',
   cursor: 'pointer',
 })
+
+const setSearch = value => {
+  if (value) {
+    params.search = value
+  } else {
+    const { search, ...rest } = params
+    setParams(rest)
+  }
+}
 
 const TextFilter = () => (
   <Container>
@@ -36,10 +44,10 @@ const TextFilter = () => (
       placeholder="Type to search"
       autoFocus
       value={params.search || ''}
-      onChange={e => (params.search = e.target.value)}
+      onChange={e => setSearch(e.target.value)}
     />
     {params.search && (
-      <ClearButton onClick={() => (params.search = '')}>
+      <ClearButton onClick={() => setSearch()}>
         <Cross />
       </ClearButton>
     )}
