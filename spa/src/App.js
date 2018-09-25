@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion'
 
-import About from './About'
+// import About from './About'
 import Calendar from './Calendar'
 import TextFilter from './TextFilter'
 import CityFilter from './CityFilter'
