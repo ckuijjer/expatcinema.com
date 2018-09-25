@@ -17,6 +17,7 @@ const Input = styled('input')({
   fontSize: 20,
   borderRadius: 4,
   border: '1px solid #aaa',
+  margin: 0,
 })
 
 const ClearButton = styled('div')({
