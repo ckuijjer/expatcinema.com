@@ -1,681 +1,33 @@
 [
   {
+    "title": "Shoplifters",
+    "url": "https://www.springhaver.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2018-01-09T18:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.hartlooper.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Louis Hartlooper",
+    "date": "2018-01-13T18:00:00.000Z"
+  },
+  {
     "date": "2018-01-16T18:30:00.000Z",
     "title": "Movies that Matter: Styx",
     "url": "https://kinorotterdam.nl/film/movies-that-matter-styx/",
     "cinema": "Kino"
   },
   {
-    "title": "3 days in Quiberon",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T08:15:00.000Z"
-  },
-  {
-    "title": "Klanken van oorsprong",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/klanken-van-oorsprong-engels-ondertiteld",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T09:00:00.000Z"
-  },
-  {
-    "title": "Tampopo",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/tampopo-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T10:30:00.000Z"
-  },
-  {
-    "title": "Den skyldige",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T11:00:00.000Z"
-  },
-  {
-    "title": "The reports on Sarah and Saleem",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/reports-on-sarah-and-saleem-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T11:45:00.000Z"
-  },
-  {
-    "title": "3 days in Quiberon",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T12:45:00.000Z"
-  },
-  {
-    "title": "Plaire, aimer et courir vite",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/plaire-aimer-et-courir-vite-engels-ondertiteld",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T14:15:00.000Z"
-  },
-  {
-    "title": "3 Faces",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-faces-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T14:30:00.000Z"
-  },
-  {
-    "title": "Den skyldige",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T15:00:00.000Z"
-  },
-  {
-    "title": "Tampopo",
-    "date": "2018-09-12T16:15:00.000Z",
-    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Tampopo/1682",
-    "cinema": "Kijkhuis"
-  },
-  {
-    "title": "3 days in Quiberon",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T16:45:00.000Z"
-  },
-  {
-    "title": "Benzinho",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/benzinho-engels-ondertiteld",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T16:45:00.000Z"
-  },
-  {
-    "title": "Plaire, aimer et courir vite",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/plaire-aimer-et-courir-vite-engels-ondertiteld",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T18:45:00.000Z"
-  },
-  {
-    "title": "The reports on Sarah and Saleem",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/reports-on-sarah-and-saleem-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T18:45:00.000Z"
-  },
-  {
-    "title": "Den skyldige",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-12T19:00:00.000Z"
-  },
-  {
-    "title": "Dogman",
-    "date": "2018-09-13T19:30:00.000Z",
-    "url": "https://kinorotterdam.nl/film/expat-arthouse-dogman/",
-    "cinema": "Kino"
-  },
-  {
-    "date": "2018-09-14T19:30:00.000Z",
-    "title": "Studio Ghibli: The Tale of the Princess Kaguya (2013)",
-    "url": "https://kinorotterdam.nl/film/studio-ghibli-the-tale-of-the-princess-kaguya-2013/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "Herfstsonate",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/autumn-sonata",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-16T12:00:00.000Z"
-  },
-  {
-    "title": "De wilde stad",
-    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
-    "cinema": "Eye",
-    "date": "2018-09-17T13:00:00.000Z"
-  },
-  {
-    "title": "Living the Light – Robby Müller",
-    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
-    "cinema": "Eye",
-    "date": "2018-09-17T15:30:00.000Z"
-  },
-  {
-    "title": "Tales From Earthsea",
-    "url": "https://www.lab111.nl/movie/tales-from-earthsea/",
-    "cinema": "Lab111",
-    "date": "2018-09-17T17:15:00.000Z"
-  },
-  {
-    "title": "Tampopo",
-    "url": "https://www.lab111.nl/movie/tampopo/",
-    "cinema": "Lab111",
-    "date": "2018-09-17T19:30:00.000Z"
-  },
-  {
-    "title": "Revenge",
-    "url": "https://www.lab111.nl/movie/revenge/",
-    "cinema": "Lab111",
-    "date": "2018-09-17T19:45:00.000Z"
-  },
-  {
-    "title": "Utøya 22. Juli",
-    "url": "https://www.lab111.nl/movie/utoya-22-juli/",
-    "cinema": "Lab111",
-    "date": "2018-09-18T12:00:00.000Z"
-  },
-  {
-    "title": "Spirited Away",
-    "url": "https://www.lab111.nl/movie/spirited-away/",
-    "cinema": "Lab111",
-    "date": "2018-09-18T14:00:00.000Z"
-  },
-  {
-    "title": "Howl’s Moving Castle",
-    "url": "https://www.lab111.nl/movie/howls-moving-castle/",
-    "cinema": "Lab111",
-    "date": "2018-09-18T17:00:00.000Z"
-  },
-  {
-    "title": "David Safarian: Notwithstanding",
-    "url": "https://www.eyefilm.nl/en/film/david-safarian-notwithstanding",
-    "cinema": "Eye",
-    "date": "2018-09-18T17:15:00.000Z"
-  },
-  {
-    "title": "Tampopo",
-    "url": "https://www.lab111.nl/movie/tampopo/",
-    "cinema": "Lab111",
-    "date": "2018-09-18T19:30:00.000Z"
-  },
-  {
-    "title": "Tampopo",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/tampopo-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T08:15:00.000Z"
-  },
-  {
-    "title": "Klanken van oorsprong",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/klanken-van-oorsprong-engels-ondertiteld",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T09:00:00.000Z"
-  },
-  {
-    "title": "Tiempo Compartido",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/tiempo-compartido-engels-ondertiteld",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T09:15:00.000Z"
-  },
-  {
-    "title": "Den skyldige",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T11:00:00.000Z"
-  },
-  {
-    "title": "The reports on Sarah and Saleem",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/reports-on-sarah-and-saleem-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T11:45:00.000Z"
-  },
-  {
-    "title": "Utøya 22. Juli",
-    "url": "https://www.lab111.nl/movie/utoya-22-juli/",
-    "cinema": "Lab111",
-    "date": "2018-09-19T12:00:00.000Z"
-  },
-  {
-    "title": "Den skyldige",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T13:00:00.000Z"
-  },
-  {
-    "title": "De wilde stad",
-    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
-    "cinema": "Eye",
-    "date": "2018-09-19T13:15:00.000Z"
-  },
-  {
-    "title": "3 days in Quiberon",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T14:15:00.000Z"
-  },
-  {
-    "title": "Tampopo",
-    "url": "https://www.lab111.nl/movie/tampopo/",
-    "cinema": "Lab111",
-    "date": "2018-09-19T14:30:00.000Z"
-  },
-  {
-    "title": "Rey",
-    "url": "https://www.eyefilm.nl/en/film/rey",
-    "cinema": "Eye",
-    "date": "2018-09-19T14:45:00.000Z"
-  },
-  {
-    "title": "3 Faces",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-faces-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T14:45:00.000Z"
-  },
-  {
-    "title": "Den skyldige",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T15:00:00.000Z"
-  },
-  {
-    "title": "A Casa Tutti Bene",
-    "cinema": "Kijkhuis",
-    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-A-Casa-Tutti-Bene/1694",
-    "date": "2018-09-19T16:45:00.000Z"
-  },
-  {
-    "title": "The reports on Sarah and Saleem",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/reports-on-sarah-and-saleem-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T18:45:00.000Z"
-  },
-  {
-    "title": "Den skyldige",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T19:00:00.000Z"
-  },
-  {
-    "title": "3 Faces",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-faces-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-19T19:30:00.000Z"
-  },
-  {
-    "title": "Oldboy",
-    "url": "https://kriterion.nl/films/oldboy",
-    "cinema": "Kriterion",
-    "date": "2018-09-19T20:00:00.000Z"
-  },
-  {
-    "title": "Amsterdam Wildlife",
-    "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
-    "cinema": "Eye",
-    "date": "2018-09-20T11:00:00.000Z"
-  },
-  {
-    "title": "Living the Light – Robby Müller",
-    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
-    "cinema": "Eye",
-    "date": "2018-09-20T15:30:00.000Z"
-  },
-  {
-    "title": "28:94 Local Time",
-    "url": "https://www.eyefilm.nl/en/film/2894-local-time",
-    "cinema": "Eye",
-    "date": "2018-09-20T16:45:00.000Z"
-  },
-  {
-    "title": "De wilde stad",
-    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
-    "cinema": "Eye",
-    "date": "2018-09-21T11:15:00.000Z"
-  },
-  {
-    "title": "Intimate Lighting",
-    "url": "https://www.eyefilm.nl/en/film/intimate-lighting",
-    "cinema": "Eye",
-    "date": "2018-09-21T14:00:00.000Z"
-  },
-  {
-    "title": "Hot Country, Cold Winter",
-    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
-    "cinema": "Eye",
-    "date": "2018-09-21T15:45:00.000Z"
-  },
-  {
-    "date": "2018-09-21T16:50:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "The Cat Returns",
-    "url": "https://www.lab111.nl/movie/the-cat-returns/",
-    "cinema": "Lab111",
-    "date": "2018-09-21T17:15:00.000Z"
-  },
-  {
-    "title": "Dogman",
-    "url": "https://www.lab111.nl/movie/dogman/",
-    "cinema": "Lab111",
-    "date": "2018-09-21T18:30:00.000Z"
-  },
-  {
-    "date": "2018-09-21T19:00:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "Tampopo",
-    "url": "https://www.lab111.nl/movie/tampopo/",
-    "cinema": "Lab111",
-    "date": "2018-09-21T19:15:00.000Z"
-  },
-  {
-    "title": "Lady Vengeance",
-    "url": "https://kriterion.nl/films/lady-vengeance",
-    "cinema": "Kriterion",
-    "date": "2018-09-21T20:00:00.000Z"
-  },
-  {
-    "date": "2018-09-21T21:40:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "Living the Light – Robby Müller",
-    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
-    "cinema": "Eye",
-    "date": "2018-09-22T08:30:00.000Z"
-  },
-  {
-    "date": "2018-09-22T10:30:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "De wilde stad",
-    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
-    "cinema": "Eye",
-    "date": "2018-09-22T10:45:00.000Z"
-  },
-  {
-    "date": "2018-09-22T12:05:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "The Reports on Sarah and Saleem",
-    "url": "https://www.eyefilm.nl/en/film/the-reports-on-sarah-and-saleem",
-    "cinema": "Eye",
-    "date": "2018-09-22T14:30:00.000Z"
-  },
-  {
-    "title": "Revenge",
-    "url": "https://www.lab111.nl/movie/revenge/",
-    "cinema": "Lab111",
-    "date": "2018-09-22T14:30:00.000Z"
-  },
-  {
-    "title": "Castle In The Sky",
-    "url": "https://www.lab111.nl/movie/castle-in-the-sky/",
-    "cinema": "Lab111",
-    "date": "2018-09-22T16:30:00.000Z"
-  },
-  {
-    "date": "2018-09-22T16:50:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "Hot Country, Cold Winter",
-    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
-    "cinema": "Eye",
-    "date": "2018-09-22T17:00:00.000Z"
-  },
-  {
-    "title": "The Seventh Seal",
-    "url": "https://www.lab111.nl/movie/the-seventh-seal/",
-    "cinema": "Lab111",
-    "date": "2018-09-22T17:00:00.000Z"
-  },
-  {
-    "date": "2018-09-22T19:00:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "Tampopo",
-    "url": "https://www.lab111.nl/movie/tampopo/",
-    "cinema": "Lab111",
-    "date": "2018-09-22T19:15:00.000Z"
-  },
-  {
-    "date": "2018-09-22T21:40:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "date": "2018-09-23T10:30:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "De wilde stad",
-    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
-    "cinema": "Eye",
-    "date": "2018-09-23T12:30:00.000Z"
-  },
-  {
-    "date": "2018-09-23T13:00:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "Hot Country, Cold Winter",
-    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
-    "cinema": "Eye",
-    "date": "2018-09-23T14:45:00.000Z"
-  },
-  {
-    "title": "Revenge",
-    "url": "https://www.lab111.nl/movie/revenge/",
-    "cinema": "Lab111",
-    "date": "2018-09-23T17:15:00.000Z"
-  },
-  {
-    "date": "2018-09-23T17:30:00.000Z",
-    "title": "Eastern Neighbours Film Festival: Scream for Me Sarajevo",
-    "url": "https://kinorotterdam.nl/film/eastern-neighbours-film-festival-scream-for-me-sarajevo/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "Tampopo",
-    "url": "https://www.lab111.nl/movie/tampopo/",
-    "cinema": "Lab111",
-    "date": "2018-09-23T19:15:00.000Z"
-  },
-  {
-    "title": "Living the Light – Robby Müller",
-    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
-    "cinema": "Eye",
-    "date": "2018-09-24T08:45:00.000Z"
-  },
-  {
-    "date": "2018-09-24T10:30:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "De wilde stad",
-    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
-    "cinema": "Eye",
-    "date": "2018-09-24T11:15:00.000Z"
-  },
-  {
-    "title": "Hot Country, Cold Winter",
-    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
-    "cinema": "Eye",
-    "date": "2018-09-24T14:30:00.000Z"
-  },
-  {
-    "title": "Revenge",
-    "url": "https://www.lab111.nl/movie/revenge/",
-    "cinema": "Lab111",
-    "date": "2018-09-24T14:30:00.000Z"
-  },
-  {
-    "title": "Pom Poko",
-    "url": "https://www.lab111.nl/movie/pom-poko/",
-    "cinema": "Lab111",
-    "date": "2018-09-24T17:15:00.000Z"
-  },
-  {
-    "title": "Autumn Sonata",
-    "url": "https://www.lab111.nl/movie/autumn-sonata/",
-    "cinema": "Lab111",
-    "date": "2018-09-24T19:30:00.000Z"
-  },
-  {
-    "title": "Tampopo",
-    "url": "https://www.lab111.nl/movie/tampopo/",
-    "cinema": "Lab111",
-    "date": "2018-09-24T19:45:00.000Z"
-  },
-  {
-    "title": "Living the Light – Robby Müller",
-    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
-    "cinema": "Eye",
-    "date": "2018-09-25T08:45:00.000Z"
-  },
-  {
-    "date": "2018-09-25T10:30:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "date": "2018-09-25T12:05:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "date": "2018-09-25T17:30:00.000Z",
-    "title": "Tokyo Stories: Akira (1988) 30th Anniversary",
-    "url": "https://kinorotterdam.nl/film/akira/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "Hot Country, Cold Winter",
-    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
-    "cinema": "Eye",
-    "date": "2018-09-25T19:00:00.000Z"
-  },
-  {
-    "date": "2018-09-25T19:00:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "The reports on Sarah and Saleem",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/reports-on-sarah-and-saleem-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-26T08:30:00.000Z"
-  },
-  {
-    "title": "Dogman",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/dogman-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-26T10:00:00.000Z"
-  },
-  {
-    "title": "De wilde stad",
-    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
-    "cinema": "Eye",
-    "date": "2018-09-26T11:15:00.000Z"
-  },
-  {
-    "title": "Sir",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sir-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-26T11:45:00.000Z"
-  },
-  {
-    "date": "2018-09-26T12:05:00.000Z",
-    "title": "Two-weeks-only: Your Name (EN subs)",
-    "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
-    "cinema": "Kino"
-  },
-  {
-    "title": "3 days in Quiberon",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-26T14:30:00.000Z"
-  },
-  {
-    "title": "Wild Strawberries",
-    "url": "https://www.lab111.nl/movie/wild-strawberries/",
-    "cinema": "Lab111",
-    "date": "2018-09-26T14:30:00.000Z"
-  },
-  {
-    "title": "Revenge",
-    "url": "https://www.lab111.nl/movie/revenge/",
-    "cinema": "Lab111",
-    "date": "2018-09-26T14:45:00.000Z"
-  },
-  {
-    "title": "Den skyldige",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-26T15:00:00.000Z"
-  },
-  {
-    "title": "Sir",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sir-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-26T16:45:00.000Z"
-  },
-  {
-    "title": "Dogman",
-    "cinema": "Kijkhuis",
-    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Dogman/1704",
-    "date": "2018-09-26T17:00:00.000Z"
-  },
-  {
-    "title": "The Tale Of The Princess Kaguya",
-    "url": "https://www.lab111.nl/movie/the-tale-of-the-princess-kaguya/",
-    "cinema": "Lab111",
-    "date": "2018-09-26T17:15:00.000Z"
-  },
-  {
-    "title": "Jaar, lament of the images",
-    "url": "https://www.lantarenvenster.nl/programma/jaar-lament-of-the-images/",
-    "cinema": "Lantarenvenster",
-    "date": "2018-09-26T17:30:00.000Z"
-  },
-  {
-    "title": "3 days in Quiberon",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-26T18:45:00.000Z"
-  },
-  {
-    "title": "Hot Country, Cold Winter",
-    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
-    "cinema": "Eye",
-    "date": "2018-09-26T19:00:00.000Z"
-  },
-  {
-    "title": "Den skyldige",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-26T19:00:00.000Z"
-  },
-  {
-    "title": "Dogman",
-    "url": "https://www.filmhuisdenhaag.nl/agenda/event/dogman-engelse-ondertiteling",
-    "cinema": "Filmhuis Den Haag",
-    "date": "2018-09-26T19:30:00.000Z"
-  },
-  {
-    "title": "Radio Voorwaarts",
-    "url": "https://kriterion.nl/films/radio-voorwaarts",
-    "cinema": "Kriterion",
-    "date": "2018-09-26T19:30:00.000Z"
-  },
-  {
-    "title": "Tampopo",
-    "url": "https://www.lab111.nl/movie/tampopo/",
-    "cinema": "Lab111",
-    "date": "2018-09-26T19:45:00.000Z"
+    "title": "Shoplifters",
+    "url": "https://www.springhaver.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2018-01-23T18:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.hartlooper.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Louis Hartlooper",
+    "date": "2018-01-27T18:00:00.000Z"
   },
   {
     "title": "Amsterdam Wildlife",
@@ -898,12 +250,6 @@
     "title": "Two-weeks-only: Your Name (EN subs)",
     "url": "https://kinorotterdam.nl/film/your-name-two-weeks-only/",
     "cinema": "Kino"
-  },
-  {
-    "title": "BFFE - Stalker",
-    "url": "https://www.eyefilm.nl/en/film/bffe-stalker",
-    "cinema": "Eye",
-    "date": "2018-09-28T19:30:00.000Z"
   },
   {
     "title": "Foreboding",
@@ -1596,12 +942,6 @@
     "date": "2018-10-06T19:30:00.000Z"
   },
   {
-    "date": "2018-10-06T19:30:00.000Z",
-    "title": "Tokyo Stories: Youth of the Beast (1963)",
-    "url": "https://kinorotterdam.nl/film/tokyo-stories-youth-of-the-beast-1963/",
-    "cinema": "Kino"
-  },
-  {
     "title": "CJ: Tokyo Vampire Hotel",
     "url": "https://kriterion.nl/films/cj-tokyo-vampire-hotel",
     "cinema": "Kriterion",
@@ -1620,12 +960,6 @@
     "date": "2018-10-06T21:59:00.000Z"
   },
   {
-    "title": "CJ: Destiny, The Tale of Kamakura",
-    "url": "https://kriterion.nl/films/cj-destiny-the-tale-of-kamakura",
-    "cinema": "Kriterion",
-    "date": "2018-10-07T10:30:00.000Z"
-  },
-  {
     "title": "Somebody clap for me + Gerreta",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/somebody-clap-for-me",
     "cinema": "Filmhuis Den Haag",
@@ -1638,18 +972,6 @@
     "date": "2018-10-07T12:45:00.000Z"
   },
   {
-    "title": "CJ: A Letter to Momo",
-    "url": "https://kriterion.nl/films/cj-a-letter-to-momo",
-    "cinema": "Kriterion",
-    "date": "2018-10-07T13:00:00.000Z"
-  },
-  {
-    "title": "CJ: The Trial",
-    "url": "https://kriterion.nl/films/cj-the-trial",
-    "cinema": "Kriterion",
-    "date": "2018-10-07T13:00:00.000Z"
-  },
-  {
     "title": "The train of salt and sugar",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-train-of-salt-and-sugar",
     "cinema": "Filmhuis Den Haag",
@@ -1660,12 +982,6 @@
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/five-fingers-for-marseilles",
     "cinema": "Filmhuis Den Haag",
     "date": "2018-10-07T15:00:00.000Z"
-  },
-  {
-    "title": "CJ: Recall",
-    "url": "https://kriterion.nl/films/cj-recall",
-    "cinema": "Kriterion",
-    "date": "2018-10-07T15:15:00.000Z"
   },
   {
     "title": "Sprekend Nederland",
@@ -1686,22 +1002,10 @@
     "cinema": "Kino"
   },
   {
-    "title": "CJ: The Blood of Wolves",
-    "url": "https://kriterion.nl/films/cj-the-blood-of-wolves",
-    "cinema": "Kriterion",
-    "date": "2018-10-07T17:30:00.000Z"
-  },
-  {
     "title": "The Adventures of Tobisuke",
     "url": "https://www.eyefilm.nl/en/film/the-adventures-of-tobisuke",
     "cinema": "Eye",
     "date": "2018-10-07T19:30:00.000Z"
-  },
-  {
-    "title": "CJ: Call Boy",
-    "url": "https://kriterion.nl/films/cj-call-boy",
-    "cinema": "Kriterion",
-    "date": "2018-10-07T19:45:00.000Z"
   },
   {
     "title": "The Cat Returns",
@@ -2421,12 +1725,6 @@
     "title": "Silvana",
     "url": "https://www.lab111.nl/movie/silvana/",
     "cinema": "Lab111",
-    "date": "2018-10-17T16:30:00.000Z"
-  },
-  {
-    "title": "Silvana",
-    "url": "https://www.lab111.nl/movie/silvana/",
-    "cinema": "Lab111",
     "date": "2018-10-17T16:45:00.000Z"
   },
   {
@@ -2710,12 +2008,6 @@
     "url": "https://www.hartlooper.nl/movies/1537/17/girl_english_subtitles",
     "cinema": "Louis Hartlooper",
     "date": "2018-11-11T18:00:00.000Z"
-  },
-  {
-    "title": "Ghost in the Shell",
-    "url": "https://www.eyefilm.nl/en/film/ghost-in-the-shell",
-    "cinema": "Eye",
-    "date": "2018-11-12T20:15:00.000Z"
   },
   {
     "title": "The Seventh Seal",
