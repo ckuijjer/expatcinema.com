@@ -33,5 +33,15 @@
     "name": "Kriterion",
     "city": "Amsterdam",
     "url": "https://kriterion.nl"
+  },
+  {
+    "name": "Springhaver",
+    "city": "Utrecht",
+    "url": "https://www.springhaver.nl"
+  },
+  {
+    "name": "Louis Hartlooper Complex",
+    "city": "Utrecht",
+    "url": "https://www.hartlooper.nl"
   }
 ]
