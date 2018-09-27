@@ -1,5 +1,12 @@
 # Expat Cinema
 
+## Procedure for new adding new movies
+
+1. Run index.js
+2. Manually copy scrapers/output/\_latest_all.json into spa/data/screenings.json
+3. Run sort.js on screenings.json
+4. Compare changes manually, commit and deploy
+
 ## Snippets
 
 To sort the output of a e.g. scraper, or screenings.json
