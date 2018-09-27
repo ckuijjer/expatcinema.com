@@ -36,6 +36,8 @@ Promise.all(
     'kriterion',
     'lab111',
     'lantarenvenster',
+    'springhaver',
+    'hartlooper',
   ].map(name => {
     const fn = require(`./${name}`)
     return fn()
