@@ -73,7 +73,7 @@ const extractFromMoviePage = ({ url }) => {
             return {
               title: cleanTitle(movie.title),
               url,
-              cinema: 'Louis Hartlooper',
+              cinema: 'Louis Hartlooper Complex',
               date: DateTime.fromObject({
                 day,
                 month,
