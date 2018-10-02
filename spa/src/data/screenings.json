@@ -1,11 +1,5 @@
 [
   {
-    "date": "2018-01-16T18:30:00.000Z",
-    "title": "Movies that Matter: Styx",
-    "url": "https://kinorotterdam.nl/film/movies-that-matter-styx/",
-    "cinema": "Kino"
-  },
-  {
     "title": "3 days in Quiberon",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
     "cinema": "Filmhuis Den Haag",
@@ -1482,6 +1476,12 @@
     "date": "2018-10-03T17:00:00.000Z"
   },
   {
+    "date": "2018-10-03T17:30:00.000Z",
+    "title": "IFFR KINO #17: Dagen Zonder Lief (2007) (35mm presentation)",
+    "url": "https://kinorotterdam.nl/film/iffr-kino-17-dagen-zonder-lief-2007-35mm-presentation/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Tesnota",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/tesnota-engels-ondertiteld",
     "cinema": "Filmhuis Den Haag",
@@ -1494,10 +1494,40 @@
     "date": "2018-10-03T19:30:00.000Z"
   },
   {
+    "title": "Amsterdam Wildlife",
+    "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
+    "cinema": "Eye",
+    "date": "2018-10-04T11:00:00.000Z"
+  },
+  {
+    "title": "Revenge",
+    "url": "https://www.lab111.nl/movie/revenge/",
+    "cinema": "Lab111",
+    "date": "2018-10-04T12:15:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-04T13:15:00.000Z"
+  },
+  {
     "title": "CJ: River's Edge",
     "url": "https://kriterion.nl/films/cj-river-s-edge",
     "cinema": "Kriterion",
     "date": "2018-10-04T15:00:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-04T17:00:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-04T17:15:00.000Z"
   },
   {
     "title": "CJ: Room Laundering",
@@ -1510,6 +1540,12 @@
     "url": "https://kriterion.nl/films/cj-the-scythian-lamb",
     "cinema": "Kriterion",
     "date": "2018-10-04T19:30:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-05T13:15:00.000Z"
   },
   {
     "title": "CJ: Pumpkin and Mayonnaise",
@@ -1530,6 +1566,18 @@
     "date": "2018-10-05T17:00:00.000Z"
   },
   {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-05T17:15:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-05T17:15:00.000Z"
+  },
+  {
     "title": "CJ: Foreboding",
     "url": "https://kriterion.nl/films/cj-foreboding",
     "cinema": "Kriterion",
@@ -1542,10 +1590,34 @@
     "date": "2018-10-05T21:59:00.000Z"
   },
   {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-06T08:30:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-10-06T08:45:00.000Z"
+  },
+  {
     "title": "CJ: Mori, the Artist’s Habitat",
     "url": "https://kriterion.nl/films/cj-mori-the-artist-s-habitat",
     "cinema": "Kriterion",
     "date": "2018-10-06T10:30:00.000Z"
+  },
+  {
+    "title": "Amsterdam Wildlife",
+    "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
+    "cinema": "Eye",
+    "date": "2018-10-06T10:45:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-10-06T11:45:00.000Z"
   },
   {
     "title": "CJ: Inuyashiki",
@@ -1566,10 +1638,28 @@
     "date": "2018-10-06T13:00:00.000Z"
   },
   {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-06T13:15:00.000Z"
+  },
+  {
+    "title": "The Reports on Sarah and Saleem",
+    "url": "https://www.eyefilm.nl/en/film/the-reports-on-sarah-and-saleem",
+    "cinema": "Eye",
+    "date": "2018-10-06T14:40:00.000Z"
+  },
+  {
     "title": "CJ: Okko’s Inn",
     "url": "https://kriterion.nl/films/cj-okko-s-inn",
     "cinema": "Kriterion",
     "date": "2018-10-06T15:00:00.000Z"
+  },
+  {
+    "title": "Niemand in de stad",
+    "url": "https://www.eyefilm.nl/en/film/niemand-in-de-stad",
+    "cinema": "Eye",
+    "date": "2018-10-06T15:30:00.000Z"
   },
   {
     "title": "CJ: Flower and Sword",
@@ -1584,10 +1674,28 @@
     "date": "2018-10-06T17:00:00.000Z"
   },
   {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-06T17:15:00.000Z"
+  },
+  {
     "date": "2018-10-06T17:30:00.000Z",
     "title": "Tokyo Stories: Youth of the Beast (1963)",
     "url": "https://kinorotterdam.nl/film/tokyo-stories-youth-of-the-beast-1963/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-06T17:30:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.eyefilm.nl/en/film/sprekend-nederland",
+    "cinema": "Eye",
+    "date": "2018-10-06T17:45:00.000Z"
   },
   {
     "title": "The  Ghost of Yotsuya",
@@ -1620,10 +1728,28 @@
     "date": "2018-10-06T21:59:00.000Z"
   },
   {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-07T08:45:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-07T10:30:00.000Z"
+  },
+  {
     "title": "CJ: Destiny, The Tale of Kamakura",
     "url": "https://kriterion.nl/films/cj-destiny-the-tale-of-kamakura",
     "cinema": "Kriterion",
     "date": "2018-10-07T10:30:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-10-07T12:30:00.000Z"
   },
   {
     "title": "Somebody clap for me + Gerreta",
@@ -1636,6 +1762,12 @@
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/fatuma",
     "cinema": "Filmhuis Den Haag",
     "date": "2018-10-07T12:45:00.000Z"
+  },
+  {
+    "title": "Best Of LISFE",
+    "cinema": "Kijkhuis",
+    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Best-Of-LISFE/1717",
+    "date": null
   },
   {
     "title": "CJ: A Letter to Momo",
@@ -1680,6 +1812,18 @@
     "date": "2018-10-07T17:00:00.000Z"
   },
   {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-07T17:15:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-07T17:15:00.000Z"
+  },
+  {
     "date": "2018-10-07T17:30:00.000Z",
     "title": "Tokyo Stories: Akira (1988) 30th Anniversary",
     "url": "https://kinorotterdam.nl/film/akira/",
@@ -1690,6 +1834,12 @@
     "url": "https://kriterion.nl/films/cj-the-blood-of-wolves",
     "cinema": "Kriterion",
     "date": "2018-10-07T17:30:00.000Z"
+  },
+  {
+    "title": "Niemand in de stad",
+    "url": "https://www.eyefilm.nl/en/film/niemand-in-de-stad",
+    "cinema": "Eye",
+    "date": "2018-10-07T19:00:00.000Z"
   },
   {
     "title": "The Adventures of Tobisuke",
@@ -1704,6 +1854,24 @@
     "date": "2018-10-07T19:45:00.000Z"
   },
   {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-08T08:30:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-10-08T12:00:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-08T13:15:00.000Z"
+  },
+  {
     "title": "The Cat Returns",
     "url": "https://www.lab111.nl/movie/the-cat-returns/",
     "cinema": "Lab111",
@@ -1716,10 +1884,64 @@
     "date": "2018-10-08T17:00:00.000Z"
   },
   {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-08T17:15:00.000Z"
+  },
+  {
+    "title": "Amsterdam Wildlife",
+    "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
+    "cinema": "Eye",
+    "date": "2018-10-09T11:00:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-10-09T11:30:00.000Z"
+  },
+  {
+    "title": "Howl’s Moving Castle",
+    "url": "https://www.lab111.nl/movie/howls-moving-castle/",
+    "cinema": "Lab111",
+    "date": "2018-10-09T11:30:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-09T13:15:00.000Z"
+  },
+  {
     "title": "Tales From Earthsea",
     "url": "https://www.lab111.nl/movie/tales-from-earthsea/",
     "cinema": "Lab111",
     "date": "2018-10-09T14:30:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-09T15:30:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-10-09T16:45:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-09T16:45:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-09T17:15:00.000Z"
   },
   {
     "date": "2018-10-09T17:30:00.000Z",
@@ -1734,16 +1956,64 @@
     "date": "2018-10-09T18:30:00.000Z"
   },
   {
+    "title": "Den skyldige",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-10T08:15:00.000Z"
+  },
+  {
     "title": "KLIK - CEE Presents: New Talents",
     "url": "https://www.eyefilm.nl/en/film/klik-cee-presents-new-talents",
     "cinema": "Eye",
     "date": "2018-10-10T09:15:00.000Z"
   },
   {
+    "title": "Stalker",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/stalker-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-10T09:15:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-10-10T10:00:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-10T10:15:00.000Z"
+  },
+  {
+    "title": "3 days in Quiberon",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/3-days-in-quiberon-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-10T10:15:00.000Z"
+  },
+  {
     "title": "KLIK - Body & Mind Aligned",
     "url": "https://www.eyefilm.nl/en/film/klik-body-mind-aligned",
     "cinema": "Eye",
     "date": "2018-10-10T11:00:00.000Z"
+  },
+  {
+    "title": "Spirited Away",
+    "url": "https://www.lab111.nl/movie/spirited-away/",
+    "cinema": "Lab111",
+    "date": "2018-10-10T11:30:00.000Z"
+  },
+  {
+    "title": "Revenge",
+    "url": "https://www.lab111.nl/movie/revenge/",
+    "cinema": "Lab111",
+    "date": "2018-10-10T12:15:00.000Z"
+  },
+  {
+    "title": "Sir",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sir-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-10T12:30:00.000Z"
   },
   {
     "title": "KLIK - YAH! Young Animators of Hungary",
@@ -1755,6 +2025,12 @@
     "title": "KLIK - Go Dutch",
     "url": "https://www.eyefilm.nl/en/film/klik-go-dutch",
     "cinema": "Eye",
+    "date": "2018-10-10T14:30:00.000Z"
+  },
+  {
+    "title": "Tesnota",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/tesnota-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
     "date": "2018-10-10T14:30:00.000Z"
   },
   {
@@ -1770,10 +2046,34 @@
     "date": "2018-10-10T14:30:00.000Z"
   },
   {
+    "title": "Dogman",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/dogman-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-10T15:15:00.000Z"
+  },
+  {
+    "title": "Den skyldige",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-10T16:45:00.000Z"
+  },
+  {
     "title": "Niemand in de Stad (No one in the City)",
     "url": "https://www.springhaver.nl/movies/1530/17/niemand_in_de_stad_no_one_in_the_city_-_english_subtitles",
     "cinema": "Springhaver",
     "date": "2018-10-10T17:00:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-10T17:15:00.000Z"
+  },
+  {
+    "title": "Thank You For The Rain",
+    "url": "https://kriterion.nl/films/thank-you-for-the-rain",
+    "cinema": "Kriterion",
+    "date": "2018-10-10T17:30:00.000Z"
   },
   {
     "title": "KLIK - This Magnificent Cake!",
@@ -1786,6 +2086,18 @@
     "url": "https://www.eyefilm.nl/en/film/klik-this-magnificent-cake",
     "cinema": "Eye",
     "date": "2018-10-10T18:30:00.000Z"
+  },
+  {
+    "title": "Tesnota",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/tesnota-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-10T18:45:00.000Z"
+  },
+  {
+    "title": "Dogman",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/dogman-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-10T19:30:00.000Z"
   },
   {
     "title": "Stalker",
@@ -2067,6 +2379,12 @@
     "title": "KLIK - Shorts 7: A Creative Life",
     "url": "https://www.eyefilm.nl/en/film/klik-shorts-7-a-creative-life",
     "cinema": "Eye",
+    "date": "2018-10-12T18:30:00.000Z"
+  },
+  {
+    "title": "Peggio Per Me",
+    "url": "https://www.lab111.nl/movie/peggio-per-me/",
+    "cinema": "Lab111",
     "date": "2018-10-12T18:30:00.000Z"
   },
   {
@@ -2418,6 +2736,12 @@
     "date": "2018-10-16T19:30:00.000Z"
   },
   {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-10-17T14:30:00.000Z"
+  },
+  {
     "title": "Silvana",
     "url": "https://www.lab111.nl/movie/silvana/",
     "cinema": "Lab111",
@@ -2586,6 +2910,12 @@
     "date": "2018-10-26T17:00:00.000Z"
   },
   {
+    "title": "Akira",
+    "url": "https://www.lab111.nl/movie/akira/",
+    "cinema": "Lab111",
+    "date": "2018-10-26T19:30:00.000Z"
+  },
+  {
     "title": "Winter Light",
     "url": "https://www.lab111.nl/movie/winter-light/",
     "cinema": "Lab111",
@@ -2628,6 +2958,12 @@
     "date": "2018-10-28T18:00:00.000Z"
   },
   {
+    "title": "Through A Glass Darkly",
+    "url": "https://www.lab111.nl/movie/through-a-glass-darkly/",
+    "cinema": "Lab111",
+    "date": "2018-10-29T18:00:00.000Z"
+  },
+  {
     "date": "2018-10-29T20:00:00.000Z",
     "title": "Expat Arthouse: Come and See (Idi i smotri – 1985)",
     "url": "https://kinorotterdam.nl/film/expat-arthouse-come-and-see-idi-i-smotri-1985/",
@@ -2638,6 +2974,12 @@
     "url": "https://www.lab111.nl/movie/cries-and-whispers/",
     "cinema": "Lab111",
     "date": "2018-10-29T20:30:00.000Z"
+  },
+  {
+    "title": "Akira",
+    "url": "https://www.lab111.nl/movie/akira/",
+    "cinema": "Lab111",
+    "date": "2018-10-30T18:00:00.000Z"
   },
   {
     "date": "2018-10-30T18:30:00.000Z",
@@ -2656,6 +2998,18 @@
     "url": "https://www.eyefilm.nl/en/film/tetsuo-2-the-body-hammer",
     "cinema": "Eye",
     "date": "2018-10-31T18:15:00.000Z"
+  },
+  {
+    "title": "Akira",
+    "url": "https://www.lab111.nl/movie/akira/",
+    "cinema": "Lab111",
+    "date": "2018-11-02T18:00:00.000Z"
+  },
+  {
+    "title": "Through A Glass Darkly",
+    "url": "https://www.lab111.nl/movie/through-a-glass-darkly/",
+    "cinema": "Lab111",
+    "date": "2018-11-03T15:30:00.000Z"
   },
   {
     "date": "2018-11-03T19:00:00.000Z",
@@ -2692,6 +3046,12 @@
     "url": "https://www.springhaver.nl/movies/1537/17/girl_english_subtitles",
     "cinema": "Springhaver",
     "date": "2018-11-07T18:00:00.000Z"
+  },
+  {
+    "title": "Akira",
+    "url": "https://www.lab111.nl/movie/akira/",
+    "cinema": "Lab111",
+    "date": "2018-11-07T20:30:00.000Z"
   },
   {
     "title": "Ghost in the Shell",
@@ -2740,6 +3100,12 @@
     "url": "https://www.lab111.nl/movie/the-virgin-spring/",
     "cinema": "Lab111",
     "date": "2018-11-19T20:30:00.000Z"
+  },
+  {
+    "title": "Through A Glass Darkly",
+    "url": "https://www.lab111.nl/movie/through-a-glass-darkly/",
+    "cinema": "Lab111",
+    "date": "2018-11-21T17:30:00.000Z"
   },
   {
     "title": "Girl",
