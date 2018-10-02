@@ -3,6 +3,8 @@ import { screenings, cinemas } from './data'
 import { DateTime } from 'luxon'
 import getToday from './getToday'
 
+// TODO: The grouping should be based on the Europe/Amsterdam timezone
+
 // sort the screenings by date and time
 // group by date
 // inject some dates? e.g. the coming week? by doing an intersection with a static list of coming days?
