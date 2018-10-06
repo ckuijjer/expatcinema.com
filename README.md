@@ -4,8 +4,10 @@
 
 1. `yarn start` to run all scrapers
 2. `yarn analyze` to run some analysis on the scraper log output
-3. `yarn add_to_screenings` to add the newest scrape output to spa/data/screenings.json
-4. Compare changes manually, commit and deploy
+3. `yarn compare_screenings` to compare the current screenings with the latest scrape (note that the order of the comparison is confusing)
+4. Manuall remove removed movies from screenings.json
+5. `yarn add_screenings` to add the newest scrape output to spa/data/screenings.json
+6. Compare changes manually, also looking at movies that might've changed just e.g. 15 minutes, commit and deploy
 
 ## Snippets
 
