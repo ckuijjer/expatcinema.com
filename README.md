@@ -2,9 +2,9 @@
 
 ## Procedure for new adding new movies
 
-1. Run index.js
-2. Manually copy scrapers/output/\_latest_all.json into spa/data/screenings.json
-3. Run sort.js on screenings.json
+1. `yarn start` to run all scrapers
+2. `yarn analyze` to run some analysis on the scraper log output
+3. `yarn add_to_screenings` to add the newest scrape output to spa/data/screenings.json
 4. Compare changes manually, commit and deploy
 
 ## Snippets

@@ -21,8 +21,6 @@ const hasEnglishSubtitles = ({ subtitles }) => {
   return subtitles === 'Subtitles: English'
 }
 
-const splitTime = time => time.split(':').map(x => Number(x))
-
 const flatten = (acc, cur) => [...acc, ...cur]
 
 const extractFromMoviePage = ({ url }) => {

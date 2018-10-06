@@ -1,8 +1,10 @@
 const Xray = require('x-ray')
 const R = require('ramda')
 const { DateTime } = require('luxon')
-
 const debug = require('debug')('bioscopenleiden')
+const splitTime = require('./splitTime')
+const { fullMonthToNumber } = require('./monthToNumber')
+const guessYear = require('./guessYear')
 
 const debugPromise = (format, ...debugArgs) => arg => {
   debug(format, ...debugArgs, arg)
@@ -11,24 +13,6 @@ const debugPromise = (format, ...debugArgs) => arg => {
 const xray = Xray()
   .concurrency(3)
   .throttle(3, 300)
-
-const monthToNumber = month =>
-  [
-    'januari',
-    'februari',
-    'maart',
-    'april',
-    'mei',
-    'juni',
-    'juli',
-    'augustus',
-    'september',
-    'oktober',
-    'november',
-    'december',
-  ].indexOf(month) + 1
-
-const splitTime = time => time.split(':').map(x => Number(x))
 
 const extractFromMoviePage = ({ url }) =>
   xray(url, 'body', [
@@ -51,8 +35,16 @@ const extractFromMoviePage = ({ url }) =>
           const { date, time, ...rest } = r
           const [dayString, monthString] = date.split(' ')
           const day = Number(dayString)
-          const month = monthToNumber(monthString)
+          const month = fullMonthToNumber(monthString)
           const [hour, minute] = splitTime(time)
+          const year = guessYear(
+            DateTime.fromObject({
+              day,
+              month,
+              hour,
+              minute,
+            }),
+          )
 
           return {
             ...rest,
@@ -61,6 +53,7 @@ const extractFromMoviePage = ({ url }) =>
               month,
               hour,
               minute,
+              year,
             })
               .toUTC()
               .toISO(),

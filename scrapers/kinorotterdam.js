@@ -1,8 +1,10 @@
 const Xray = require('x-ray')
 const R = require('ramda')
 const { DateTime } = require('luxon')
-
 const debug = require('debug')('kino')
+const splitTime = require('./splitTime')
+const { shortMonthToNumber } = require('./monthToNumber')
+const guessYear = require('./guessYear')
 
 const debugPromise = (format, ...debugArgs) => arg => {
   debug(format, ...debugArgs, arg)
@@ -12,26 +14,8 @@ const xray = Xray()
   .concurrency(3)
   .throttle(3, 300)
 
-const monthToNumber = month =>
-  [
-    'jan',
-    'feb',
-    'maa',
-    'apr',
-    'mei',
-    'jun',
-    'jul',
-    'aug',
-    'sep',
-    'okt',
-    'nov',
-    'dec',
-  ].indexOf(month) + 1
-
 const hasEnglishSubtitles = (movieMetadata = '') =>
   movieMetadata.includes('Ondertiteling:  English')
-
-const splitTime = time => time.split(':').map(x => Number(x))
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
@@ -66,14 +50,23 @@ const extractFromMoviePage = ({ url }) =>
         x.times.map(time => {
           const [dayOfWeek, dayString, monthString] = x.date.split(' ')
           const day = Number(dayString)
-          const month = monthToNumber(monthString)
+          const month = shortMonthToNumber(monthString)
           const [hour, minute] = splitTime(time)
+          const year = guessYear(
+            DateTime.fromObject({
+              day,
+              month,
+              hour,
+              minute,
+            }),
+          )
 
           return DateTime.fromObject({
             day,
             month,
             hour,
             minute,
+            year,
           })
             .toUTC()
             .toISO()

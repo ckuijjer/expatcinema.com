@@ -2,6 +2,9 @@ const Xray = require('x-ray')
 const R = require('ramda')
 const { DateTime } = require('luxon')
 const debug = require('debug')('lab111')
+const splitTime = require('./splitTime')
+const { shortMonthToNumber } = require('./monthToNumber')
+const guessYear = require('./guessYear')
 
 const debugPromise = (format, ...debugArgs) => arg => {
   debug(format, ...debugArgs, arg)
@@ -22,24 +25,6 @@ const hasEnglishSubtitles = movie => {
 
   return metadata.Subtitles === 'Engels'
 }
-
-const splitTime = time => time.split(':').map(x => Number(x))
-
-const monthToNumber = month =>
-  [
-    'jan',
-    'feb',
-    'maa',
-    'apr',
-    'mei',
-    'jun',
-    'jul',
-    'aug',
-    'sep',
-    'okt',
-    'nov',
-    'dec',
-  ].indexOf(month.toLowerCase()) + 1
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
@@ -68,8 +53,16 @@ const extractFromMoviePage = ({ url }) => {
       return movie.screenings.map(({ date, time }) => {
         const [dayOfWeek, dayString, monthString] = date.split(/\s+/)
         const day = Number(dayString)
-        const month = monthToNumber(monthString)
+        const month = shortMonthToNumber(monthString)
         const [hour, minute] = splitTime(time)
+        const year = guessYear(
+          DateTime.fromObject({
+            day,
+            month,
+            hour,
+            minute,
+          }),
+        )
 
         return {
           title: movie.title,
@@ -80,6 +73,7 @@ const extractFromMoviePage = ({ url }) => {
             month,
             hour,
             minute,
+            year,
           })
             .toUTC()
             .toISO(),
@@ -103,8 +97,14 @@ const extractFromMainPage = () => {
     .then(results => results.reduce(flatten, []))
 }
 
-module.exports = extractFromMainPage
+if (require.main === module) {
+  // extractFromMainPage()
+  //   .then(x => JSON.stringify(x, null, 2))
+  //   .then(console.log)
 
-// extractFromMoviePage({
-//   url: 'https://www.lab111.nl/movie/tampopo/',
-// })
+  extractFromMoviePage({
+    url: 'https://www.lab111.nl/movie/stalker/',
+  }).then(console.log)
+}
+
+module.exports = extractFromMainPage
