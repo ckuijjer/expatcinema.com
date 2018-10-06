@@ -2,7 +2,7 @@ const Xray = require('x-ray')
 const R = require('ramda')
 const { DateTime } = require('luxon')
 
-const debug = require('debug')('combined scraper')
+const debug = require('debug')('kino')
 
 const debugPromise = (format, ...debugArgs) => arg => {
   debug(format, ...debugArgs, arg)
@@ -104,31 +104,16 @@ const extractFromMainPage = () => {
     .then(results => Promise.all(results.map(extractFromMoviePage)))
     .then(results => results.filter(x => x))
     .then(results => results.reduce(flatten, []))
-  // .then(results => results.reduce((acc, cur) => [...acc, ...cur], [])) // flatten, as there's can be more than one screening per page
+}
 
-  // .then(results =>
-  //   Promise.all(
-  //     results
-  //       .filter(
-  //         x =>
-  //           x.hasEnglishSubtitlesIndicator1 === 'English subtitles' ||
-  //           x.hasEnglishSubtitlesIndicator2 === 'English subtitles',
-  //       )
-  //       .map(extractFromMoviePage),
-  //   ),
-  // )
-  // .then(results => results.reduce((acc, cur) => [...acc, ...cur], [])) // flatten, as there's can be more than one screening per page
+if (require.main === module) {
+  // extractFromMainPage()
+  //   .then(x => JSON.stringify(x, null, 2))
+  //   .then(console.log)
+
+  extractFromMoviePage({
+    url: 'https://kinorotterdam.nl/film/tokyo-stories-youth-of-the-beast-1963/',
+  }).then(console.log)
 }
 
 module.exports = extractFromMainPage
-
-// extractFromMainPage().then(console.log)
-
-// extractFromMoviePage({
-//   // url:
-//   // 'https://kinorotterdam.nl/film/studio-ghibli-when-marnie-was-there-2014/',
-//   url: 'https://kinorotterdam.nl/film/expat-arthouse-dogman/',
-//   // url: 'https://kinorotterdam.nl/film/blackkklansman/',
-//   // url: 'https://kinorotterdam.nl/film/predator-the-2d/',
-//   // url: 'https://kinorotterdam.nl/film/tokyo-stories-tokyo-story-1953/',
-// }).then(log('results ='))
