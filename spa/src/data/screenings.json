@@ -1650,6 +1650,12 @@
     "date": "2018-10-06T14:40:00.000Z"
   },
   {
+    "title": "The Reports on Sarah and Saleem",
+    "url": "https://www.eyefilm.nl/en/film/the-reports-on-sarah-and-saleem",
+    "cinema": "Eye",
+    "date": "2018-10-06T14:45:00.000Z"
+  },
+  {
     "title": "CJ: Okko’s Inn",
     "url": "https://kriterion.nl/films/cj-okko-s-inn",
     "cinema": "Kriterion",
@@ -1762,12 +1768,6 @@
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/fatuma",
     "cinema": "Filmhuis Den Haag",
     "date": "2018-10-07T12:45:00.000Z"
-  },
-  {
-    "title": "Best Of LISFE",
-    "cinema": "Kijkhuis",
-    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Best-Of-LISFE/1717",
-    "date": null
   },
   {
     "title": "CJ: A Letter to Momo",
@@ -2022,6 +2022,12 @@
     "date": "2018-10-10T12:45:00.000Z"
   },
   {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-10T13:15:00.000Z"
+  },
+  {
     "title": "KLIK - Go Dutch",
     "url": "https://www.eyefilm.nl/en/film/klik-go-dutch",
     "cinema": "Eye",
@@ -2058,10 +2064,22 @@
     "date": "2018-10-10T16:45:00.000Z"
   },
   {
+    "title": "Best Of LISFE",
+    "cinema": "Kijkhuis",
+    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Best-Of-LISFE/1717",
+    "date": "2018-10-10T17:00:00.000Z"
+  },
+  {
     "title": "Niemand in de Stad (No one in the City)",
     "url": "https://www.springhaver.nl/movies/1530/17/niemand_in_de_stad_no_one_in_the_city_-_english_subtitles",
     "cinema": "Springhaver",
     "date": "2018-10-10T17:00:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-10T17:15:00.000Z"
   },
   {
     "title": "Tampopo",
@@ -2790,6 +2808,12 @@
     "date": "2018-10-18T19:15:00.000Z"
   },
   {
+    "title": "Ghost in the Shell",
+    "url": "https://www.eyefilm.nl/en/film/ghost-in-the-shell",
+    "cinema": "Eye",
+    "date": "2018-10-18T19:30:00.000Z"
+  },
+  {
     "title": "Era Of Dance: The Story Of Soviet Techno Revolution",
     "url": "https://www.lab111.nl/movie/era-of-dance-the-story-of-soviet-techno-revolution/",
     "cinema": "Lab111",
@@ -3018,6 +3042,12 @@
     "cinema": "Kino"
   },
   {
+    "title": "Cowboy Bepop",
+    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "cinema": "Lab111",
+    "date": "2018-11-03T20:20:00.000Z"
+  },
+  {
     "date": "2018-11-05T18:00:00.000Z",
     "title": "Tokyo Stories: Enter the Void (2009) – 35mm presentation",
     "url": "https://kinorotterdam.nl/film/tokyo-stories-enter-the-void-2009-35mm-presentation/",
@@ -3028,6 +3058,12 @@
     "url": "https://www.lab111.nl/movie/wild-strawberries/",
     "cinema": "Lab111",
     "date": "2018-11-05T18:00:00.000Z"
+  },
+  {
+    "title": "Cowboy Bepop",
+    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "cinema": "Lab111",
+    "date": "2018-11-06T18:00:00.000Z"
   },
   {
     "title": "The Testament (Haedut)",
@@ -3096,10 +3132,22 @@
     "date": "2018-11-17T15:30:00.000Z"
   },
   {
+    "title": "Cowboy Bepop",
+    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "cinema": "Lab111",
+    "date": "2018-11-17T18:00:00.000Z"
+  },
+  {
     "title": "The Virgin Spring",
     "url": "https://www.lab111.nl/movie/the-virgin-spring/",
     "cinema": "Lab111",
     "date": "2018-11-19T20:30:00.000Z"
+  },
+  {
+    "title": "Cowboy Bepop",
+    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "cinema": "Lab111",
+    "date": "2018-11-20T20:30:00.000Z"
   },
   {
     "title": "Through A Glass Darkly",
@@ -3178,5 +3226,35 @@
     "url": "https://www.hartlooper.nl/movies/1576/17/cold_war_english_subtitles",
     "cinema": "Louis Hartlooper Complex",
     "date": "2018-12-23T18:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.springhaver.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2019-01-09T18:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.hartlooper.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Louis Hartlooper Complex",
+    "date": "2019-01-13T18:00:00.000Z"
+  },
+  {
+    "date": "2019-01-16T18:30:00.000Z",
+    "title": "Movies that Matter: Styx",
+    "url": "https://kinorotterdam.nl/film/movies-that-matter-styx/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.springhaver.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2019-01-23T18:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.hartlooper.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Louis Hartlooper Complex",
+    "date": "2019-01-27T18:00:00.000Z"
   }
 ]

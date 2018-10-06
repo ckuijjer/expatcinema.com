@@ -1,8 +1,9 @@
 const Xray = require('x-ray')
 const R = require('ramda')
 const { DateTime } = require('luxon')
-
 const debug = require('debug')('filmhuisdenhaag')
+const { shortMonthToNumber } = require('./monthToNumber')
+const guessYear = require('./guessYear')
 
 const debugPromise = (format, ...debugArgs) => arg => {
   debug(format, ...debugArgs, arg)
@@ -12,22 +13,6 @@ const debugPromise = (format, ...debugArgs) => arg => {
 const xray = Xray()
   .concurrency(3)
   .throttle(3, 300)
-
-const monthToNumber = month =>
-  [
-    'jan',
-    'feb',
-    'maa',
-    'apr',
-    'mei',
-    'jun',
-    'jul',
-    'aug',
-    'sep',
-    'okt',
-    'nov',
-    'dec',
-  ].indexOf(month) + 1
 
 const extractFromMoviePage = ({ url }) => {
   return xray(url, 'body', [
@@ -65,7 +50,7 @@ const extractFromMoviePage = ({ url }) => {
                 i
               ][0].split(/\s+/)
               const day = Number(dayString)
-              const month = monthToNumber(monthString)
+              const month = shortMonthToNumber(monthString)
               const times = groupedTimeTable[i + 1]
 
               debug('day, month, times %j', {
@@ -78,8 +63,20 @@ const extractFromMoviePage = ({ url }) => {
 
               times.forEach(time => {
                 const [hour, minute] = time.split('.').map(x => Number(x))
-
-                debug('hour, minute, time %j', { hour, minute, time })
+                const year = guessYear(
+                  DateTime.fromObject({
+                    day,
+                    month,
+                    hour,
+                    minute,
+                  }),
+                )
+                debug('hour, minute, time, year %j', {
+                  hour,
+                  minute,
+                  time,
+                  year,
+                })
 
                 dates.push(
                   DateTime.fromObject({
@@ -87,6 +84,7 @@ const extractFromMoviePage = ({ url }) => {
                     month,
                     hour,
                     minute,
+                    year,
                   })
                     .toUTC()
                     .toISO(),

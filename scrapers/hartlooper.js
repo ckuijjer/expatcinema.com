@@ -4,6 +4,9 @@ const Xray = require('x-ray')
 const R = require('ramda')
 const { DateTime } = require('luxon')
 const debug = require('debug')('hartlooper')
+const splitTime = require('./splitTime')
+const { shortMonthToNumber } = require('./monthToNumber')
+const guessYear = require('./guessYear')
 
 const debugPromise = (format, ...debugArgs) => arg => {
   debug(format, ...debugArgs, arg)
@@ -20,24 +23,6 @@ const xray = Xray({
 
 const hasEnglishSubtitles = movie =>
   movie.title.toLowerCase().includes('english subtitles')
-
-const splitTime = time => time.split(':').map(x => Number(x))
-
-const monthToNumber = month =>
-  [
-    'jan',
-    'feb',
-    'maa',
-    'apr',
-    'mei',
-    'jun',
-    'jul',
-    'aug',
-    'sep',
-    'okt',
-    'nov',
-    'dec',
-  ].indexOf(month.toLowerCase()) + 1
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
@@ -67,8 +52,17 @@ const extractFromMoviePage = ({ url }) => {
         .map(({ date, times }) =>
           times.map(time => {
             const day = +date.day
-            const month = monthToNumber(date.month)
+            const month = shortMonthToNumber(date.month)
             const [hour, minute] = splitTime(time)
+
+            const year = guessYear(
+              DateTime.fromObject({
+                day,
+                month,
+                hour,
+                minute,
+              }),
+            )
 
             return {
               title: cleanTitle(movie.title),
@@ -79,6 +73,7 @@ const extractFromMoviePage = ({ url }) => {
                 month,
                 hour,
                 minute,
+                year,
               })
                 .toUTC()
                 .toISO(),
