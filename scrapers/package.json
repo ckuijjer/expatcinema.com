@@ -6,7 +6,8 @@
   "scripts": {
     "start": "DEBUG=*,-resolve node index.js 2> output/$(date -u +\"%Y-%m-%dT%H:%M:%SZ\")_all.log",
     "analyze": "./analyze.sh",
-    "compare_screenings": "code --diff $(ls -t output/*_all.json | head -1) ../spa/src/data/screenings.json",
+    "compare_filtered": "code --diff $(ls -t output/*_all.json | head -1) $(ls -t output/*_all_filtered.json | head -1)",
+    "compare_screenings": "code --diff $(ls -t output/*_all_filtered.json | head -1) ../spa/src/data/screenings.json",
     "add_screenings": "./addScreenings.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
