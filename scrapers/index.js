@@ -4,6 +4,8 @@ const fs = require('fs')
 
 const debug = require('debug')('combined scraper')
 
+const applyFilters = require('./filters')
+
 const debugPromise = (format, ...debugArgs) => arg => {
   debug(format, ...debugArgs, arg)
   return arg
@@ -47,3 +49,5 @@ Promise.all(
 )
   .then(results => sort(results.reduce(flatten, [])))
   .then(writeToFileAndContinue(`output/${now}_all.json`))
+  .then(applyFilters)
+  .then(writeToFileAndContinue(`output/${now}_all_filtered.json`))

@@ -128,10 +128,24 @@ const extractFromMainPage = () => {
     .then(results => results.reduce((acc, cur) => [...acc, ...cur], [])) // flatten, as there's can be more than one screening per page
 }
 
+if (require.main === module) {
+  const R = require('ramda')
+  const sort = R.sortWith([
+    (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),
+    R.ascend(R.prop('cinema')),
+    R.ascend(R.prop('title')),
+    R.ascend(R.prop('url')),
+  ])
+
+  extractFromMainPage()
+    .then(sort)
+    .then(x => JSON.stringify(x, null, 2))
+    .then(console.log)
+
+  // extractFromMoviePage({
+  //   url:
+  //     'https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling',
+  // }).then(console.log)
+}
+
 module.exports = extractFromMainPage
-
-// extractFromMainPage().then(console.log)
-
-// extractFromMoviePage({
-//   url: 'https://www.filmhuisdenhaag.nl/agenda/event/somebody-clap-for-me',
-// }).then(console.log)

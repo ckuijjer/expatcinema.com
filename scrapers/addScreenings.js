@@ -8,7 +8,7 @@ const currentFilename = '../spa/src/data/screenings.json'
 const currentContents = fs.readFileSync(currentFilename)
 const currentJSON = JSON.parse(currentContents)
 
-const latestFilename = spawnSync('ls', ['-t', './output/*_all.json'], {
+const latestFilename = spawnSync('ls', ['-t', './output/*_all_filtered.json'], {
   shell: true,
 })
   .stdout.toString()
