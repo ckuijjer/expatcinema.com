@@ -1,0 +1,908 @@
+[
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-16T10:15:00.000Z"
+  },
+  {
+    "title": "Hot Country, Cold Winter",
+    "url": "https://www.eyefilm.nl/en/film/hot-country-cold-winter",
+    "cinema": "Eye",
+    "date": "2018-10-16T13:15:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-10-16T16:30:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.eyefilm.nl/en/film/sprekend-nederland",
+    "cinema": "Eye",
+    "date": "2018-10-16T19:30:00.000Z"
+  },
+  {
+    "title": "Wild Strawberries",
+    "url": "https://www.lab111.nl/movie/wild-strawberries/",
+    "cinema": "Lab111",
+    "date": "2018-10-16T19:30:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/stalker-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-17T09:15:00.000Z"
+  },
+  {
+    "title": "Den skyldige",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-17T12:15:00.000Z"
+  },
+  {
+    "title": "Sir",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sir-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-17T12:30:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-17T13:00:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/burning-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-17T14:00:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-10-17T14:30:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.eyefilm.nl/en/film/sprekend-nederland",
+    "cinema": "Eye",
+    "date": "2018-10-17T15:00:00.000Z"
+  },
+  {
+    "title": "Dogman",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/dogman-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-17T15:30:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "cinema": "Kijkhuis",
+    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Stalker/1728",
+    "date": "2018-10-17T16:15:00.000Z"
+  },
+  {
+    "title": "Silvana",
+    "url": "https://www.lab111.nl/movie/silvana/",
+    "cinema": "Lab111",
+    "date": "2018-10-17T16:45:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-17T17:00:00.000Z"
+  },
+  {
+    "title": "Suzanne Ciani: A Life In Waves",
+    "url": "https://www.lab111.nl/movie/suzanne-ciani-a-life-in-waves/",
+    "cinema": "Lab111",
+    "date": "2018-10-17T17:15:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-17T17:45:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/burning-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-17T18:45:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/stalker-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-17T18:45:00.000Z"
+  },
+  {
+    "title": "Raw Chicks.Berlin",
+    "url": "https://www.lab111.nl/movie/raw-chicks-berlin/",
+    "cinema": "Lab111",
+    "date": "2018-10-17T19:15:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.eyefilm.nl/en/film/sprekend-nederland",
+    "cinema": "Eye",
+    "date": "2018-10-18T08:30:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-18T10:00:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-18T12:15:00.000Z"
+  },
+  {
+    "title": "Tangerine Dream: Revolution Of Sound",
+    "url": "https://www.lab111.nl/movie/revolution-of-sound-tangerine-dream/",
+    "cinema": "Lab111",
+    "date": "2018-10-18T14:30:00.000Z"
+  },
+  {
+    "title": "Niemand in de stad",
+    "url": "https://www.eyefilm.nl/en/film/niemand-in-de-stad",
+    "cinema": "Eye",
+    "date": "2018-10-18T17:00:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-18T17:00:00.000Z"
+  },
+  {
+    "title": "I Dream Of Wires",
+    "url": "https://www.lab111.nl/movie/i-dream-of-wires/",
+    "cinema": "Lab111",
+    "date": "2018-10-18T17:15:00.000Z"
+  },
+  {
+    "title": "Bruk Out! A Dancehall Queen Documentary",
+    "url": "https://www.lab111.nl/movie/bruk-out-a-dancehall-queen-documentary/",
+    "cinema": "Lab111",
+    "date": "2018-10-18T19:15:00.000Z"
+  },
+  {
+    "title": "Ghost in the Shell",
+    "url": "https://www.eyefilm.nl/en/film/ghost-in-the-shell",
+    "cinema": "Eye",
+    "date": "2018-10-18T19:45:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-19T08:30:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-10-19T08:45:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-19T10:00:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.eyefilm.nl/en/film/sprekend-nederland",
+    "cinema": "Eye",
+    "date": "2018-10-19T10:30:00.000Z"
+  },
+  {
+    "title": "Niemand in de stad",
+    "url": "https://www.eyefilm.nl/en/film/niemand-in-de-stad",
+    "cinema": "Eye",
+    "date": "2018-10-19T12:00:00.000Z"
+  },
+  {
+    "title": "Spirited Away",
+    "url": "https://www.lab111.nl/movie/spirited-away/",
+    "cinema": "Lab111",
+    "date": "2018-10-19T14:30:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-19T15:00:00.000Z"
+  },
+  {
+    "title": "Era Of Dance: The Story Of Soviet Techno Revolution",
+    "url": "https://www.lab111.nl/movie/era-of-dance-the-story-of-soviet-techno-revolution/",
+    "cinema": "Lab111",
+    "date": "2018-10-19T17:00:00.000Z"
+  },
+  {
+    "title": "Raw Chicks.Berlin",
+    "url": "https://www.lab111.nl/movie/raw-chicks-berlin/",
+    "cinema": "Lab111",
+    "date": "2018-10-19T17:15:00.000Z"
+  },
+  {
+    "title": "Tangerine Dream: Revolution Of Sound",
+    "url": "https://www.lab111.nl/movie/revolution-of-sound-tangerine-dream/",
+    "cinema": "Lab111",
+    "date": "2018-10-19T19:15:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-20T08:40:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-10-20T08:45:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-20T08:45:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-20T12:15:00.000Z"
+  },
+  {
+    "title": "Tangerine Dream: Revolution Of Sound",
+    "url": "https://www.lab111.nl/movie/revolution-of-sound-tangerine-dream/",
+    "cinema": "Lab111",
+    "date": "2018-10-20T14:30:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.eyefilm.nl/en/film/sprekend-nederland",
+    "cinema": "Eye",
+    "date": "2018-10-20T15:45:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-20T17:00:00.000Z"
+  },
+  {
+    "title": "Bruk Out! A Dancehall Queen Documentary",
+    "url": "https://www.lab111.nl/movie/bruk-out-a-dancehall-queen-documentary/",
+    "cinema": "Lab111",
+    "date": "2018-10-20T17:15:00.000Z"
+  },
+  {
+    "title": "I Dream Of Wires",
+    "url": "https://www.lab111.nl/movie/i-dream-of-wires/",
+    "cinema": "Lab111",
+    "date": "2018-10-20T19:15:00.000Z"
+  },
+  {
+    "title": "Niemand in de stad",
+    "url": "https://www.eyefilm.nl/en/film/niemand-in-de-stad",
+    "cinema": "Eye",
+    "date": "2018-10-20T19:30:00.000Z"
+  },
+  {
+    "date": "2018-10-20T19:30:00.000Z",
+    "title": "Tokyo Stories: Tokyo Fist (1995)",
+    "url": "https://kinorotterdam.nl/film/tokyo-stories-tokyo-fist-1995/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-21T08:30:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-21T12:15:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-10-21T12:30:00.000Z"
+  },
+  {
+    "title": "Such Men Are Dangerous",
+    "url": "https://www.eyefilm.nl/en/film/such-men-are-dangerous",
+    "cinema": "Eye",
+    "date": "2018-10-21T14:00:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.eyefilm.nl/en/film/sprekend-nederland",
+    "cinema": "Eye",
+    "date": "2018-10-21T14:30:00.000Z"
+  },
+  {
+    "title": "Amsterdam Wildlife",
+    "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
+    "cinema": "Eye",
+    "date": "2018-10-21T15:45:00.000Z"
+  },
+  {
+    "title": "Tangerine Dream: Revolution Of Sound",
+    "url": "https://www.lab111.nl/movie/revolution-of-sound-tangerine-dream/",
+    "cinema": "Lab111",
+    "date": "2018-10-21T17:15:00.000Z"
+  },
+  {
+    "title": "Niemand in de stad",
+    "url": "https://www.eyefilm.nl/en/film/niemand-in-de-stad",
+    "cinema": "Eye",
+    "date": "2018-10-21T19:15:00.000Z"
+  },
+  {
+    "title": "Suzanne Ciani: A Life In Waves",
+    "url": "https://www.lab111.nl/movie/suzanne-ciani-a-life-in-waves/",
+    "cinema": "Lab111",
+    "date": "2018-10-21T19:15:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-22T08:40:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-22T12:15:00.000Z"
+  },
+  {
+    "title": "Amsterdam Wildlife",
+    "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
+    "cinema": "Eye",
+    "date": "2018-10-22T15:00:00.000Z"
+  },
+  {
+    "title": "Cries And Whispers",
+    "url": "https://www.lab111.nl/movie/cries-and-whispers/",
+    "cinema": "Lab111",
+    "date": "2018-10-22T17:00:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-22T17:00:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-22T19:15:00.000Z"
+  },
+  {
+    "title": "Tropical Malady",
+    "url": "https://kriterion.nl/films/tropical-malady",
+    "cinema": "Kriterion",
+    "date": "2018-10-22T20:00:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.eyefilm.nl/en/film/sprekend-nederland",
+    "cinema": "Eye",
+    "date": "2018-10-23T08:30:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-23T08:40:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-23T12:15:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-23T14:30:00.000Z"
+  },
+  {
+    "title": "Autumn Sonata",
+    "url": "https://www.lab111.nl/movie/autumn-sonata/",
+    "cinema": "Lab111",
+    "date": "2018-10-23T17:00:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-10-23T19:30:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-24T08:40:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/burning-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-24T09:30:00.000Z"
+  },
+  {
+    "title": "Sprekend Nederland",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sprekend-nederland-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-24T11:00:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-10-24T12:00:00.000Z"
+  },
+  {
+    "title": "Den skyldige",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-24T12:15:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-24T12:15:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/burning-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-24T14:00:00.000Z"
+  },
+  {
+    "title": "The Virgin Spring",
+    "url": "https://www.lab111.nl/movie/the-virgin-spring/",
+    "cinema": "Lab111",
+    "date": "2018-10-24T14:30:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-24T15:00:00.000Z"
+  },
+  {
+    "title": "Den skyldige",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-24T16:45:00.000Z"
+  },
+  {
+    "title": "Todos Lo Saben",
+    "cinema": "Kijkhuis",
+    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Todos-Lo-Saben/1744",
+    "date": "2018-10-24T16:45:00.000Z"
+  },
+  {
+    "title": "Persona",
+    "url": "https://www.lab111.nl/movie/persona/",
+    "cinema": "Lab111",
+    "date": "2018-10-24T17:00:00.000Z"
+  },
+  {
+    "title": "Niemand in de Stad (No one in the City)",
+    "url": "https://www.springhaver.nl/movies/1530/17/niemand_in_de_stad_no_one_in_the_city_-_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2018-10-24T17:00:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/burning-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-24T18:45:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-24T19:15:00.000Z"
+  },
+  {
+    "title": "Dogman",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/dogman-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-24T19:30:00.000Z"
+  },
+  {
+    "date": "2018-10-24T19:30:00.000Z",
+    "title": "Tokyo Stories: Akira (1988) 30th Anniversary",
+    "url": "https://kinorotterdam.nl/film/akira/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Kom En Zie (Idi I Smotri)",
+    "url": "https://www.lab111.nl/movie/idi-i-smotri/",
+    "cinema": "Lab111",
+    "date": "2018-10-24T19:30:00.000Z"
+  },
+  {
+    "title": "Kom En Zie (Idi I Smotri)",
+    "url": "https://www.lab111.nl/movie/idi-i-smotri/",
+    "cinema": "Lab111",
+    "date": "2018-10-25T16:30:00.000Z"
+  },
+  {
+    "title": "Tetsuo",
+    "url": "https://www.eyefilm.nl/en/film/tetsuo",
+    "cinema": "Eye",
+    "date": "2018-10-25T17:15:00.000Z"
+  },
+  {
+    "title": "Akira",
+    "url": "https://www.lab111.nl/movie/akira/",
+    "cinema": "Lab111",
+    "date": "2018-10-26T19:30:00.000Z"
+  },
+  {
+    "title": "Winter Light",
+    "url": "https://www.lab111.nl/movie/winter-light/",
+    "cinema": "Lab111",
+    "date": "2018-10-27T14:30:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-10-27T16:30:00.000Z"
+  },
+  {
+    "title": "Eyeshadow: Akira + Yung Nnelg",
+    "url": "https://www.eyefilm.nl/en/film/eyeshadow-akira-yung-nnelg",
+    "cinema": "Eye",
+    "date": "2018-10-27T19:30:00.000Z"
+  },
+  {
+    "date": "2018-10-27T19:30:00.000Z",
+    "title": "Tokyo Stories: Youth of the Beast (1963)",
+    "url": "https://kinorotterdam.nl/film/tokyo-stories-youth-of-the-beast-1963/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Kom En Zie (Idi I Smotri)",
+    "url": "https://www.lab111.nl/movie/idi-i-smotri/",
+    "cinema": "Lab111",
+    "date": "2018-10-27T19:30:00.000Z"
+  },
+  {
+    "date": "2018-10-28T16:00:00.000Z",
+    "title": "Tokyo Stories: Akira (1988) 30th Anniversary",
+    "url": "https://kinorotterdam.nl/film/akira/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Niemand in de Stad (No one in the City)",
+    "url": "https://www.hartlooper.nl/movies/1530/17/niemand_in_de_stad_no_one_in_the_city_-_english_subtitles",
+    "cinema": "Louis Hartlooper Complex",
+    "date": "2018-10-28T18:00:00.000Z"
+  },
+  {
+    "title": "Through A Glass Darkly",
+    "url": "https://www.lab111.nl/movie/through-a-glass-darkly/",
+    "cinema": "Lab111",
+    "date": "2018-10-29T18:00:00.000Z"
+  },
+  {
+    "date": "2018-10-29T20:00:00.000Z",
+    "title": "Expat Arthouse: Come and See (Idi i smotri – 1985)",
+    "url": "https://kinorotterdam.nl/film/expat-arthouse-come-and-see-idi-i-smotri-1985/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Cries And Whispers",
+    "url": "https://www.lab111.nl/movie/cries-and-whispers/",
+    "cinema": "Lab111",
+    "date": "2018-10-29T20:30:00.000Z"
+  },
+  {
+    "title": "Akira",
+    "url": "https://www.lab111.nl/movie/akira/",
+    "cinema": "Lab111",
+    "date": "2018-10-30T18:00:00.000Z"
+  },
+  {
+    "date": "2018-10-30T18:30:00.000Z",
+    "title": "Tokyo Stories: Funeral Parade of Roses (1969)",
+    "url": "https://kinorotterdam.nl/film/tokyo-stories-funeral-parade-of-roses-1969/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Summer With Monika",
+    "url": "https://www.lab111.nl/movie/summer-with-monika/",
+    "cinema": "Lab111",
+    "date": "2018-10-31T15:30:00.000Z"
+  },
+  {
+    "title": "Tetsuo 2 : The Body Hammer",
+    "url": "https://www.eyefilm.nl/en/film/tetsuo-2-the-body-hammer",
+    "cinema": "Eye",
+    "date": "2018-10-31T18:15:00.000Z"
+  },
+  {
+    "title": "Akira",
+    "url": "https://www.lab111.nl/movie/akira/",
+    "cinema": "Lab111",
+    "date": "2018-11-02T18:00:00.000Z"
+  },
+  {
+    "title": "Through A Glass Darkly",
+    "url": "https://www.lab111.nl/movie/through-a-glass-darkly/",
+    "cinema": "Lab111",
+    "date": "2018-11-03T15:30:00.000Z"
+  },
+  {
+    "date": "2018-11-03T19:00:00.000Z",
+    "title": "Tokyo Stories: Enter the Void (2009) – 35mm presentation",
+    "url": "https://kinorotterdam.nl/film/tokyo-stories-enter-the-void-2009-35mm-presentation/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Cowboy Bepop",
+    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "cinema": "Lab111",
+    "date": "2018-11-03T20:20:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl-2/",
+    "cinema": "Lab111",
+    "date": "2018-11-04T18:00:00.000Z"
+  },
+  {
+    "date": "2018-11-05T18:00:00.000Z",
+    "title": "Tokyo Stories: Enter the Void (2009) – 35mm presentation",
+    "url": "https://kinorotterdam.nl/film/tokyo-stories-enter-the-void-2009-35mm-presentation/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Wild Strawberries",
+    "url": "https://www.lab111.nl/movie/wild-strawberries/",
+    "cinema": "Lab111",
+    "date": "2018-11-05T18:00:00.000Z"
+  },
+  {
+    "title": "Cowboy Bepop",
+    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "cinema": "Lab111",
+    "date": "2018-11-06T18:00:00.000Z"
+  },
+  {
+    "title": "The Testament (Haedut)",
+    "url": "https://www.lantarenvenster.nl/programma/the-testament-haedut/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-11-06T18:30:00.000Z"
+  },
+  {
+    "title": "The Virgin Spring",
+    "url": "https://www.lab111.nl/movie/the-virgin-spring/",
+    "cinema": "Lab111",
+    "date": "2018-11-07T18:00:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.springhaver.nl/movies/1537/17/girl_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2018-11-07T18:00:00.000Z"
+  },
+  {
+    "title": "Akira",
+    "url": "https://www.lab111.nl/movie/akira/",
+    "cinema": "Lab111",
+    "date": "2018-11-07T20:30:00.000Z"
+  },
+  {
+    "title": "Ghost in the Shell",
+    "url": "https://www.eyefilm.nl/en/film/ghost-in-the-shell",
+    "cinema": "Eye",
+    "date": "2018-11-08T18:15:00.000Z"
+  },
+  {
+    "title": "Autumn Sonata",
+    "url": "https://www.lab111.nl/movie/autumn-sonata/",
+    "cinema": "Lab111",
+    "date": "2018-11-10T15:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.hartlooper.nl/movies/1537/17/girl_english_subtitles",
+    "cinema": "Louis Hartlooper Complex",
+    "date": "2018-11-11T18:00:00.000Z"
+  },
+  {
+    "title": "The Seventh Seal",
+    "url": "https://www.lab111.nl/movie/the-seventh-seal/",
+    "cinema": "Lab111",
+    "date": "2018-11-12T20:30:00.000Z"
+  },
+  {
+    "title": "Winter Light",
+    "url": "https://www.lab111.nl/movie/winter-light/",
+    "cinema": "Lab111",
+    "date": "2018-11-14T18:00:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl-2/",
+    "cinema": "Lab111",
+    "date": "2018-11-15T18:00:00.000Z"
+  },
+  {
+    "title": "The Seventh Seal",
+    "url": "https://www.lab111.nl/movie/the-seventh-seal/",
+    "cinema": "Lab111",
+    "date": "2018-11-17T15:30:00.000Z"
+  },
+  {
+    "date": "2018-11-17T17:30:00.000Z",
+    "title": "La Notte: Raise the Red Lantern (1991)",
+    "url": "https://kinorotterdam.nl/film/la-notte-raise-the-red-lantern-1991/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Cowboy Bepop",
+    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "cinema": "Lab111",
+    "date": "2018-11-17T18:00:00.000Z"
+  },
+  {
+    "date": "2018-11-17T20:30:00.000Z",
+    "title": "La Notte: Cat People (1982)",
+    "url": "https://kinorotterdam.nl/film/la-notte-cat-people-1982/",
+    "cinema": "Kino"
+  },
+  {
+    "date": "2018-11-17T23:15:00.000Z",
+    "title": "La Notte: Legowelt scores Nosferatu (1979)",
+    "url": "https://kinorotterdam.nl/film/la-notte-cinema-concert/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl-2/",
+    "cinema": "Lab111",
+    "date": "2018-11-18T20:30:00.000Z"
+  },
+  {
+    "title": "The Virgin Spring",
+    "url": "https://www.lab111.nl/movie/the-virgin-spring/",
+    "cinema": "Lab111",
+    "date": "2018-11-19T20:30:00.000Z"
+  },
+  {
+    "title": "Cowboy Bepop",
+    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "cinema": "Lab111",
+    "date": "2018-11-20T20:30:00.000Z"
+  },
+  {
+    "title": "Through A Glass Darkly",
+    "url": "https://www.lab111.nl/movie/through-a-glass-darkly/",
+    "cinema": "Lab111",
+    "date": "2018-11-21T17:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.springhaver.nl/movies/1537/17/girl_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2018-11-21T18:00:00.000Z"
+  },
+  {
+    "date": "2018-11-21T18:30:00.000Z",
+    "title": "Movies that Matter: Tehran Taboo",
+    "url": "https://kinorotterdam.nl/film/movies-that-matter-tehran-taboo/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Summer With Monika",
+    "url": "https://www.lab111.nl/movie/summer-with-monika/",
+    "cinema": "Lab111",
+    "date": "2018-11-24T18:00:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.hartlooper.nl/movies/1537/17/girl_english_subtitles",
+    "cinema": "Louis Hartlooper Complex",
+    "date": "2018-11-25T18:00:00.000Z"
+  },
+  {
+    "title": "Persona",
+    "url": "https://www.lab111.nl/movie/persona/",
+    "cinema": "Lab111",
+    "date": "2018-11-26T20:30:00.000Z"
+  },
+  {
+    "title": "Autumn Sonata",
+    "url": "https://www.lab111.nl/movie/autumn-sonata/",
+    "cinema": "Lab111",
+    "date": "2018-11-28T18:00:00.000Z"
+  },
+  {
+    "title": "Cold War",
+    "url": "https://www.springhaver.nl/movies/1576/17/cold_war_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2018-12-05T18:00:00.000Z"
+  },
+  {
+    "title": "Cold War",
+    "url": "https://www.hartlooper.nl/movies/1576/17/cold_war_english_subtitles",
+    "cinema": "Louis Hartlooper Complex",
+    "date": "2018-12-09T18:00:00.000Z"
+  },
+  {
+    "title": "Cold War",
+    "url": "https://www.springhaver.nl/movies/1576/17/cold_war_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2018-12-19T18:00:00.000Z"
+  },
+  {
+    "date": "2018-12-19T18:30:00.000Z",
+    "title": "Movies that Matter: The Poetess",
+    "url": "https://kinorotterdam.nl/film/movies-that-matter-the-poetess/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Cold War",
+    "url": "https://www.hartlooper.nl/movies/1576/17/cold_war_english_subtitles",
+    "cinema": "Louis Hartlooper Complex",
+    "date": "2018-12-23T18:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.springhaver.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2019-01-09T18:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.hartlooper.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Louis Hartlooper Complex",
+    "date": "2019-01-13T18:00:00.000Z"
+  },
+  {
+    "date": "2019-01-16T18:30:00.000Z",
+    "title": "Movies that Matter: Styx",
+    "url": "https://kinorotterdam.nl/film/movies-that-matter-styx/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.springhaver.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Springhaver",
+    "date": "2019-01-23T18:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.hartlooper.nl/movies/1578/17/shoplifters_english_subtitles",
+    "cinema": "Louis Hartlooper Complex",
+    "date": "2019-01-27T18:00:00.000Z"
+  }
+]
