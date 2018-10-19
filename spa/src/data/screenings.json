@@ -3318,6 +3318,12 @@
     "date": "2018-10-24T18:45:00.000Z"
   },
   {
+    "title": "Kom en zie",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/kom-en-zie-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-24T18:45:00.000Z"
+  },
+  {
     "title": "Tampopo",
     "url": "https://www.lab111.nl/movie/tampopo/",
     "cinema": "Lab111",
@@ -3378,6 +3384,12 @@
     "date": "2018-10-27T16:30:00.000Z"
   },
   {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-10-27T19:15:00.000Z"
+  },
+  {
     "title": "Eyeshadow: Akira + Yung Nnelg",
     "url": "https://www.eyefilm.nl/en/film/eyeshadow-akira-yung-nnelg",
     "cinema": "Eye",
@@ -3406,6 +3418,12 @@
     "url": "https://www.hartlooper.nl/movies/1530/17/niemand_in_de_stad_no_one_in_the_city_-_english_subtitles",
     "cinema": "Louis Hartlooper Complex",
     "date": "2018-10-28T18:00:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl-2/",
+    "cinema": "Lab111",
+    "date": "2018-10-28T20:30:00.000Z"
   },
   {
     "title": "Through A Glass Darkly",
@@ -3444,6 +3462,12 @@
     "date": "2018-10-31T15:30:00.000Z"
   },
   {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-10-31T17:30:00.000Z"
+  },
+  {
     "title": "Tetsuo 2 : The Body Hammer",
     "url": "https://www.eyefilm.nl/en/film/tetsuo-2-the-body-hammer",
     "cinema": "Eye",
@@ -3456,10 +3480,34 @@
     "date": "2018-11-02T18:00:00.000Z"
   },
   {
+    "title": "Panic Attack",
+    "url": "https://www.liff.nl/en/Program/Movie/panic-attack/755/",
+    "date": "2018-11-03T11:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "The Man Who Feels No Pain",
+    "url": "https://www.liff.nl/en/Program/Movie/the-man-who-feels-no-pain/794/",
+    "date": "2018-11-03T15:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
     "title": "Through A Glass Darkly",
     "url": "https://www.lab111.nl/movie/through-a-glass-darkly/",
     "cinema": "Lab111",
     "date": "2018-11-03T15:30:00.000Z"
+  },
+  {
+    "title": "And Breathe Normally",
+    "url": "https://www.liff.nl/en/Program/Movie/and-breathe-normally/750/",
+    "date": "2018-11-03T16:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "En el Séptimo Día",
+    "url": "https://www.liff.nl/en/Program/Movie/en-el-sptimo-da/715/",
+    "date": "2018-11-03T18:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
   },
   {
     "date": "2018-11-03T19:00:00.000Z",
@@ -3474,10 +3522,64 @@
     "date": "2018-11-03T20:20:00.000Z"
   },
   {
-    "title": "Girl",
-    "url": "https://www.lab111.nl/movie/girl-2/",
-    "cinema": "Lab111",
-    "date": "2018-11-04T18:00:00.000Z"
+    "title": "El Ángel",
+    "url": "https://www.liff.nl/en/Program/Movie/el-ngel/746/",
+    "date": "2018-11-03T20:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Guy",
+    "url": "https://www.liff.nl/en/Program/Movie/guy/720/",
+    "date": "2018-11-04T13:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Mademoiselle de Joncquières",
+    "url": "https://www.liff.nl/en/Program/Movie/mademoiselle-de-joncquires-/748/",
+    "date": "2018-11-04T15:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "One Last Deal",
+    "url": "https://www.liff.nl/en/Program/Movie/one-last-deal/754/",
+    "date": "2018-11-04T15:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Profile",
+    "url": "https://www.liff.nl/en/Program/Movie/profile/725/",
+    "date": "2018-11-04T17:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Laugh or Die",
+    "url": "https://www.liff.nl/en/Program/Movie/laugh-or-die/751/",
+    "date": "2018-11-04T18:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Smuggling Hendrix",
+    "url": "https://www.liff.nl/en/Program/Movie/smuggling-hendrix/796/",
+    "date": "2018-11-04T18:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Le Monde est à toi",
+    "url": "https://www.liff.nl/en/Program/Movie/le-monde-esttoi/721/",
+    "date": "2018-11-04T20:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Pi",
+    "url": "https://www.liff.nl/en/Program/Movie/pi/764/",
+    "date": "2018-11-05T15:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Panic Attack",
+    "url": "https://www.liff.nl/en/Program/Movie/panic-attack/755/",
+    "date": "2018-11-05T16:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
   },
   {
     "date": "2018-11-05T18:00:00.000Z",
@@ -3486,10 +3588,64 @@
     "cinema": "Kino"
   },
   {
+    "title": "One Last Deal",
+    "url": "https://www.liff.nl/en/Program/Movie/one-last-deal/754/",
+    "date": "2018-11-05T18:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
     "title": "Wild Strawberries",
     "url": "https://www.lab111.nl/movie/wild-strawberries/",
     "cinema": "Lab111",
     "date": "2018-11-05T18:00:00.000Z"
+  },
+  {
+    "title": "Hidden Man",
+    "url": "https://www.liff.nl/en/Program/Movie/hidden-man/811/",
+    "date": "2018-11-05T20:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Au Poste!",
+    "url": "https://www.liff.nl/en/Program/Movie/au-poste/756/",
+    "date": "2018-11-05T20:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Laugh or Die",
+    "url": "https://www.liff.nl/en/Program/Movie/laugh-or-die/751/",
+    "date": "2018-11-05T20:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Monster Hunt 2",
+    "url": "https://www.liff.nl/en/Program/Movie/monster-hunt-/805/",
+    "date": "2018-11-06T11:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Profile",
+    "url": "https://www.liff.nl/en/Program/Movie/profile/725/",
+    "date": "2018-11-06T13:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "El Ángel",
+    "url": "https://www.liff.nl/en/Program/Movie/el-ngel/746/",
+    "date": "2018-11-06T13:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Ghost in the Shell",
+    "url": "https://www.liff.nl/en/Program/Movie/ghost-in-the-shell/763/",
+    "date": "2018-11-06T13:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Au Poste!",
+    "url": "https://www.liff.nl/en/Program/Movie/au-poste/756/",
+    "date": "2018-11-06T16:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
   },
   {
     "title": "Cowboy Bepop",
@@ -3504,6 +3660,48 @@
     "date": "2018-11-06T18:30:00.000Z"
   },
   {
+    "title": "GAIKA + Akira",
+    "url": "https://www.liff.nl/en/Program/Movie/gaika---akira/777/",
+    "date": "2018-11-06T19:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Laugh or Die",
+    "url": "https://www.liff.nl/en/Program/Movie/laugh-or-die/751/",
+    "date": "2018-11-06T20:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "En el Séptimo Día",
+    "url": "https://www.liff.nl/en/Program/Movie/en-el-sptimo-da/715/",
+    "date": "2018-11-07T10:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "The Man Who Feels No Pain",
+    "url": "https://www.liff.nl/en/Program/Movie/the-man-who-feels-no-pain/794/",
+    "date": "2018-11-07T10:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "And Breathe Normally",
+    "url": "https://www.liff.nl/en/Program/Movie/and-breathe-normally/750/",
+    "date": "2018-11-07T13:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "The Other Side of Everything",
+    "url": "https://www.liff.nl/en/Program/Movie/the-other-side-of-everything/768/",
+    "date": "2018-11-07T15:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Guy",
+    "url": "https://www.liff.nl/en/Program/Movie/guy/720/",
+    "date": "2018-11-07T15:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
     "title": "The Virgin Spring",
     "url": "https://www.lab111.nl/movie/the-virgin-spring/",
     "cinema": "Lab111",
@@ -3516,10 +3714,58 @@
     "date": "2018-11-07T18:00:00.000Z"
   },
   {
+    "title": "Korida",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/korida",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-07T18:15:00.000Z"
+  },
+  {
+    "title": "Bear with Us",
+    "url": "https://www.liff.nl/en/Program/Movie/bear-with-us/731/",
+    "date": "2018-11-07T18:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
     "title": "Akira",
     "url": "https://www.lab111.nl/movie/akira/",
     "cinema": "Lab111",
     "date": "2018-11-07T20:30:00.000Z"
+  },
+  {
+    "title": "Operation Red Sea",
+    "url": "https://www.liff.nl/en/Program/Movie/operation-red-sea/766/",
+    "date": "2018-11-08T12:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Likemeback",
+    "url": "https://www.liff.nl/en/Program/Movie/likemeback/741/",
+    "date": "2018-11-08T13:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Korida",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/korida",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-08T15:45:00.000Z"
+  },
+  {
+    "title": "Lux film prize - The other side of everything",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/lux-film-prize-the-other-side-of-everything",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-08T16:00:00.000Z"
+  },
+  {
+    "title": "Coyote",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/coyote",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-08T18:00:00.000Z"
+  },
+  {
+    "title": "The Man Who Feels No Pain",
+    "url": "https://www.liff.nl/en/Program/Movie/the-man-who-feels-no-pain/794/",
+    "date": "2018-11-08T18:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
   },
   {
     "title": "Ghost in the Shell",
@@ -3528,16 +3774,388 @@
     "date": "2018-11-08T18:15:00.000Z"
   },
   {
+    "title": "Dede",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/dede",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-08T18:15:00.000Z"
+  },
+  {
+    "date": "2018-11-08T20:00:00.000Z",
+    "title": "The Great War: Westfront 1918: Vier von der Infanterie (1930)",
+    "url": "https://kinorotterdam.nl/film/the-great-war-westfront-1918-vier-von-der-infanterie-1930/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Bear with Us",
+    "url": "https://www.liff.nl/en/Program/Movie/bear-with-us/731/",
+    "date": "2018-11-08T20:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Mademoiselle de Joncquières",
+    "url": "https://www.liff.nl/en/Program/Movie/mademoiselle-de-joncquires-/748/",
+    "date": "2018-11-08T20:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "The Marriage",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-marriage",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-08T20:30:00.000Z"
+  },
+  {
+    "title": "And Breathe Normally",
+    "url": "https://www.liff.nl/en/Program/Movie/and-breathe-normally/750/",
+    "date": "2018-11-08T20:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "When pigs come",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/when-pigs-come",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-08T20:45:00.000Z"
+  },
+  {
+    "title": "Monster Hunt 2",
+    "url": "https://www.liff.nl/en/Program/Movie/monster-hunt-/805/",
+    "date": "2018-11-08T20:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Hidden Man",
+    "url": "https://www.liff.nl/en/Program/Movie/hidden-man/811/",
+    "date": "2018-11-09T10:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Bear with Us",
+    "url": "https://www.liff.nl/en/Program/Movie/bear-with-us/731/",
+    "date": "2018-11-09T10:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Le Monde est à toi",
+    "url": "https://www.liff.nl/en/Program/Movie/le-monde-esttoi/721/",
+    "date": "2018-11-09T12:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "En el Séptimo Día",
+    "url": "https://www.liff.nl/en/Program/Movie/en-el-sptimo-da/715/",
+    "date": "2018-11-09T14:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Croatian and Hungarian Shorts ",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/croatian-and-hungarian-shorts",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-09T14:30:00.000Z"
+  },
+  {
+    "title": "Polish/Ukrainian/Latvian Shorts ",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/polish-ukrainian-latvian-shorts",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-09T16:15:00.000Z"
+  },
+  {
+    "title": "The Marriage",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-marriage",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-09T16:30:00.000Z"
+  },
+  {
+    "title": "Au Poste!",
+    "url": "https://www.liff.nl/en/Program/Movie/au-poste/756/",
+    "date": "2018-11-09T16:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Balkan Shorts",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/balkan-shorts",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-09T16:45:00.000Z"
+  },
+  {
+    "title": "Paradise '89",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/paradise-89",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-09T18:15:00.000Z"
+  },
+  {
+    "title": "Profile",
+    "url": "https://www.liff.nl/en/Program/Movie/profile/725/",
+    "date": "2018-11-09T18:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Smuggling Hendrix",
+    "url": "https://www.liff.nl/en/Program/Movie/smuggling-hendrix/796/",
+    "date": "2018-11-09T18:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Men don't cry",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/men-don-t-cry",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-09T18:30:00.000Z"
+  },
+  {
+    "title": "Ivan",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/ivan",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-09T18:45:00.000Z"
+  },
+  {
+    "title": "The secret ingredient",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-secret-ingredient",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-09T20:30:00.000Z"
+  },
+  {
+    "title": "Mademoiselle de Joncquières",
+    "url": "https://www.liff.nl/en/Program/Movie/mademoiselle-de-joncquires-/748/",
+    "date": "2018-11-09T20:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "All alone",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/all-alone",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-09T20:45:00.000Z"
+  },
+  {
+    "title": "Daybreak",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/daybreak",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-09T21:00:00.000Z"
+  },
+  {
+    "title": "The Seen and Unseen",
+    "url": "https://www.liff.nl/en/Program/Movie/the-seen-and-unseen-/787/",
+    "date": "2018-11-10T10:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Croatian and Hungarian Shorts ",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/croatian-and-hungarian-shorts",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T10:45:00.000Z"
+  },
+  {
+    "title": "Guy",
+    "url": "https://www.liff.nl/en/Program/Movie/guy/720/",
+    "date": "2018-11-10T10:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Hotel Jugoslavija",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/hotel-jugoslavija",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T11:45:00.000Z"
+  },
+  {
+    "title": "Occupation 1968",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/occupation-1968",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T12:00:00.000Z"
+  },
+  {
+    "title": "Slovenian/Rumanian/Serbian Shorts ",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/slovenian-rumanian-serbian-shorts",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T12:15:00.000Z"
+  },
+  {
+    "title": "One Last Deal",
+    "url": "https://www.liff.nl/en/Program/Movie/one-last-deal/754/",
+    "date": "2018-11-10T13:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Polish Pearls ",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/polish-pearls",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T13:45:00.000Z"
+  },
+  {
+    "title": "The Trial: The state of Russia vs Oleg Sentsov",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-trial-the-state-of-russia-vs-oleg-sentsov",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T14:00:00.000Z"
+  },
+  {
+    "title": "Paradise '89",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/paradise-89",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T15:30:00.000Z"
+  },
+  {
     "title": "Autumn Sonata",
     "url": "https://www.lab111.nl/movie/autumn-sonata/",
     "cinema": "Lab111",
     "date": "2018-11-10T15:30:00.000Z"
   },
   {
+    "title": "Ivan",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/ivan",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T15:45:00.000Z"
+  },
+  {
+    "title": "Le Monde est à toi",
+    "url": "https://www.liff.nl/en/Program/Movie/le-monde-esttoi/721/",
+    "date": "2018-11-10T15:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Smuggling Hendrix",
+    "url": "https://www.liff.nl/en/Program/Movie/smuggling-hendrix/796/",
+    "date": "2018-11-10T15:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "date": "2018-11-10T16:00:00.000Z",
+    "title": "The Great War: La grande illusion (1937)",
+    "url": "https://kinorotterdam.nl/film/the-great-war-la-grande-illusion-1937/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Daybreak",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/daybreak",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T18:00:00.000Z"
+  },
+  {
+    "title": "Panic Attack",
+    "url": "https://www.liff.nl/en/Program/Movie/panic-attack/755/",
+    "date": "2018-11-10T18:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Posoki",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/posoki",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T18:15:00.000Z"
+  },
+  {
+    "title": "The Frog",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-frog",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T18:30:00.000Z"
+  },
+  {
+    "title": "Dede",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/dede",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T20:00:00.000Z"
+  },
+  {
+    "title": "All alone",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/all-alone",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T20:30:00.000Z"
+  },
+  {
+    "title": "The Miner",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-miner",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T20:45:00.000Z"
+  },
+  {
+    "title": "Au Poste!",
+    "url": "https://www.liff.nl/en/Program/Movie/au-poste/756/",
+    "date": "2018-11-11T10:30:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Balkan Shorts",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/balkan-shorts",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-11T11:15:00.000Z"
+  },
+  {
+    "title": "Polish/Ukrainian/Latvian Shorts ",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/polish-ukrainian-latvian-shorts",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-11T11:30:00.000Z"
+  },
+  {
+    "title": "Likemeback",
+    "url": "https://www.liff.nl/en/Program/Movie/likemeback/741/",
+    "date": "2018-11-11T12:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "El Ángel",
+    "url": "https://www.liff.nl/en/Program/Movie/el-ngel/746/",
+    "date": "2018-11-11T12:45:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Slovenian/Rumanian/Serbian Shorts ",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/slovenian-rumanian-serbian-shorts",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-11T13:00:00.000Z"
+  },
+  {
+    "title": "The Trial: The state of Russia vs Oleg Sentsov",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-trial-the-state-of-russia-vs-oleg-sentsov",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-11T13:15:00.000Z"
+  },
+  {
+    "title": "Bride of Frankenstein",
+    "url": "https://www.liff.nl/en/Program/Movie/bride-of-frankenstein/761/",
+    "date": "2018-11-11T14:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Occupation 1968",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/occupation-1968",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-11T14:45:00.000Z"
+  },
+  {
+    "title": "The Miner",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-miner",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-11T15:15:00.000Z"
+  },
+  {
+    "title": "When pigs come",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/when-pigs-come",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-11T17:30:00.000Z"
+  },
+  {
+    "title": "The Frog",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-frog",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-11T17:45:00.000Z"
+  },
+  {
+    "title": "Larks on a String",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/larks-on-a-string",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-11T18:00:00.000Z"
+  },
+  {
     "title": "Girl",
     "url": "https://www.hartlooper.nl/movies/1537/17/girl_english_subtitles",
     "cinema": "Louis Hartlooper Complex",
     "date": "2018-11-11T18:00:00.000Z"
+  },
+  {
+    "title": "Hotel Jugoslavija",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/hotel-jugoslavija",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-11T19:15:00.000Z"
+  },
+  {
+    "title": "Operation Red Sea",
+    "url": "https://www.liff.nl/en/Program/Movie/operation-red-sea/766/",
+    "date": "2018-11-11T20:15:00.000Z",
+    "cinema": "LIFF - Multiple locations"
   },
   {
     "title": "The Seventh Seal",
@@ -3556,6 +4174,12 @@
     "url": "https://www.lab111.nl/movie/girl-2/",
     "cinema": "Lab111",
     "date": "2018-11-15T18:00:00.000Z"
+  },
+  {
+    "date": "2018-11-17T15:00:00.000Z",
+    "title": "The Great War: The Life and Death of Colonel Blimp (1943)",
+    "url": "https://kinorotterdam.nl/film/the-great-war-the-life-and-death-of-colonel-blimp-1943/",
+    "cinema": "Kino"
   },
   {
     "title": "The Seventh Seal",
@@ -3588,6 +4212,12 @@
     "cinema": "Kino"
   },
   {
+    "date": "2018-11-18T16:00:00.000Z",
+    "title": "The Great War: Un long dimanche de fiancailles (2004) 35mm présentation",
+    "url": "https://kinorotterdam.nl/film/the-great-war-un-long-dimanche-de-fiancailles-2004-35mm-presentation/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Girl",
     "url": "https://www.lab111.nl/movie/girl-2/",
     "cinema": "Lab111",
@@ -3598,6 +4228,12 @@
     "url": "https://www.lab111.nl/movie/the-virgin-spring/",
     "cinema": "Lab111",
     "date": "2018-11-19T20:30:00.000Z"
+  },
+  {
+    "date": "2018-11-20T18:30:00.000Z",
+    "title": "The Great War: La grande illusion (1937)",
+    "url": "https://kinorotterdam.nl/film/the-great-war-la-grande-illusion-1937/",
+    "cinema": "Kino"
   },
   {
     "title": "Cowboy Bepop",
@@ -3630,6 +4266,12 @@
     "date": "2018-11-24T18:00:00.000Z"
   },
   {
+    "date": "2018-11-25T16:00:00.000Z",
+    "title": "The Great War: Westfront 1918: Vier von der Infanterie (1930)",
+    "url": "https://kinorotterdam.nl/film/the-great-war-westfront-1918-vier-von-der-infanterie-1930/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Girl",
     "url": "https://www.hartlooper.nl/movies/1537/17/girl_english_subtitles",
     "cinema": "Louis Hartlooper Complex",
@@ -3640,6 +4282,12 @@
     "url": "https://www.lab111.nl/movie/persona/",
     "cinema": "Lab111",
     "date": "2018-11-26T20:30:00.000Z"
+  },
+  {
+    "date": "2018-11-27T18:30:00.000Z",
+    "title": "The Great War: Un long dimanche de fiancailles (2004) 35mm présentation",
+    "url": "https://kinorotterdam.nl/film/the-great-war-un-long-dimanche-de-fiancailles-2004-35mm-presentation/",
+    "cinema": "Kino"
   },
   {
     "title": "Herfstsonate",
@@ -3654,16 +4302,40 @@
     "date": "2018-11-28T18:00:00.000Z"
   },
   {
+    "date": "2018-12-02T15:00:00.000Z",
+    "title": "The Great War: The Life and Death of Colonel Blimp (1943)",
+    "url": "https://kinorotterdam.nl/film/the-great-war-the-life-and-death-of-colonel-blimp-1943/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Cold War",
     "url": "https://www.springhaver.nl/movies/1576/17/cold_war_english_subtitles",
     "cinema": "Springhaver",
     "date": "2018-12-05T18:00:00.000Z"
   },
   {
+    "title": "The Rebel Surgeon",
+    "url": "https://www.lantarenvenster.nl/programma/the-rebel-surgeon/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-12-09T16:15:00.000Z"
+  },
+  {
     "title": "Cold War",
     "url": "https://www.hartlooper.nl/movies/1576/17/cold_war_english_subtitles",
     "cinema": "Louis Hartlooper Complex",
     "date": "2018-12-09T18:00:00.000Z"
+  },
+  {
+    "title": "Jaha's Promise",
+    "url": "https://www.lantarenvenster.nl/programma/jahas-promise/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-12-09T18:45:00.000Z"
+  },
+  {
+    "title": "Heart of the Matter",
+    "url": "https://www.lantarenvenster.nl/programma/heart-of-the-matter/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-12-09T20:30:00.000Z"
   },
   {
     "title": "Cold War",
