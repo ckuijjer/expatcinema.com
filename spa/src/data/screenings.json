@@ -3408,6 +3408,18 @@
     "date": "2018-10-27T19:30:00.000Z"
   },
   {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-10-28T13:45:00.000Z"
+  },
+  {
+    "title": "Spirited Away",
+    "url": "https://www.lab111.nl/movie/spirited-away/",
+    "cinema": "Lab111",
+    "date": "2018-10-28T15:15:00.000Z"
+  },
+  {
     "date": "2018-10-28T16:00:00.000Z",
     "title": "Tokyo Stories: Akira (1988) 30th Anniversary",
     "url": "https://kinorotterdam.nl/film/akira/",
@@ -3420,10 +3432,40 @@
     "date": "2018-10-28T18:00:00.000Z"
   },
   {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-28T18:10:00.000Z"
+  },
+  {
+    "title": "Niemand in de stad",
+    "url": "https://www.eyefilm.nl/en/film/niemand-in-de-stad",
+    "cinema": "Eye",
+    "date": "2018-10-28T20:20:00.000Z"
+  },
+  {
     "title": "Girl",
     "url": "https://www.lab111.nl/movie/girl-2/",
     "cinema": "Lab111",
     "date": "2018-10-28T20:30:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-29T09:30:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-29T13:30:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-29T15:15:00.000Z"
   },
   {
     "title": "Through A Glass Darkly",
@@ -3432,16 +3474,52 @@
     "date": "2018-10-29T18:00:00.000Z"
   },
   {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-29T18:10:00.000Z"
+  },
+  {
     "date": "2018-10-29T20:00:00.000Z",
     "title": "Expat Arthouse: Come and See (Idi i smotri – 1985)",
     "url": "https://kinorotterdam.nl/film/expat-arthouse-come-and-see-idi-i-smotri-1985/",
     "cinema": "Kino"
   },
   {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-10-29T20:15:00.000Z"
+  },
+  {
     "title": "Cries And Whispers",
     "url": "https://www.lab111.nl/movie/cries-and-whispers/",
     "cinema": "Lab111",
     "date": "2018-10-29T20:30:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-10-30T11:15:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-10-30T15:15:00.000Z"
+  },
+  {
+    "title": "Living the Light – Robby Müller",
+    "url": "https://www.eyefilm.nl/en/film/living-the-light-%E2%80%93-robby-m%C3%BCller",
+    "cinema": "Eye",
+    "date": "2018-10-30T15:30:00.000Z"
+  },
+  {
+    "title": "Herfstsonate",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/autumn-sonata",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-30T17:45:00.000Z"
   },
   {
     "title": "Akira",
@@ -3454,6 +3532,36 @@
     "title": "Tokyo Stories: Funeral Parade of Roses (1969)",
     "url": "https://kinorotterdam.nl/film/tokyo-stories-funeral-parade-of-roses-1969/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/stalker-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-31T10:30:00.000Z"
+  },
+  {
+    "title": "Niemand in de stad",
+    "url": "https://www.eyefilm.nl/en/film/niemand-in-de-stad",
+    "cinema": "Eye",
+    "date": "2018-10-31T12:30:00.000Z"
+  },
+  {
+    "title": "Den skyldige",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-31T13:15:00.000Z"
+  },
+  {
+    "title": "Las herederas",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/las-herederas-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-31T13:30:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/burning-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-31T15:00:00.000Z"
   },
   {
     "title": "Summer With Monika",
@@ -3474,6 +3582,36 @@
     "date": "2018-10-31T18:15:00.000Z"
   },
   {
+    "title": "Kom en zie",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/kom-en-zie-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-31T19:45:00.000Z"
+  },
+  {
+    "title": "Las herederas",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/las-herederas-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-10-31T19:45:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-10-31T20:15:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.eyefilm.nl/en/film/girl",
+    "cinema": "Eye",
+    "date": "2018-10-31T20:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.eyefilm.nl/en/film/girl",
+    "cinema": "Eye",
+    "date": "2018-11-01T15:15:00.000Z"
+  },
+  {
     "title": "Akira",
     "url": "https://www.lab111.nl/movie/akira/",
     "cinema": "Lab111",
@@ -3483,6 +3621,12 @@
     "title": "Panic Attack",
     "url": "https://www.liff.nl/en/Program/Movie/panic-attack/755/",
     "date": "2018-11-03T11:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Shoplifters: English Subtitles",
+    "url": "https://www.liff.nl/en/Program/Movie/shoplifters-english-subtitles/823/",
+    "date": "2018-11-03T13:15:00.000Z",
     "cinema": "LIFF - Multiple locations"
   },
   {
@@ -3496,6 +3640,12 @@
     "url": "https://www.lab111.nl/movie/through-a-glass-darkly/",
     "cinema": "Lab111",
     "date": "2018-11-03T15:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.eyefilm.nl/en/film/girl",
+    "cinema": "Eye",
+    "date": "2018-11-03T16:00:00.000Z"
   },
   {
     "title": "And Breathe Normally",
@@ -3516,8 +3666,8 @@
     "cinema": "Kino"
   },
   {
-    "title": "Cowboy Bepop",
-    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "title": "Cowboy Bebop: The Movie",
+    "url": "https://www.lab111.nl/movie/cowboy-bebop/",
     "cinema": "Lab111",
     "date": "2018-11-03T20:20:00.000Z"
   },
@@ -3555,6 +3705,12 @@
     "title": "Laugh or Die",
     "url": "https://www.liff.nl/en/Program/Movie/laugh-or-die/751/",
     "date": "2018-11-04T18:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Xangadix Lives!",
+    "url": "https://www.liff.nl/en/Program/Movie/xangadix-lives/817/",
+    "date": "2018-11-04T18:30:00.000Z",
     "cinema": "LIFF - Multiple locations"
   },
   {
@@ -3648,8 +3804,8 @@
     "cinema": "LIFF - Multiple locations"
   },
   {
-    "title": "Cowboy Bepop",
-    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "title": "Cowboy Bebop: The Movie",
+    "url": "https://www.lab111.nl/movie/cowboy-bebop/",
     "cinema": "Lab111",
     "date": "2018-11-06T18:00:00.000Z"
   },
@@ -3960,7 +4116,7 @@
     "date": "2018-11-10T12:00:00.000Z"
   },
   {
-    "title": "Slovenian/Rumanian/Serbian Shorts ",
+    "title": "Slovenian/Romanian/Serbian Shorts",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/slovenian-rumanian-serbian-shorts",
     "cinema": "Filmhuis Den Haag",
     "date": "2018-11-10T12:15:00.000Z"
@@ -4018,6 +4174,12 @@
     "title": "The Great War: La grande illusion (1937)",
     "url": "https://kinorotterdam.nl/film/the-great-war-la-grande-illusion-1937/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Sevdah",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/sevdah",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-10T16:45:00.000Z"
   },
   {
     "title": "Daybreak",
@@ -4092,7 +4254,7 @@
     "cinema": "LIFF - Multiple locations"
   },
   {
-    "title": "Slovenian/Rumanian/Serbian Shorts ",
+    "title": "Slovenian/Romanian/Serbian Shorts",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/slovenian-rumanian-serbian-shorts",
     "cinema": "Filmhuis Den Haag",
     "date": "2018-11-11T13:00:00.000Z"
@@ -4140,10 +4302,22 @@
     "date": "2018-11-11T18:00:00.000Z"
   },
   {
+    "title": "Shoplifters: English Subtitles",
+    "url": "https://www.liff.nl/en/Program/Movie/shoplifters-english-subtitles/823/",
+    "date": "2018-11-11T18:00:00.000Z",
+    "cinema": "LIFF - Multiple locations"
+  },
+  {
     "title": "Girl",
     "url": "https://www.hartlooper.nl/movies/1537/17/girl_english_subtitles",
     "cinema": "Louis Hartlooper Complex",
     "date": "2018-11-11T18:00:00.000Z"
+  },
+  {
+    "title": "Metropolis",
+    "url": "https://www.eyefilm.nl/en/film/metropolis-0",
+    "cinema": "Eye",
+    "date": "2018-11-11T19:00:00.000Z"
   },
   {
     "title": "Hotel Jugoslavija",
@@ -4156,6 +4330,12 @@
     "url": "https://www.liff.nl/en/Program/Movie/operation-red-sea/766/",
     "date": "2018-11-11T20:15:00.000Z",
     "cinema": "LIFF - Multiple locations"
+  },
+  {
+    "title": "Io Sono L’Amore",
+    "url": "https://www.lab111.nl/movie/io-sono-lamore/",
+    "cinema": "Lab111",
+    "date": "2018-11-12T20:15:00.000Z"
   },
   {
     "title": "The Seventh Seal",
@@ -4194,15 +4374,27 @@
     "cinema": "Kino"
   },
   {
-    "title": "Cowboy Bepop",
-    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "title": "Cowboy Bebop: The Movie",
+    "url": "https://www.lab111.nl/movie/cowboy-bebop/",
     "cinema": "Lab111",
     "date": "2018-11-17T18:00:00.000Z"
+  },
+  {
+    "title": "Io Sono L’Amore",
+    "url": "https://www.lab111.nl/movie/io-sono-lamore/",
+    "cinema": "Lab111",
+    "date": "2018-11-17T18:15:00.000Z"
   },
   {
     "date": "2018-11-17T20:30:00.000Z",
     "title": "La Notte: Cat People (1982)",
     "url": "https://kinorotterdam.nl/film/la-notte-cat-people-1982/",
+    "cinema": "Kino"
+  },
+  {
+    "date": "2018-11-17T20:45:00.000Z",
+    "title": "La Notte: By The Time It Gets Dark (2016)",
+    "url": "https://kinorotterdam.nl/film/la-notte-by-the-time-it-gets-dark-2016/",
     "cinema": "Kino"
   },
   {
@@ -4212,8 +4404,14 @@
     "cinema": "Kino"
   },
   {
+    "title": "Tehran Taboo - mtm on tour ",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/tehran-taboo-mtm-on-tour",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-18T13:00:00.000Z"
+  },
+  {
     "date": "2018-11-18T16:00:00.000Z",
-    "title": "The Great War: Un long dimanche de fiancailles (2004) 35mm présentation",
+    "title": "The Great War: Un long dimanche de fiançailles (2004) – 35mm présentation",
     "url": "https://kinorotterdam.nl/film/the-great-war-un-long-dimanche-de-fiancailles-2004-35mm-presentation/",
     "cinema": "Kino"
   },
@@ -4236,8 +4434,8 @@
     "cinema": "Kino"
   },
   {
-    "title": "Cowboy Bepop",
-    "url": "https://www.lab111.nl/movie/cowboy-bepop/",
+    "title": "Cowboy Bebop: The Movie",
+    "url": "https://www.lab111.nl/movie/cowboy-bebop/",
     "cinema": "Lab111",
     "date": "2018-11-20T20:30:00.000Z"
   },
@@ -4285,7 +4483,7 @@
   },
   {
     "date": "2018-11-27T18:30:00.000Z",
-    "title": "The Great War: Un long dimanche de fiancailles (2004) 35mm présentation",
+    "title": "The Great War: Un long dimanche de fiançailles (2004) – 35mm présentation",
     "url": "https://kinorotterdam.nl/film/the-great-war-un-long-dimanche-de-fiancailles-2004-35mm-presentation/",
     "cinema": "Kino"
   },
@@ -4312,6 +4510,12 @@
     "url": "https://www.springhaver.nl/movies/1576/17/cold_war_english_subtitles",
     "cinema": "Springhaver",
     "date": "2018-12-05T18:00:00.000Z"
+  },
+  {
+    "title": "The Poetess - mtm on tour",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-poetess-mtm-on-tour",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-09T13:00:00.000Z"
   },
   {
     "title": "The Rebel Surgeon",
@@ -4360,6 +4564,12 @@
     "url": "https://www.springhaver.nl/movies/1578/17/shoplifters_english_subtitles",
     "cinema": "Springhaver",
     "date": "2019-01-09T18:00:00.000Z"
+  },
+  {
+    "title": "STYX",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/styx",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-13T13:00:00.000Z"
   },
   {
     "title": "Shoplifters",
