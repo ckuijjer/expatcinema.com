@@ -26,6 +26,9 @@ const ClearButton = styled('div')({
   top: 8,
   width: 32,
   height: 32,
+  boxSizing: 'border-box',
+  paddingTop: 4,
+  paddingLeft: 4,
   cursor: 'pointer',
 })
 
