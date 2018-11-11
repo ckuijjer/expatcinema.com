@@ -14,8 +14,9 @@ const xray = Xray()
   .concurrency(3)
   .throttle(3, 300)
 
-const hasEnglishSubtitles = (movieMetadata = '') =>
-  movieMetadata.includes('Ondertiteling:  English')
+const hasEnglishSubtitles = ({ title = '', movieMetadata = '' }) =>
+  movieMetadata.includes('Ondertiteling:  English') ||
+  title.startsWith('Expat Arthouse: ')
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
@@ -31,7 +32,7 @@ const extractFromMoviePage = ({ url }) =>
       },
     ]),
   }).then(movie => {
-    if (!hasEnglishSubtitles(movie.movieMetadata)) return
+    if (!hasEnglishSubtitles(movie)) return
 
     const today = movie.timetableToday.map(time => {
       const [hour, minute] = splitTime(time)
@@ -76,7 +77,7 @@ const extractFromMoviePage = ({ url }) =>
       .map(dates =>
         dates.map(date => ({
           date,
-          title: movie.title,
+          title: movie.title.replace('Expat Arthouse: ', ''),
           url,
           cinema: 'Kino',
         })),
@@ -105,7 +106,7 @@ if (require.main === module) {
   //   .then(console.log)
 
   extractFromMoviePage({
-    url: 'https://kinorotterdam.nl/film/tokyo-stories-youth-of-the-beast-1963/',
+    url: 'https://kinorotterdam.nl/film/expat-arthouse-girl/',
   }).then(console.log)
 }
 
