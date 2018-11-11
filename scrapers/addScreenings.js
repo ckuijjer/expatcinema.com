@@ -4,7 +4,7 @@ const { spawnSync } = require('child_process')
 const { DateTime } = require('luxon')
 const R = require('ramda')
 
-const currentFilename = '../spa/src/data/screenings.json'
+const currentFilename = '../screenings.json'
 const currentContents = fs.readFileSync(currentFilename)
 const currentJSON = JSON.parse(currentContents)
 

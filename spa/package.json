@@ -19,12 +19,13 @@
     "react-virtualized": "^9.20.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "yarn get-current-screenings && react-scripts start",
+    "build": "yarn get-current-screenings && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "get-current-screenings": "node getCurrentScreenings"
   },
   "browserslist": {
     "development": [
@@ -37,5 +38,8 @@
       "not op_mini all",
       "ie 11"
     ]
+  },
+  "devDependencies": {
+    "luxon": "^1.6.2"
   }
 }
