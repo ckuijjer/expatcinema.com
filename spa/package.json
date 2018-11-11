@@ -15,7 +15,7 @@
     "react-easy-state": "^6.0.5",
     "react-emotion": "^9.2.8",
     "react-ga": "^2.5.3",
-    "react-scripts": "^2.0.5",
+    "react-scripts": "^2.1.1",
     "react-virtualized": "^9.20.1",
     "source-map-explorer": "^1.6.0"
   },
