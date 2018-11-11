@@ -31,6 +31,7 @@ const extractFromMoviePage = ({ url }) => {
             const { timetable, title } = movie
 
             debug('movie %j', movie)
+            debug('timetable %j', timetable)
 
             // it's a time if it's of the form e.g. 13.45
             const isTime = x => !!x.match(/\d+.\d+/)
@@ -62,7 +63,10 @@ const extractFromMoviePage = ({ url }) => {
               })
 
               times.forEach(time => {
-                const [hour, minute] = time.split('.').map(x => Number(x))
+                const [hour, minute] = time
+                  .split(/\s+/)[0] // e.g. 20.15 Uitverkocht => 20.15
+                  .split('.') // e.g. 20.15 to 20, 15
+                  .map(x => Number(x))
                 const year = guessYear(
                   DateTime.fromObject({
                     day,
@@ -129,23 +133,23 @@ const extractFromMainPage = () => {
 }
 
 if (require.main === module) {
-  const R = require('ramda')
-  const sort = R.sortWith([
-    (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),
-    R.ascend(R.prop('cinema')),
-    R.ascend(R.prop('title')),
-    R.ascend(R.prop('url')),
-  ])
+  // const R = require('ramda')
+  // const sort = R.sortWith([
+  //   (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),
+  //   R.ascend(R.prop('cinema')),
+  //   R.ascend(R.prop('title')),
+  //   R.ascend(R.prop('url')),
+  // ])
 
-  extractFromMainPage()
-    .then(sort)
-    .then(x => JSON.stringify(x, null, 2))
-    .then(console.log)
+  // extractFromMainPage()
+  //   .then(sort)
+  //   .then(x => JSON.stringify(x, null, 2))
+  //   .then(console.log)
 
-  // extractFromMoviePage({
-  //   url:
-  //     'https://www.filmhuisdenhaag.nl/agenda/event/den-skyldige-engelse-ondertiteling',
-  // }).then(console.log)
+  extractFromMoviePage({
+    // url: 'https://www.filmhuisdenhaag.nl/agenda/event/hotel-jugoslavija',
+    url: 'https://www.filmhuisdenhaag.nl/agenda/event/girl',
+  }).then(console.log)
 }
 
 module.exports = extractFromMainPage
