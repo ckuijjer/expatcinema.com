@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 import { view } from 'react-easy-state'
 import { params, setParams } from 'react-easy-params'
 
-import Cross from './Cross'
+import { ReactComponent as Cross } from './cross.svg'
 
 const Container = styled('div')({
   position: 'relative',
