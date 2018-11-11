@@ -6,17 +6,18 @@
   "dependencies": {
     "axios": "^0.18.0",
     "emotion": "^9.2.8",
-    "gh-pages": "^1.2.0",
-    "luxon": "^1.3.3",
+    "gh-pages": "^2.0.1",
+    "luxon": "^1.6.2",
     "ramda": "^0.25.0",
     "react": "^16.7.0-alpha.0",
     "react-dom": "^16.7.0-alpha.0",
     "react-easy-params": "^2.0.2",
-    "react-easy-state": "^5.1.0",
+    "react-easy-state": "^6.0.5",
     "react-emotion": "^9.2.8",
     "react-ga": "^2.5.3",
     "react-scripts": "^2.0.5",
-    "react-virtualized": "^9.20.1"
+    "react-virtualized": "^9.20.1",
+    "source-map-explorer": "^1.6.0"
   },
   "scripts": {
     "start": "yarn get-current-screenings && react-scripts start",
@@ -25,7 +26,8 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "get-current-screenings": "node getCurrentScreenings"
+    "get-current-screenings": "node getCurrentScreenings",
+    "analyze": "ls build/static/js/*js | xargs -I {} source-map-explorer {}"
   },
   "browserslist": {
     "development": [
@@ -38,8 +40,5 @@
       "not op_mini all",
       "ie 11"
     ]
-  },
-  "devDependencies": {
-    "luxon": "^1.6.2"
   }
 }
