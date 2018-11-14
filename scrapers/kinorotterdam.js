@@ -106,7 +106,7 @@ if (require.main === module) {
   //   .then(console.log)
 
   extractFromMoviePage({
-    url: 'https://kinorotterdam.nl/film/expat-arthouse-girl/',
+    url: 'https://kinorotterdam.nl/film/movies-that-matter-tehran-taboo/',
   }).then(console.log)
 }
 
