@@ -2382,12 +2382,6 @@
     "date": "2018-10-12T17:15:00.000Z"
   },
   {
-    "title": "Girl",
-    "url": "https://kinorotterdam.nl/film/expat-arthouse-girl/",
-    "cinema": "Kino",
-    "date": "2018-11-12T18:00:00.000Z"
-  },
-  {
     "title": "KLIK - Shorts 7: A Creative Life",
     "url": "https://www.eyefilm.nl/en/film/klik-shorts-7-a-creative-life",
     "cinema": "Eye",
@@ -4590,6 +4584,12 @@
     "date": "2018-11-12T17:45:00.000Z"
   },
   {
+    "title": "Girl",
+    "url": "https://kinorotterdam.nl/film/expat-arthouse-girl/",
+    "cinema": "Kino",
+    "date": "2018-11-12T18:00:00.000Z"
+  },
+  {
     "title": "Funny Games (1997)",
     "url": "https://kriterion.nl/films/funny-games-1997-",
     "cinema": "Kriterion",
@@ -4752,6 +4752,12 @@
     "date": "2018-11-15T15:15:00.000Z"
   },
   {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-11-15T15:15:00.000Z"
+  },
+  {
     "title": "Girl",
     "url": "https://www.eyefilm.nl/en/film/girl",
     "cinema": "Eye",
@@ -4770,16 +4776,46 @@
     "date": "2018-11-15T18:00:00.000Z"
   },
   {
+    "title": "Kom En Zie (Idi I Smotri)",
+    "url": "https://www.lab111.nl/movie/idi-i-smotri/",
+    "cinema": "Lab111",
+    "date": "2018-11-15T20:15:00.000Z"
+  },
+  {
     "title": "IDFA - René",
     "url": "https://www.eyefilm.nl/en/film/idfa-ren%C3%A9",
     "cinema": "Eye",
     "date": "2018-11-15T20:30:00.000Z"
   },
   {
+    "title": "Herfstsonate",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/autumn-sonata",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-16T10:00:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-11-16T13:15:00.000Z"
+  },
+  {
     "title": "IDFA - To the Four Winds",
     "url": "https://www.eyefilm.nl/en/film/idfa-to-the-four-winds",
     "cinema": "Eye",
     "date": "2018-11-16T13:30:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-11-16T15:15:00.000Z"
+  },
+  {
+    "title": "Niemand in de stad",
+    "url": "https://www.eyefilm.nl/en/film/niemand-in-de-stad",
+    "cinema": "Eye",
+    "date": "2018-11-16T18:00:00.000Z"
   },
   {
     "title": "IDFA - Marceline. A Woman. A Century",
@@ -4792,6 +4828,12 @@
     "url": "https://www.eyefilm.nl/en/film/idfa-central-airport-thf-doc-talk",
     "cinema": "Eye",
     "date": "2018-11-16T20:00:00.000Z"
+  },
+  {
+    "title": "Kom En Zie (Idi I Smotri)",
+    "url": "https://www.lab111.nl/movie/idi-i-smotri/",
+    "cinema": "Lab111",
+    "date": "2018-11-16T20:15:00.000Z"
   },
   {
     "title": "IDFA - When the War Comes",
@@ -4818,6 +4860,12 @@
     "date": "2018-11-17T12:30:00.000Z"
   },
   {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-11-17T13:15:00.000Z"
+  },
+  {
     "title": "IDFA - Putin’s Witnesses",
     "url": "https://www.eyefilm.nl/en/film/idfa-putin%E2%80%99s-witnesses",
     "cinema": "Eye",
@@ -4830,6 +4878,12 @@
     "cinema": "Kino"
   },
   {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-11-17T15:15:00.000Z"
+  },
+  {
     "title": "IDFA - Absence + Doc Talk",
     "url": "https://www.eyefilm.nl/en/film/idfa-absence-doc-talk",
     "cinema": "Eye",
@@ -4840,6 +4894,12 @@
     "url": "https://www.lab111.nl/movie/the-seventh-seal/",
     "cinema": "Lab111",
     "date": "2018-11-17T15:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.eyefilm.nl/en/film/girl",
+    "cinema": "Eye",
+    "date": "2018-11-17T16:00:00.000Z"
   },
   {
     "title": "IDFA - Sheep Hero",
@@ -4884,6 +4944,12 @@
     "cinema": "Kino"
   },
   {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-11-17T20:45:00.000Z"
+  },
+  {
     "date": "2018-11-17T23:15:00.000Z",
     "title": "La Notte: Legowelt scores Nosferatu (1979)",
     "url": "https://kinorotterdam.nl/film/la-notte-cinema-concert/",
@@ -4899,6 +4965,12 @@
     "title": "IDFA - The Seine Meets Paris & Prague: The Restless Heart of Europe",
     "url": "https://www.eyefilm.nl/en/film/idfa-the-seine-meets-paris-prague-the-restless-heart-of-europe",
     "cinema": "Eye",
+    "date": "2018-11-18T09:30:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
     "date": "2018-11-18T09:30:00.000Z"
   },
   {
@@ -4920,10 +4992,28 @@
     "date": "2018-11-18T13:00:00.000Z"
   },
   {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-11-18T13:15:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-11-18T14:00:00.000Z"
+  },
+  {
     "title": "IDFA - ‘Now something  is slowly changing’",
     "url": "https://www.eyefilm.nl/en/film/idfa-%E2%80%98now-something-is-slowly-changing%E2%80%99",
     "cinema": "Eye",
     "date": "2018-11-18T15:00:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-11-18T15:15:00.000Z"
   },
   {
     "title": "IDFA - Victory Day + Doc Talk",
@@ -4956,6 +5046,12 @@
     "date": "2018-11-18T18:45:00.000Z"
   },
   {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-11-18T20:15:00.000Z"
+  },
+  {
     "title": "IDFA - Bellingcat – Truth in a Post-truth World",
     "url": "https://www.eyefilm.nl/en/film/idfa-bellingcat-%E2%80%93-truth-in-a-post-truth-world",
     "cinema": "Eye",
@@ -4986,6 +5082,12 @@
     "date": "2018-11-19T14:00:00.000Z"
   },
   {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-11-19T15:15:00.000Z"
+  },
+  {
     "title": "IDFA - Father and Son + Doc Talk",
     "url": "https://www.eyefilm.nl/en/film/idfa-father-and-son-doc-talk",
     "cinema": "Eye",
@@ -5010,10 +5112,28 @@
     "date": "2018-11-19T20:00:00.000Z"
   },
   {
+    "date": "2018-11-19T20:00:00.000Z",
+    "title": "Gräns",
+    "url": "https://kinorotterdam.nl/film/expat-arthouse-grans/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "A Bigger Splash",
+    "url": "https://www.lab111.nl/movie/a-bigger-splash/",
+    "cinema": "Lab111",
+    "date": "2018-11-19T20:15:00.000Z"
+  },
+  {
     "title": "The Virgin Spring",
     "url": "https://www.lab111.nl/movie/the-virgin-spring/",
     "cinema": "Lab111",
     "date": "2018-11-19T20:30:00.000Z"
+  },
+  {
+    "title": "The Act of Killing",
+    "url": "https://kriterion.nl/films/the-act-of-killing",
+    "cinema": "Kriterion",
+    "date": "2018-11-19T21:00:00.000Z"
   },
   {
     "title": "IDFA - Kabul, City in the Wind",
@@ -5040,6 +5160,12 @@
     "date": "2018-11-20T15:00:00.000Z"
   },
   {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-11-20T15:15:00.000Z"
+  },
+  {
     "title": "IDFA - Father and Son on a Journey + Doc Talk",
     "url": "https://www.eyefilm.nl/en/film/idfa-father-and-son-on-a-journey-doc-talk",
     "cinema": "Eye",
@@ -5064,6 +5190,12 @@
     "cinema": "Kino"
   },
   {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-11-20T20:15:00.000Z"
+  },
+  {
     "title": "IDFA - The Greatest Sacrifice",
     "url": "https://www.eyefilm.nl/en/film/idfa-the-greatest-sacrifice",
     "cinema": "Eye",
@@ -5080,6 +5212,12 @@
     "url": "https://www.eyefilm.nl/en/film/idfa-manu",
     "cinema": "Eye",
     "date": "2018-11-20T21:00:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-21T09:30:00.000Z"
   },
   {
     "title": "IDFA - 66 Seasons",
@@ -5100,10 +5238,40 @@
     "date": "2018-11-21T12:30:00.000Z"
   },
   {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-21T12:30:00.000Z"
+  },
+  {
+    "title": "Las herederas",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/las-herederas-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-21T13:45:00.000Z"
+  },
+  {
     "title": "IDFA - The Hidden City",
     "url": "https://www.eyefilm.nl/en/film/idfa-the-hidden-city",
     "cinema": "Eye",
     "date": "2018-11-21T14:15:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/burning-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-21T14:30:00.000Z"
+  },
+  {
+    "title": "Gräns",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/grans-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-21T15:15:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-11-21T15:15:00.000Z"
   },
   {
     "title": "IDFA - The Border Fence + Doc Talk",
@@ -5112,10 +5280,22 @@
     "date": "2018-11-21T15:30:00.000Z"
   },
   {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-11-21T16:00:00.000Z"
+  },
+  {
     "title": "IDFA - Bridges of Time",
     "url": "https://www.eyefilm.nl/en/film/idfa-bridges-of-time",
     "cinema": "Eye",
     "date": "2018-11-21T16:30:00.000Z"
+  },
+  {
+    "title": "Las herederas",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/las-herederas-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-21T17:30:00.000Z"
   },
   {
     "title": "Through A Glass Darkly",
@@ -5125,9 +5305,27 @@
   },
   {
     "title": "Girl",
+    "url": "https://www.eyefilm.nl/en/film/girl",
+    "cinema": "Eye",
+    "date": "2018-11-21T17:45:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-21T17:45:00.000Z"
+  },
+  {
+    "title": "Girl",
     "url": "https://www.springhaver.nl/movies/1537/17/girl_english_subtitles",
     "cinema": "Springhaver",
     "date": "2018-11-21T18:00:00.000Z"
+  },
+  {
+    "date": "2018-11-21T18:15:00.000Z",
+    "title": "Movies that Matter: Tehran Taboo",
+    "url": "https://kinorotterdam.nl/film/movies-that-matter-tehran-taboo/",
+    "cinema": "Kino"
   },
   {
     "title": "IDFA - Trapped in the City of a Thousand Mountains & Quand tout le monde dort",
@@ -5136,10 +5334,22 @@
     "date": "2018-11-21T18:30:00.000Z"
   },
   {
-    "date": "2018-11-21T18:30:00.000Z",
-    "title": "Movies that Matter: Tehran Taboo",
-    "url": "https://kinorotterdam.nl/film/movies-that-matter-tehran-taboo/",
-    "cinema": "Kino"
+    "title": "Burning",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/burning-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-21T19:45:00.000Z"
+  },
+  {
+    "title": "Kom En Zie (Idi I Smotri)",
+    "url": "https://www.lab111.nl/movie/idi-i-smotri/",
+    "cinema": "Lab111",
+    "date": "2018-11-21T20:15:00.000Z"
+  },
+  {
+    "title": "Gräns",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/grans-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-11-21T20:40:00.000Z"
   },
   {
     "title": "IDFA - To Be Continued",
@@ -5238,6 +5448,12 @@
     "date": "2018-11-24T15:15:00.000Z"
   },
   {
+    "title": "A Bigger Splash",
+    "url": "https://www.lab111.nl/movie/a-bigger-splash/",
+    "cinema": "Lab111",
+    "date": "2018-11-24T17:30:00.000Z"
+  },
+  {
     "title": "IDFA - The Trial",
     "url": "https://www.eyefilm.nl/en/film/idfa-the-trial",
     "cinema": "Eye",
@@ -5328,16 +5544,34 @@
     "date": "2018-11-28T20:30:00.000Z"
   },
   {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2018-11-29T18:15:00.000Z"
+  },
+  {
     "date": "2018-12-02T15:00:00.000Z",
     "title": "The Great War: The Life and Death of Colonel Blimp (1943)",
     "url": "https://kinorotterdam.nl/film/the-great-war-the-life-and-death-of-colonel-blimp-1943/",
     "cinema": "Kino"
   },
   {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2018-12-03T20:15:00.000Z"
+  },
+  {
     "title": "Cold War",
     "url": "https://www.springhaver.nl/movies/1576/17/cold_war_english_subtitles",
     "cinema": "Springhaver",
     "date": "2018-12-05T18:00:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2018-12-06T20:15:00.000Z"
   },
   {
     "title": "The Poetess - mtm on tour",
@@ -5368,6 +5602,36 @@
     "url": "https://www.lantarenvenster.nl/programma/heart-of-the-matter/",
     "cinema": "Lantarenvenster",
     "date": "2018-12-09T20:30:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2018-12-10T18:15:00.000Z"
+  },
+  {
+    "title": "The Marriage",
+    "url": "https://www.lantarenvenster.nl/programma/the-marriage/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-12-11T18:00:00.000Z"
+  },
+  {
+    "title": "Hard Paint",
+    "url": "https://www.lantarenvenster.nl/programma/hard-paint/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-12-11T20:00:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2018-12-14T15:30:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2018-12-17T15:30:00.000Z"
   },
   {
     "title": "RocKabul",
