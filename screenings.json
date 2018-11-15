@@ -5322,7 +5322,13 @@
     "date": "2018-11-21T18:00:00.000Z"
   },
   {
-    "date": "2018-11-21T18:15:00.000Z",
+    "title": "Girl",
+    "cinema": "Kijkhuis",
+    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Girl/1784",
+    "date": "2018-11-21T18:15:00.000Z"
+  },
+  {
+    "date": "2018-11-21T18:30:00.000Z",
     "title": "Movies that Matter: Tehran Taboo",
     "url": "https://kinorotterdam.nl/film/movies-that-matter-tehran-taboo/",
     "cinema": "Kino"
@@ -5526,6 +5532,12 @@
     "date": "2018-11-28T18:00:00.000Z"
   },
   {
+    "date": "2018-11-28T18:00:00.000Z",
+    "title": "Expat Preview: Shoplifters (English subs)",
+    "url": "https://kinorotterdam.nl/film/expat-preview-shoplifters-english-subs/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Autumn Sonata",
     "url": "https://www.lab111.nl/movie/autumn-sonata/",
     "cinema": "Lab111",
@@ -5560,6 +5572,12 @@
     "url": "https://www.lab111.nl/movie/ida/",
     "cinema": "Lab111",
     "date": "2018-12-03T20:15:00.000Z"
+  },
+  {
+    "date": "2018-12-04T18:00:00.000Z",
+    "title": "Expat Preview: Shoplifters (English subs)",
+    "url": "https://kinorotterdam.nl/film/expat-preview-shoplifters-english-subs/",
+    "cinema": "Kino"
   },
   {
     "title": "Cold War",
@@ -5610,6 +5628,12 @@
     "date": "2018-12-10T18:15:00.000Z"
   },
   {
+    "date": "2018-12-10T20:30:00.000Z",
+    "title": "Cold War",
+    "url": "https://kinorotterdam.nl/film/expat-arthouse-cold-war/",
+    "cinema": "Kino"
+  },
+  {
     "title": "The Marriage",
     "url": "https://www.lantarenvenster.nl/programma/the-marriage/",
     "cinema": "Lantarenvenster",
@@ -5620,6 +5644,12 @@
     "url": "https://www.lantarenvenster.nl/programma/hard-paint/",
     "cinema": "Lantarenvenster",
     "date": "2018-12-11T20:00:00.000Z"
+  },
+  {
+    "title": "The Ballad Of Narayama",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-ballad-of-narayama",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-12T18:00:00.000Z"
   },
   {
     "title": "Ida",
@@ -5658,6 +5688,12 @@
     "date": "2018-12-21T20:15:00.000Z"
   },
   {
+    "title": "Throne of Blood",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/throne-of-blood",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-23T18:00:00.000Z"
+  },
+  {
     "title": "Cold War",
     "url": "https://www.hartlooper.nl/movies/1576/17/cold_war_english_subtitles",
     "cinema": "Louis Hartlooper Complex",
@@ -5670,6 +5706,12 @@
     "date": "2019-01-09T18:00:00.000Z"
   },
   {
+    "title": "The Ballad Of Narayama",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-ballad-of-narayama",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-11T18:00:00.000Z"
+  },
+  {
     "title": "STYX",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/styx",
     "cinema": "Filmhuis Den Haag",
@@ -5680,6 +5722,12 @@
     "url": "https://www.hartlooper.nl/movies/1578/17/shoplifters_english_subtitles",
     "cinema": "Louis Hartlooper Complex",
     "date": "2019-01-13T18:00:00.000Z"
+  },
+  {
+    "title": "Throne of Blood",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/throne-of-blood",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-16T18:00:00.000Z"
   },
   {
     "date": "2019-01-16T18:30:00.000Z",
@@ -5698,5 +5746,17 @@
     "url": "https://www.hartlooper.nl/movies/1578/17/shoplifters_english_subtitles",
     "cinema": "Louis Hartlooper Complex",
     "date": "2019-01-27T18:00:00.000Z"
+  },
+  {
+    "title": "Throne of Blood",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/throne-of-blood",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-02-09T18:00:00.000Z"
+  },
+  {
+    "title": "The Ballad Of Narayama",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-ballad-of-narayama",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-02-10T13:15:00.000Z"
   }
 ]
