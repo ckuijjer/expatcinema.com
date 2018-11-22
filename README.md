@@ -6,6 +6,8 @@
 1. `yarn analyze` to run some analysis on the scraper log output
 1. `yarn compare_filtered` to compare the latest scrape with the latest scrape with filtering rules applied
 1. `yarn compare_screenings` to compare the current screenings with the latest scrape (note that the order of the comparison is confusing, screenings.json is on the right so it's editable in VS Code)
+1. `yarn compare_screenings_kdiff` to compare using kdiff3
+1. `yarn compare_screenings_bcompare` to compare using Beyond Compare
 1. Manually remove removed movies from screenings.json
 1. `yarn add_screenings` to add the newest scrape output to spa/data/screenings.json
 1. Compare changes manually, also looking at movies that might've changed just e.g. 15 minutes, commit and deploy
