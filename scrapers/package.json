@@ -10,6 +10,8 @@
     "compare_filtered": "code --diff $(ls -t output/*_all.json | head -1) $(ls -t output/*_all_filtered.json | head -1)",
     "compare_screenings": "code --diff $(ls -t output/*_all_filtered.json | head -1) ../screenings.json",
     "compare_screenings_kdiff": "/Applications/kdiff3.app/Contents/MacOS/kdiff3 $(ls -t output/*_all_filtered.json | head -1) ../screenings.json",
+    "compare_screenings_bcompare": "bcompare $(ls -t output/*_all_filtered.json | head -1) ../screenings.json",
+    "compare_screenings_fork": "fork $(ls -t output/*_all_filtered.json | head -1) ../screenings.json",
     "add_screenings": "./addScreenings.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
