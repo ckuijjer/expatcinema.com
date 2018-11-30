@@ -5856,10 +5856,70 @@
     "date": "2018-11-29T18:15:00.000Z"
   },
   {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-11-30T12:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.eyefilm.nl/en/film/girl",
+    "cinema": "Eye",
+    "date": "2018-11-30T16:00:00.000Z"
+  },
+  {
     "title": "Ghost in the Shell",
     "url": "https://www.eyefilm.nl/en/film/ghost-in-the-shell-0",
     "cinema": "Eye",
     "date": "2018-11-30T20:15:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-12-01T09:30:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-12-01T15:30:00.000Z"
+  },
+  {
+    "title": "Niemand in de stad",
+    "url": "https://www.eyefilm.nl/en/film/niemand-in-de-stad",
+    "cinema": "Eye",
+    "date": "2018-12-01T15:45:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.eyefilm.nl/en/film/girl",
+    "cinema": "Eye",
+    "date": "2018-12-01T16:00:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-01T19:30:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-12-02T11:35:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-12-02T12:45:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-12-02T13:15:00.000Z"
   },
   {
     "date": "2018-12-02T15:00:00.000Z",
@@ -5868,16 +5928,202 @@
     "cinema": "Kino"
   },
   {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-12-02T15:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-02T20:00:00.000Z"
+  },
+  {
+    "title": "Jij bent mijn vriend",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/jij-bent-mijn-vriend-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T09:45:00.000Z"
+  },
+  {
+    "title": "Gräns",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/grans-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T10:15:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/burning-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T11:30:00.000Z"
+  },
+  {
+    "title": "Leaning into the wind",
+    "url": "https://www.lantarenvenster.nl/programma/leaning-into-the-wind/",
+    "cinema": "Lantarenvenster",
+    "date": "2018-12-03T11:30:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-12-03T12:00:00.000Z"
+  },
+  {
+    "title": "Good manners",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/good-manners-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T12:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T12:45:00.000Z"
+  },
+  {
+    "title": "Las herederas",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/las-herederas-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T13:00:00.000Z"
+  },
+  {
+    "title": "De chaque instant",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/de-chaque-instant-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T15:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T17:30:00.000Z"
+  },
+  {
+    "title": "Gräns",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/grans-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T18:00:00.000Z"
+  },
+  {
+    "title": "Jij bent mijn vriend",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/jij-bent-mijn-vriend-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T18:00:00.000Z"
+  },
+  {
+    "title": "Good manners",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/good-manners-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-03T20:15:00.000Z"
+  },
+  {
     "title": "Ida",
     "url": "https://www.lab111.nl/movie/ida/",
     "cinema": "Lab111",
     "date": "2018-12-03T20:15:00.000Z"
   },
   {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-12-04T12:00:00.000Z"
+  },
+  {
     "date": "2018-12-04T18:00:00.000Z",
     "title": "Expat Preview: Shoplifters (English subs)",
     "url": "https://kinorotterdam.nl/film/expat-preview-shoplifters-english-subs/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Jij bent mijn vriend",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/jij-bent-mijn-vriend-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T09:45:00.000Z"
+  },
+  {
+    "title": "Gräns",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/grans-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T10:15:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/burning-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T11:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T11:30:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-12-05T12:00:00.000Z"
+  },
+  {
+    "title": "Good manners",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/good-manners-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T12:30:00.000Z"
+  },
+  {
+    "title": "Las herederas",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/las-herederas-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T13:00:00.000Z"
+  },
+  {
+    "title": "De chaque instant",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/de-chaque-instant-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T15:15:00.000Z"
+  },
+  {
+    "title": "Burning",
+    "url": "https://www.lab111.nl/movie/burning/",
+    "cinema": "Lab111",
+    "date": "2018-12-05T15:15:00.000Z"
+  },
+  {
+    "title": "Amsterdam Wildlife",
+    "url": "https://www.eyefilm.nl/en/film/amsterdam-wildlife",
+    "cinema": "Eye",
+    "date": "2018-12-05T16:00:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T17:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.eyefilm.nl/en/film/girl",
+    "cinema": "Eye",
+    "date": "2018-12-05T18:00:00.000Z"
+  },
+  {
+    "title": "Gräns",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/grans-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T18:00:00.000Z"
+  },
+  {
+    "title": "Jij bent mijn vriend",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/jij-bent-mijn-vriend-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T18:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "cinema": "Kijkhuis",
+    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Shoplifters/1830",
+    "date": "2018-12-05T18:00:00.000Z"
   },
   {
     "title": "Cold War",
@@ -5890,6 +6136,30 @@
     "url": "https://www.eyefilm.nl/en/film/ghost-in-the-shell-0",
     "cinema": "Eye",
     "date": "2018-12-05T20:15:00.000Z"
+  },
+  {
+    "title": "Good manners",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/good-manners-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-05T20:30:00.000Z"
+  },
+  {
+    "date": "2018-12-05T20:40:00.000Z",
+    "title": "Suspiria (2018)",
+    "url": "https://kinorotterdam.nl/film/expat-arthouse-suspiria-2018/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-05T20:45:00.000Z"
+  },
+  {
+    "title": "Shortcutz Festival",
+    "url": "https://kriterion.nl/films/shortcutz-festival",
+    "cinema": "Kriterion",
+    "date": "2018-12-06T18:30:00.000Z"
   },
   {
     "title": "Ida",
@@ -5976,6 +6246,12 @@
     "date": "2018-12-17T15:30:00.000Z"
   },
   {
+    "title": "Animal Farm",
+    "url": "https://kriterion.nl/films/animal-farm",
+    "cinema": "Kriterion",
+    "date": "2018-12-17T21:00:00.000Z"
+  },
+  {
     "title": "RocKabul",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/roc-kabul",
     "cinema": "Filmhuis Den Haag",
@@ -6012,6 +6288,12 @@
     "date": "2018-12-23T18:00:00.000Z"
   },
   {
+    "date": "2019-01-03T19:15:00.000Z",
+    "title": "Roma (Netflix cinema special)",
+    "url": "https://kinorotterdam.nl/film/roma/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Shoplifters",
     "url": "https://www.springhaver.nl/movies/1578/17/shoplifters_english_subtitles",
     "cinema": "Springhaver",
@@ -6022,6 +6304,12 @@
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/the-ballad-of-narayama",
     "cinema": "Filmhuis Den Haag",
     "date": "2019-01-11T18:00:00.000Z"
+  },
+  {
+    "title": "Afternoon",
+    "url": "https://www.eyefilm.nl/en/film/afternoon",
+    "cinema": "Eye",
+    "date": "2019-01-12T15:30:00.000Z"
   },
   {
     "title": "STYX",
@@ -6052,6 +6340,12 @@
     "url": "https://www.springhaver.nl/movies/1578/17/shoplifters_english_subtitles",
     "cinema": "Springhaver",
     "date": "2019-01-23T18:00:00.000Z"
+  },
+  {
+    "title": "Afternoon",
+    "url": "https://www.eyefilm.nl/en/film/afternoon",
+    "cinema": "Eye",
+    "date": "2019-01-24T15:00:00.000Z"
   },
   {
     "title": "Shoplifters",
