@@ -6463,7 +6463,7 @@
   },
   {
     "date": "2018-12-12T18:00:00.000Z",
-    "title": "Expat Preview: Shoplifters (English subs)",
+    "title": "Shoplifters (EN subs)",
     "url": "https://kinorotterdam.nl/film/expat-preview-shoplifters-english-subs/",
     "cinema": "Kino"
   },
@@ -6480,10 +6480,28 @@
     "date": "2018-12-12T20:30:00.000Z"
   },
   {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2018-12-12T20:30:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-12-13T12:00:00.000Z"
+  },
+  {
     "title": "Il Conformista",
     "url": "https://www.lab111.nl/movie/il-conformista/",
     "cinema": "Lab111",
     "date": "2018-12-13T18:00:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-13T20:00:00.000Z"
   },
   {
     "title": "Ida",
@@ -6498,10 +6516,154 @@
     "date": "2018-12-14T19:30:00.000Z"
   },
   {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-12-15T13:15:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.eyefilm.nl/en/film/girl",
+    "cinema": "Eye",
+    "date": "2018-12-15T16:00:00.000Z"
+  },
+  {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2018-12-15T17:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-15T20:15:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-12-16T11:00:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-12-16T13:15:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-16T20:00:00.000Z"
+  },
+  {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2018-12-16T20:30:00.000Z"
+  },
+  {
+    "title": "Jij bent mijn vriend",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/jij-bent-mijn-vriend-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T09:15:00.000Z"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T09:30:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-12-17T12:00:00.000Z"
+  },
+  {
+    "title": "Heartbound",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/heartbound-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T13:00:00.000Z"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T13:15:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T13:30:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/shoplifters-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T15:00:00.000Z"
+  },
+  {
+    "title": "Todos Lo Saben",
+    "url": "https://www.lab111.nl/movie/todos-lo-saben/",
+    "cinema": "Lab111",
+    "date": "2018-12-17T15:00:00.000Z"
+  },
+  {
     "title": "Ida",
     "url": "https://www.lab111.nl/movie/ida/",
     "cinema": "Lab111",
     "date": "2018-12-17T15:30:00.000Z"
+  },
+  {
+    "title": "De chaque instant",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/de-chaque-instant-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T15:45:00.000Z"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T17:45:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T17:45:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/shoplifters-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T20:00:00.000Z"
+  },
+  {
+    "date": "2018-12-17T20:00:00.000Z",
+    "title": "Shoplifters (EN subs)",
+    "url": "https://kinorotterdam.nl/film/expat-preview-shoplifters-english-subs/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-17T20:00:00.000Z"
+  },
+  {
+    "title": "Heartbound",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/heartbound-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-17T20:15:00.000Z"
+  },
+  {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2018-12-17T20:30:00.000Z"
   },
   {
     "title": "Animal Farm",
@@ -6510,10 +6672,106 @@
     "date": "2018-12-17T21:00:00.000Z"
   },
   {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-12-18T12:00:00.000Z"
+  },
+  {
+    "title": "Todos Lo Saben",
+    "url": "https://www.lab111.nl/movie/todos-lo-saben/",
+    "cinema": "Lab111",
+    "date": "2018-12-18T15:00:00.000Z"
+  },
+  {
     "title": "RocKabul",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/roc-kabul",
     "cinema": "Filmhuis Den Haag",
     "date": "2018-12-18T18:00:00.000Z"
+  },
+  {
+    "date": "2018-12-18T18:05:00.000Z",
+    "title": "Cold War (EN subs)",
+    "url": "https://kinorotterdam.nl/film/expat-arthouse-cold-war/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T09:30:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/shoplifters-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T10:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/shoplifters-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T11:45:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-12-19T12:00:00.000Z"
+  },
+  {
+    "title": "Heartbound",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/heartbound-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T13:00:00.000Z"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T13:15:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T13:30:00.000Z"
+  },
+  {
+    "title": "Todos Lo Saben",
+    "url": "https://www.lab111.nl/movie/todos-lo-saben/",
+    "cinema": "Lab111",
+    "date": "2018-12-19T15:00:00.000Z"
+  },
+  {
+    "title": "De chaque instant",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/de-chaque-instant-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T15:45:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.eyefilm.nl/en/film/girl",
+    "cinema": "Eye",
+    "date": "2018-12-19T16:00:00.000Z"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T17:45:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T17:45:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "cinema": "Kijkhuis",
+    "url": "https://www.bioscopenleiden.nl/films/Expat-Cinema%3a-Shoplifters/1830",
+    "date": "2018-12-19T18:00:00.000Z"
   },
   {
     "title": "Cold War",
@@ -6526,6 +6784,24 @@
     "title": "Movies that Matter: The Poetess",
     "url": "https://kinorotterdam.nl/film/movies-that-matter-the-poetess/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T19:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-19T20:00:00.000Z"
+  },
+  {
+    "title": "Heartbound",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/heartbound-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2018-12-19T20:15:00.000Z"
   },
   {
     "title": "Dag van de korte film",
@@ -6558,12 +6834,6 @@
     "date": "2018-12-23T20:40:00.000Z"
   },
   {
-    "title": "Umberto D.",
-    "url": "https://kriterion.nl/films/umberto-d-",
-    "cinema": "Kriterion",
-    "date": "2018-12-24T19:00:00.000Z"
-  },
-  {
     "title": "Cold War",
     "url": "https://www.lab111.nl/movie/cold-war/",
     "cinema": "Lab111",
@@ -6574,6 +6844,12 @@
     "title": "Roma (Netflix cinema special)",
     "url": "https://kinorotterdam.nl/film/roma/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Dogtooth",
+    "url": "https://www.lab111.nl/movie/dogtooth/",
+    "cinema": "Lab111",
+    "date": "2019-01-09T18:00:00.000Z"
   },
   {
     "title": "Shoplifters",
@@ -6600,6 +6876,12 @@
     "date": "2019-01-13T13:00:00.000Z"
   },
   {
+    "title": "Wir Wunderkinder",
+    "url": "https://www.lantarenvenster.nl/programma/wir-wunderkinder/",
+    "cinema": "Lantarenvenster",
+    "date": "2019-01-13T15:30:00.000Z"
+  },
+  {
     "title": "Shoplifters",
     "url": "https://www.hartlooper.nl/movies/1578/17/shoplifters_english_subtitles",
     "cinema": "Louis Hartlooper Complex",
@@ -6616,6 +6898,24 @@
     "title": "Movies that Matter: Styx",
     "url": "https://kinorotterdam.nl/film/movies-that-matter-styx/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Dogtooth",
+    "url": "https://www.lab111.nl/movie/dogtooth/",
+    "cinema": "Lab111",
+    "date": "2019-01-16T20:30:00.000Z"
+  },
+  {
+    "title": "Dogtooth",
+    "url": "https://www.lab111.nl/movie/dogtooth/",
+    "cinema": "Lab111",
+    "date": "2019-01-18T18:15:00.000Z"
+  },
+  {
+    "title": "M - Eine Stadt sucht einen Mörder",
+    "url": "https://www.lantarenvenster.nl/programma/m-eine-stadt-sucht-einen-morder-2/",
+    "cinema": "Lantarenvenster",
+    "date": "2019-01-22T18:30:00.000Z"
   },
   {
     "title": "Shoplifters",
