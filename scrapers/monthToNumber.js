@@ -18,7 +18,7 @@ const shortMonthToNumber = month =>
   [
     'jan',
     'feb',
-    'maa',
+    'mrt',
     'apr',
     'mei',
     'jun',

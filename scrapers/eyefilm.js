@@ -74,13 +74,10 @@ const extractFromMainPage = () => {
   )
 }
 
+if (require.main === module) {
+  extractFromMoviePage({
+    url: 'https://www.eyefilm.nl/en/film/dag-van-de-korte-film-0',
+  }).then(console.log)
+}
+
 module.exports = extractFromMainPage
-
-// extractFromMoviePage({
-//   url: 'https://www.eyefilm.nl/en/film/jigoku',
-// })
-
-// extractFromMoviePage({
-//   url:
-//     'https://www.eyefilm.nl/en/film/works-and-words-film-and-art-from-1970%E2%80%99s-central-europe?program_id=11850975',
-// })
