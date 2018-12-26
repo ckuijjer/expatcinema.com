@@ -7074,16 +7074,94 @@
     "date": "2018-12-26T20:15:00.000Z"
   },
   {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2018-12-27T18:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-27T20:15:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-12-28T11:00:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2018-12-28T12:00:00.000Z"
+  },
+  {
     "title": "Lunacy",
     "url": "https://www.eyefilm.nl/en/film/lunacy",
     "cinema": "Eye",
     "date": "2018-12-28T15:00:00.000Z"
   },
   {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2018-12-28T15:00:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2018-12-28T20:30:00.000Z"
+  },
+  {
     "title": "Conspirators of Pleasure",
     "url": "https://www.eyefilm.nl/en/film/conspirators-of-pleasure",
     "cinema": "Eye",
     "date": "2018-12-29T15:00:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2018-12-29T18:45:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-29T20:30:00.000Z"
+  },
+  {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2018-12-29T20:45:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2018-12-30T12:00:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2018-12-30T12:30:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2018-12-30T18:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2018-12-30T20:15:00.000Z"
   },
   {
     "title": "Cold war",
@@ -7110,10 +7188,22 @@
     "date": "2018-12-31T15:30:00.000Z"
   },
   {
+    "date": "2018-12-31T15:45:00.000Z",
+    "title": "Shoplifters (EN subs)",
+    "url": "https://kinorotterdam.nl/film/expat-preview-shoplifters-english-subs/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Cold war",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
     "cinema": "Filmhuis Den Haag",
     "date": "2019-01-02T09:30:00.000Z"
+  },
+  {
+    "title": "De wilde stad",
+    "url": "https://www.eyefilm.nl/en/film/de-wilde-stad",
+    "cinema": "Eye",
+    "date": "2019-01-02T11:00:00.000Z"
   },
   {
     "title": "On the beach at night alone",
@@ -7122,16 +7212,40 @@
     "date": "2019-01-02T11:00:00.000Z"
   },
   {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2019-01-02T12:00:00.000Z"
+  },
+  {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2019-01-02T13:00:00.000Z"
+  },
+  {
     "title": "Cold war",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
     "cinema": "Filmhuis Den Haag",
     "date": "2019-01-02T13:15:00.000Z"
   },
   {
+    "title": "Todos Lo Saben",
+    "url": "https://www.lab111.nl/movie/todos-lo-saben/",
+    "cinema": "Lab111",
+    "date": "2019-01-02T15:00:00.000Z"
+  },
+  {
     "title": "Shoplifters",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/shoplifters-engels-ondertiteld",
     "cinema": "Filmhuis Den Haag",
     "date": "2019-01-02T15:15:00.000Z"
+  },
+  {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2019-01-02T17:30:00.000Z"
   },
   {
     "title": "Cold war",
@@ -7144,6 +7258,12 @@
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/on-the-beach-at-night-alone-english-subtitles",
     "cinema": "Filmhuis Den Haag",
     "date": "2019-01-02T17:45:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2019-01-02T18:30:00.000Z"
   },
   {
     "title": "Shoplifters",
@@ -7158,16 +7278,64 @@
     "date": "2019-01-02T20:15:00.000Z"
   },
   {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2019-01-02T20:15:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2019-01-03T12:00:00.000Z"
+  },
+  {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2019-01-03T15:00:00.000Z"
+  },
+  {
     "title": "Cold War",
     "url": "https://www.lab111.nl/movie/cold-war/",
     "cinema": "Lab111",
     "date": "2019-01-03T18:00:00.000Z"
   },
   {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2019-01-03T18:30:00.000Z"
+  },
+  {
     "date": "2019-01-03T19:15:00.000Z",
-    "title": "Roma (Netflix cinema special)",
+    "title": "Roma",
     "url": "https://kinorotterdam.nl/film/roma/",
     "cinema": "Kino"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2019-01-03T20:15:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2019-01-04T12:00:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2019-01-04T15:15:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2019-01-04T20:15:00.000Z"
   },
   {
     "title": "Novecento - part 1",
@@ -7176,10 +7344,52 @@
     "date": "2019-01-04T20:30:00.000Z"
   },
   {
+    "date": "2019-01-05T14:30:00.000Z",
+    "title": "Roma",
+    "url": "https://kinorotterdam.nl/film/roma/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2019-01-05T14:30:00.000Z"
+  },
+  {
+    "date": "2019-01-05T17:15:00.000Z",
+    "title": "Roma",
+    "url": "https://kinorotterdam.nl/film/roma/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2019-01-05T18:30:00.000Z"
+  },
+  {
+    "date": "2019-01-05T20:15:00.000Z",
+    "title": "Roma",
+    "url": "https://kinorotterdam.nl/film/roma/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2019-01-05T20:15:00.000Z"
+  },
+  {
     "title": "Novecento - part 2",
     "url": "https://www.eyefilm.nl/en/film/novecento-part-2",
     "cinema": "Eye",
     "date": "2019-01-05T20:30:00.000Z"
+  },
+  {
+    "title": "Ichi The Killer",
+    "url": "https://kriterion.nl/films/ichi-the-killer",
+    "cinema": "Kriterion",
+    "date": "2019-01-05T23:15:00.000Z"
   },
   {
     "title": "Novecento - part 1",
@@ -7188,10 +7398,106 @@
     "date": "2019-01-06T10:00:00.000Z"
   },
   {
+    "title": "Tampopo",
+    "url": "https://www.lab111.nl/movie/tampopo/",
+    "cinema": "Lab111",
+    "date": "2019-01-06T13:00:00.000Z"
+  },
+  {
+    "date": "2019-01-06T14:30:00.000Z",
+    "title": "Roma",
+    "url": "https://kinorotterdam.nl/film/roma/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Novecento - part 2",
     "url": "https://www.eyefilm.nl/en/film/novecento-part-2",
     "cinema": "Eye",
     "date": "2019-01-06T14:45:00.000Z"
+  },
+  {
+    "title": "Dogtooth",
+    "url": "https://www.lab111.nl/movie/dogtooth/",
+    "cinema": "Lab111",
+    "date": "2019-01-06T15:30:00.000Z"
+  },
+  {
+    "date": "2019-01-06T17:15:00.000Z",
+    "title": "Roma",
+    "url": "https://kinorotterdam.nl/film/roma/",
+    "cinema": "Kino"
+  },
+  {
+    "date": "2019-01-06T20:00:00.000Z",
+    "title": "Roma",
+    "url": "https://kinorotterdam.nl/film/roma/",
+    "cinema": "Kino"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2019-01-06T20:15:00.000Z"
+  },
+  {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2019-01-06T20:30:00.000Z"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T09:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T10:15:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2019-01-07T12:00:00.000Z"
+  },
+  {
+    "title": "Buddy",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/buddy-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T12:30:00.000Z"
+  },
+  {
+    "title": "An impossibly small object",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/an-impossibly-small-object-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T13:15:00.000Z"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T13:15:00.000Z"
+  },
+  {
+    "title": "Los Versos del Olvido",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/los-versos-del-olvido-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T14:15:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/shoplifters-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T15:00:00.000Z"
+  },
+  {
+    "title": "Todos Lo Saben",
+    "url": "https://www.lab111.nl/movie/todos-lo-saben/",
+    "cinema": "Lab111",
+    "date": "2019-01-07T15:00:00.000Z"
   },
   {
     "title": "On the beach at night alone",
@@ -7200,10 +7506,130 @@
     "date": "2019-01-07T16:15:00.000Z"
   },
   {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T17:45:00.000Z"
+  },
+  {
+    "title": "Buddy",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/buddy-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T18:15:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2019-01-07T18:30:00.000Z"
+  },
+  {
+    "title": "Los Versos del Olvido",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/los-versos-del-olvido-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T19:45:00.000Z"
+  },
+  {
+    "title": "Roma",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/roma-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T20:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/shoplifters-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-07T20:15:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2019-01-08T12:00:00.000Z"
+  },
+  {
+    "title": "Todos Lo Saben",
+    "url": "https://www.lab111.nl/movie/todos-lo-saben/",
+    "cinema": "Lab111",
+    "date": "2019-01-08T15:00:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2019-01-08T15:15:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2019-01-08T20:15:00.000Z"
+  },
+  {
+    "title": "Suspiria",
+    "url": "https://www.lab111.nl/movie/suspiria/",
+    "cinema": "Lab111",
+    "date": "2019-01-08T20:30:00.000Z"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T09:30:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/girl-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T10:15:00.000Z"
+  },
+  {
+    "title": "Stalker",
+    "url": "https://www.lab111.nl/movie/stalker/",
+    "cinema": "Lab111",
+    "date": "2019-01-09T12:00:00.000Z"
+  },
+  {
+    "title": "Buddy",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/buddy-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T12:30:00.000Z"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T13:15:00.000Z"
+  },
+  {
+    "title": "Los Versos del Olvido",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/los-versos-del-olvido-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T14:15:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/shoplifters-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T15:00:00.000Z"
+  },
+  {
+    "title": "Todos Lo Saben",
+    "url": "https://www.lab111.nl/movie/todos-lo-saben/",
+    "cinema": "Lab111",
+    "date": "2019-01-09T15:00:00.000Z"
+  },
+  {
     "title": "On the beach at night alone",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/on-the-beach-at-night-alone-english-subtitles",
     "cinema": "Filmhuis Den Haag",
     "date": "2019-01-09T16:15:00.000Z"
+  },
+  {
+    "title": "Cold war",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/cold-war",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T17:45:00.000Z"
   },
   {
     "title": "Dogtooth",
@@ -7216,6 +7642,48 @@
     "url": "https://www.springhaver.nl/movies/1578/17/shoplifters_english_subtitles",
     "cinema": "Springhaver",
     "date": "2019-01-09T18:00:00.000Z"
+  },
+  {
+    "title": "Buddy",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/buddy-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T18:15:00.000Z"
+  },
+  {
+    "title": "Ida",
+    "url": "https://www.lab111.nl/movie/ida/",
+    "cinema": "Lab111",
+    "date": "2019-01-09T18:30:00.000Z"
+  },
+  {
+    "title": "Los Versos del Olvido",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/los-versos-del-olvido-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T19:45:00.000Z"
+  },
+  {
+    "title": "On the beach at night alone",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/on-the-beach-at-night-alone-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T19:45:00.000Z"
+  },
+  {
+    "title": "Roma",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/roma-english-subtitles",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T20:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.filmhuisdenhaag.nl/agenda/event/shoplifters-engels-ondertiteld",
+    "cinema": "Filmhuis Den Haag",
+    "date": "2019-01-09T20:15:00.000Z"
+  },
+  {
+    "title": "Girl",
+    "url": "https://www.lab111.nl/movie/girl/",
+    "cinema": "Lab111",
+    "date": "2019-01-09T20:15:00.000Z"
   },
   {
     "title": "Your Face",
@@ -7296,12 +7764,6 @@
     "date": "2019-01-17T18:00:00.000Z"
   },
   {
-    "title": "Dragon Ball Super: Broly",
-    "url": "https://www.lab111.nl/movie/dragon-ball-super-broly/",
-    "cinema": "Lab111",
-    "date": "2019-01-17T20:30:00.000Z"
-  },
-  {
     "title": "Dogtooth",
     "url": "https://www.lab111.nl/movie/dogtooth/",
     "cinema": "Lab111",
@@ -7326,10 +7788,22 @@
     "date": "2019-01-23T20:15:00.000Z"
   },
   {
+    "title": "Europa",
+    "url": "https://www.lab111.nl/movie/europa/",
+    "cinema": "Lab111",
+    "date": "2019-01-23T20:30:00.000Z"
+  },
+  {
     "title": "Afternoon",
     "url": "https://www.eyefilm.nl/en/film/afternoon",
     "cinema": "Eye",
     "date": "2019-01-24T15:00:00.000Z"
+  },
+  {
+    "title": "Dragon Ball Super: Broly",
+    "url": "https://www.lab111.nl/movie/dragon-ball-super-broly/",
+    "cinema": "Lab111",
+    "date": "2019-01-24T20:30:00.000Z"
   },
   {
     "title": "Dragon Ball Super: Broly",
@@ -7420,6 +7894,12 @@
     "url": "https://www.eyefilm.nl/en/film/lunacy",
     "cinema": "Eye",
     "date": "2019-02-16T15:00:00.000Z"
+  },
+  {
+    "title": "Europa",
+    "url": "https://www.lab111.nl/movie/europa/",
+    "cinema": "Lab111",
+    "date": "2019-02-20T18:00:00.000Z"
   },
   {
     "title": "Mtm on Tour: Yomeddine",
