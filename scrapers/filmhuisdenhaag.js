@@ -147,8 +147,7 @@ if (require.main === module) {
   //   .then(console.log)
 
   extractFromMoviePage({
-    // url: 'https://www.filmhuisdenhaag.nl/agenda/event/hotel-jugoslavija',
-    url: 'https://www.filmhuisdenhaag.nl/agenda/event/mtm-on-tour-yomeddine',
+    url: 'https://www.filmhuisdenhaag.nl/agenda/event/styx',
   }).then(console.log)
 }
 
