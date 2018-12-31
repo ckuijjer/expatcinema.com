@@ -2,11 +2,12 @@ import React from 'react'
 import styled from 'react-emotion'
 import ReactGA from 'react-ga'
 
-// import About from './About'
 import Calendar from './Calendar'
 import TextFilter from './TextFilter'
 import CityFilter from './CityFilter'
 import Header from './Header'
+
+import { LocalStorageProvider, URLSearchParamsProvider } from './hooks'
 
 ReactGA.initialize('UA-127056408-1')
 ReactGA.pageview(window.location.pathname + window.location.search)
@@ -22,21 +23,18 @@ const Content = styled('div')({
 })
 
 const App = () => (
-  <>
-    <Container>
-      <Content>
-        <Header />
-        <TextFilter />
-        <CityFilter />
-        <Calendar />
-      </Content>
-    </Container>
-    {/* <Container style={{ backgroundColor: '#fbfbfb' }}>
-          <Content>
-            <About />
-          </Content>
-        </Container> */}
-  </>
+  <LocalStorageProvider>
+    <URLSearchParamsProvider>
+      <Container>
+        <Content>
+          <Header />
+          <TextFilter />
+          <CityFilter />
+          <Calendar />
+        </Content>
+      </Container>
+    </URLSearchParamsProvider>
+  </LocalStorageProvider>
 )
 
 export default App

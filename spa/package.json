@@ -11,8 +11,6 @@
     "ramda": "^0.25.0",
     "react": "^16.7.0-alpha.2",
     "react-dom": "^16.7.0-alpha.0",
-    "react-easy-params": "^2.0.2",
-    "react-easy-state": "^6.0.5",
     "react-emotion": "^9.2.8",
     "react-ga": "^2.5.3",
     "react-scripts": "^2.1.1",
