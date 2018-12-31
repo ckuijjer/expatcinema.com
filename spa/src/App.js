@@ -8,6 +8,8 @@ import TextFilter from './TextFilter'
 import CityFilter from './CityFilter'
 import Header from './Header'
 
+import { LocalStorageProvider } from './hooks'
+
 ReactGA.initialize('UA-127056408-1')
 ReactGA.pageview(window.location.pathname + window.location.search)
 
@@ -23,19 +25,21 @@ const Content = styled('div')({
 
 const App = () => (
   <>
-    <Container>
-      <Content>
-        <Header />
-        <TextFilter />
-        <CityFilter />
-        <Calendar />
-      </Content>
-    </Container>
-    {/* <Container style={{ backgroundColor: '#fbfbfb' }}>
+    <LocalStorageProvider>
+      <Container>
+        <Content>
+          <Header />
+          <TextFilter />
+          <CityFilter />
+          <Calendar />
+        </Content>
+      </Container>
+      {/* <Container style={{ backgroundColor: '#fbfbfb' }}>
           <Content>
             <About />
           </Content>
         </Container> */}
+    </LocalStorageProvider>
   </>
 )
 
