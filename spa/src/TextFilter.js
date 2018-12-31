@@ -43,7 +43,7 @@ const TextFilter = () => {
         onChange={e => setSearch(e.target.value)}
       />
       {search && (
-        <ClearButton onClick={setSearch}>
+        <ClearButton onClick={() => setSearch()}>
           <Cross />
         </ClearButton>
       )}

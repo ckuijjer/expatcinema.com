@@ -1,4 +1,9 @@
 import useLocalStorage, { LocalStorageProvider } from './useLocalStorage'
-import useSearchParams from './useSearchParams'
+import useSearchParams, { URLSearchParamsProvider } from './useSearchParams'
 
-export { useLocalStorage, useSearchParams, LocalStorageProvider }
+export {
+  useLocalStorage,
+  useSearchParams,
+  LocalStorageProvider,
+  URLSearchParamsProvider,
+}

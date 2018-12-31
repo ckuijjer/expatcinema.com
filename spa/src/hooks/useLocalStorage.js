@@ -2,8 +2,6 @@ import React, { useContext, createContext } from 'react'
 
 const LocalStorage = createContext()
 
-window.onstorage = (...args) => console.log({ args })
-
 export class LocalStorageProvider extends React.Component {
   state = {
     storage: {},
