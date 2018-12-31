@@ -7260,6 +7260,12 @@
     "date": "2019-01-02T17:45:00.000Z"
   },
   {
+    "date": "2019-01-02T18:30:00.000Z",
+    "title": "Cold War (EN subs)",
+    "url": "https://kinorotterdam.nl/film/expat-arthouse-cold-war/",
+    "cinema": "Kino"
+  },
+  {
     "title": "Ida",
     "url": "https://www.lab111.nl/movie/ida/",
     "cinema": "Lab111",
@@ -7332,16 +7338,16 @@
     "date": "2019-01-04T15:15:00.000Z"
   },
   {
+    "title": "Novecento - part 1",
+    "url": "https://www.eyefilm.nl/en/film/novecento-part-1",
+    "cinema": "Eye",
+    "date": "2019-01-04T18:00:00.000Z"
+  },
+  {
     "title": "Girl",
     "url": "https://www.lab111.nl/movie/girl/",
     "cinema": "Lab111",
     "date": "2019-01-04T20:15:00.000Z"
-  },
-  {
-    "title": "Novecento - part 1",
-    "url": "https://www.eyefilm.nl/en/film/novecento-part-1",
-    "cinema": "Eye",
-    "date": "2019-01-04T20:30:00.000Z"
   },
   {
     "date": "2019-01-05T14:30:00.000Z",
@@ -7362,6 +7368,12 @@
     "cinema": "Kino"
   },
   {
+    "title": "Novecento - part 2",
+    "url": "https://www.eyefilm.nl/en/film/novecento-part-2",
+    "cinema": "Eye",
+    "date": "2019-01-05T18:00:00.000Z"
+  },
+  {
     "title": "Ida",
     "url": "https://www.lab111.nl/movie/ida/",
     "cinema": "Lab111",
@@ -7378,12 +7390,6 @@
     "url": "https://www.lab111.nl/movie/girl/",
     "cinema": "Lab111",
     "date": "2019-01-05T20:15:00.000Z"
-  },
-  {
-    "title": "Novecento - part 2",
-    "url": "https://www.eyefilm.nl/en/film/novecento-part-2",
-    "cinema": "Eye",
-    "date": "2019-01-05T20:30:00.000Z"
   },
   {
     "title": "Ichi The Killer",
@@ -7650,6 +7656,12 @@
     "date": "2019-01-09T18:15:00.000Z"
   },
   {
+    "title": "Styx",
+    "url": "https://kriterion.nl/films/styx",
+    "cinema": "Kriterion",
+    "date": "2019-01-09T18:30:00.000Z"
+  },
+  {
     "title": "Ida",
     "url": "https://www.lab111.nl/movie/ida/",
     "cinema": "Lab111",
@@ -7728,6 +7740,18 @@
     "date": "2019-01-13T18:00:00.000Z"
   },
   {
+    "title": "Shoplifters",
+    "url": "https://www.lab111.nl/movie/shoplifters/",
+    "cinema": "Lab111",
+    "date": "2019-01-13T20:30:00.000Z"
+  },
+  {
+    "title": "Blue Movie",
+    "url": "https://www.eyefilm.nl/en/film/blue-movie",
+    "cinema": "Eye",
+    "date": "2019-01-14T18:00:00.000Z"
+  },
+  {
     "title": "Throne of Blood",
     "url": "https://www.filmhuisdenhaag.nl/agenda/event/throne-of-blood",
     "cinema": "Filmhuis Den Haag",
@@ -7762,6 +7786,12 @@
     "url": "https://www.eyefilm.nl/en/film/lesson-faust",
     "cinema": "Eye",
     "date": "2019-01-17T18:00:00.000Z"
+  },
+  {
+    "title": "Shoplifters",
+    "url": "https://www.lab111.nl/movie/shoplifters/",
+    "cinema": "Lab111",
+    "date": "2019-01-17T20:30:00.000Z"
   },
   {
     "title": "Dogtooth",
