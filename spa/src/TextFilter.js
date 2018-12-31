@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'react-emotion'
-import { view } from 'react-easy-state'
-import { params, setParams } from 'react-easy-params'
 
 import { ReactComponent as Cross } from './cross.svg'
+import { useSearchParams } from './hooks'
 
 const Container = styled('div')({
   position: 'relative',
@@ -32,29 +31,24 @@ const ClearButton = styled('div')({
   cursor: 'pointer',
 })
 
-const setSearch = value => {
-  if (value) {
-    params.search = value
-  } else {
-    const { search, ...rest } = params
-    setParams(rest)
-  }
+const TextFilter = () => {
+  const [search, setSearch] = useSearchParams('search', '')
+
+  return (
+    <Container>
+      <Input
+        placeholder="Type to search"
+        autoFocus
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+      />
+      {search && (
+        <ClearButton onClick={() => setSearch()}>
+          <Cross />
+        </ClearButton>
+      )}
+    </Container>
+  )
 }
 
-const TextFilter = () => (
-  <Container>
-    <Input
-      placeholder="Type to search"
-      autoFocus
-      value={params.search || ''}
-      onChange={e => setSearch(e.target.value)}
-    />
-    {params.search && (
-      <ClearButton onClick={() => setSearch()}>
-        <Cross />
-      </ClearButton>
-    )}
-  </Container>
-)
-
-export default view(TextFilter)
+export default TextFilter

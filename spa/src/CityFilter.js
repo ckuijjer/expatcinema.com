@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'react-emotion'
-import { view } from 'react-easy-state'
-import { storage } from 'react-easy-params'
 
+import { useLocalStorage } from './hooks'
 import { cinemas } from './data'
 
-const cities = [...new Set(cinemas.map(x => x.city).sort())]
+const allCities = [...new Set(cinemas.map(x => x.city).sort())]
 
 const Container = styled('div')({
   marginTop: 12,
@@ -25,30 +24,34 @@ const CityCheckbox = styled('div')(({ value }) => ({
   // },
 }))
 
-const toggle = city => {
-  const set = new Set(storage.cities || [])
+const CityFilter = () => {
+  const [cities, setCities] = useLocalStorage('cities', [])
 
-  if (set.has(city)) {
-    set.delete(city)
-  } else {
-    set.add(city)
+  const toggle = city => {
+    const set = new Set(cities || [])
+
+    if (set.has(city)) {
+      set.delete(city)
+    } else {
+      set.add(city)
+    }
+
+    setCities([...set].sort())
   }
 
-  storage.cities = [...set].sort()
+  return (
+    <Container>
+      {allCities.map(city => (
+        <CityCheckbox
+          key={city}
+          onClick={() => toggle(city)}
+          value={(cities || []).includes(city)}
+        >
+          {city}
+        </CityCheckbox>
+      ))}
+    </Container>
+  )
 }
 
-const CityFilter = () => (
-  <Container>
-    {cities.map(city => (
-      <CityCheckbox
-        key={city}
-        onClick={() => toggle(city)}
-        value={(storage.cities || []).includes(city)}
-      >
-        {city}
-      </CityCheckbox>
-    ))}
-  </Container>
-)
-
-export default view(CityFilter)
+export default CityFilter
