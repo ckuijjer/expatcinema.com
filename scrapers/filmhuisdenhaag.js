@@ -10,21 +10,30 @@ const debugPromise = (format, ...debugArgs) => arg => {
   return arg
 }
 
-const xray = Xray()
+const xray = Xray({
+  filters: {
+    trim: value => (typeof value === 'string' ? value.trim() : value),
+  },
+})
   .concurrency(3)
   .throttle(3, 300)
+
+const hasEnglishSubtitles = ({ title = '', movieMetadata = '' }) =>
+  movieMetadata.includes('OndertitelingEngels')
 
 const extractFromMoviePage = ({ url }) => {
   return xray(url, 'body', [
     {
       title: '.spread__title',
       timetable: ['.timetable__date,.timetable__time'], // it's kinda shitty that x-ray only returns text and no subtree of the DOM
+      movieMetadata: '.specs-list | trim',
     },
   ])
     .then(debugPromise('extracting %s', url))
     .then(
       results =>
         results
+          .filter(hasEnglishSubtitles)
           .map(movie => {
             // timetable is e.g. [ 'wo 12 sep', '13.45', '20.45', 'wo 19 sep', '13.45', '20.45' ]
             // and needs to be parsed: first detect date vs time, then see which belongs together, then combine
@@ -112,43 +121,30 @@ const extractFromMainPage = () => {
     {
       title: 'h1.event-listed__title',
       url: 'a.event-listed__link@href',
-      hasEnglishSubtitlesIndicator1:
-        '.event-ticket-button.has-variant-title span',
-      hasEnglishSubtitlesIndicator2: '.event-listed__header-group .label',
     },
   ])
     .then(debugPromise('main page'))
-    .then(results =>
-      Promise.all(
-        results
-          .filter(
-            x =>
-              x.hasEnglishSubtitlesIndicator1 === 'English subtitles' ||
-              x.hasEnglishSubtitlesIndicator2 === 'English subtitles',
-          )
-          .map(extractFromMoviePage),
-      ),
-    )
+    .then(results => Promise.all(results.map(extractFromMoviePage)))
     .then(results => results.reduce((acc, cur) => [...acc, ...cur], [])) // flatten, as there's can be more than one screening per page
 }
 
 if (require.main === module) {
-  // const R = require('ramda')
-  // const sort = R.sortWith([
-  //   (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),
-  //   R.ascend(R.prop('cinema')),
-  //   R.ascend(R.prop('title')),
-  //   R.ascend(R.prop('url')),
-  // ])
+  const R = require('ramda')
+  const sort = R.sortWith([
+    (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),
+    R.ascend(R.prop('cinema')),
+    R.ascend(R.prop('title')),
+    R.ascend(R.prop('url')),
+  ])
 
-  // extractFromMainPage()
-  //   .then(sort)
-  //   .then(x => JSON.stringify(x, null, 2))
-  //   .then(console.log)
+  extractFromMainPage()
+    .then(sort)
+    .then(x => JSON.stringify(x, null, 2))
+    .then(console.log)
 
-  extractFromMoviePage({
-    url: 'https://www.filmhuisdenhaag.nl/agenda/event/styx',
-  }).then(console.log)
+  // extractFromMoviePage({
+  // url: 'https://www.filmhuisdenhaag.nl/agenda/event/styx',
+  // }).then(console.log)
 }
 
 module.exports = extractFromMainPage
