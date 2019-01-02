@@ -41,6 +41,7 @@ const TextFilter = () => {
         autoFocus
         value={search}
         onChange={e => setSearch(e.target.value)}
+        onKeyUp={e => e.key === 'Escape' && setSearch()}
       />
       {search && (
         <ClearButton onClick={() => setSearch()}>
