@@ -1,5 +1,7 @@
 # Expat Cinema
 
+Below is old, has been moved to AWS Lambda
+
 ## Procedure for new adding new movies
 
 1. `yarn start` to run all scrapers
