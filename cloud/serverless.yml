@@ -20,6 +20,8 @@ functions:
   scrapers:
     handler: handler.scrapers
     timeout: 120
+    events:
+      - schedule: cron(0 3 * * ? *)
     environment:
       DEBUG: '*,-resolve'
 
