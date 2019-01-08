@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "serverless invoke -f scrapers -l",
+    "playground": "serverless invoke -f playground -l",
     "deploy": "serverless deploy"
   },
   "author": "",

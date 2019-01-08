@@ -24,6 +24,8 @@ functions:
       - schedule: cron(0 3 * * ? *)
     environment:
       DEBUG: '*,-resolve'
+  playground:
+    handler: handler.playground
 
 resources:
   Resources:
@@ -42,8 +44,7 @@ resources:
         BucketName: expatcinema-public
         CorsConfiguration:
           CorsRules:
-            -
-              AllowedOrigins:
+            - AllowedOrigins:
                 - '*'
               AllowedHeaders:
                 - '*'
@@ -57,9 +58,9 @@ resources:
         Bucket: expatcinema-public
         PolicyDocument:
           Statement:
-            - Principal: "*"
+            - Principal: '*'
               Action:
                 - s3:GetObject
               Effect: Allow
-              Sid: "AddPerm"
+              Sid: 'AddPerm'
               Resource: arn:aws:s3:::expatcinema-public/*
