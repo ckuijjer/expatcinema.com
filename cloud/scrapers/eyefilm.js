@@ -18,7 +18,7 @@ const xray = Xray({
 
 const hasEnglishSubtitles = ({ subtitles }) => {
   debug('subtitles: %s', subtitles)
-  return subtitles === 'Subtitles: English'
+  return subtitles === 'Subtitles: English' || subtitles === 'Subtitles: Engels'
 }
 
 const flatten = (acc, cur) => [...acc, ...cur]
@@ -76,7 +76,8 @@ const extractFromMainPage = () => {
 
 if (require.main === module) {
   extractFromMoviePage({
-    url: 'https://www.eyefilm.nl/en/film/dag-van-de-korte-film-0',
+    url:
+      'https://www.eyefilm.nl/en/film/journey-to-the-west?program_id=11875970',
   }).then(console.log)
 }
 
