@@ -1,6 +1,10 @@
-const { DateTime } = require('luxon')
+const { DateTime, Settings } = require('luxon')
 const R = require('ramda')
 const AWS = require('aws-sdk')
+
+// Set the default timezone to Europe/Amsterdam, otherwise AWS Lambda will scrape as UTC and running it locally
+// as Europe/Amsterdam
+Settings.defaultZoneName = 'Europe/Amsterdam'
 
 const s3 = new AWS.S3()
 

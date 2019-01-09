@@ -1,14 +1,41 @@
-const { DateTime } = require('luxon')
+const { DateTime, Info, Settings } = require('luxon')
 
-exports.playground = async ({ event, context }) => {
-  const bogus = DateTime.local().setZone('America/Bogus')
+// Settings.defaultZoneName = 'Europe/Amsterdam'
 
-  bogus.isValid //=> false
-  bogus.invalidReason //=> 'unsupported zone'
+const playground = async ({ event, context } = {}) => {
+  const timestamp = '2019-01-09 11:23'
+  const format = 'yyyy-MM-dd HH:mm'
 
-  return {
-    event,
-    context,
-    bogus,
+  const amsterdamFromFormatWithZone = DateTime.fromFormat(timestamp, format, {
+    zone: 'Europe/Amsterdam',
+  })
+    .toUTC()
+    .toISO()
+
+  const utcTime = DateTime.fromFormat(timestamp, format)
+    .toUTC()
+    .toISO()
+
+  const utcTimeWithZone = DateTime.fromFormat(timestamp, format, {
+    zone: 'UTC',
+  })
+    .toUTC()
+    .toISO()
+
+  const result = {
+    // features,
+    amsterdamFromFormatWithZone,
+    utcTime,
+    utcTimeWithZone,
   }
+
+  console.log(result)
+  return result
 }
+
+if (require.main === module) {
+  // console.log(playground({}))
+  playground()
+}
+
+exports.playground = playground
