@@ -11,8 +11,8 @@ const debugPromise = (format, ...debugArgs) => arg => {
   return arg
 }
 const xray = Xray()
-  .concurrency(3)
-  .throttle(3, 300)
+  .concurrency(10)
+  .throttle(10, 300)
 
 const hasEnglishSubtitles = ({ title = '', movieMetadata = '' }) =>
   movieMetadata.includes('Ondertiteling:  English') ||

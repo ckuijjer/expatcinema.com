@@ -15,8 +15,8 @@ const xray = Xray({
     trim: value => (typeof value === 'string' ? value.trim() : value),
   },
 })
-  .concurrency(3)
-  .throttle(3, 300)
+  .concurrency(10)
+  .throttle(10, 300)
 
 const hasEnglishSubtitles = ({ title = '', movieMetadata = '' }) =>
   movieMetadata.includes('OndertitelingEngels')

@@ -1,5 +1,8 @@
 # Expat Cinema
 
+- `cd cloud; serverless deploy` to deploy the lambda functions
+- `cd cloud; serverless invoke -f scrapers` to manually run the function
+
 Below is old, has been moved to AWS Lambda
 
 ## Procedure for new adding new movies

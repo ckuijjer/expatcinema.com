@@ -15,6 +15,7 @@ provider:
         - 's3:PutObject'
       Resource:
         - 'arn:aws:s3:::expatcinema-public/*'
+  logRetentionInDays: 14
 
 functions:
   scrapers:
