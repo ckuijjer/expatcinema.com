@@ -20,7 +20,7 @@ provider:
 functions:
   scrapers:
     handler: handler.scrapers
-    timeout: 120
+    timeout: 300
     events:
       - schedule: cron(0 3 * * ? *)
     environment:
