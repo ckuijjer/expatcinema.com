@@ -10,13 +10,25 @@ const debugPromise = (format, ...debugArgs) => arg => {
   debug(format, ...debugArgs, arg)
   return arg
 }
+
+const debugFn = (format, ...debugArgs) => fn => (...args) => {
+  const result = fn(...args)
+  debug(format, ...debugArgs, { args, result })
+  return result
+}
+
 const xray = Xray()
   .concurrency(10)
   .throttle(10, 300)
 
-const hasEnglishSubtitles = ({ title = '', movieMetadata = '' }) =>
-  movieMetadata.includes('Ondertiteling:  English') ||
-  title.startsWith('Expat Arthouse: ')
+const hasEnglishSubtitles = debugFn('hasEnglishSubtitles')(
+  ({ title = '', movieMetadata = '' }) =>
+    movieMetadata.includes('Ondertiteling:  English') ||
+    movieMetadata.includes('Ondertiteling:  Engels') ||
+    title.startsWith('Expat Arthouse: ') ||
+    title.startsWith('KINO Expat: ') ||
+    title.startsWith('KINO Expat Special: '),
+)
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
@@ -44,6 +56,13 @@ const extractFromMoviePage = ({ url }) =>
         .toUTC()
         .toISO()
     })
+
+    const cleanTitle = debugFn('cleanTitle')(title =>
+      title
+        .replace('Expat Arthouse: ', '')
+        .replace('KINO Expat: ', '')
+        .replace('KINO Expat Special: ', ''),
+    )
 
     const dates = movie.timetableRest
       .filter(x => x.date !== undefined) // remove the empty { times: [] }
@@ -77,7 +96,7 @@ const extractFromMoviePage = ({ url }) =>
       .map(dates =>
         dates.map(date => ({
           date,
-          title: movie.title.replace('Expat Arthouse: ', ''),
+          title: cleanTitle(movie.title),
           url,
           cinema: 'Kino',
         })),
@@ -106,7 +125,7 @@ if (require.main === module) {
   //   .then(console.log)
 
   extractFromMoviePage({
-    url: 'https://kinorotterdam.nl/film/movies-that-matter-tehran-taboo/',
+    url: 'https://kinorotterdam.nl/film/kino-expat-mirai/',
   }).then(console.log)
 }
 
