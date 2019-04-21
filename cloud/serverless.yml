@@ -1,5 +1,8 @@
 service: expatcinema
 
+plugins:
+  - serverless-dotenv-plugin
+
 provider:
   name: aws
   runtime: nodejs8.10
@@ -27,6 +30,10 @@ functions:
       DEBUG: '*,-resolve'
   playground:
     handler: handler.playground
+  notifySlack:
+    handler: handler.notifySlack
+    events:
+      - cloudwatchLog: '/aws/lambda/expatcinema-dev-scrapers'
 
 resources:
   Resources:

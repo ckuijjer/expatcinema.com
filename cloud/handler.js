@@ -2,6 +2,7 @@ const AWS = require('aws-sdk')
 
 const { scrapers } = require('./scrapers')
 const { playground } = require('./playground')
+const { notifySlack } = require('./notify-slack')
 
 module.exports.scrapers = async (event, context) => {
   await scrapers()
@@ -20,3 +21,6 @@ module.exports.scrapers = async (event, context) => {
 
 module.exports.playground = async (event, context) =>
   await playground({ event, context })
+
+module.exports.notifySlack = async (event, context) =>
+  await notifySlack({ event, context })
