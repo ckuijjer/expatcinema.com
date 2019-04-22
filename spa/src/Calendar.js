@@ -23,7 +23,6 @@ const Calendar = () => {
 
       setScreeningsByDate(screeningsByDate)
     })
-    return null
   }, [])
 
   const rows = screeningsByDate
