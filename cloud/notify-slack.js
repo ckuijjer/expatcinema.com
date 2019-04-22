@@ -14,7 +14,7 @@ const notifySlack = async ({ event, context } = {}) => {
 
   const unzippedPayload = await gunzip(payload)
 
-  const { logEvents } = JSON.parse(unzippedPayload.toString('ascii'))
+  const { logEvents } = JSON.parse(unzippedPayload.toString())
 
   const filteredLogEvents = logEvents.filter(({ message }) =>
     filters.some(f => f.test(message)),
