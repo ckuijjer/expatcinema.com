@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
+import mobile from 'is-mobile'
 
 import { ReactComponent as Cross } from './cross.svg'
 import { useSearchParams } from './hooks'
@@ -38,7 +39,7 @@ const TextFilter = () => {
     <Container>
       <Input
         placeholder="Type to search"
-        autoFocus
+        autoFocus={!mobile({ tablet: true })}
         value={search}
         onChange={e => setSearch(e.target.value)}
         onKeyUp={e => e.key === 'Escape' && setSearch()}

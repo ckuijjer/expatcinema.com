@@ -8,6 +8,7 @@
     "@emotion/styled": "^10.0.5",
     "axios": "^0.18.0",
     "gh-pages": "^2.0.1",
+    "is-mobile": "^2.0.0",
     "luxon": "^1.6.2",
     "ramda": "^0.26.1",
     "react": "^16.7.0-alpha.2",
