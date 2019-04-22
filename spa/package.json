@@ -24,7 +24,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "analyze": "ls build/static/js/*js | xargs -I {} source-map-explorer {}"
+    "analyze": "yarn build && ls build/static/js/*js | xargs -I {} source-map-explorer {}"
   },
   "browserslist": {
     "development": [

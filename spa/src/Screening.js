@@ -34,7 +34,7 @@ const Title = styled('div')({
 const Cinema = styled('div')({
   fontSize: 16,
   gridColumnStart: 'rest',
-  color: '#777',
+  color: '#666',
 })
 
 const Screening = ({ url, date, title, cinema }) => (

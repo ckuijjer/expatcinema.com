@@ -14,7 +14,7 @@ const Container = styled('div')({
 const CityCheckbox = styled('div')(({ value }) => ({
   display: 'inline-block',
   fontSize: 24,
-  color: value ? '#0650d0' : '#aaa',
+  color: value ? '#0650d0' : '#888',
   paddingRight: 8,
   cursor: 'pointer',
 
