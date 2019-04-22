@@ -1,7 +1,6 @@
 import { groupBy } from 'ramda'
 import { cinemas } from './data'
 import { DateTime } from 'luxon'
-import axios from 'axios'
 
 import getToday from './getToday'
 
@@ -14,12 +13,10 @@ import getToday from './getToday'
 const groupByDate = groupBy(screening => screening.date.toISODate())
 
 const getScreenings = () =>
-  axios
-    .get(
-      'https://s3-eu-west-1.amazonaws.com/expatcinema-public/screenings.json',
-    )
+  fetch('https://s3-eu-west-1.amazonaws.com/expatcinema-public/screenings.json')
+    .then(response => response.json())
     .then(
-      ({ data }) =>
+      data =>
         groupByDate(
           data
             .map(x => ({ ...x, date: DateTime.fromISO(x.date) })) // use luxon on the date
