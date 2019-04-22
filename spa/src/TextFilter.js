@@ -43,6 +43,7 @@ const TextFilter = () => {
         value={search}
         onChange={e => setSearch(e.target.value)}
         onKeyUp={e => e.key === 'Escape' && setSearch()}
+        aria-label="Type to search"
       />
       {search && (
         <ClearButton onClick={() => setSearch()}>
