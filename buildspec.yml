@@ -8,5 +8,5 @@ phases:
       - yarn
   build:
     commands:
-      - yarn test
+      - CI=true yarn test
       - yarn build
