@@ -1,0 +1,12 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Installing npm packages
+      - cd spa/
+      - yarn
+  build:
+    commands:
+      - echo Building
+      - yarn build
