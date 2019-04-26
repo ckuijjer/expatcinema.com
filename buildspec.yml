@@ -10,7 +10,8 @@ phases:
     commands:
       - CI=true yarn test
       - yarn build
-  artifacts:
-    files: '**/*'
-    base-directory: build
+artifacts:
+  files:
+    - '**/*'
+  base-directory: build
 
