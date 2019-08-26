@@ -21,9 +21,9 @@ jobs:
       run: |
         cd spa/
         yarn build
-      env:
-        CI: true
     - name: Test
       run: |
         cd spa/
         yarn test
+      env:
+        CI: true
