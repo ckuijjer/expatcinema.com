@@ -1,0 +1,24 @@
+name: SPA CI
+
+on: [push]
+  push:
+   paths:
+    - 'spa/*'
+
+jobs:
+  build:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: |
+        cd spa/
+        yarn
+    - name: Build
+      run: yarn build
+      env:
+        CI: true
+    - name: Test
+      run: yarn test
