@@ -14,8 +14,12 @@ jobs:
         cd spa/
         yarn
     - name: Build
-      run: yarn build
+      run: |
+        cd spa/
+        yarn build
       env:
         CI: true
     - name: Test
-      run: yarn test
+      run: |
+        cd spa/
+        yarn test
