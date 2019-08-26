@@ -1,9 +1,6 @@
 name: SPA CI
 
 on: [push]
-  push:
-   paths:
-    - 'spa/*'
 
 jobs:
   build:
