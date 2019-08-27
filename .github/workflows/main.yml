@@ -8,6 +8,7 @@ on: [push]
 
 jobs:
   build:
+    name: Build, Test and Deploy
   
     runs-on: ubuntu-latest
     
@@ -27,3 +28,7 @@ jobs:
         yarn test
       env:
         CI: true
+    - name: Deploy
+      run: |
+        cd spa/
+        yarn deploy
