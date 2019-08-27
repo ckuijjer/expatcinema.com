@@ -32,3 +32,6 @@ jobs:
       run: |
         cd spa/
         yarn deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
