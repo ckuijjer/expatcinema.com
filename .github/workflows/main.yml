@@ -1,8 +1,9 @@
 name: SPA CI
 
 on: [push]
-
-#   push:
+  push:
+   branches:
+   - master
 #     paths:
 #     - 'spa/*'
 
