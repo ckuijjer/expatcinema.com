@@ -18,5 +18,8 @@
     "ramda": "^0.25.0",
     "serverless-dotenv-plugin": "^2.0.1",
     "x-ray": "^2.3.3"
+  },
+  "devDependencies": {
+    "serverless": "^1.50.1"
   }
 }

@@ -1,11 +1,12 @@
-name: SPA CI
+name: SPA
 
 on: [push]
   push:
     branches:
     - master
-#     paths:
-#     - 'spa/*'
+    paths:
+    - 'spa/*'
+    - '.github/workflows/spa.yml'
 
 jobs:
   build:

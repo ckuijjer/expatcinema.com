@@ -1,0 +1,31 @@
+name: Cloud
+
+on: [push]
+  push:
+    branches:
+    - master
+    paths:
+    - 'cloud/*'
+    - '.github/workflows/cloud.yml'
+
+jobs:
+  build:
+    name: Build, Test and Deploy
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: |
+        cd cloud/
+        yarn
+    - name: Serverless version
+      run: |
+        cd cloud
+        ./node_modules/.bin/serverless -v
+    - name: Deploy
+      run: |
+        cd cloud/
+        yarn deploy
+
