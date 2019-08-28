@@ -32,7 +32,7 @@ jobs:
           cd spa/
           yarn build
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@master
+        uses: JamesIves/github-pages-deploy-action@36e7d6be3ae491bda245af50d04b012d956c1f14
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
