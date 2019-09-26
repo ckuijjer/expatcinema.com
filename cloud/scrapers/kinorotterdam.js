@@ -36,15 +36,18 @@ const extractFromMoviePage = ({ url }) =>
   xray(url, 'body', {
     title: '.film-title',
     movieMetadata: '.film-gegevens',
-    timetableToday: ['#myshows > li > a.stime'],
+    timetableToday: ['#myshows > li > h6'],
     timetableRest: xray('#myshows > li', [
       {
         date: '> a:not(.stime)',
-        times: ['ul li a'],
+        times: ['ul li h6'],
       },
     ]),
   }).then(movie => {
     if (!hasEnglishSubtitles(movie)) return
+
+    debug('timetableToday', movie.timetableToday)
+    debug('timetableRest', movie.timetableRest)
 
     const today = movie.timetableToday.map(time => {
       const [hour, minute] = splitTime(time)
@@ -125,7 +128,8 @@ if (require.main === module) {
   //   .then(console.log)
 
   extractFromMoviePage({
-    url: 'https://kinorotterdam.nl/film/kino-expat-mirai/',
+    url: 'https://kinorotterdam.nl/film/kino-expat-monos/',
+    // url: 'https://kinorotterdam.nl/film/andrei-tarkovsky-solaris-1972/',
   }).then(console.log)
 }
 
