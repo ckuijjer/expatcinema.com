@@ -29,9 +29,12 @@ const notifySlack = async ({ event, context } = {}) => {
   await Promise.all(filteredLogEvents.map(postToSlack))
 }
 
-const postToSlack = logEvent =>
-  axios.post(process.env.SLACK_WEBHOOK, {
+const postToSlack = logEvent => {
+  console.log('SLACK_WEBHOOK', process.env.SLACK_WEBHOOK)
+
+  return axios.post(process.env.SLACK_WEBHOOK, {
     text: logEvent.message,
   })
+}
 
 exports.notifySlack = notifySlack

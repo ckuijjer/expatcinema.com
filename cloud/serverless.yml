@@ -32,6 +32,8 @@ functions:
     handler: handler.playground
   notifySlack:
     handler: handler.notifySlack
+    environment:
+      SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
     events:
       - cloudwatchLog: '/aws/lambda/expatcinema-dev-scrapers'
 
