@@ -25,6 +25,8 @@ jobs:
           cd cloud
           ./node_modules/.bin/serverless -v
       - name: echo SLACK_WEBHOOK
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         run: |
           echo $SLACK_WEBHOOK
       - name: Deploy
