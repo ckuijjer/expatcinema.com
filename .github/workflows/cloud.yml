@@ -24,16 +24,6 @@ jobs:
         run: |
           cd cloud
           ./node_modules/.bin/serverless -v
-      - name: echo my first environment variable
-        env:
-          FOO: bar
-        run: |
-          echo $FOO
-      # - name: echo SLACK_WEBHOOK
-      #   env:
-      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      #   run: |
-      #     echo $SLACK_WEBHOOK
       - name: Deploy
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
