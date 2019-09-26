@@ -24,12 +24,16 @@ jobs:
         run: |
           cd cloud
           ./node_modules/.bin/serverless -v
-      - name: echo SLACK_WEBHOOK
+      # - name: echo SLACK_WEBHOOK
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      #   run: |
+      #     echo $SLACK_WEBHOOK
+      - name: Deploy
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        run: |
-          echo $SLACK_WEBHOOK
-      - name: Deploy
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrest.AWS_SECRET_ACCESS_KEY }}
         run: |
           cd cloud/
           yarn deploy
