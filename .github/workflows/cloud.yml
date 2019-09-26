@@ -24,6 +24,9 @@ jobs:
         run: |
           cd cloud
           ./node_modules/.bin/serverless -v
+      - name: echo SLACK_WEBHOOK
+        run: |
+          echo $SLACK_WEBHOOK
       - name: Deploy
         run: |
           cd cloud/
