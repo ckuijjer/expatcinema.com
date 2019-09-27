@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd cloud/
-          yarn
+          yarn install --frozen-lockfile
       - name: Deploy
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
