@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd spa/
-          yarn
+          yarn install --frozen-lockfile
       - name: Test
         run: |
           cd spa/
