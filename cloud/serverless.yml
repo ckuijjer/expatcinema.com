@@ -34,7 +34,6 @@ functions:
     handler: handler.notifySlack
     environment:
       SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
-      BAZ: 12345
     events:
       - cloudwatchLog: '/aws/lambda/expatcinema-dev-scrapers'
 
