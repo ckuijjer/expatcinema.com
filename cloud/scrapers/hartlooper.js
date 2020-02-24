@@ -3,9 +3,10 @@
 const Xray = require('x-ray')
 const R = require('ramda')
 const { DateTime } = require('luxon')
+const got = require('got')
 const debug = require('debug')('hartlooper')
 const splitTime = require('./splitTime')
-const { shortMonthToNumber } = require('./monthToNumber')
+const { fullMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
 const debugPromise = (format, ...debugArgs) => arg => {
@@ -22,25 +23,24 @@ const xray = Xray({
   .throttle(10, 300)
 
 const hasEnglishSubtitles = movie =>
-  movie.title.toLowerCase().includes('english subtitles')
+  movie.title.toLowerCase().includes('language no problem')
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
-const cleanTitle = title =>
-  title.replace(/\s*[-\(]\s*english subtitles\)?/i, '')
+const cleanTitle = title => title.replace(/Language No Problem: /i, '')
 
 const extractFromMoviePage = ({ url }) => {
   debug('extracting %s', url)
 
   return xray(url, 'body', {
-    title: '.title h1',
-    screenings: xray('.reserveerwrap td', [
+    title: '.intro-content h1',
+    screenings: xray('.play-times td', [
       {
         date: xray('a', {
-          day: '.dag | trim',
-          month: '.maand.mobile | trim',
+          day: '.day | trim',
+          month: '.month | trim',
         }),
-        times: ['.tijd | trim'],
+        times: ['.time span | trim'],
       },
     ]),
   })
@@ -52,7 +52,7 @@ const extractFromMoviePage = ({ url }) => {
         .map(({ date, times }) =>
           times.map(time => {
             const day = +date.day
-            const month = shortMonthToNumber(date.month)
+            const month = fullMonthToNumber(date.month)
             const [hour, minute] = splitTime(time)
 
             const year = guessYear(
@@ -85,34 +85,33 @@ const extractFromMoviePage = ({ url }) => {
     .then(debugPromise('extracting done %s: %O', url))
 }
 
-const extractFromMainPage = () => {
-  return xray(
-    'https://www.hartlooper.nl/film-overzicht',
-    '#schedule_nuinbios tr',
-    xray('tr', [
-      // nesting xray doesn't make any sense, `#schedule_nuinbios tr` should work and return a list, not a single result
-      // think it somehow starts counting from the beginning of the selector?
-      {
-        title: 'h2 a',
-        url: 'h2 a@href',
-      },
-    ]),
+const extractFromMainPage = () =>
+  got(
+    'https://www.hartlooper.nl/wp-admin/admin-ajax.php?action=get_movies&day=movies',
   )
+    .json()
+    .then(movies => {
+      console.log({ movies })
+      return movies.map(({ post_title, link }) => ({
+        title: post_title,
+        url: link,
+      }))
+    })
     .then(debugPromise('main page: %J'))
     .then(results => results.filter(hasEnglishSubtitles))
     .then(debugPromise('main page with english subtitles: %J'))
     .then(results => Promise.all(results.map(extractFromMoviePage)))
     .then(debugPromise('before flatten: %j'))
     .then(results => results.reduce(flatten, []))
-}
 
 if (require.main === module) {
-  extractFromMainPage()
-    .then(x => JSON.stringify(x, null, 2))
-    .then(console.log)
-  // extractFromMoviePage({
-  //   url: 'https://www.springhaver.nl/movies/1458/17/blackkklansman',
-  // })
+  // extractFromMainPage()
+  //   .then(x => JSON.stringify(x, null, 2))
+  //   .then(console.log)
+  extractFromMoviePage({
+    url: 'https://www.hartlooper.nl/films/language-no-problem-beanpole/',
+    // url: 'https://www.hartlooper.nl/films/parasite/',
+  })
 }
 
 module.exports = extractFromMainPage
