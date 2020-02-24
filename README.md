@@ -1,6 +1,6 @@
-# Expat Cinema ![](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiTkpXSFdGRnd1TUtya1Rqb0ZvK3ZFNWtlc3cwbnRnMmhtZm1PQU1iazRMNG51VnNhaUZReVRmL0w5U1NRQTdSb0xhTHhsd1lHZmk1anl3UHBURDBPUnRRPSIsIml2UGFyYW1ldGVyU3BlYyI6IlRhcTdnODZvMWNmOU1HQmEiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+# Expat Cinema
 
-- `cd cloud; serverless deploy` to deploy the lambda functions
+- `cd cloud; serverless deploy` to deploy the lambda functions -- now handled by GitHub Actions
 - `cd cloud; serverless invoke -f scrapers` to manually run the scrapers
 
 ## Scratchpad
