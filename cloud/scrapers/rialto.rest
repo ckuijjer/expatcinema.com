@@ -1,0 +1,14 @@
+### more generic information
+GET https://rialtofilm.nl/feed/nl/program-filters/14
+
+### next two weeks
+GET https://rialtofilm.nl/feed/nl/program/14
+
+### a specific movie
+GET https://rialtofilm.nl/feed/en/film/428
+
+### a specific movie
+GET https://rialtofilm.nl/feed/en/film/462
+
+### a specific movie without any showings
+GET https://rialtofilm.nl/feed/en/film/476

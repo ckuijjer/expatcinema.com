@@ -48,5 +48,10 @@
     "name": "Louis Hartlooper Complex",
     "city": "Utrecht",
     "url": "https://www.hartlooper.nl"
+  },
+  {
+    "name": "Rialto",
+    "city": "Amsterdam",
+    "url": "https://rialtofilm.nl/"
   }
 ]

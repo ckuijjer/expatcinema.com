@@ -63,6 +63,7 @@ exports.scrapers = () =>
       'lantarenvenster',
       'springhaver',
       'hartlooper',
+      'rialto',
       // 'liff',
     ].map(name => {
       const fn = require(`./${name}`)
