@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "serverless invoke -f scrapers -l",
-    "playground": "serverless invoke -f playground -l",
+    "start": "serverless invoke -f scrapers -l --aws-profile casper",
+    "playground": "serverless invoke -f playground -l  --aws-profile casper",
     "deploy": "serverless deploy"
   },
   "author": "",
