@@ -53,5 +53,10 @@
     "name": "Rialto",
     "city": "Amsterdam",
     "url": "https://rialtofilm.nl/"
+  },
+  {
+    "name": "Cinecenter",
+    "city": "Amsterdam",
+    "url": "https://cinecenter.nl/"
   }
 ]
