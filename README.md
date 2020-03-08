@@ -1,7 +1,10 @@
 # Expat Cinema
 
-- `cd cloud; serverless deploy` to deploy the lambda functions -- now handled by GitHub Actions
-- `cd cloud; serverless invoke -f scrapers` to manually run the scrapers
+Cloud and SPA deploy should be handled by GitHub Actions
+
+- `cd cloud; yarn deploy` to deploy the lambda functions -- now handled by GitHub Actions
+- `cd cloud; yarn start` to manually run the scrapers
+- `cd spa; yarn deploy` to deploy the SPA to GitHub Pages
 
 ## Scratchpad
 
