@@ -64,7 +64,8 @@ const extractFromMoviePage = ({ url }) =>
       title
         .replace('Expat Arthouse: ', '')
         .replace('KINO Expat: ', '')
-        .replace('KINO Expat Special: ', ''),
+        .replace('KINO Expat Special: ', '')
+        .replace(' (EN subs)', ''),
     )
 
     const dates = movie.timetableRest
