@@ -6,7 +6,8 @@
   "scripts": {
     "start": "serverless invoke -f scrapers -l --aws-profile casper",
     "playground": "serverless invoke -f playground -l  --aws-profile casper",
-    "deploy": "serverless deploy --aws-profile casper"
+    "deploy": "serverless deploy --aws-profile casper",
+    "deploy:ci": "serverless deploy"
   },
   "author": "",
   "license": "ISC",
