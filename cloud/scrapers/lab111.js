@@ -23,7 +23,10 @@ const hasEnglishSubtitles = movie => {
   const metadata = {}
   movie.meta.forEach(({ key, value }) => (metadata[key] = value))
 
-  return metadata.Subtitles === 'Engels'
+  return (
+    metadata.Subtitles === 'Engels' ||
+    movie.titleMeta.includes('Engels ondertiteld')
+  )
 }
 
 const flatten = (acc, cur) => [...acc, ...cur]
@@ -33,6 +36,7 @@ const extractFromMoviePage = ({ url }) => {
 
   return xray(url, 'body', {
     title: 'h1',
+    titleMeta: ['.zmovietitel h5'],
     meta: xray('.zmovie-meta', [
       {
         key: 'h4 | trim',
@@ -98,13 +102,13 @@ const extractFromMainPage = () => {
 }
 
 if (require.main === module) {
-  // extractFromMainPage()
-  //   .then(x => JSON.stringify(x, null, 2))
-  //   .then(console.log)
+  extractFromMainPage()
+    .then(x => JSON.stringify(x, null, 2))
+    .then(console.log)
 
-  extractFromMoviePage({
-    url: 'https://www.lab111.nl/movie/stalker/',
-  }).then(console.log)
+  // extractFromMoviePage({
+  //   url: 'https://www.lab111.nl/movie/parasite/',
+  // }).then(console.log)
 }
 
 module.exports = extractFromMainPage
