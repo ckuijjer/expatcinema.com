@@ -62,7 +62,7 @@ const extractFromMoviePage = (...args) => {
 // movie, but still can easily get all the screenings
 const extractFromMainPage = () => {
   return xray(
-    'https://www.kriterion.nl/agenda-2',
+    'https://www.kriterion.nl/agenda-2-2-2-2',
     'li[typeof="schema:TheaterEvent"]',
     [
       {
@@ -78,6 +78,16 @@ const extractFromMainPage = () => {
     .then(results => Promise.all(results.map(extractFromMoviePage)))
     .then(debugPromise('before flatten: %j'))
     .then(results => results.reduce(flatten, []))
+}
+
+if (require.main === module) {
+  extractFromMainPage()
+    .then(x => JSON.stringify(x, null, 2))
+    .then(console.log)
+
+  // extractFromMoviePage({
+  //   url: 'https://www.lab111.nl/movie/parasite/',
+  // }).then(console.log)
 }
 
 module.exports = extractFromMainPage
