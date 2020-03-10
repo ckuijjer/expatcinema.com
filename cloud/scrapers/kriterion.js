@@ -86,17 +86,8 @@ if (require.main === module) {
     .then(console.log)
 
   // extractFromMoviePage({
-  //   url: 'https://www.lab111.nl/movie/parasite/',
+  //   url: 'https://kriterion.nl/films/dogman',
   // }).then(console.log)
 }
 
 module.exports = extractFromMainPage
-
-// https://kriterion.nl/films/styx
-// https://kriterion.nl/films/cool-japan-perfect-blue-1997
-// https://kriterion.nl/films/pulp-fiction
-// https://kriterion.nl/films/lady-vengeance
-
-// extractFromMoviePage({
-//   url: 'https://kriterion.nl/films/dogman',
-// })
