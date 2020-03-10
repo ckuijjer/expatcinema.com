@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - 'cloud/*'
+      - 'cloud/**'
       - '.github/workflows/cloud.yml'
 
 jobs:
