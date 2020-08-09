@@ -6,14 +6,14 @@
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
-    "gh-pages": "^2.2.0",
+    "gh-pages": "^3.1.0",
     "is-mobile": "^2.2.1",
     "luxon": "^1.22.0",
-    "rambda": "^4.6.0",
+    "rambda": "^5.11.0",
     "ramda": "^0.27.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-ga": "^2.7.0",
+    "react-ga": "^3.1.2",
     "react-scripts": "^3.4.0",
     "react-virtualized": "^9.21.2",
     "source-map-explorer": "^2.3.1"
