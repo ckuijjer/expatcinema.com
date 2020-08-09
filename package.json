@@ -1,0 +1,18 @@
+{
+  "name": "expatcinema.com",
+  "version": "1.0.0",
+  "repository": "git@github.com:ckuijjer/expatcinema.com.git",
+  "author": "Casper Kuijjer <casper@kuijjer.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "spa",
+    "cloud"
+  ],
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  }
+}
