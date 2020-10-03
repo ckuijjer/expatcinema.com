@@ -11,6 +11,7 @@ const filters = [
   /"date": null'/, // a movie is extracted with null date
   /socket hang up/, // no content received within the timeout period
   /with status code: (4|5)\d{2}/, // HTTP error code 4xx, 5xx received
+  /Uncaught Exception/,
 ]
 
 const gunzip = util.promisify(zlib.gunzip)
@@ -23,13 +24,13 @@ const notifySlack = async ({ event, context } = {}) => {
   const { logEvents } = JSON.parse(unzippedPayload.toString())
 
   const filteredLogEvents = logEvents.filter(({ message }) =>
-    filters.some(f => f.test(message)),
+    filters.some((f) => f.test(message)),
   )
 
   await Promise.all(filteredLogEvents.map(postToSlack))
 }
 
-const postToSlack = logEvent => {
+const postToSlack = (logEvent) => {
   console.log('SLACK_WEBHOOK', process.env.SLACK_WEBHOOK)
 
   return axios.post(process.env.SLACK_WEBHOOK, {
