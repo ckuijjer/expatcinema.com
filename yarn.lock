@@ -12032,6 +12032,13 @@ serverless-dotenv-plugin@^3.0.0:
     dotenv "^8.2.0"
     dotenv-expand "^5.1.0"
 
+serverless-plugin-monorepo@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/serverless-plugin-monorepo/-/serverless-plugin-monorepo-0.9.0.tgz#c65c66fc9fc4b8ba168a6dd430355f64b55ac918"
+  integrity sha512-hYq6ochM0jXVsNIxOhKDwdMcXBsgwZq9JmfUXhdUDVWwxTAkQQRXpfJGcSo0hvvMh9P43jRifgi+dcsQ4N0QZA==
+  dependencies:
+    fs-extra "^7.0.0"
+
 serverless@^1.53.0:
   version "1.78.1"
   resolved "https://registry.yarnpkg.com/serverless/-/serverless-1.78.1.tgz#f687f750e0bbed8e67790c0e3875f00168af32d6"

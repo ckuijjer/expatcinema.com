@@ -5,10 +5,12 @@
   "author": "Casper Kuijjer <casper@kuijjer.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "spa",
-    "cloud"
-  ],
+  "workspaces": {
+    "packages": [
+      "spa",
+      "cloud"
+    ]
+  },
   "scripts": {
     "format": "prettier --write ."
   },
