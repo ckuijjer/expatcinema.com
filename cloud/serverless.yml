@@ -2,6 +2,7 @@ service: expatcinema
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-plugin-monorepo
 
 provider:
   name: aws
