@@ -6,13 +6,11 @@ const splitTime = require('./splitTime')
 const { fullMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => arg => {
+const debugPromise = (format, ...debugArgs) => (arg) => {
   debug(format, ...debugArgs, arg)
   return arg
 }
-const xray = Xray()
-  .concurrency(10)
-  .throttle(10, 300)
+const xray = Xray().concurrency(10).throttle(10, 300)
 
 const extractFromMoviePage = ({ url }) =>
   xray(url, 'body', [
@@ -24,14 +22,14 @@ const extractFromMoviePage = ({ url }) =>
     },
   ])
     .then(debugPromise('movie page'))
-    .then(results =>
+    .then((results) =>
       results
-        .map(r => ({ ...r, url })) // add the movie page's url
-        .map(r => ({
+        .map((r) => ({ ...r, url })) // add the movie page's url
+        .map((r) => ({
           ...r,
           title: r.title.replace('Expat Cinema: ', ''), // Remove Expat Cinema from the title
         }))
-        .map(r => {
+        .map((r) => {
           const { date, time, ...rest } = r
           const [dayString, monthString] = date.split(' ')
           const day = Number(dayString)
@@ -70,10 +68,10 @@ const extractFromMainPage = () =>
   ])
     .then(debugPromise('main page'))
     .then(
-      results =>
+      (results) =>
         Promise.all(
           results
-            .filter(x => x.title && x.title.startsWith('Expat Cinema'))
+            .filter((x) => x.title && x.title.startsWith('Expat Cinema'))
             .map(extractFromMoviePage),
         )
           .then(R.flatten)
@@ -82,7 +80,7 @@ const extractFromMainPage = () =>
 
 if (require.main === module) {
   extractFromMainPage()
-    .then(x => JSON.stringify(x, null, 2))
+    .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
 }
 

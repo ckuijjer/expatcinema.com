@@ -6,20 +6,20 @@ const splitTime = require('./splitTime')
 const { shortMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => arg => {
+const debugPromise = (format, ...debugArgs) => (arg) => {
   debug(format, ...debugArgs, arg)
   return arg
 }
 
 const xray = Xray({
   filters: {
-    trim: value => (typeof value === 'string' ? value.trim() : value),
+    trim: (value) => (typeof value === 'string' ? value.trim() : value),
   },
 })
   .concurrency(10)
   .throttle(10, 300)
 
-const hasEnglishSubtitles = movie => {
+const hasEnglishSubtitles = (movie) => {
   const metadata = {}
   movie.meta.forEach(({ key, value }) => (metadata[key] = value))
 
@@ -51,7 +51,7 @@ const extractFromMoviePage = ({ url }) => {
     ]),
   })
     .then(debugPromise('extracted xray %s: %j', url))
-    .then(movie => {
+    .then((movie) => {
       if (!hasEnglishSubtitles(movie)) return []
 
       return movie.screenings.map(({ date, time }) => {
@@ -96,14 +96,14 @@ const extractFromMainPage = () => {
   ])
     .then(R.uniq) // as the agenda has lots of duplicate movie urls, make it unique
     .then(debugPromise('main page: %J'))
-    .then(results => Promise.all(results.map(extractFromMoviePage)))
+    .then((results) => Promise.all(results.map(extractFromMoviePage)))
     .then(debugPromise('before flatten: %j'))
-    .then(results => results.reduce(flatten, []))
+    .then((results) => results.reduce(flatten, []))
 }
 
 if (require.main === module) {
   extractFromMainPage()
-    .then(x => JSON.stringify(x, null, 2))
+    .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
 
   // extractFromMoviePage({

@@ -3,13 +3,13 @@ const debug = require('debug')('cinecenter')
 
 const xray = Xray({
   filters: {
-    trim: value => (typeof value === 'string' ? value.trim() : value),
+    trim: (value) => (typeof value === 'string' ? value.trim() : value),
   },
 })
   .concurrency(10)
   .throttle(10, 300)
 
-const cleanTitle = title => title.replace(/Cine Expat: /i, '')
+const cleanTitle = (title) => title.replace(/Cine Expat: /i, '')
 
 const extractFromMoviePage = async ({ url }) => {
   debug('extracting %s', url)
@@ -23,7 +23,7 @@ const extractFromMoviePage = async ({ url }) => {
 
   debug('extracted xray %s: %j', url, movie)
 
-  const result = movie.showings.map(showing => ({
+  const result = movie.showings.map((showing) => ({
     title: cleanTitle(movie.title),
     url,
     cinema: 'Cinecenter',
@@ -54,7 +54,7 @@ const extractFromMainPage = async () => {
 
 if (require.main === module) {
   extractFromMainPage()
-    .then(x => JSON.stringify(x, null, 2))
+    .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
   //   extractFromMoviePage({
   // url: 'https://cinecenter.nl/film/cine-expat-woman/?special=expat',

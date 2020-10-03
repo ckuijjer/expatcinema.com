@@ -41,8 +41,8 @@ const TextFilter = () => {
         placeholder="Type to search"
         autoFocus={!mobile({ tablet: true })}
         value={search}
-        onChange={e => setSearch(e.target.value)}
-        onKeyUp={e => e.key === 'Escape' && setSearch()}
+        onChange={(e) => setSearch(e.target.value)}
+        onKeyUp={(e) => e.key === 'Escape' && setSearch()}
         aria-label="Type to search"
       />
       {search && (

@@ -3,14 +3,14 @@ const R = require('ramda')
 const { DateTime } = require('luxon')
 const debug = require('debug')('kriterion')
 
-const debugPromise = (format, ...debugArgs) => arg => {
+const debugPromise = (format, ...debugArgs) => (arg) => {
   debug(format, ...debugArgs, arg)
   return arg
 }
 
 const xray = Xray({
   filters: {
-    trim: value => (typeof value === 'string' ? value.trim() : value),
+    trim: (value) => (typeof value === 'string' ? value.trim() : value),
   },
 })
   .concurrency(10)
@@ -39,17 +39,15 @@ const extractFromMoviePage = (...args) => {
     ]),
   })
     .then(debugPromise('extracted xray %s: %j', url))
-    .then(movie => {
+    .then((movie) => {
       if (!hasEnglishSubtitles(movie)) return []
 
       return movie.sidebar
-        .filter(x => x.url === url) // only look at the sidebar items that are about the current movie
+        .filter((x) => x.url === url) // only look at the sidebar items that are about the current movie
         .map(({ date, ...rest }) => ({
           ...rest,
           cinema: 'Kriterion',
-          date: DateTime.fromISO(date)
-            .toUTC()
-            .toISO(),
+          date: DateTime.fromISO(date).toUTC().toISO(),
         }))
     })
     .then(debugPromise('extracting done %s: %O', url))
@@ -75,14 +73,14 @@ const extractFromMainPage = () => {
     .then(debugPromise('main page before uniq: %j'))
     .then(R.uniqWith(R.eqBy(R.prop('url')))) // only do uniq based on url, as the title is different from the main and the sidebar
     .then(debugPromise('main page after uniq: %j'))
-    .then(results => Promise.all(results.map(extractFromMoviePage)))
+    .then((results) => Promise.all(results.map(extractFromMoviePage)))
     .then(debugPromise('before flatten: %j'))
-    .then(results => results.reduce(flatten, []))
+    .then((results) => results.reduce(flatten, []))
 }
 
 if (require.main === module) {
   extractFromMainPage()
-    .then(x => JSON.stringify(x, null, 2))
+    .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
 
   // extractFromMoviePage({

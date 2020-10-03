@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { useLocalStorage } from './hooks'
 import { cinemas } from './data'
 
-const allCities = [...new Set(cinemas.map(x => x.city).sort())]
+const allCities = [...new Set(cinemas.map((x) => x.city).sort())]
 
 const Container = styled('div')({
   marginTop: 12,
@@ -27,7 +27,7 @@ const CityCheckbox = styled('div')(({ value }) => ({
 const CityFilter = () => {
   const [cities, setCities] = useLocalStorage('cities', [])
 
-  const toggle = city => {
+  const toggle = (city) => {
     const set = new Set(cities || [])
 
     if (set.has(city)) {
@@ -41,7 +41,7 @@ const CityFilter = () => {
 
   return (
     <Container>
-      {allCities.map(city => (
+      {allCities.map((city) => (
         <CityCheckbox
           key={city}
           onClick={() => toggle(city)}

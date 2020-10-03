@@ -6,21 +6,21 @@ const splitTime = require('./splitTime')
 const { shortMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => arg => {
+const debugPromise = (format, ...debugArgs) => (arg) => {
   debug(format, ...debugArgs, arg)
   return arg
 }
 
 const xray = Xray({
   filters: {
-    trim: value => (typeof value === 'string' ? value.trim() : value),
+    trim: (value) => (typeof value === 'string' ? value.trim() : value),
   },
 })
   .concurrency(10)
   .throttle(10, 300)
 
-const hasEnglishSubtitles = movie =>
-  movie.metadata.filter(x => x === 'SubtitlesEnglish').length === 1
+const hasEnglishSubtitles = (movie) =>
+  movie.metadata.filter((x) => x === 'SubtitlesEnglish').length === 1
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
@@ -42,7 +42,7 @@ const extractFromMoviePage = ({ url }) => {
     ]),
   })
     .then(debugPromise('extracted xray %s: %O', url))
-    .then(movie => {
+    .then((movie) => {
       if (!hasEnglishSubtitles(movie)) return []
 
       const format = 'cccc d MMMM H:mm'
@@ -51,10 +51,8 @@ const extractFromMoviePage = ({ url }) => {
       const time = movie.firstScreening.time.match(/[\d:]*/)[0] // 17:00 - 18:35 \r\n\r\n-\r\n\r\n'
 
       const screenings = [
-        DateTime.fromFormat(`${date} ${time}`, format)
-          .toUTC()
-          .toISO(),
-        ...movie.restScreenings.map(screening => {
+        DateTime.fromFormat(`${date} ${time}`, format).toUTC().toISO(),
+        ...movie.restScreenings.map((screening) => {
           const time = screening.time.match(/[\d:]*/)[0] // 17:00 - 18:35 \r\n\r\n-\r\n\r\n'
 
           const dayIndex = screening.date.match(/\d+/).index // 'Thursday8 November'
@@ -63,13 +61,11 @@ const extractFromMoviePage = ({ url }) => {
             screening.date.slice(dayIndex),
           ].join(' ')
 
-          return DateTime.fromFormat(`${date} ${time}`, format)
-            .toUTC()
-            .toISO()
+          return DateTime.fromFormat(`${date} ${time}`, format).toUTC().toISO()
         }),
       ]
 
-      return screenings.map(screening => ({
+      return screenings.map((screening) => ({
         title: movie.title,
         url,
         date: screening,
@@ -87,14 +83,14 @@ const extractFromMainPage = () => {
     },
   ])
     .then(debugPromise('main page: %J'))
-    .then(results => Promise.all(results.map(extractFromMoviePage)))
+    .then((results) => Promise.all(results.map(extractFromMoviePage)))
     .then(debugPromise('before flatten: %j'))
-    .then(results => results.reduce(flatten, []))
+    .then((results) => results.reduce(flatten, []))
 }
 
 if (require.main === module) {
   extractFromMainPage()
-    .then(x => JSON.stringify(x, null, 2))
+    .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
 
   // extractFromMoviePage({

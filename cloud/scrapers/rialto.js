@@ -6,14 +6,16 @@ const guessYear = require('./guessYear')
 
 const xray = Xray({
   filters: {
-    trim: value => (typeof value === 'string' ? value.trim() : value),
+    trim: (value) => (typeof value === 'string' ? value.trim() : value),
   },
 })
   .concurrency(10)
   .throttle(10, 300)
 
-const hasEnglishSubtitles = movie =>
-  movie.metadata.map(x => x.trim().toLowerCase()).includes('subtitles english')
+const hasEnglishSubtitles = (movie) =>
+  movie.metadata
+    .map((x) => x.trim().toLowerCase())
+    .includes('subtitles english')
 
 const extractFromMoviePage = async ({ url }) => {
   debug('extracting %s', url)
@@ -71,7 +73,7 @@ const extractFromMoviePage = async ({ url }) => {
 
   debug('extracted showings %s: %j', url, showings)
 
-  const result = showings.map(date => ({
+  const result = showings.map((date) => ({
     title: movie.title,
     url,
     cinema: 'Rialto',
@@ -98,7 +100,7 @@ const extractFromMainPage = async () => {
 
 if (require.main === module) {
   extractFromMainPage()
-    .then(x => JSON.stringify(x, null, 2))
+    .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
   //   extractFromMoviePage({
   // url: 'https://rialtofilm.nl/en/films/462/parasite-zw',

@@ -9,25 +9,25 @@ const splitTime = require('./splitTime')
 const { fullMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => arg => {
+const debugPromise = (format, ...debugArgs) => (arg) => {
   debug(format, ...debugArgs, arg)
   return arg
 }
 
 const xray = Xray({
   filters: {
-    trim: value => (typeof value === 'string' ? value.trim() : value),
+    trim: (value) => (typeof value === 'string' ? value.trim() : value),
   },
 })
   .concurrency(10)
   .throttle(10, 300)
 
-const hasEnglishSubtitles = movie =>
+const hasEnglishSubtitles = (movie) =>
   movie.title.toLowerCase().includes('language no problem')
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
-const cleanTitle = title => title.replace(/Language No Problem: /i, '')
+const cleanTitle = (title) => title.replace(/Language No Problem: /i, '')
 
 const extractFromMoviePage = ({ url }) => {
   debug('extracting %s', url)
@@ -45,12 +45,12 @@ const extractFromMoviePage = ({ url }) => {
     ]),
   })
     .then(debugPromise('extracted xray %s: %j', url))
-    .then(movie => {
+    .then((movie) => {
       if (!hasEnglishSubtitles(movie)) return []
 
       return movie.screenings
         .map(({ date, times }) =>
-          times.map(time => {
+          times.map((time) => {
             const day = +date.day
             const month = fullMonthToNumber(date.month)
             const [hour, minute] = splitTime(time)
@@ -90,7 +90,7 @@ const extractFromMainPage = () =>
     'https://www.hartlooper.nl/wp-admin/admin-ajax.php?action=get_movies&day=movies',
   )
     .json()
-    .then(movies => {
+    .then((movies) => {
       console.log({ movies })
       return movies.map(({ post_title, link }) => ({
         title: post_title,
@@ -98,11 +98,11 @@ const extractFromMainPage = () =>
       }))
     })
     .then(debugPromise('main page: %J'))
-    .then(results => results.filter(hasEnglishSubtitles))
+    .then((results) => results.filter(hasEnglishSubtitles))
     .then(debugPromise('main page with english subtitles: %J'))
-    .then(results => Promise.all(results.map(extractFromMoviePage)))
+    .then((results) => Promise.all(results.map(extractFromMoviePage)))
     .then(debugPromise('before flatten: %j'))
-    .then(results => results.reduce(flatten, []))
+    .then((results) => results.reduce(flatten, []))
 
 if (require.main === module) {
   // extractFromMainPage()
