@@ -16,7 +16,7 @@ const Calendar = () => {
 
   // only do the data loading once
   useEffect(() => {
-    getScreenings().then(screenings => {
+    getScreenings().then((screenings) => {
       const screeningsByDate = Object.entries(screenings).sort(([a], [b]) => {
         return DateTime.fromISO(a) - DateTime.fromISO(b)
       }) // sort by date
@@ -29,7 +29,7 @@ const Calendar = () => {
     .map(([date, screenings]) => {
       // filter on text
       const filteredScreenings = screenings.filter(
-        screening =>
+        (screening) =>
           search.length === 0 ||
           screening.title.toLowerCase().includes(search.toLowerCase()) ||
           screening.cinema.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -40,11 +40,11 @@ const Calendar = () => {
       }
       return null
     })
-    .filter(x => x)
+    .filter((x) => x)
     .map(([date, screenings]) => {
       // filter on city
       const filteredScreenings = screenings.filter(
-        screening =>
+        (screening) =>
           cities.length === 0 || cities.includes(screening.cinema.city),
       )
       if (filteredScreenings.length) {
@@ -52,11 +52,11 @@ const Calendar = () => {
       }
       return null
     })
-    .filter(x => x)
+    .filter((x) => x)
     .map(([date, screenings]) => {
       return [
         { component: 'RelativeDate', props: { children: date } },
-        ...screenings.map(screening => ({
+        ...screenings.map((screening) => ({
           component: 'Screening',
           props: screening,
         })),

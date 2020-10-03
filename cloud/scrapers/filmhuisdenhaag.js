@@ -5,14 +5,14 @@ const debug = require('debug')('filmhuisdenhaag')
 const { shortMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => arg => {
+const debugPromise = (format, ...debugArgs) => (arg) => {
   debug(format, ...debugArgs, arg)
   return arg
 }
 
 const xray = Xray({
   filters: {
-    trim: value => (typeof value === 'string' ? value.trim() : value),
+    trim: (value) => (typeof value === 'string' ? value.trim() : value),
   },
 })
   .concurrency(10)
@@ -31,10 +31,10 @@ const extractFromMoviePage = ({ url }) => {
   ])
     .then(debugPromise('extracting %s', url))
     .then(
-      results =>
+      (results) =>
         results
           .filter(hasEnglishSubtitles)
-          .map(movie => {
+          .map((movie) => {
             // timetable is e.g. [ 'wo 12 sep', '13.45', '20.45', 'wo 19 sep', '13.45', '20.45' ]
             // and needs to be parsed: first detect date vs time, then see which belongs together, then combine
             const { timetable, title } = movie
@@ -43,7 +43,7 @@ const extractFromMoviePage = ({ url }) => {
             debug('timetable %j', timetable)
 
             // it's a time if it's of the form e.g. 13.45
-            const isTime = x => !!x.match(/\d+.\d+/)
+            const isTime = (x) => !!x.match(/\d+.\d+/)
 
             // group them together if they're both times (in theory this would not be good, but as there's never two dates after each other, who cares)
             // output is e.g. [[ 'wo 12 sep' ], ['13.45', '20.45'], [ 'wo 19 sep' ], [ '13.45', '20.45' ]]
@@ -71,11 +71,11 @@ const extractFromMoviePage = ({ url }) => {
                 times,
               })
 
-              times.forEach(time => {
+              times.forEach((time) => {
                 const [hour, minute] = time
                   .split(/\s+/)[0] // e.g. 20.15 Uitverkocht => 20.15
                   .split('.') // e.g. 20.15 to 20, 15
-                  .map(x => Number(x))
+                  .map((x) => Number(x))
                 const year = guessYear(
                   DateTime.fromObject({
                     day,
@@ -105,7 +105,7 @@ const extractFromMoviePage = ({ url }) => {
               })
             }
 
-            return dates.map(date => ({
+            return dates.map((date) => ({
               title,
               url,
               cinema: 'Filmhuis Den Haag',
@@ -124,8 +124,8 @@ const extractFromMainPage = () => {
     },
   ])
     .then(debugPromise('main page'))
-    .then(results => Promise.all(results.map(extractFromMoviePage)))
-    .then(results => results.reduce((acc, cur) => [...acc, ...cur], [])) // flatten, as there's can be more than one screening per page
+    .then((results) => Promise.all(results.map(extractFromMoviePage)))
+    .then((results) => results.reduce((acc, cur) => [...acc, ...cur], [])) // flatten, as there's can be more than one screening per page
 }
 
 if (require.main === module) {
@@ -139,7 +139,7 @@ if (require.main === module) {
 
   extractFromMainPage()
     .then(sort)
-    .then(x => JSON.stringify(x, null, 2))
+    .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
 
   // extractFromMoviePage({

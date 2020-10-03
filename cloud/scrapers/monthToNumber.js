@@ -1,4 +1,4 @@
-const fullMonthToNumber = month =>
+const fullMonthToNumber = (month) =>
   [
     'januari',
     'februari',
@@ -14,7 +14,7 @@ const fullMonthToNumber = month =>
     'december',
   ].indexOf(month.toLowerCase()) + 1
 
-const shortMonthToNumber = month =>
+const shortMonthToNumber = (month) =>
   [
     'jan',
     'feb',

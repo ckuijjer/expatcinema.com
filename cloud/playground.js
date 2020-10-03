@@ -12,9 +12,7 @@ const playground = async ({ event, context } = {}) => {
     .toUTC()
     .toISO()
 
-  const utcTime = DateTime.fromFormat(timestamp, format)
-    .toUTC()
-    .toISO()
+  const utcTime = DateTime.fromFormat(timestamp, format).toUTC().toISO()
 
   const utcTimeWithZone = DateTime.fromFormat(timestamp, format, {
     zone: 'UTC',

@@ -6,20 +6,18 @@ const splitTime = require('./splitTime')
 const { shortMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => arg => {
+const debugPromise = (format, ...debugArgs) => (arg) => {
   debug(format, ...debugArgs, arg)
   return arg
 }
 
-const debugFn = (format, ...debugArgs) => fn => (...args) => {
+const debugFn = (format, ...debugArgs) => (fn) => (...args) => {
   const result = fn(...args)
   debug(format, ...debugArgs, { args, result })
   return result
 }
 
-const xray = Xray()
-  .concurrency(10)
-  .throttle(10, 300)
+const xray = Xray().concurrency(10).throttle(10, 300)
 
 const hasEnglishSubtitles = debugFn('hasEnglishSubtitles')(
   ({ title = '', movieMetadata = '' }) =>
@@ -43,13 +41,13 @@ const extractFromMoviePage = ({ url }) =>
         times: ['ul li h6'],
       },
     ]),
-  }).then(movie => {
+  }).then((movie) => {
     if (!hasEnglishSubtitles(movie)) return
 
     debug('timetableToday', movie.timetableToday)
     debug('timetableRest', movie.timetableRest)
 
-    const today = movie.timetableToday.map(time => {
+    const today = movie.timetableToday.map((time) => {
       const [hour, minute] = splitTime(time)
 
       return DateTime.fromObject({
@@ -60,7 +58,7 @@ const extractFromMoviePage = ({ url }) =>
         .toISO()
     })
 
-    const cleanTitle = debugFn('cleanTitle')(title =>
+    const cleanTitle = debugFn('cleanTitle')((title) =>
       title
         .replace('Expat Arthouse: ', '')
         .replace('KINO Expat: ', '')
@@ -69,9 +67,9 @@ const extractFromMoviePage = ({ url }) =>
     )
 
     const dates = movie.timetableRest
-      .filter(x => x.date !== undefined) // remove the empty { times: [] }
-      .map(x =>
-        x.times.map(time => {
+      .filter((x) => x.date !== undefined) // remove the empty { times: [] }
+      .map((x) =>
+        x.times.map((time) => {
           const [dayOfWeek, dayString, monthString] = x.date.split(' ')
           const day = Number(dayString)
           const month = shortMonthToNumber(monthString)
@@ -97,8 +95,8 @@ const extractFromMoviePage = ({ url }) =>
         }),
       )
       .concat([today])
-      .map(dates =>
-        dates.map(date => ({
+      .map((dates) =>
+        dates.map((date) => ({
           date,
           title: cleanTitle(movie.title),
           url,
@@ -118,9 +116,9 @@ const extractFromMainPage = () => {
   ])
     .then(debugPromise('main page'))
     .then(R.uniq) // as the agenda has lots of duplicate movie urls, make it unique
-    .then(results => Promise.all(results.map(extractFromMoviePage)))
-    .then(results => results.filter(x => x))
-    .then(results => results.reduce(flatten, []))
+    .then((results) => Promise.all(results.map(extractFromMoviePage)))
+    .then((results) => results.filter((x) => x))
+    .then((results) => results.reduce(flatten, []))
 }
 
 if (require.main === module) {

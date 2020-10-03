@@ -15,7 +15,7 @@ const debug = require('debug')('combined scraper')
 
 const applyFilters = require('./filters')
 
-const debugPromise = (format, ...debugArgs) => arg => {
+const debugPromise = (format, ...debugArgs) => (arg) => {
   debug(format, ...debugArgs, arg)
   return arg
 }
@@ -29,18 +29,16 @@ const sort = R.sortWith([
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
-const now = DateTime.fromObject({})
-  .toUTC()
-  .toISO()
+const now = DateTime.fromObject({}).toUTC().toISO()
 
-const writeToFileInBucketAndContinue = bucket => filename => data =>
+const writeToFileInBucketAndContinue = (bucket) => (filename) => (data) =>
   new Promise((resolve, reject) => {
     const params = {
       Bucket: bucket,
       Key: filename,
       Body: JSON.stringify(data, null, 2),
     }
-    s3.putObject(params, err => {
+    s3.putObject(params, (err) => {
       if (err) return reject(err)
       return resolve(data)
     })
@@ -66,14 +64,14 @@ exports.scrapers = () =>
       'rialto',
       'cinecenter',
       // 'liff',
-    ].map(name => {
+    ].map((name) => {
       const fn = require(`./${name}`)
       return fn()
         .then(sort)
         .then(writeToFileAndContinue(`${name}/${now}.json`))
     }),
   )
-    .then(results => sort(results.reduce(flatten, [])))
+    .then((results) => sort(results.reduce(flatten, [])))
     .then(writeToFileAndContinue(`all/${now}.json`))
     .then(applyFilters)
     .then(writeToFileAndContinue(`filtered/${now}.json`))

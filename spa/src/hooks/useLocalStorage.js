@@ -47,7 +47,7 @@ const useLocalStorage = (key, initialValue) => {
   const context = useContext(LocalStorage)
 
   const item = context.getItem(key, initialValue)
-  const setItem = value => context.setItem(key, value)
+  const setItem = (value) => context.setItem(key, value)
 
   return [item, setItem]
 }
