@@ -8,7 +8,6 @@
   "workspaces": {
     "packages": [
       "cloud",
-      "spa",
       "web"
     ]
   },
@@ -16,6 +15,6 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "prettier": "^2.0.5"
+    "prettier": "^2.3.2"
   }
 }

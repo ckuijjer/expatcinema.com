@@ -6,6 +6,7 @@ const Container = styled('div')({
   marginTop: 16,
   paddingTop: 16,
   paddingBottom: 16,
+  fontSize: 20,
   lineHeight: 1.4,
 })
 
