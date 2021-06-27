@@ -1,13 +1,13 @@
 import * as React from 'react'
-import App from '../components/App'
+import About from '../components/About'
 import Layout from '../components/Layout'
 import Seo from '../components/Seo'
 
-const IndexPage = () => (
+const AboutPage = () => (
   <Layout>
     <Seo title="Home" />
-    <App />
+    <About />
   </Layout>
 )
 
-export default IndexPage
+export default AboutPage
