@@ -21,12 +21,6 @@ jobs:
         run: |
           cd web/
           yarn install --frozen-lockfile
-      - name: Test
-        run: |
-          cd web/
-          yarn test
-        env:
-          CI: true
       - name: Build
         run: |
           cd web/

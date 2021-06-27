@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: 'Expat Cinema',
+    siteUrl: 'https://www.expatcinema.com',
   },
   plugins: [
     'gatsby-plugin-emotion',
@@ -12,5 +13,6 @@ module.exports = {
     },
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-sitemap',
+    'gatsby-plugin-react-svg',
   ],
 }
