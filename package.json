@@ -7,8 +7,9 @@
   "private": true,
   "workspaces": {
     "packages": [
+      "cloud",
       "spa",
-      "cloud"
+      "web"
     ]
   },
   "scripts": {
