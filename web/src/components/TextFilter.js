@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import mobile from 'is-mobile'
 
 import { ReactComponent as Cross } from './cross.svg'
-import { useSearchParams } from './hooks'
+import { useSearchParams } from '../hooks'
 
 const Container = styled('div')({
   position: 'relative',

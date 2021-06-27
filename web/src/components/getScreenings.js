@@ -1,5 +1,5 @@
 import { groupBy } from 'ramda'
-import { cinemas } from './data'
+import { cinemas } from '../data'
 import { DateTime } from 'luxon'
 
 import getToday from './getToday'

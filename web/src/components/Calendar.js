@@ -5,7 +5,7 @@ import { AutoSizer, List, WindowScroller } from 'react-virtualized'
 import RelativeDate from './RelativeDate'
 import Screening from './Screening'
 import getScreenings from './getScreenings'
-import { useLocalStorage, useSearchParams } from './hooks'
+import { useLocalStorage, useSearchParams } from '../hooks'
 
 const flatten = (acc, cur) => [...acc, ...cur]
 

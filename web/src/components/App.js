@@ -8,7 +8,7 @@ import TextFilter from './TextFilter'
 import CityFilter from './CityFilter'
 import Header from './Header'
 
-import { LocalStorageProvider, URLSearchParamsProvider } from './hooks'
+import { LocalStorageProvider, URLSearchParamsProvider } from '../hooks'
 
 Settings.defaultZoneName = 'Europe/Amsterdam'
 
