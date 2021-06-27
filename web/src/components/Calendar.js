@@ -5,13 +5,14 @@ import { AutoSizer, List, WindowScroller } from 'react-virtualized'
 import RelativeDate from './RelativeDate'
 import Screening from './Screening'
 import getScreenings from './getScreenings'
-import { useLocalStorage, useSearchParams } from './hooks'
+import { useLocalStorage } from '../hooks'
+import { useQueryParam, StringParam } from 'use-query-params'
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
 const Calendar = () => {
   const [cities] = useLocalStorage('cities', [])
-  const [search] = useSearchParams('search', '')
+  const [search] = useQueryParam('search', StringParam)
   const [screeningsByDate, setScreeningsByDate] = useState([])
 
   // only do the data loading once
@@ -30,7 +31,7 @@ const Calendar = () => {
       // filter on text
       const filteredScreenings = screenings.filter(
         (screening) =>
-          search.length === 0 ||
+          search === undefined ||
           screening.title.toLowerCase().includes(search.toLowerCase()) ||
           screening.cinema.name.toLowerCase().includes(search.toLowerCase()) ||
           screening.cinema.city.toLowerCase().includes(search.toLowerCase()),

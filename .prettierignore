@@ -1,2 +1,4 @@
 spa/build
 spa/public
+web/.cache
+web/public

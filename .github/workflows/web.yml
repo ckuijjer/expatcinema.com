@@ -1,12 +1,12 @@
-name: SPA
+name: Web
 
 on:
   push:
     branches:
       - master
     paths:
-      - 'spa/**'
-      - '.github/workflows/spa.yml'
+      - 'web/**'
+      - '.github/workflows/web.yml'
 
 jobs:
   build:
@@ -19,21 +19,15 @@ jobs:
         uses: actions/checkout@v1
       - name: Install dependencies
         run: |
-          cd spa/
+          cd web/
           yarn install --frozen-lockfile
-      - name: Test
-        run: |
-          cd spa/
-          yarn test
-        env:
-          CI: true
       - name: Build
         run: |
-          cd spa/
+          cd web/
           yarn build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@36e7d6be3ae491bda245af50d04b012d956c1f14
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: spa/build
+          FOLDER: web/build

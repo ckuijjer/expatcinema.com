@@ -2,8 +2,8 @@ import React from 'react'
 import styled from '@emotion/styled'
 import mobile from 'is-mobile'
 
-import { ReactComponent as Cross } from './cross.svg'
-import { useSearchParams } from './hooks'
+import Cross from './cross.svg'
+import { useQueryParam, StringParam } from 'use-query-params'
 
 const Container = styled('div')({
   position: 'relative',
@@ -33,20 +33,22 @@ const ClearButton = styled('div')({
 })
 
 const TextFilter = () => {
-  const [search, setSearch] = useSearchParams('search', '')
+  const [search, setSearch] = useQueryParam('search', StringParam)
 
   return (
     <Container>
       <Input
         placeholder="Type to search"
         autoFocus={!mobile({ tablet: true })}
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        onKeyUp={(e) => e.key === 'Escape' && setSearch()}
+        value={search ?? ''}
+        onChange={(e) => {
+          setSearch(e.target.value || undefined)
+        }}
+        onKeyUp={(e) => e.key === 'Escape' && setSearch(undefined)}
         aria-label="Type to search"
       />
       {search && (
-        <ClearButton onClick={() => setSearch()}>
+        <ClearButton onClick={() => setSearch(undefined)}>
           <Cross />
         </ClearButton>
       )}
