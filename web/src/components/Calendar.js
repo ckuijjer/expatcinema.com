@@ -81,9 +81,9 @@ const Calendar = ({ screenings }) => {
     rows[index].component === 'RelativeDate' ? 60 : 100
 
   return (
-    <WindowScroller>
+    <WindowScroller serverHeight={1280}>
       {({ height, isScrolling, onChildScroll, scrollTop }) => (
-        <AutoSizer style={{ height }}>
+        <AutoSizer style={{ height }} defaultWidth={343}>
           {({ width }) => (
             <List
               autoHeight
