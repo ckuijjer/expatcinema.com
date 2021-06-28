@@ -64,13 +64,13 @@ const Calendar = ({ screenings }) => {
 
     if (row.component === 'RelativeDate') {
       return (
-        <div key={key} style={style} role="row">
+        <div key={key} style={style}>
           <RelativeDate {...row.props} />
         </div>
       )
     } else {
       return (
-        <div key={key} style={style} role="row">
+        <div key={key} style={style}>
           <Screening {...row.props} />
         </div>
       )
