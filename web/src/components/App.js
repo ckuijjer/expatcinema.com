@@ -5,12 +5,12 @@ import TextFilter from './TextFilter'
 import CityFilter from './CityFilter'
 import Header from './Header'
 
-const App = () => (
+const App = ({ screenings }) => (
   <>
     <Header />
     <TextFilter />
     <CityFilter />
-    <Calendar />
+    <Calendar screenings={screenings} />
   </>
 )
 

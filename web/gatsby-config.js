@@ -6,6 +6,21 @@ module.exports = {
     siteUrl: 'https://www.expatcinema.com',
   },
   plugins: [
+    `gatsby-transformer-json`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `src/data/`,
+      },
+    },
+    {
+      resolve: 'gatsby-source-remote-file',
+      options: {
+        url:
+          'https://s3-eu-west-1.amazonaws.com/expatcinema-public/screenings.json',
+        name: 'screenings',
+      },
+    },
     'gatsby-plugin-emotion',
     {
       resolve: 'gatsby-plugin-google-analytics',

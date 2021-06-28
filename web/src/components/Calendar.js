@@ -1,30 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { DateTime } from 'luxon'
 import { AutoSizer, List, WindowScroller } from 'react-virtualized'
 
 import RelativeDate from './RelativeDate'
 import Screening from './Screening'
-import getScreenings from './getScreenings'
 import { useLocalStorage } from '../hooks'
 import { useQueryParam, StringParam } from 'use-query-params'
+import groupAndSortScreenings from './groupAndSortScreenings'
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
-const Calendar = () => {
+const Calendar = ({ screenings }) => {
   const [cities] = useLocalStorage('cities', [])
   const [search] = useQueryParam('search', StringParam)
-  const [screeningsByDate, setScreeningsByDate] = useState([])
 
-  // only do the data loading once
-  useEffect(() => {
-    getScreenings().then((screenings) => {
-      const screeningsByDate = Object.entries(screenings).sort(([a], [b]) => {
-        return DateTime.fromISO(a) - DateTime.fromISO(b)
-      }) // sort by date
-
-      setScreeningsByDate(screeningsByDate)
-    })
-  }, [])
+  const screeningsByDate = Object.entries(
+    groupAndSortScreenings(screenings),
+  ).sort(([a], [b]) => {
+    return DateTime.fromISO(a) - DateTime.fromISO(b)
+  })
 
   const rows = screeningsByDate
     .map(([date, screenings]) => {
