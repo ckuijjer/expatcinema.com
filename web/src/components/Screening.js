@@ -40,9 +40,9 @@ const Cinema = styled('div')({
 const Screening = ({ url, date, title, cinema }) => (
   <A href={url}>
     <Container>
-      <Time role="cell">{date}</Time>
-      <Title role="cell">{title}</Title>
-      <Cinema role="cell">
+      <Time role="gridcell">{date}</Time>
+      <Title role="gridcell">{title}</Title>
+      <Cinema role="gridcell">
         {cinema.name}
         <br />
         {cinema.city}
