@@ -16,8 +16,7 @@ module.exports = {
     {
       resolve: 'gatsby-source-remote-file',
       options: {
-        url:
-          'https://s3-eu-west-1.amazonaws.com/expatcinema-public/screenings.json',
+        url: 'https://s3-eu-west-1.amazonaws.com/expatcinema-public/screenings.json',
         name: 'screenings',
       },
     },
@@ -29,6 +28,7 @@ module.exports = {
       },
     },
     'gatsby-plugin-react-helmet',
+    'gatsby-plugin-robots-txt',
     'gatsby-plugin-sitemap',
     'gatsby-plugin-react-svg',
   ],
