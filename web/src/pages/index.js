@@ -6,7 +6,7 @@ import Layout from '../components/Layout'
 import Seo from '../components/Seo'
 
 const IndexPage = ({ data }) => {
-  const screenings = data.allScreeningsJson.edges.map((edge) => edge.node)
+  const screenings = data.allScreening.edges.map((edge) => edge.node)
 
   return (
     <Layout>
@@ -17,12 +17,17 @@ const IndexPage = ({ data }) => {
 }
 
 export const query = graphql`
-  query ScreeningsQuery {
-    allScreeningsJson {
+  query ScreeningQuery {
+    allScreening {
       edges {
         node {
           date
-          cinema
+          cinema {
+            name
+            city {
+              name
+            }
+          }
           title
           url
         }

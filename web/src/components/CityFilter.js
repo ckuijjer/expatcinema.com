@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 import { useLocalStorage } from '../hooks'
-import { cinemas } from '../data'
+import { cinemas } from '../data/cinema.json'
 
 const allCities = [...new Set(cinemas.map((x) => x.city).sort())]
 

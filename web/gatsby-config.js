@@ -6,7 +6,13 @@ module.exports = {
     siteUrl: 'https://www.expatcinema.com',
   },
   plugins: [
-    `gatsby-transformer-json`,
+    {
+      resolve: `gatsby-transformer-json`,
+      options: {
+        typeName: ({ node }) =>
+          node.name.charAt(0).toUpperCase() + node.name.slice(1),
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -17,7 +23,7 @@ module.exports = {
       resolve: 'gatsby-source-remote-file',
       options: {
         url: 'https://s3-eu-west-1.amazonaws.com/expatcinema-public/screenings.json',
-        name: 'screenings',
+        name: 'screening',
       },
     },
     'gatsby-plugin-emotion',

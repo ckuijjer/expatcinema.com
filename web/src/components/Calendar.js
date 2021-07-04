@@ -28,7 +28,9 @@ const Calendar = ({ screenings }) => {
           search === undefined ||
           screening.title.toLowerCase().includes(search.toLowerCase()) ||
           screening.cinema.name.toLowerCase().includes(search.toLowerCase()) ||
-          screening.cinema.city.toLowerCase().includes(search.toLowerCase()),
+          screening.cinema.city.name
+            .toLowerCase()
+            .includes(search.toLowerCase()),
       )
       if (filteredScreenings.length) {
         return [date, filteredScreenings]
