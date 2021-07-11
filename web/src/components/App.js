@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactJson from 'react-json-view'
 import { graphql } from 'gatsby'
 
 import Calendar from './Calendar'
@@ -10,7 +9,6 @@ import Header from './Header'
 const App = ({ screenings }) => (
   <>
     <Header />
-    {/* <ReactJson src={screenings} /> */}
     <TextFilter />
     <CityFilter />
     <Calendar screenings={screenings} />
