@@ -4,14 +4,12 @@ import { AutoSizer, List, WindowScroller } from 'react-virtualized'
 
 import RelativeDate from './RelativeDate'
 import Screening from './Screening'
-import { useLocalStorage } from '../hooks'
 import { useQueryParam, StringParam } from 'use-query-params'
 import groupAndSortScreenings from './groupAndSortScreenings'
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
 const Calendar = ({ screenings }) => {
-  const [cities] = useLocalStorage('cities', [])
   const [search] = useQueryParam('search', StringParam)
 
   const screeningsByDate = Object.entries(
@@ -31,18 +29,6 @@ const Calendar = ({ screenings }) => {
           screening.cinema.city.name
             .toLowerCase()
             .includes(search.toLowerCase()),
-      )
-      if (filteredScreenings.length) {
-        return [date, filteredScreenings]
-      }
-      return null
-    })
-    .filter((x) => x)
-    .map(([date, screenings]) => {
-      // filter on city
-      const filteredScreenings = screenings.filter(
-        (screening) =>
-          cities.length === 0 || cities.includes(screening.cinema.city),
       )
       if (filteredScreenings.length) {
         return [date, filteredScreenings]

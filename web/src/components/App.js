@@ -1,4 +1,6 @@
 import React from 'react'
+import ReactJson from 'react-json-view'
+import { graphql } from 'gatsby'
 
 import Calendar from './Calendar'
 import TextFilter from './TextFilter'
@@ -8,10 +10,25 @@ import Header from './Header'
 const App = ({ screenings }) => (
   <>
     <Header />
+    {/* <ReactJson src={screenings} /> */}
     <TextFilter />
     <CityFilter />
     <Calendar screenings={screenings} />
   </>
 )
+
+export const query = graphql`
+  fragment AppScreening on Screening {
+    date
+    cinema {
+      name
+      city {
+        name
+      }
+    }
+    title
+    url
+  }
+`
 
 export default App

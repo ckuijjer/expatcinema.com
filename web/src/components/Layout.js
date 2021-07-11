@@ -6,8 +6,6 @@ import { QueryParamProvider } from 'use-query-params'
 
 import { Settings } from 'luxon'
 
-import { LocalStorageProvider } from '../hooks'
-
 Settings.defaultZoneName = 'Europe/Amsterdam'
 
 const Container = styled('div')({})
@@ -37,12 +35,10 @@ const App = ({ children }) => (
   <Location>
     {({ location }) => (
       <QueryParamProvider location={location} reachHistory={globalHistory}>
-        <LocalStorageProvider>
-          <Global styles={globalStyles} />
-          <Container>
-            <Content>{children}</Content>
-          </Container>
-        </LocalStorageProvider>
+        <Global styles={globalStyles} />
+        <Container>
+          <Content>{children}</Content>
+        </Container>
       </QueryParamProvider>
     )}
   </Location>

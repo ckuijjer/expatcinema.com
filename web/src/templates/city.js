@@ -1,26 +1,27 @@
-import * as React from 'react'
+import React from 'react'
 import { graphql } from 'gatsby'
 
 import App from '../components/App'
 import Layout from '../components/Layout'
 import Seo from '../components/Seo'
 
-const IndexPage = ({ data }) => {
-  const screenings = data.allScreening.edges.map((edge) => edge.node)
+const CityTemplate = ({ data }) => {
+  const { screenings, name } = data.allCity.nodes[0]
 
   return (
     <Layout>
-      <Seo title="About" />
+      <Seo title={name} />
       <App screenings={screenings} />
     </Layout>
   )
 }
 
 export const query = graphql`
-  query ScreeningQuery {
-    allScreening {
-      edges {
-        node {
+  query CityTemplateQuery($id: String) {
+    allCity(filter: { id: { eq: $id } }) {
+      nodes {
+        name
+        screenings {
           ...AppScreening
         }
       }
@@ -28,4 +29,4 @@ export const query = graphql`
   }
 `
 
-export default IndexPage
+export default CityTemplate

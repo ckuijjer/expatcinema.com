@@ -8,42 +8,38 @@ const { inspect } = require('util')
 exports.createSchemaCustomization = ({ actions, schema }) => {
   const { createTypes } = actions
 
-  const typeDefs = `
-    type Screening implements Node {
+  const typeDefs = [
+    `type Screening implements Node {
       cinema: Cinema @link(by: "name")
     }
-
     type Cinema implements Node {
       city: City @link(by: "name")
       screenings: [Screening] @link(by: "cinema.name", from: "name")
     }
-
     type City implements Node {
       cinemas: [Cinema] @link(by: "city.name", from: "name")
-    }`
+      screenings: [Screening] @link(by: "cinema.city.name", from: "name")
+    }`,
+  ]
 
   createTypes(typeDefs)
 }
 
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions
-  const CitiesTemplate = path.resolve(`src/templates/cities.js`)
+  const CityTemplate = path.resolve(`src/templates/city.js`)
 
   // only contains cities that have screenings, so won't be good enough
   const result = await graphql(`
     {
-      allScreening {
-        group(field: cinema___city___name) {
-          nodes {
-            date
-            cinema {
-              name
-              city {
-                name
-              }
-            }
-            title
+      allCity {
+        nodes {
+          name
+          id
+          screenings {
             url
+            title
+            date
           }
         }
       }
@@ -56,15 +52,13 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     return
   }
 
-  inspect({ result }, false, null, true)
-
-  result.data.allScreening.group.forEach(({ nodes }) => {
+  result.data.allCity.nodes.forEach((node) => {
     createPage({
-      path: `cities/${nodes[0].cinema.city.name}`,
-      component: CitiesTemplate,
+      path: `city/${node.name.toLowerCase()}`,
+      component: CityTemplate,
       context: {
-        screenings: nodes,
-      }, // additional data can be passed via context
+        id: node.id,
+      },
     })
   })
 }
