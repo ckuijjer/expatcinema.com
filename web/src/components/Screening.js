@@ -45,7 +45,7 @@ const Screening = ({ url, date, title, cinema }) => (
       <Cinema>
         {cinema.name}
         <br />
-        {cinema.city}
+        {cinema.city.name}
       </Cinema>
     </Container>
   </A>

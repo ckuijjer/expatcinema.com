@@ -1,5 +1,4 @@
 import { groupBy } from 'ramda'
-import { cinemas } from '../data'
 import { DateTime } from 'luxon'
 
 import getToday from './getToday'
@@ -16,10 +15,6 @@ const groupAndSortScreenings = (screenings) =>
   groupByDate(
     screenings
       .map((x) => ({ ...x, date: DateTime.fromISO(x.date) })) // use luxon on the date
-      .map((x) => ({
-        ...x,
-        cinema: cinemas.filter((y) => y.name === x.cinema)[0],
-      })) // nasty trick of adding the cinema as a subtree
       .filter((x) => x.date >= getToday())
       .sort((a, b) => a.date - b.date),
   ) // sort by date ascending

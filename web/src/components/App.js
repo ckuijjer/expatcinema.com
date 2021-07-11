@@ -1,4 +1,5 @@
 import React from 'react'
+import { graphql } from 'gatsby'
 
 import Calendar from './Calendar'
 import TextFilter from './TextFilter'
@@ -13,5 +14,19 @@ const App = ({ screenings }) => (
     <Calendar screenings={screenings} />
   </>
 )
+
+export const query = graphql`
+  fragment AppScreening on Screening {
+    date
+    cinema {
+      name
+      city {
+        name
+      }
+    }
+    title
+    url
+  }
+`
 
 export default App
