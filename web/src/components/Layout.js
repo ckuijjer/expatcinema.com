@@ -8,7 +8,10 @@ import { Settings } from 'luxon'
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
-const Container = styled('div')({})
+const Container = styled('div')({
+  marginTop: 32,
+  marginBottom: 32,
+})
 
 const Content = styled('div')({
   margin: '0 auto',
