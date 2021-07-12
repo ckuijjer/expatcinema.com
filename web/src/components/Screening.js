@@ -8,7 +8,6 @@ const A = styled('a')({
   color: '#333',
   marginLeft: -10,
   marginRight: -10,
-  height: 100,
 
   ':hover': {
     backgroundColor: '#f6f6f6',
@@ -37,15 +36,19 @@ const Cinema = styled('div')({
   color: '#666',
 })
 
-const Screening = ({ url, date, title, cinema }) => (
+const Screening = ({ url, date, title, cinema, showCity = true }) => (
   <A href={url}>
     <Container>
       <Time>{date}</Time>
       <Title>{title}</Title>
       <Cinema>
         {cinema.name}
-        <br />
-        {cinema.city.name}
+        {showCity ? (
+          <>
+            <br />
+            {cinema.city.name}
+          </>
+        ) : null}
       </Cinema>
     </Container>
   </A>

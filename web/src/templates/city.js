@@ -11,7 +11,7 @@ const CityTemplate = ({ data }) => {
   return (
     <Layout>
       <Seo title={name} />
-      <App screenings={screenings} />
+      <App screenings={screenings} showCity={false} />
     </Layout>
   )
 }

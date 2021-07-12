@@ -9,7 +9,7 @@ import VirtualizedCalendar from './VirtualizedCalendar'
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
-const Calendar = ({ screenings }) => {
+const Calendar = ({ screenings, showCity }) => {
   const [search] = useQueryParam('search', StringParam)
 
   const screeningsByDate = Object.entries(
@@ -48,9 +48,9 @@ const Calendar = ({ screenings }) => {
     .reduce(flatten, [])
 
   return isEnabled('virtualized-table') ? (
-    <VirtualizedCalendar rows={rows} />
+    <VirtualizedCalendar rows={rows} showCity={showCity} />
   ) : (
-    <DirectCalendar rows={rows} />
+    <DirectCalendar rows={rows} showCity={showCity} />
   )
 }
 
