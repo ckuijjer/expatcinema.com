@@ -6,7 +6,7 @@ import { QueryParamProvider } from 'use-query-params'
 
 import { Settings } from 'luxon'
 
-Settings.defaultZoneName = 'Europe/Amsterdam'
+Settings.defaultZone = 'Europe/Amsterdam'
 
 const Container = styled('div')({})
 
