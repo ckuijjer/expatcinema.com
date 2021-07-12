@@ -5,6 +5,8 @@ import { css } from '@emotion/react'
 import { useLocation } from '@reach/router'
 
 const Container = styled('div')({
+  marginLeft: -16,
+  marginRight: -16,
   marginTop: 12,
   marginBottom: 12,
 })
@@ -45,7 +47,7 @@ const CityFilter = () => {
             display: 'inline-block',
             fontSize: 24,
             color: isCurrent ? '#0650d0' : '#888',
-            paddingRight: 20,
+            padding: '12px 16px',
             cursor: 'pointer',
             textDecoration: 'none',
           })}
