@@ -2,10 +2,10 @@ import React from 'react'
 import RelativeDate from '../RelativeDate'
 import Screening from '../Screening'
 
-const VirtualizedCalendar = ({ rows }) => {
+const DirectCalendar = ({ rows }) => {
   return (
     <>
-      {rows.map((row, i) =>
+      {rows.map((row) =>
         row.component === 'RelativeDate' ? (
           <RelativeDate {...row.props} />
         ) : (
@@ -16,4 +16,4 @@ const VirtualizedCalendar = ({ rows }) => {
   )
 }
 
-export default VirtualizedCalendar
+export default DirectCalendar
