@@ -1,11 +1,11 @@
 import React from 'react'
 import { DateTime } from 'luxon'
-import { AutoSizer, List, WindowScroller } from 'react-virtualized'
-
-import RelativeDate from './RelativeDate'
-import Screening from './Screening'
 import { useQueryParam, StringParam } from 'use-query-params'
-import groupAndSortScreenings from './groupAndSortScreenings'
+
+import groupAndSortScreenings from '../groupAndSortScreenings'
+import { isEnabled } from '../featureFlags'
+import DirectCalendar from './DirectCalendar'
+import VirtualizedCalendar from './VirtualizedCalendar'
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
@@ -47,47 +47,10 @@ const Calendar = ({ screenings }) => {
     })
     .reduce(flatten, [])
 
-  const renderRow = ({ index, key, style }) => {
-    const row = rows[index]
-
-    if (row.component === 'RelativeDate') {
-      return (
-        <div key={key} style={style}>
-          <RelativeDate {...row.props} />
-        </div>
-      )
-    } else {
-      return (
-        <div key={key} style={style}>
-          <Screening {...row.props} />
-        </div>
-      )
-    }
-  }
-
-  const getRowHeight = ({ index }) =>
-    rows[index].component === 'RelativeDate' ? 60 : 100
-
-  return (
-    <WindowScroller serverHeight={1280}>
-      {({ height, isScrolling, onChildScroll, scrollTop }) => (
-        <AutoSizer style={{ height }} defaultWidth={343}>
-          {({ width }) => (
-            <List
-              autoHeight
-              height={height}
-              isScrolling={isScrolling}
-              onScroll={onChildScroll}
-              rowCount={rows.length}
-              rowHeight={getRowHeight}
-              rowRenderer={renderRow}
-              scrollTop={scrollTop}
-              width={width}
-            />
-          )}
-        </AutoSizer>
-      )}
-    </WindowScroller>
+  return isEnabled('virtualized-table') ? (
+    <VirtualizedCalendar rows={rows} />
+  ) : (
+    <DirectCalendar rows={rows} />
   )
 }
 

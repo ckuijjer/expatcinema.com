@@ -36,5 +36,8 @@
     "react-json-view": "^1.21.3",
     "react-virtualized": "^9.22.3",
     "use-query-params": "^1.2.2"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0"
   }
 }
