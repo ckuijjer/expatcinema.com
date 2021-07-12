@@ -3,7 +3,7 @@ import { AutoSizer, List, WindowScroller } from 'react-virtualized'
 import RelativeDate from '../RelativeDate'
 import Screening from '../Screening'
 
-const VirtualizedCalendar = ({ rows }) => {
+const VirtualizedCalendar = ({ rows, showCity }) => {
   const renderRow = ({ index, key, style }) => {
     const row = rows[index]
 
@@ -16,14 +16,14 @@ const VirtualizedCalendar = ({ rows }) => {
     } else {
       return (
         <div key={key} style={style}>
-          <Screening {...row.props} />
+          <Screening {...row.props} showCity={showCity} />
         </div>
       )
     }
   }
 
   const getRowHeight = ({ index }) =>
-    rows[index].component === 'RelativeDate' ? 60 : 100
+    rows[index].component === 'RelativeDate' ? 60 : showCity ? 100 : 78
 
   return (
     <WindowScroller serverHeight={1280}>

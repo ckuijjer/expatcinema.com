@@ -11,7 +11,7 @@ const IndexPage = ({ data }) => {
   return (
     <Layout>
       <Seo title="About" />
-      <App screenings={screenings} />
+      <App screenings={screenings} showCity />
     </Layout>
   )
 }

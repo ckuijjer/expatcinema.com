@@ -6,7 +6,7 @@ import TextFilter from './TextFilter'
 import CityFilter from './CityFilter'
 import Header from './Header'
 
-const App = ({ screenings, showCity }) => (
+const App = ({ screenings, showCity = true }) => (
   <>
     <Header />
     <TextFilter />
