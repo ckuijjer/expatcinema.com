@@ -36,8 +36,6 @@ const CityFilter = () => {
     }))
     .map(({ to, ...rest }) => ({ to: `${to}${location.search}`, ...rest }))
 
-  console.log({ links })
-
   return (
     <Container>
       {links.map(({ text, to, isCurrent }) => (
