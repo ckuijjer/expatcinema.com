@@ -51,6 +51,7 @@ const CityFilter = () => {
             cursor: 'pointer',
             textDecoration: 'none',
           })}
+          key={text}
         >
           {text}
         </Link>
