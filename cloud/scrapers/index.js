@@ -4,7 +4,7 @@ const AWS = require('aws-sdk')
 
 // Set the default timezone to Europe/Amsterdam, otherwise AWS Lambda will scrape as UTC and running it locally
 // as Europe/Amsterdam
-Settings.defaultZoneName = 'Europe/Amsterdam'
+Settings.defaultZone = 'Europe/Amsterdam'
 
 const s3 = new AWS.S3()
 
@@ -15,10 +15,12 @@ const debug = require('debug')('combined scraper')
 
 const applyFilters = require('./filters')
 
-const debugPromise = (format, ...debugArgs) => (arg) => {
-  debug(format, ...debugArgs, arg)
-  return arg
-}
+const debugPromise =
+  (format, ...debugArgs) =>
+  (arg) => {
+    debug(format, ...debugArgs, arg)
+    return arg
+  }
 
 const sort = R.sortWith([
   (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),
@@ -45,9 +47,8 @@ const writeToFileInBucketAndContinue = (bucket) => (filename) => (data) =>
   })
 
 const writeToFileAndContinue = writeToFileInBucketAndContinue(PRIVATE_BUCKET)
-const writeToPublicFileAndContinue = writeToFileInBucketAndContinue(
-  PUBLIC_BUCKET,
-)
+const writeToPublicFileAndContinue =
+  writeToFileInBucketAndContinue(PUBLIC_BUCKET)
 
 exports.scrapers = () =>
   Promise.all(

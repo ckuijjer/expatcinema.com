@@ -1,6 +1,6 @@
 const { DateTime, Info, Settings } = require('luxon')
 
-// Settings.defaultZoneName = 'Europe/Amsterdam'
+// Settings.defaultZone = 'Europe/Amsterdam'
 
 const playground = async ({ event, context } = {}) => {
   const timestamp = '2019-01-09 11:23'
