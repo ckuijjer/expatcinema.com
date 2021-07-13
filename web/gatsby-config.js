@@ -41,7 +41,7 @@ module.exports = {
     'gatsby-plugin-robots-txt',
     'gatsby-plugin-sitemap',
     'gatsby-plugin-react-svg',
-    // 'gatsby-plugin-loadable-components-ssr',
+    'gatsby-plugin-loadable-components-ssr',
     // {
     //   resolve: 'gatsby-plugin-webpack-bundle-analyzer',
     //   options: {
