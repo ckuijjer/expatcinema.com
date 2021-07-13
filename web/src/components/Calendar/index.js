@@ -1,11 +1,14 @@
 import React from 'react'
 import { DateTime } from 'luxon'
 import { useQueryParam, StringParam } from 'use-query-params'
+import loadable from '@loadable/component'
 
 import groupAndSortScreenings from '../groupAndSortScreenings'
 import { isEnabled } from '../featureFlags'
-import DirectCalendar from './DirectCalendar'
-import VirtualizedCalendar from './VirtualizedCalendar'
+
+const CalendarComponent = isEnabled('virtualized-table')
+  ? loadable(() => import('./VirtualizedCalendar'))
+  : loadable(() => import('./DirectCalendar'))
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
@@ -47,11 +50,7 @@ const Calendar = ({ screenings, showCity }) => {
     })
     .reduce(flatten, [])
 
-  return isEnabled('virtualized-table') ? (
-    <VirtualizedCalendar rows={rows} showCity={showCity} />
-  ) : (
-    <DirectCalendar rows={rows} showCity={showCity} />
-  )
+  return <CalendarComponent rows={rows} showCity={showCity} />
 }
 
 export default Calendar
