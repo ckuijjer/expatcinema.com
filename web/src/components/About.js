@@ -1,14 +1,19 @@
 import React from 'react'
-import styled from '@emotion/styled'
 import Header from './Header'
+import { css } from '@emotion/react'
 
-const Container = styled('div')({
-  marginTop: 16,
-  paddingTop: 16,
-  paddingBottom: 16,
-  fontSize: 20,
-  lineHeight: 1.4,
-})
+const Container = (props) => (
+  <div
+    css={css({
+      marginTop: 16,
+      paddingTop: 16,
+      paddingBottom: 16,
+      fontSize: 20,
+      lineHeight: 1.4,
+    })}
+    {...props}
+  />
+)
 
 const About = () => (
   <>

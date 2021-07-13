@@ -1,15 +1,19 @@
 import React from 'react'
-import styled from '@emotion/styled'
 import { useStaticQuery, graphql, Link } from 'gatsby'
 import { css } from '@emotion/react'
 import { useLocation } from '@reach/router'
 
-const Container = styled('div')({
-  marginLeft: -16,
-  marginRight: -16,
-  marginTop: 12,
-  marginBottom: 12,
-})
+const Container = (props) => (
+  <div
+    css={css({
+      marginLeft: -16,
+      marginRight: -16,
+      marginTop: 12,
+      marginBottom: 12,
+    })}
+    {...props}
+  />
+)
 
 const CityFilter = () => {
   const data = useStaticQuery(graphql`

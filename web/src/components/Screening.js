@@ -1,40 +1,61 @@
 import React from 'react'
-import styled from '@emotion/styled'
+import { css } from '@emotion/react'
+
 import Time from './Time'
 
-const A = styled('a')({
-  display: 'block',
-  textDecoration: 'none',
-  color: '#333',
-  marginLeft: -10,
-  marginRight: -10,
+const A = (props) => (
+  <a
+    css={css({
+      display: 'block',
+      textDecoration: 'none',
+      color: '#333',
+      marginLeft: -10,
+      marginRight: -10,
 
-  ':hover': {
-    backgroundColor: '#f6f6f6',
-    borderRadius: 10,
-  },
-})
+      ':hover': {
+        backgroundColor: '#f6f6f6',
+        borderRadius: 10,
+      },
+    })}
+    {...props}
+  />
+)
 
-const Container = styled('div')({
-  display: 'grid',
-  gridTemplateColumns: '[time] 60px [rest] auto',
-  gridColumnGap: 12,
-  lineHeight: 1.4,
-  padding: 10,
-})
+const Container = (props) => (
+  <div
+    css={css({
+      display: 'grid',
+      gridTemplateColumns: '[time] 60px [rest] auto',
+      gridColumnGap: 12,
+      lineHeight: 1.4,
+      padding: 10,
+    })}
+    {...props}
+  />
+)
 
-const Title = styled('div')({
-  fontSize: 20,
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-})
+const Title = (props) => (
+  <div
+    css={css({
+      fontSize: 20,
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+    })}
+    {...props}
+  />
+)
 
-const Cinema = styled('div')({
-  fontSize: 16,
-  gridColumnStart: 'rest',
-  color: '#666',
-})
+const Cinema = (props) => (
+  <div
+    css={css({
+      fontSize: 16,
+      gridColumnStart: 'rest',
+      color: '#666',
+    })}
+    {...props}
+  />
+)
 
 const Screening = ({ url, date, title, cinema, showCity = true }) => (
   <A href={url}>

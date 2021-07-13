@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from '@emotion/styled'
 import { Global, css } from '@emotion/react'
 import { Location, globalHistory } from '@reach/router'
 import { QueryParamProvider } from 'use-query-params'
@@ -8,18 +7,28 @@ import { Settings } from 'luxon'
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
-const Container = styled('div')({
-  marginTop: 32,
-  marginBottom: 32,
-})
+const Container = (props) => (
+  <div
+    css={css({
+      marginTop: 32,
+      marginBottom: 32,
+    })}
+    {...props}
+  />
+)
 
-const Content = styled('div')({
-  margin: '0 auto',
+const Content = (props) => (
+  <div
+    css={css({
+      margin: '0 auto',
 
-  paddingLeft: 16,
-  paddingRight: 16,
-  maxWidth: 960,
-})
+      paddingLeft: 16,
+      paddingRight: 16,
+      maxWidth: 960,
+    })}
+    {...props}
+  />
+)
 
 const globalStyles = css`
   body {

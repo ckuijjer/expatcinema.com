@@ -1,18 +1,27 @@
 import React from 'react'
-import styled from '@emotion/styled'
 import { css } from '@emotion/react'
 import { Link } from 'gatsby'
 
-const Title = styled('h1')({
-  fontSize: 40,
-  marginBottom: 0,
-})
+const Title = (props) => (
+  <h1
+    css={css({
+      fontSize: 40,
+      marginBottom: 0,
+    })}
+    {...props}
+  />
+)
 
-const SubTitle = styled('h2')({
-  fontSize: 24,
-  marginTop: 0,
-  marginBottom: 24,
-})
+const SubTitle = (props) => (
+  <h2
+    css={css({
+      fontSize: 24,
+      marginTop: 0,
+      marginBottom: 24,
+    })}
+    {...props}
+  />
+)
 
 const Header = () => (
   <Link
