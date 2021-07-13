@@ -10,7 +10,7 @@ const IndexPage = ({ data }) => {
 
   return (
     <Layout>
-      <Seo title="About" />
+      <Seo title="Home" />
       <App screenings={screenings} showCity />
     </Layout>
   )
