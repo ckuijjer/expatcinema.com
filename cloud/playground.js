@@ -39,7 +39,7 @@ const timezonePlayground = async ({ event, context } = {}) => {
 const playground = async ({ event, context } = {}) => {
   const record1 = {
     scraper: 'new Date',
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
     count: 1,
   }
 
