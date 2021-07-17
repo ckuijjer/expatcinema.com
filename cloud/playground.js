@@ -1,9 +1,7 @@
 const { DateTime, Info, Settings } = require('luxon')
-const AWS = require('aws-sdk')
+const { inspect } = require('util')
 
-const documentClient = new AWS.DynamoDB.DocumentClient({
-  convertEmptyValues: true,
-})
+const documentClient = require('./documentClient')
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
@@ -49,21 +47,19 @@ const playground = async ({ event, context } = {}) => {
     count: 2,
   }
 
-  const result1 = await documentClient
-    .put({
-      TableName: process.env.DYNAMODB_ANALYTICS,
-      Item: record1,
-    })
-    .promise()
+  // const result1 = await documentClient
+  //   .put({
+  //     TableName: process.env.DYNAMODB_ANALYTICS,
+  //     Item: record1,
+  //   })
+  //   .promise()
 
-  const result2 = await documentClient
-    .put({
-      TableName: process.env.DYNAMODB_ANALYTICS,
-      Item: record2,
-    })
-    .promise()
-
-  console.log({ result1, result2 })
+  // const result2 = await documentClient
+  //   .put({
+  //     TableName: process.env.DYNAMODB_ANALYTICS,
+  //     Item: record2,
+  //   })
+  //   .promise()
 
   const result = await documentClient
     .scan({
@@ -71,9 +67,23 @@ const playground = async ({ event, context } = {}) => {
     })
     .promise()
 
-  console.log({ result })
+  const scraper = 'all'
+  const createdAt = '2021-07-17T15:34'
 
-  return { result1, result2, result }
+  const queryResult = await documentClient
+    .query({
+      TableName: process.env.DYNAMODB_ANALYTICS,
+      KeyConditionExpression: 'scraper = :scraper and createdAt >= :createdAt',
+      ExpressionAttributeValues: {
+        ':scraper': scraper,
+        ':createdAt': createdAt,
+      },
+    })
+    .promise()
+
+  const out = { result, queryResult }
+  console.log(inspect(out, false, null, true))
+  return out
 }
 
 if (require.main === module) {

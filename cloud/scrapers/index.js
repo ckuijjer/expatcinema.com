@@ -1,6 +1,7 @@
 const { DateTime, Settings } = require('luxon')
 const R = require('ramda')
 const AWS = require('aws-sdk')
+const documentClient = require('../documentClient')
 
 // Set the default timezone to Europe/Amsterdam, otherwise AWS Lambda will scrape as UTC and running it locally
 // as Europe/Amsterdam
@@ -50,6 +51,19 @@ const writeToFileAndContinue = writeToFileInBucketAndContinue(PRIVATE_BUCKET)
 const writeToPublicFileAndContinue =
   writeToFileInBucketAndContinue(PUBLIC_BUCKET)
 
+const writeToAnalytics = (scraper) => async (data) => {
+  const params = {
+    TableName: process.env.DYNAMODB_ANALYTICS,
+    Item: {
+      scraper,
+      createdAt: now,
+      count: data.length,
+    },
+  }
+  await documentClient.put(params).promise()
+  return data
+}
+
 exports.scrapers = () =>
   Promise.all(
     [
@@ -70,10 +84,13 @@ exports.scrapers = () =>
       return fn()
         .then(sort)
         .then(writeToFileAndContinue(`${name}/${now}.json`))
+        .then(writeToAnalytics(name))
     }),
   )
     .then((results) => sort(results.reduce(flatten, [])))
     .then(writeToFileAndContinue(`all/${now}.json`))
+    .then(writeToAnalytics('all'))
     .then(applyFilters)
     .then(writeToFileAndContinue(`filtered/${now}.json`))
+    .then(writeToAnalytics('filtered'))
     .then(writeToPublicFileAndContinue('screenings.json'))
