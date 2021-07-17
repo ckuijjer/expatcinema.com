@@ -1,0 +1,352 @@
+{
+  "hash": "c1f86e156ae1782a1d4f",
+  "publicPath": "/",
+  "outputPath": "/home/runner/work/expatcinema.com/expatcinema.com/web/public",
+  "assetsByChunkName": {
+    "polyfill": [
+      "polyfill-ab8b7b5402972a0eaa9c.js"
+    ],
+    "app": [
+      "app-61a383208c202697d47b.js"
+    ],
+    "webpack-runtime": [
+      "webpack-runtime-122cfec574f4481581a1.js"
+    ],
+    "component---src-pages-404-js": [
+      "component---src-pages-404-js-7eb1b534e534a2f1812b.js"
+    ],
+    "component---src-pages-about-js": [
+      "component---src-pages-about-js-409193119273910c42b4.js"
+    ],
+    "component---src-pages-index-js": [
+      "component---src-pages-index-js-4d7dd4b6a2692335cab0.js"
+    ],
+    "component---src-templates-city-js": [
+      "component---src-templates-city-js-d111620fdf1714f2f2d8.js"
+    ],
+    "VirtualizedCalendar": [
+      "VirtualizedCalendar-cfef3b3e2dbe6b929edd.js"
+    ],
+    "DirectCalendar": [
+      "DirectCalendar-1a3985530a0884993345.js"
+    ],
+    "framework": [
+      "framework-34aa88150620c50dd688.js"
+    ],
+    "6b859938": [
+      "6b859938-3cc0ffedf548e1cbe454.js"
+    ],
+    "commons": [
+      "commons-9938d9d33adce9732db3.js"
+    ],
+    "accb6b068272b5e863acac8c5ef83ac4b26426ed": [
+      "accb6b068272b5e863acac8c5ef83ac4b26426ed-05f44e637dbad57a0219.js"
+    ],
+    "f8ba287c38310c11651ebcd65ba2f0e3a098e72c": [
+      "f8ba287c38310c11651ebcd65ba2f0e3a098e72c-7e7abbf1982ba146845c.js"
+    ]
+  },
+  "assets": [
+    {
+      "type": "assets by status",
+      "cached": true,
+      "filteredChildren": 15,
+      "size": 527546
+    }
+  ],
+  "namedChunkGroups": {
+    "polyfill": {
+      "name": "polyfill",
+      "chunks": [
+        658,
+        920
+      ],
+      "assets": [
+        {
+          "name": "webpack-runtime-122cfec574f4481581a1.js"
+        },
+        {
+          "name": "polyfill-ab8b7b5402972a0eaa9c.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 2,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
+    },
+    "app": {
+      "name": "app",
+      "chunks": [
+        658,
+        774,
+        143
+      ],
+      "assets": [
+        {
+          "name": "webpack-runtime-122cfec574f4481581a1.js"
+        },
+        {
+          "name": "framework-34aa88150620c50dd688.js"
+        },
+        {
+          "name": "app-61a383208c202697d47b.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 3,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
+    },
+    "component---src-pages-404-js": {
+      "name": "component---src-pages-404-js",
+      "chunks": [
+        66,
+        351,
+        883
+      ],
+      "assets": [
+        {
+          "name": "6b859938-3cc0ffedf548e1cbe454.js"
+        },
+        {
+          "name": "commons-9938d9d33adce9732db3.js"
+        },
+        {
+          "name": "component---src-pages-404-js-7eb1b534e534a2f1812b.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 3,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
+    },
+    "component---src-pages-about-js": {
+      "name": "component---src-pages-about-js",
+      "chunks": [
+        66,
+        351,
+        707,
+        682
+      ],
+      "assets": [
+        {
+          "name": "6b859938-3cc0ffedf548e1cbe454.js"
+        },
+        {
+          "name": "commons-9938d9d33adce9732db3.js"
+        },
+        {
+          "name": "accb6b068272b5e863acac8c5ef83ac4b26426ed-05f44e637dbad57a0219.js"
+        },
+        {
+          "name": "component---src-pages-about-js-409193119273910c42b4.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 4,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
+    },
+    "component---src-pages-index-js": {
+      "name": "component---src-pages-index-js",
+      "chunks": [
+        66,
+        351,
+        707,
+        976,
+        678
+      ],
+      "assets": [
+        {
+          "name": "6b859938-3cc0ffedf548e1cbe454.js"
+        },
+        {
+          "name": "commons-9938d9d33adce9732db3.js"
+        },
+        {
+          "name": "accb6b068272b5e863acac8c5ef83ac4b26426ed-05f44e637dbad57a0219.js"
+        },
+        {
+          "name": "f8ba287c38310c11651ebcd65ba2f0e3a098e72c-7e7abbf1982ba146845c.js"
+        },
+        {
+          "name": "component---src-pages-index-js-4d7dd4b6a2692335cab0.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 5,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
+    },
+    "component---src-templates-city-js": {
+      "name": "component---src-templates-city-js",
+      "chunks": [
+        66,
+        351,
+        707,
+        976,
+        647
+      ],
+      "assets": [
+        {
+          "name": "6b859938-3cc0ffedf548e1cbe454.js"
+        },
+        {
+          "name": "commons-9938d9d33adce9732db3.js"
+        },
+        {
+          "name": "accb6b068272b5e863acac8c5ef83ac4b26426ed-05f44e637dbad57a0219.js"
+        },
+        {
+          "name": "f8ba287c38310c11651ebcd65ba2f0e3a098e72c-7e7abbf1982ba146845c.js"
+        },
+        {
+          "name": "component---src-templates-city-js-d111620fdf1714f2f2d8.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 5,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
+    },
+    "VirtualizedCalendar": {
+      "name": "VirtualizedCalendar",
+      "chunks": [
+        718
+      ],
+      "assets": [
+        {
+          "name": "VirtualizedCalendar-cfef3b3e2dbe6b929edd.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 1,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
+    },
+    "DirectCalendar": {
+      "name": "DirectCalendar",
+      "chunks": [
+        207
+      ],
+      "assets": [
+        {
+          "name": "DirectCalendar-1a3985530a0884993345.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "filteredAuxiliaryAssets": 1,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "generator": "loadable-components",
+  "chunks": [
+    {
+      "id": 920,
+      "files": [
+        "polyfill-ab8b7b5402972a0eaa9c.js"
+      ]
+    },
+    {
+      "id": 143,
+      "files": [
+        "app-61a383208c202697d47b.js"
+      ]
+    },
+    {
+      "id": 658,
+      "files": [
+        "webpack-runtime-122cfec574f4481581a1.js"
+      ]
+    },
+    {
+      "id": 135,
+      "files": [
+        "135-ed0d3537f6b5c826af57.js"
+      ]
+    },
+    {
+      "id": 883,
+      "files": [
+        "component---src-pages-404-js-7eb1b534e534a2f1812b.js"
+      ]
+    },
+    {
+      "id": 682,
+      "files": [
+        "component---src-pages-about-js-409193119273910c42b4.js"
+      ]
+    },
+    {
+      "id": 678,
+      "files": [
+        "component---src-pages-index-js-4d7dd4b6a2692335cab0.js"
+      ]
+    },
+    {
+      "id": 647,
+      "files": [
+        "component---src-templates-city-js-d111620fdf1714f2f2d8.js"
+      ]
+    },
+    {
+      "id": 718,
+      "files": [
+        "VirtualizedCalendar-cfef3b3e2dbe6b929edd.js"
+      ]
+    },
+    {
+      "id": 207,
+      "files": [
+        "DirectCalendar-1a3985530a0884993345.js"
+      ]
+    },
+    {
+      "id": 774,
+      "files": [
+        "framework-34aa88150620c50dd688.js"
+      ]
+    },
+    {
+      "id": 66,
+      "files": [
+        "6b859938-3cc0ffedf548e1cbe454.js"
+      ]
+    },
+    {
+      "id": 351,
+      "files": [
+        "commons-9938d9d33adce9732db3.js"
+      ]
+    },
+    {
+      "id": 707,
+      "files": [
+        "accb6b068272b5e863acac8c5ef83ac4b26426ed-05f44e637dbad57a0219.js"
+      ]
+    },
+    {
+      "id": 976,
+      "files": [
+        "f8ba287c38310c11651ebcd65ba2f0e3a098e72c-7e7abbf1982ba146845c.js"
+      ]
+    }
+  ]
+}

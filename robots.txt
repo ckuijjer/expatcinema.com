@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.expatcinema.com/sitemap/sitemap-index.xml
+Host: https://www.expatcinema.com

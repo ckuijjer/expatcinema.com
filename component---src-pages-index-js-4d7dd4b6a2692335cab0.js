@@ -1,0 +1,2 @@
+(self.__LOADABLE_LOADED_CHUNKS__=self.__LOADABLE_LOADED_CHUNKS__||[]).push([[678],{2410:function(e,t,n){"use strict";n.r(t);n(7378);var _=n(6403),r=n(6024),s=n(4646),u=n(3936);t.default=function(e){var t=e.data.allScreening.edges.map((function(e){return e.node}));return(0,u.tZ)(r.Z,null,(0,u.tZ)(s.Z,{title:"Home"}),(0,u.tZ)(_.Z,{screenings:t,showCity:!0}))}}}]);
+//# sourceMappingURL=component---src-pages-index-js-4d7dd4b6a2692335cab0.js.map

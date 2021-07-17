@@ -1,0 +1,2 @@
+(self.__LOADABLE_LOADED_CHUNKS__=self.__LOADABLE_LOADED_CHUNKS__||[]).push([[647],{7758:function(t,e,n){"use strict";n.r(e);n(7378);var _=n(6403),s=n(6024),i=n(4646),l=n(3936);e.default=function(t){var e=t.data.allCity.nodes[0],n=e.screenings,r=e.name;return(0,l.tZ)(s.Z,null,(0,l.tZ)(i.Z,{title:r}),(0,l.tZ)(_.Z,{screenings:n,showCity:!1}))}}}]);
+//# sourceMappingURL=component---src-templates-city-js-d111620fdf1714f2f2d8.js.map
