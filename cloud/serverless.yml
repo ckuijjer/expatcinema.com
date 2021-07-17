@@ -4,12 +4,9 @@ useDotenv: true
 variablesResolutionMode: 20210326
 configValidationMode: error
 
-plugins:
-  - serverless-plugin-monorepo
-
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   region: eu-west-1
   iam:
     role:
@@ -18,12 +15,12 @@ provider:
           Action:
             - 's3:PutObject'
           Resource:
-            - 'arn:aws:s3:::expatcinema-scrapers-output/*'
+            - 'arn:aws:s3:::${self:custom.scrapersOutputBucketName}/*'
         - Effect: 'Allow'
           Action:
             - 's3:PutObject'
           Resource:
-            - 'arn:aws:s3:::expatcinema-public/*'
+            - 'arn:aws:s3:::${self:custom.publicBucketName}/*'
   logRetentionInDays: 14
   lambdaHashingVersion: 20201221
 
@@ -37,6 +34,8 @@ functions:
       DEBUG: '*,-resolve'
   playground:
     handler: handler.playground
+    environment:
+      DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
   notifySlack:
     handler: handler.notifySlack
     environment:
@@ -49,16 +48,17 @@ resources:
     ScrapersOutputBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: expatcinema-scrapers-output
+        BucketName: ${self:custom.scrapersOutputBucketName}
         PublicAccessBlockConfiguration:
           BlockPublicAcls: true
           BlockPublicPolicy: true
           IgnorePublicAcls: true
           RestrictPublicBuckets: true
+
     PublicBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: expatcinema-public
+        BucketName: ${self:custom.publicBucketName}
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
@@ -68,11 +68,12 @@ resources:
               AllowedMethods:
                 - GET
               MaxAge: 3000
+
     PublicBucketPolicy:
       Type: AWS::S3::BucketPolicy
       DependsOn: PublicBucket
       Properties:
-        Bucket: expatcinema-public
+        Bucket: ${self:custom.publicBucketName}
         PolicyDocument:
           Statement:
             - Principal: '*'
@@ -80,4 +81,36 @@ resources:
                 - s3:GetObject
               Effect: Allow
               Sid: 'AddPerm'
-              Resource: arn:aws:s3:::expatcinema-public/*
+              Resource: arn:aws:s3:::${self:custom.publicBucketName}/*
+
+    ScrapersAnalyticsDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      UpdateReplacePolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: scraper
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+          - AttributeName: count
+            AttributeType: N
+        KeySchema:
+          - AttributeName: scraper
+            KeyType: HASH
+          - AttributeName: createdAt
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        TableName: ${self:custom.scrapersAnalyticsTableName}
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+
+custom:
+  publicBucketName: expatcinema-public
+  scrapersOutputBucketName: expatcinema-scrapers-output
+  scrapersAnalyticsTableName: expatcinema-scrapers-analytics
+
+plugins:
+  - serverless-plugin-monorepo
