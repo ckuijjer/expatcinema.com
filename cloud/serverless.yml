@@ -16,11 +16,26 @@ provider:
             - 's3:PutObject'
           Resource:
             - 'arn:aws:s3:::${self:custom.scrapersOutputBucketName}/*'
+
         - Effect: 'Allow'
           Action:
             - 's3:PutObject'
           Resource:
             - 'arn:aws:s3:::${self:custom.publicBucketName}/*'
+
+        - Effect: 'Allow'
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt:
+                - ScrapersAnalyticsDynamoDbTable
+                - Arn
+
   logRetentionInDays: 14
   lambdaHashingVersion: 20201221
 
