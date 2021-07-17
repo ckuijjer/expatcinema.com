@@ -93,8 +93,6 @@ resources:
             AttributeType: S
           - AttributeName: createdAt
             AttributeType: S
-          - AttributeName: count
-            AttributeType: N
         KeySchema:
           - AttributeName: scraper
             KeyType: HASH
