@@ -30,67 +30,70 @@ const sort = R.sortWith([
   R.ascend(R.prop('url')),
 ])
 
-const flatten = (acc, cur) => [...acc, ...cur]
-
 const now = DateTime.fromObject({}).toUTC().toISO()
 
-const writeToFileInBucketAndContinue = (bucket) => (filename) => (data) =>
-  new Promise((resolve, reject) => {
-    const params = {
-      Bucket: bucket,
-      Key: filename,
-      Body: JSON.stringify(data, null, 2),
-    }
-    s3.putObject(params, (err) => {
-      if (err) return reject(err)
-      return resolve(data)
-    })
-  })
+const writeToFileInBucket = (bucket) => (filename) => async (data) => {
+  const params = {
+    Bucket: bucket,
+    Key: filename,
+    Body: JSON.stringify(data, null, 2),
+  }
+  return await s3.putObject(params).promise()
+}
 
-const writeToFileAndContinue = writeToFileInBucketAndContinue(PRIVATE_BUCKET)
-const writeToPublicFileAndContinue =
-  writeToFileInBucketAndContinue(PUBLIC_BUCKET)
+const writeToFile = writeToFileInBucket(PRIVATE_BUCKET)
+const writeToPublicFile = writeToFileInBucket(PUBLIC_BUCKET)
 
-const writeToAnalytics = (scraper) => async (data) => {
+const writeToAnalytics = (type) => async (fields) => {
   const params = {
     TableName: process.env.DYNAMODB_ANALYTICS,
     Item: {
-      scraper,
+      type,
       createdAt: now,
-      count: data.length,
+      ...fields,
     },
   }
-  await documentClient.put(params).promise()
-  return data
+  return await documentClient.put(params).promise()
 }
 
-exports.scrapers = () =>
-  Promise.all(
-    [
-      'bioscopenleiden',
-      'eyefilm',
-      'filmhuisdenhaag',
-      'kinorotterdam',
-      'kriterion',
-      'lab111',
-      'lantarenvenster',
-      'springhaver',
-      'hartlooper',
-      'rialto',
-      'cinecenter',
-      // 'liff',
-    ].map((name) => {
-      const fn = require(`./${name}`)
-      return fn()
-        .then(sort)
-        .then(writeToFileAndContinue(`${name}/${now}.json`))
-        .then(writeToAnalytics(name))
-    }),
+exports.scrapers = async () => {
+  const SCRAPERS = [
+    'bioscopenleiden',
+    'eyefilm',
+    'filmhuisdenhaag',
+    'kinorotterdam',
+    'kriterion',
+    'lab111',
+    'lantarenvenster',
+    'springhaver',
+    'hartlooper',
+    'rialto',
+    'cinecenter',
+    // 'liff',
+  ]
+
+  const results = Object.fromEntries(
+    await Promise.all(
+      SCRAPERS.map(async (name) => {
+        const fn = require(`./${name}`)
+        return [name, sort(await fn())]
+      }),
+    ),
   )
-    .then((results) => sort(results.reduce(flatten, [])))
-    .then(writeToFileAndContinue(`all/${now}.json`))
-    .then(writeToAnalytics('all'))
-    .then(applyFilters)
-    .then(writeToFileAndContinue(`filtered/${now}.json`))
-    .then(writeToAnalytics('filtered'))
-    .then(writeToPublicFileAndContinue('screenings.json'))
+
+  results.all = sort(Object.values(results).flat())
+  results.filtered = applyFilters(results.all)
+
+  // write all to S3
+  await Promise.all(
+    Object.entries(results).map(
+      async ([name, data]) => await writeToFile(`${name}/${now}.json`)(data),
+    ),
+  )
+  await writeToPublicFile('screenings.json')(results.filtered)
+
+  const countPerScraper = Object.fromEntries(
+    Object.entries(results).map(([name, data]) => [name, data.length]),
+  )
+  await writeToAnalytics('count')(countPerScraper)
+}

@@ -23,18 +23,18 @@ provider:
           Resource:
             - 'arn:aws:s3:::${self:custom.publicBucketName}/*'
 
-        # - Effect: 'Allow'
-        #   Action:
-        #     - dynamodb:Query
-        #     - dynamodb:Scan
-        #     - dynamodb:GetItem
-        #     - dynamodb:PutItem
-        #     - dynamodb:UpdateItem
-        #     - dynamodb:DeleteItem
-        #   Resource:
-        #     - Fn::GetAtt:
-        #         - ScrapersAnalyticsDynamoDbTable
-        #         - Arn
+        - Effect: 'Allow'
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt:
+                - ScrapersAnalyticsDynamoDbTable
+                - Arn
 
   logRetentionInDays: 14
   lambdaHashingVersion: 20201221
@@ -99,27 +99,27 @@ resources:
               Sid: 'AddPerm'
               Resource: arn:aws:s3:::${self:custom.publicBucketName}/*
 
-    # ScrapersAnalyticsDynamoDbTable:
-    #   Type: AWS::DynamoDB::Table
-    #   DeletionPolicy: Retain
-    #   UpdateReplacePolicy: Retain
-    #   Properties:
-    #     AttributeDefinitions:
-    #       - AttributeName: type
-    #         AttributeType: S
-    #       - AttributeName: createdAt
-    #         AttributeType: S
-    #     KeySchema:
-    #       - AttributeName: type
-    #         KeyType: HASH
-    #       - AttributeName: createdAt
-    #         KeyType: RANGE
-    #     BillingMode: PAY_PER_REQUEST
-    #     PointInTimeRecoverySpecification:
-    #       PointInTimeRecoveryEnabled: true
-    #     TableName: ${self:custom.scrapersAnalyticsTableName}
-    #     StreamSpecification:
-    #       StreamViewType: NEW_AND_OLD_IMAGES
+    ScrapersAnalyticsDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      UpdateReplacePolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: type
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+        KeySchema:
+          - AttributeName: type
+            KeyType: HASH
+          - AttributeName: createdAt
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        TableName: ${self:custom.scrapersAnalyticsTableName}
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
 
 custom:
   publicBucketName: expatcinema-public
