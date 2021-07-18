@@ -30,6 +30,14 @@ module.exports = {
         name: 'screening',
       },
     },
+    {
+      resolve: 'gatsby-source-remote-file',
+      options: {
+        url: 'https://a8kqub7595.execute-api.eu-west-1.amazonaws.com/analytics',
+        name: 'analytics',
+        ext: '.json',
+      },
+    },
     'gatsby-plugin-emotion',
     {
       resolve: 'gatsby-plugin-google-analytics',
@@ -39,7 +47,12 @@ module.exports = {
     },
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-robots-txt',
-    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sitemap',
+      options: {
+        excludes: ['analytics'],
+      },
+    },
     'gatsby-plugin-react-svg',
     'gatsby-plugin-loadable-components-ssr',
     // {

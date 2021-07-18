@@ -17,6 +17,7 @@
   "dependencies": {
     "@emotion/react": "^11.4.0",
     "@loadable/component": "^5.15.0",
+    "@observablehq/plot": "^0.1.0",
     "gatsby": "^3.6.2",
     "gatsby-plugin-emotion": "^6.8.0",
     "gatsby-plugin-google-analytics": "^3.8.0",
