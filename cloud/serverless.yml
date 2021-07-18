@@ -35,6 +35,8 @@ provider:
             - Fn::GetAtt:
                 - ScrapersAnalyticsDynamoDbTable
                 - Arn
+  environment:
+    DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
 
   logRetentionInDays: 14
   lambdaHashingVersion: 20201221
@@ -47,17 +49,20 @@ functions:
       - schedule: cron(0 3 * * ? *)
     environment:
       DEBUG: '*,-resolve'
-      DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
   playground:
     handler: handler.playground
-    environment:
-      DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
   notifySlack:
     handler: handler.notifySlack
     environment:
       SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
     events:
       - cloudwatchLog: '/aws/lambda/expatcinema-dev-scrapers'
+  analytics:
+    handler: handler.analytics
+    events:
+      - httpApi:
+        method: GET
+        path: /analytics
 
 resources:
   Resources:
