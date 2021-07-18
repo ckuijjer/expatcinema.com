@@ -8,6 +8,8 @@
     "scrapers:local": "serverless invoke local -f scrapers -l --aws-profile casper",
     "playground": "serverless invoke -f playground -l --aws-profile casper",
     "playground:local": "serverless invoke local -f playground -l --aws-profile casper",
+    "analytics": "serverless invoke -f analytics -l --aws-profile casper",
+    "analytics:local": "serverless invoke local -f analytics -l --aws-profile casper",
     "deploy": "serverless deploy --aws-profile casper",
     "deploy:ci": "serverless deploy"
   },

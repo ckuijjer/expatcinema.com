@@ -61,8 +61,8 @@ functions:
     handler: handler.analytics
     events:
       - httpApi:
-        method: GET
-        path: /analytics
+          method: GET
+          path: /analytics
 
 resources:
   Resources:

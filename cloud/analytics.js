@@ -1,5 +1,5 @@
 const { DateTime, Settings } = require('luxon')
-const documentClient = require('../documentClient')
+const documentClient = require('./documentClient')
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
@@ -9,7 +9,10 @@ const analytics = async ({ event, context } = {}) => {
   const results = await documentClient
     .query({
       TableName: process.env.DYNAMODB_ANALYTICS,
-      KeyConditionExpression: 'type = :type and createdAt >= :createdAt',
+      KeyConditionExpression: '#type = :type and createdAt >= :createdAt',
+      ExpressionAttributeNames: {
+        '#type': 'type',
+      },
       ExpressionAttributeValues: {
         ':type': 'count',
         ':createdAt': twoWeeksAgo,
@@ -17,11 +20,9 @@ const analytics = async ({ event, context } = {}) => {
     })
     .promise()
 
-  console.log(results)
-
   return {
     statusCode: 200,
-    body: JSON.stringify(results, null, 2),
+    body: JSON.stringify(results.Items, null, 2),
   }
 }
 
