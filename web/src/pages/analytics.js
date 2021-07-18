@@ -1,13 +1,16 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
-import * as Plot from '@observablehq/plot'
 
-// import App from '../components/App'
 import Layout from '../components/Layout'
 import Seo from '../components/Seo'
 
+// can't use @loadable/component to determine client vs server side rendering, as
+// gatsby-plugin-loadable-components-ssr is used to render @loadable/component during ssr.
+const LoadableAnalytics = React.lazy(() => import('../components/Analytics'))
+
 const AnalyticsPage = ({ data }) => {
   const analytics = data.allAnalytics.edges.map((edge) => edge.node)
+  const isSSR = typeof window === 'undefined'
 
   const points = analytics.flatMap(({ createdAt, ...rest }) =>
     Object.entries(rest).map(([scraper, count]) => ({
@@ -17,18 +20,16 @@ const AnalyticsPage = ({ data }) => {
     })),
   )
 
-  const svg = Plot.plot({
-    marks: [Plot.line(points, { x: 'createdAt', y: 'count', z: 'scraper' })],
-  })
-
   return (
     <Layout>
       <Seo title="Analytics" />
-      <div
-        dangerouslySetInnerHTML={{
-          __html: svg.outerHTML,
-        }}
-      ></div>
+      <>
+        {!isSSR && (
+          <React.Suspense fallback={<div />}>
+            <LoadableAnalytics points={points} />
+          </React.Suspense>
+        )}
+      </>
     </Layout>
   )
 }
