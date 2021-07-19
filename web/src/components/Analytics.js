@@ -2,6 +2,65 @@ import React from 'react'
 import * as Plot from '@observablehq/plot'
 import { css } from '@emotion/react'
 
+// Grid component that has cells with a width of 200px and using css grid layout
+const Grid = ({ children }) => (
+  <div
+    css={css`
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-gap: 12px;
+    `}
+  >
+    {children}
+  </div>
+)
+
+const Tile = ({
+  title,
+  value,
+  onClick = () => {},
+  isHighlighted = false,
+  isDimmed = false,
+}) => {
+  const color = isHighlighted ? '#0650D0' : isDimmed ? '#ddd' : '#888'
+
+  return (
+    <div
+      css={css`
+        padding: 16px;
+        border-style: solid;
+        border-radius: 4px;
+        border-width: 1px;
+        border-color: ${color};
+        color: ${color};
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      `}
+      onClick={onClick}
+    >
+      <div
+        css={css`
+          font-size: 48px;
+          margin-bottom: 8px;
+          font-weight: bold;
+        `}
+      >
+        {value}
+      </div>
+      <div
+        css={css`
+          font-size: 20px;
+        `}
+      >
+        {title}
+      </div>
+    </div>
+  )
+}
+
 const Analytics = ({ points }) => {
   const [highlight, setHighlight] = React.useState(null)
 
@@ -12,6 +71,19 @@ const Analytics = ({ points }) => {
   })
 
   const scrapers = [...new Set(points.map((x) => x.scraper))]
+
+  // in points get latest value per scraper
+  const latestValuePerScraper = scrapers
+    .map((scraper) => {
+      const latest = points
+        .filter((x) => x.scraper === scraper)
+        .reduce((acc, x) => {
+          if (x.createdAt > acc.createdAt || !acc.createdAt) return x
+          return acc
+        }, {})
+      return { scraper, value: latest.value }
+    })
+    .sort((a, b) => b.value - a.value)
 
   const svg = Plot.plot({
     marks: [
@@ -53,38 +125,37 @@ const Analytics = ({ points }) => {
     },
   })
 
+  const isHighlighted = (scraper) => scraper === highlight
+
+  const handleTileClick = (scraper) => () => {
+    if (isHighlighted(scraper)) {
+      setHighlight(null)
+    } else {
+      setHighlight(scraper)
+    }
+  }
+
   return (
     <>
       <div
         dangerouslySetInnerHTML={{
           __html: svg.outerHTML,
         }}
+        css={css`
+          margin-bottom: 32px;
+        `}
       ></div>
-      <div
-        css={css({
-          cursor: 'pointer',
-          color: highlight === null ? '#0650D0' : '#888',
-          padding: 4,
-          marginBottom: 8,
-        })}
-        onClick={() => setHighlight(null)}
-      >
-        no highlight
-      </div>
-      <div>
-        {scrapers.map((scraper) => (
-          <div
-            css={css({
-              cursor: 'pointer',
-              color: highlight === scraper ? '#0650D0' : '#888',
-              padding: 4,
-            })}
-            onClick={() => setHighlight(scraper)}
-          >
-            {scraper}
-          </div>
+      <Grid>
+        {latestValuePerScraper.map(({ scraper, value }) => (
+          <Tile
+            value={value}
+            title={scraper}
+            onClick={handleTileClick(scraper)}
+            isHighlighted={isHighlighted(scraper)}
+            isDimmed={!isHighlighted(null)}
+          />
         ))}
-      </div>
+      </Grid>
     </>
   )
 }
