@@ -7,7 +7,7 @@ module.exports = {
     title: 'Expat Cinema',
     description: 'Foreign movies with English subtitles',
     author: 'Expat Cinema',
-    siteUrl: 'https://www.expatcinema.com',
+    siteUrl: 'https://expatcinema.com',
   },
   plugins: [
     {
