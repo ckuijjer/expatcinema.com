@@ -9,16 +9,8 @@ import Seo from '../components/Seo'
 const LoadableAnalytics = React.lazy(() => import('../components/Analytics'))
 
 const AnalyticsPage = ({ data }) => {
-  const analytics = data.allAnalytics.edges.map((edge) => edge.node)
+  const dataPoints = data.allAnalytics.edges.map((edge) => edge.node)
   const isSSR = typeof window === 'undefined'
-
-  const points = analytics.flatMap(({ createdAt, ...rest }) =>
-    Object.entries(rest).map(([scraper, count]) => ({
-      createdAt,
-      count,
-      scraper,
-    })),
-  )
 
   return (
     <Layout>
@@ -26,7 +18,7 @@ const AnalyticsPage = ({ data }) => {
       <>
         {!isSSR && (
           <React.Suspense fallback={<div />}>
-            <LoadableAnalytics points={points} />
+            <LoadableAnalytics points={dataPoints} />
           </React.Suspense>
         )}
       </>
@@ -39,21 +31,10 @@ export const query = graphql`
     allAnalytics(sort: { fields: createdAt, order: ASC }) {
       edges {
         node {
+          type
           createdAt
-
-          all
-          bioscopenleiden
-          cinecenter
-          eyefilm
-          filmhuisdenhaag
-          filtered
-          hartlooper
-          kinorotterdam
-          kriterion
-          lab111
-          lantarenvenster
-          rialto
-          springhaver
+          scraper
+          value
         }
       }
     }

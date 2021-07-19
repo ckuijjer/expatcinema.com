@@ -3,7 +3,7 @@ import * as Plot from '@observablehq/plot'
 
 const Analytics = ({ points }) => {
   const svg = Plot.plot({
-    marks: [Plot.line(points, { x: 'createdAt', y: 'count', z: 'scraper' })],
+    marks: [Plot.line(points, { x: 'createdAt', y: 'value', z: 'scraper' })],
   })
 
   return (

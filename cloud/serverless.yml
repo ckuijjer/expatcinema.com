@@ -8,6 +8,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   region: eu-west-1
+  profile: casper
   iam:
     role:
       statements:
@@ -135,3 +136,4 @@ custom:
 
 plugins:
   - serverless-plugin-monorepo
+  - serverless-offline

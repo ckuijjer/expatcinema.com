@@ -20,13 +20,13 @@ const analytics = async ({ event, context } = {}) => {
     })
     .promise()
 
-  // convert to data points of the type createdAt, count, and scraper
-  const dataPoints = data.Items.flatMap(({ createdAt, ...rest }) =>
-    Object.entries(rest).map(([scraper, count]) => ({
-      type: 'count',
+  // convert to data points of the type type, createdAt, count, and scraper
+  const dataPoints = data.Items.flatMap(({ type, createdAt, ...rest }) =>
+    Object.entries(rest).map(([scraper, value]) => ({
+      type,
       createdAt,
       scraper,
-      value: count,
+      value,
     })),
   )
 

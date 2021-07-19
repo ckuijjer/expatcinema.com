@@ -9,6 +9,13 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/scrapers/index.js"
+    },
+    {
+      "name": "Attach to Node.js running",
+      "port": 9229,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
     }
   ]
 }

@@ -4,15 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "scrapers": "serverless invoke -f scrapers -l --aws-profile casper",
-    "scrapers:local": "serverless invoke local -f scrapers -l --aws-profile casper",
-    "playground": "serverless invoke -f playground -l --aws-profile casper",
-    "playground:local": "serverless invoke local -f playground -l --aws-profile casper",
-    "analytics": "serverless invoke -f analytics -l --aws-profile casper",
-    "analytics:local": "serverless invoke local -f analytics -l --aws-profile casper",
-    "fillAnalytics": "serverless invoke -f fillAnalytics -l --aws-profile casper",
-    "fillAnalytics:local": "serverless invoke local -f fillAnalytics -l --aws-profile casper",
-    "deploy": "serverless deploy --aws-profile casper",
+    "start": "AWS_PROFILE=casper NODE_OPTIONS='--inspect --enable-source-maps' serverless offline",
+    "scrapers": "serverless invoke -f scrapers",
+    "scrapers:local": "serverless invoke local -f scrapers",
+    "playground": "serverless invoke -f playground",
+    "playground:local": "serverless invoke local -f playground",
+    "analytics": "serverless invoke -f analytics",
+    "analytics:local": "serverless invoke local -f analytics",
+    "fillAnalytics": "serverless invoke -f fillAnalytics",
+    "fillAnalytics:local": "serverless invoke local -f fillAnalytics",
+    "deploy": "serverless deploy",
     "deploy:ci": "serverless deploy"
   },
   "author": "",
@@ -24,6 +25,7 @@
     "luxon": "^2.0.1",
     "p-map": "4",
     "ramda": "^0.27.1",
+    "serverless-offline": "^7.0.0",
     "x-ray": "^2.3.4"
   },
   "devDependencies": {
