@@ -4,9 +4,9 @@ const documentClient = require('./documentClient')
 Settings.defaultZone = 'Europe/Amsterdam'
 
 const analytics = async ({ event, context } = {}) => {
-  const twoWeeksAgo = DateTime.now().minus({ weeks: 2 }).startOf('day').toISO()
+  const fourWeeksAgo = DateTime.now().minus({ weeks: 4 }).startOf('day').toISO()
 
-  const results = await documentClient
+  const data = await documentClient
     .query({
       TableName: process.env.DYNAMODB_ANALYTICS,
       KeyConditionExpression: '#type = :type and createdAt >= :createdAt',
@@ -15,14 +15,24 @@ const analytics = async ({ event, context } = {}) => {
       },
       ExpressionAttributeValues: {
         ':type': 'count',
-        ':createdAt': twoWeeksAgo,
+        ':createdAt': fourWeeksAgo,
       },
     })
     .promise()
 
+  // convert to data points of the type createdAt, count, and scraper
+  const dataPoints = data.Items.flatMap(({ createdAt, ...rest }) =>
+    Object.entries(rest).map(([scraper, count]) => ({
+      type: 'count',
+      createdAt,
+      scraper,
+      value: count,
+    })),
+  )
+
   return {
     statusCode: 200,
-    body: JSON.stringify(results.Items, null, 2),
+    body: JSON.stringify(dataPoints, null, 2),
   }
 }
 
