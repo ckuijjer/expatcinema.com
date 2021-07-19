@@ -2,6 +2,7 @@ const { scrapers } = require('./scrapers')
 const { playground } = require('./playground')
 const { notifySlack } = require('./notify-slack')
 const { analytics } = require('./analytics')
+const { fillAnalytics } = require('./fillAnalytics')
 
 module.exports.scrapers = async (event, context) => {
   await scrapers()
@@ -26,3 +27,6 @@ module.exports.notifySlack = async (event, context) =>
 
 module.exports.analytics = async (event, context) =>
   await analytics({ event, context })
+
+module.exports.fillAnalytics = async (event, context) =>
+  await fillAnalytics({ event, context })

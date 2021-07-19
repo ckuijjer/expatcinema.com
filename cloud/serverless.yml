@@ -63,6 +63,8 @@ functions:
       - httpApi:
           method: GET
           path: /analytics
+  fillAnalytics:
+    handler: handler.fillAnalytics
 
 resources:
   Resources:

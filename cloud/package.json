@@ -10,6 +10,8 @@
     "playground:local": "serverless invoke local -f playground -l --aws-profile casper",
     "analytics": "serverless invoke -f analytics -l --aws-profile casper",
     "analytics:local": "serverless invoke local -f analytics -l --aws-profile casper",
+    "fillAnalytics": "serverless invoke -f fillAnalytics -l --aws-profile casper",
+    "fillAnalytics:local": "serverless invoke local -f fillAnalytics -l --aws-profile casper",
     "deploy": "serverless deploy --aws-profile casper",
     "deploy:ci": "serverless deploy"
   },
@@ -20,6 +22,7 @@
     "debug": "^4.0.1",
     "got": "^11.5.2",
     "luxon": "^2.0.1",
+    "p-map": "4",
     "ramda": "^0.27.1",
     "x-ray": "^2.3.4"
   },
