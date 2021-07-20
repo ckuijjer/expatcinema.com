@@ -5,10 +5,12 @@ const debug = require('debug')('filmhuisdenhaag')
 const { shortMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => (arg) => {
-  debug(format, ...debugArgs, arg)
-  return arg
-}
+const debugPromise =
+  (format, ...debugArgs) =>
+  (arg) => {
+    debug(format, ...debugArgs, arg)
+    return arg
+  }
 
 const xray = Xray({
   filters: {
@@ -56,9 +58,8 @@ const extractFromMoviePage = ({ url }) => {
 
             const dates = []
             for (var i = 0; i < groupedTimeTable.length; i = i + 2) {
-              const [dayOfWeek, dayString, monthString] = groupedTimeTable[
-                i
-              ][0].split(/\s+/)
+              const [dayOfWeek, dayString, monthString] =
+                groupedTimeTable[i][0].split(/\s+/)
               const day = Number(dayString)
               const month = shortMonthToNumber(monthString)
               const times = groupedTimeTable[i + 1]
