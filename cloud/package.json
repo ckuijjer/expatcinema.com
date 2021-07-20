@@ -16,7 +16,7 @@
     "deploy": "serverless deploy --aws-profile casper",
     "deploy:ci": "serverless deploy"
   },
-  "author": "",
+  "author": "Casper Kuijjer",
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.3.21",
