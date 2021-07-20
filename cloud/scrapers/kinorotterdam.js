@@ -1,28 +1,33 @@
 const Xray = require('x-ray')
 const R = require('ramda')
 const { DateTime } = require('luxon')
-const debug = require('debug')('kino')
+const debug = require('debug')('kinorotterdam')
 const splitTime = require('./splitTime')
 const { shortMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => (arg) => {
-  debug(format, ...debugArgs, arg)
-  return arg
-}
+const debugPromise =
+  (format, ...debugArgs) =>
+  (arg) => {
+    debug(format, ...debugArgs, arg)
+    return arg
+  }
 
-const debugFn = (format, ...debugArgs) => (fn) => (...args) => {
-  const result = fn(...args)
-  debug(format, ...debugArgs, { args, result })
-  return result
-}
+const debugFn =
+  (format, ...debugArgs) =>
+  (fn) =>
+  (...args) => {
+    const result = fn(...args)
+    debug(format, ...debugArgs, { args, result })
+    return result
+  }
 
 const xray = Xray().concurrency(10).throttle(10, 300)
 
 const hasEnglishSubtitles = debugFn('hasEnglishSubtitles')(
   ({ title = '', movieMetadata = '' }) =>
-    movieMetadata.includes('Ondertiteling:  English') ||
-    movieMetadata.includes('Ondertiteling:  Engels') ||
+    /Ondertiteling:\s*English/.test(movieMetadata) ||
+    /Ondertiteling:\s*Engels/.test(movieMetadata) ||
     title.startsWith('Expat Arthouse: ') ||
     title.startsWith('KINO Expat: ') ||
     title.startsWith('KINO Expat Special: '),
@@ -122,14 +127,14 @@ const extractFromMainPage = () => {
 }
 
 if (require.main === module) {
-  // extractFromMainPage()
-  //   .then(x => JSON.stringify(x, null, 2))
-  //   .then(console.log)
+  extractFromMainPage()
+    .then((x) => JSON.stringify(x, null, 2))
+    .then(console.log)
 
-  extractFromMoviePage({
-    url: 'https://kinorotterdam.nl/film/kino-expat-monos/',
-    // url: 'https://kinorotterdam.nl/film/andrei-tarkovsky-solaris-1972/',
-  }).then(console.log)
+  // extractFromMoviePage({
+  //   url: 'https://kinorotterdam.nl/film/kino-expat-monos/',
+  //   // url: 'https://kinorotterdam.nl/film/andrei-tarkovsky-solaris-1972/',
+  // }).then(console.log)
 }
 
 module.exports = extractFromMainPage
