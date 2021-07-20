@@ -1,7 +1,8 @@
 const Xray = require('x-ray')
 const { DateTime } = require('luxon')
-const got = require('got')
 const debug = require('debug')('rialto')
+const { JSDOM } = require('jsdom')
+
 const guessYear = require('./guessYear')
 
 const xray = Xray({
@@ -12,96 +13,55 @@ const xray = Xray({
   .concurrency(10)
   .throttle(10, 300)
 
-const hasEnglishSubtitles = (movie) =>
-  movie.metadata
-    .map((x) => x.trim().toLowerCase())
-    .includes('subtitles english')
+const extractFromMainPage = async () => {
+  const url = 'https://rialtofilm.nl/en/specials/3/expat-monday'
 
-const extractFromMoviePage = async ({ url }) => {
-  debug('extracting %s', url)
-
-  const movie = await xray(url, 'body', {
-    title: 'h1.header__title',
-    metadata: ['dl.detail .detail__row'], // iterate to get "Ondertiteling Engels"
+  const movies = await xray(url, '.blocks__content div:nth-child(2)', {
+    date: 'p em',
+    showings: xray('.text-block__text p:nth-child(2)', {
+      titles: ['a | trim'],
+      urls: ['a@href'],
+      raw: '@html',
+    }),
   })
 
-  debug('extracted xray %s: %j', url, movie)
+  const fragment = JSDOM.fragment(`<div>${movies.showings.raw}</div>`)
+  movies.showings.times = Array.from(fragment.firstChild.childNodes)
+    .filter((x) => x.nodeType === 3)
+    .map((x) => x.textContent.toUpperCase().trim())
 
-  if (!hasEnglishSubtitles(movie)) return []
-
-  // https://rialtofilm.nl/en/films/424/les-miserables => 424
-  const movieId = url.split('/').reverse()[1]
-
-  const data = await got(`https://rialtofilm.nl/feed/en/film/${movieId}`).json()
-
-  debug('got the showings feed %s: %j', url, data)
-
-  if (data.length === 0) {
-    debug('feed without any showings %s', url)
-    return []
-  }
-
-  const showings = Object.entries(data.Rialto).flatMap(([date, times]) =>
-    times.map(({ time }) => {
-      const format = 'cccc d MMMM H:mm'
-
-      const { day, month, hour, minute } = DateTime.fromFormat(
-        `${date} ${time}`,
-        format,
-      )
-
-      const year = guessYear(
-        DateTime.fromObject({
-          day,
-          month,
-          hour,
-          minute,
-        }),
-      )
-
-      return DateTime.fromObject({
-        day,
-        month,
-        hour,
-        minute,
-        year,
-      })
-        .toUTC()
-        .toISO()
-    }),
+  movies.showings.dates = movies.showings.times.map(
+    (time) => `${movies.date} ${time}`,
   )
 
-  debug('extracted showings %s: %j', url, showings)
+  const format = 'cccc LLLL d h:mm a'
 
-  const result = showings.map((date) => ({
-    title: movie.title,
-    url,
-    cinema: 'Rialto',
-    date,
-  }))
+  const results = movies.showings.titles.map((title, i) => {
+    let date = DateTime.fromFormat(movies.showings.dates[i], format, {
+      zone: 'Europe/Amsterdam',
+    })
 
-  debug('extracting done %s: %O', url, result)
+    const year = guessYear(date)
+    date = date.set({ year })
 
-  return result
-}
+    return {
+      title,
+      url: movies.showings.urls[i],
+      cinema: 'Rialto',
+      date: date.toUTC().toISO(),
+    }
+  })
 
-const extractFromMainPage = async () => {
-  const movies = await xray('https://rialtofilm.nl/en/films', 'a.list__row', [
-    {
-      title: 'div.list-item__title',
-      url: '@href',
-    },
-  ])
+  debug('main page', JSON.stringify(results, null, 2))
 
-  debug('main page', movies)
-
-  return (await Promise.all(movies.map(extractFromMoviePage))).flat()
+  return results
 }
 
 if (require.main === module) {
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
+
   //   extractFromMoviePage({
   // url: 'https://rialtofilm.nl/en/films/462/parasite-zw',
   // url: 'https://rialtofilm.nl/nl/films/426/the-lighthouse',
