@@ -7,10 +7,12 @@ const splitTime = require('./splitTime')
 const { fullMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => (arg) => {
-  debug(format, ...debugArgs, arg)
-  return arg
-}
+const debugPromise =
+  (format, ...debugArgs) =>
+  (arg) => {
+    debug(format, ...debugArgs, arg)
+    return arg
+  }
 
 const xray = Xray({
   filters: {
@@ -106,6 +108,7 @@ if (require.main === module) {
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
+
   // extractFromMoviePage({
   //   url: 'https://www.springhaver.nl/movies/1458/17/blackkklansman',
   // })
