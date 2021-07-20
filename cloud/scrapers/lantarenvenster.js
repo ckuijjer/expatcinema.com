@@ -6,10 +6,12 @@ const splitTime = require('./splitTime')
 const { shortMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => (arg) => {
-  debug(format, ...debugArgs, arg)
-  return arg
-}
+const debugPromise =
+  (format, ...debugArgs) =>
+  (arg) => {
+    debug(format, ...debugArgs, arg)
+    return arg
+  }
 
 const xray = Xray({
   filters: {
@@ -23,6 +25,9 @@ const hasEnglishSubtitles = ({ subtitles }) =>
   subtitles === 'Engels ondertiteld'
 
 const flatten = (acc, cur) => [...acc, ...cur]
+
+const cleanTitle = (title) =>
+  title.replace(/ - Expat Cinema Rotterdam$/i, '').trim()
 
 const extractFromMoviePage = ({ url }) => {
   debug('extracting %s', url)
@@ -60,7 +65,7 @@ const extractFromMoviePage = ({ url }) => {
               )
 
               return {
-                title: movie.title,
+                title: cleanTitle(movie.title),
                 url,
                 cinema: 'Lantarenvenster',
                 date: DateTime.fromObject({
