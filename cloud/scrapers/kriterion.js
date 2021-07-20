@@ -3,21 +3,27 @@ const R = require('ramda')
 const { DateTime } = require('luxon')
 const debug = require('debug')('kriterion')
 
-const debugPromise = (format, ...debugArgs) => (arg) => {
-  debug(format, ...debugArgs, arg)
-  return arg
-}
+const debugPromise =
+  (format, ...debugArgs) =>
+  (arg) => {
+    debug(format, ...debugArgs, arg)
+    return arg
+  }
 
 const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    cleanTitle: (value) =>
+      typeof value === 'string' ? value.replace(/ ENG SUBS$/, '') : value,
   },
 })
   .concurrency(10)
   .throttle(10, 300)
 
 const hasEnglishSubtitles = ({ metadata }) => {
-  const hasEnglishSubtitles = metadata.includes('Ondertiteling Engels')
+  const hasEnglishSubtitles =
+    metadata.includes('Ondertiteling Engels') ||
+    metadata.includes('Ondertiteling English')
   debug('hasEnglishSubtitles: %s metadata %j', hasEnglishSubtitles, metadata)
   return hasEnglishSubtitles
 }
@@ -32,7 +38,7 @@ const extractFromMoviePage = (...args) => {
     metadata: ['#filmposter p'], // iterate to get "Ondertiteling Engels"
     sidebar: xray('li[typeof="schema:TheaterEvent"]', [
       {
-        title: '[property="schema:name"] | trim',
+        title: '[property="schema:name"] | trim | cleanTitle',
         url: 'span[property="schema:url"] | trim', // as the <a> has a ?start_date appended
         date: '[property="schema:startDate"]@datetime',
       },
