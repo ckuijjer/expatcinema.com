@@ -1,85 +1,81 @@
-const Xray = require('x-ray')
-const R = require('ramda')
 const { DateTime } = require('luxon')
 const debug = require('debug')('eyefilm')
+const { ApolloClient, gql, HttpLink, InMemoryCache } = require('@apollo/client')
+const fetch = require('node-fetch')
 
-const debugPromise =
-  (format, ...debugArgs) =>
-  (arg) => {
-    debug(format, ...debugArgs, arg)
-    return arg
-  }
-
-const xray = Xray({
-  filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
-  },
-})
-  .concurrency(10)
-  .throttle(10, 300)
-
-const hasEnglishSubtitles = ({ subtitles }) => {
-  debug('subtitles: %s', subtitles)
-  return subtitles === 'Subtitles: English' || subtitles === 'Subtitles: Engels'
-}
-
-const flatten = (acc, cur) => [...acc, ...cur]
-
-const extractFromMoviePage = ({ url }) => {
-  debug('extracting %s', url)
-
-  return xray(url, 'body', {
-    title: 'h1',
-    subtitles: '.field-movie-subtitles-raw | trim',
-    screenings: xray('.date-item-list > li', [
-      {
-        date: '.program-date-day | trim',
-        times: ['.program-date-time-wrapper | trim'],
-      },
-    ]),
+const extractFromGraphQL = async () => {
+  const client = new ApolloClient({
+    link: new HttpLink({ uri: 'https://www.eyefilm.nl/graphql', fetch }),
+    cache: new InMemoryCache(),
   })
-    .then(debugPromise('extracted xray %s: %j', url))
-    .then((movie) => {
-      if (!hasEnglishSubtitles(movie)) return []
 
-      return movie.screenings
-        .map(({ date, times }) => {
-          return times.map((time) => {
-            return {
-              title: movie.title,
-              url,
-              cinema: 'Eye',
-              date: DateTime.fromFormat(`${date} ${time}`, 'dd MMM yyyy H:mm')
-                .toUTC()
-                .toISO(),
-            }
-          })
-        })
-        .reduce(flatten, [])
+  const query = gql`
+    query shows(
+      $siteId: [String]
+      $search: String = null
+      $productionType: Int = null
+      $startDateTime: [QueryArgument]
+      $label: [String] = null
+      $productionThemeId: Int = null
+      $language: String = null
+    ) {
+      shows(
+        site: $siteId
+        productionThemeId: $productionThemeId
+        productionType: $productionType
+        search: $search
+        startDateTime: $startDateTime
+        label: $label
+        language: $language
+      ) {
+        ... on show_show_Entry {
+          url
+          startDateTime
+          endDateTime
+          singleSubtitles
+          production {
+            title
+          }
+        }
+      }
+    }
+  `
+
+  const today = DateTime.now().startOf('day').toFormat('yyyy-MM-dd HH:mm')
+  const oneMonthInTheFuture = DateTime.now()
+    .plus({ months: 1 })
+    .endOf('day')
+    .toFormat('yyyy-MM-dd HH:mm')
+
+  const results = await client.query({
+    query,
+    variables: {
+      siteId: 'eyeEnglish',
+      startDateTime: ['and', `> ${today}`, `< ${oneMonthInTheFuture}`],
+    },
+  })
+
+  const hasEnglishSubtitles = (show) =>
+    show.singleSubtitles === '42c27a5b-2d4e-4195-b547-cb6fbe9fcd49'
+
+  const screenings = results.data.shows
+    .filter(hasEnglishSubtitles)
+    .map((show) => {
+      return {
+        title: show.production[0].title,
+        url: show.url,
+        cinema: 'Eye',
+        date: new Date(show.startDateTime).toISOString(),
+      }
     })
-    .then(debugPromise('extracting done %s: %O', url))
-}
 
-const extractFromMainPage = () => {
-  return (
-    xray('https://www.eyefilm.nl/en/film/all-films', '.calendar-all-films li', [
-      {
-        url: 'h3.full-program-title a@href',
-        title: 'h3.full-program-title a | trim',
-      },
-    ])
-      //   .then(R.uniq)
-      .then(debugPromise('main page: %J'))
-      .then((results) => Promise.all(results.map(extractFromMoviePage)))
-      .then(debugPromise('before flatten: %j'))
-      .then((results) => results.reduce(flatten, []))
-  )
+  return screenings
 }
 
 if (require.main === module) {
-  extractFromMoviePage({
-    url: 'https://www.eyefilm.nl/en/film/journey-to-the-west?program_id=11875970',
-  }).then(console.log)
+  extractFromGraphQL()
+    .then((x) => JSON.stringify(x, null, 2))
+    .then(console.log)
 }
 
-module.exports = extractFromMainPage
+module.exports = extractFromGraphQL

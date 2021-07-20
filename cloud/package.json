@@ -19,10 +19,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/client": "^3.3.21",
     "axios": "^0.21.1",
     "debug": "^4.0.1",
     "got": "^11.5.2",
     "luxon": "^2.0.1",
+    "node-fetch": "^2.6.1",
     "p-map": "4",
     "ramda": "^0.27.1",
     "serverless-offline": "^7.0.0",
