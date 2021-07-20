@@ -3,10 +3,12 @@ const R = require('ramda')
 const { DateTime } = require('luxon')
 const debug = require('debug')('eyefilm')
 
-const debugPromise = (format, ...debugArgs) => (arg) => {
-  debug(format, ...debugArgs, arg)
-  return arg
-}
+const debugPromise =
+  (format, ...debugArgs) =>
+  (arg) => {
+    debug(format, ...debugArgs, arg)
+    return arg
+  }
 
 const xray = Xray({
   filters: {
@@ -76,8 +78,7 @@ const extractFromMainPage = () => {
 
 if (require.main === module) {
   extractFromMoviePage({
-    url:
-      'https://www.eyefilm.nl/en/film/journey-to-the-west?program_id=11875970',
+    url: 'https://www.eyefilm.nl/en/film/journey-to-the-west?program_id=11875970',
   }).then(console.log)
 }
 
