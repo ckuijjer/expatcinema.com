@@ -6,10 +6,12 @@ const splitTime = require('./splitTime')
 const { shortMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => (arg) => {
-  debug(format, ...debugArgs, arg)
-  return arg
-}
+const debugPromise =
+  (format, ...debugArgs) =>
+  (arg) => {
+    debug(format, ...debugArgs, arg)
+    return arg
+  }
 
 const xray = Xray({
   filters: {
@@ -43,10 +45,9 @@ const extractFromMoviePage = ({ url }) => {
         value: 'li | trim',
       },
     ]),
-    screenings: xray('.kaartjes tr', [
+    screenings: xray('tr.day', [
       {
         date: 'td:nth-child(1) | trim',
-        time: 'td:nth-child(2) | trim',
       },
     ]),
   })
@@ -54,8 +55,8 @@ const extractFromMoviePage = ({ url }) => {
     .then((movie) => {
       if (!hasEnglishSubtitles(movie)) return []
 
-      return movie.screenings.map(({ date, time }) => {
-        const [dayOfWeek, dayString, monthString] = date.split(/\s+/)
+      return movie.screenings.map(({ date }) => {
+        const [dayOfWeek, dayString, monthString, time] = date.split(/\s+/)
         const day = Number(dayString)
         const month = shortMonthToNumber(monthString)
         const [hour, minute] = splitTime(time)
@@ -102,13 +103,13 @@ const extractFromMainPage = () => {
 }
 
 if (require.main === module) {
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
+  // extractFromMainPage()
+  //   .then((x) => JSON.stringify(x, null, 2))
+  //   .then(console.log)
 
-  // extractFromMoviePage({
-  //   url: 'https://www.lab111.nl/movie/parasite/',
-  // }).then(console.log)
+  extractFromMoviePage({
+    url: 'https://www.lab111.nl/movie/tampopo/',
+  }).then(console.log)
 }
 
 module.exports = extractFromMainPage
