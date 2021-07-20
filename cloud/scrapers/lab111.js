@@ -33,6 +33,8 @@ const hasEnglishSubtitles = (movie) => {
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
+const cleanTitle = (title) => title.replace(' (with English subtitles)', '')
+
 const extractFromMoviePage = ({ url }) => {
   debug('extracting %s', url)
 
@@ -70,7 +72,7 @@ const extractFromMoviePage = ({ url }) => {
         )
 
         return {
-          title: movie.title,
+          title: cleanTitle(movie.title),
           url,
           cinema: 'Lab111',
           date: DateTime.fromObject({
