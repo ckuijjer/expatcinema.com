@@ -23,9 +23,13 @@ const About = () => (
       english subtitled movie screenings at the following cinemas.
       <br />
       <br />
-      Amsterdam: Eye, Kriterion, Lab111
+      Amsterdam: Cinecenter, Eye, Kriterion, Lab111, Rialto
+      <br />
+      Delft: Filmhuis Lumen
       <br />
       Den Haag: Filmhuis Den Haag
+      <br />
+      Groningen: Forum Groningen
       <br />
       Leiden: Kijkhuis
       <br />
