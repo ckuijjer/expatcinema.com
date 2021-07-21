@@ -49,6 +49,7 @@ functions:
       - schedule: cron(0 3 * * ? *)
     environment:
       DEBUG: '*,-resolve'
+      NODE_TLS_REJECT_UNAUTHORIZED: 0 # for the filmhuis lumen scraper
   playground:
     handler: handler.playground
   notifySlack:
