@@ -2,14 +2,15 @@ const Xray = require('x-ray')
 const R = require('ramda')
 const { DateTime } = require('luxon')
 const debug = require('debug')('bioscopenleiden')
-const splitTime = require('./splitTime')
 const { fullMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 
-const debugPromise = (format, ...debugArgs) => (arg) => {
-  debug(format, ...debugArgs, arg)
-  return arg
-}
+const debugPromise =
+  (format, ...debugArgs) =>
+  (arg) => {
+    debug(format, ...debugArgs, arg)
+    return arg
+  }
 const xray = Xray().concurrency(10).throttle(10, 300)
 
 const extractFromMoviePage = ({ url }) =>
