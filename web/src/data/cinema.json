@@ -63,5 +63,10 @@
     "name": "Forum Groningen",
     "city": "Groningen",
     "url": "https://www.forum.nl/"
+  },
+  {
+    "name": "Filmhuis Lumen",
+    "city": "Delft",
+    "url": "https://www.filmhuis-lumen.nl/"
   }
 ]
