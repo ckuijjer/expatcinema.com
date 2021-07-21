@@ -3,6 +3,7 @@ const R = require('ramda')
 const { DateTime } = require('luxon')
 const debug = require('debug')('bioscopenleiden')
 const { fullMonthToNumber } = require('./monthToNumber')
+const splitTime = require('./splitTime')
 const guessYear = require('./guessYear')
 
 const debugPromise =
