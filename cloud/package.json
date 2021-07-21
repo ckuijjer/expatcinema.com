@@ -31,7 +31,8 @@
     "ramda": "^0.27.1",
     "react": "^17.0.2",
     "serverless-offline": "^7.0.0",
-    "x-ray": "^2.3.4"
+    "x-ray": "^2.3.4",
+    "x-ray-chrome": "^1.0.1"
   },
   "devDependencies": {
     "prettier": "^2.3.2",
