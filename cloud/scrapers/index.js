@@ -70,6 +70,8 @@ exports.scrapers = async () => {
     'rialto',
     'cinecenter',
     // 'liff',
+    'filmhuislumen',
+    'forumgroningen',
   ]
 
   const results = Object.fromEntries(
