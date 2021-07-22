@@ -1,6 +1,6 @@
 const chromium = require('chrome-aws-lambda')
 
-const xRayPuppeteer = () => {
+const xRayPuppeteer = ({ interactWithPage = async () => {} } = {}) => {
   return async (ctx, done) => {
     let browser = null
 
@@ -15,6 +15,10 @@ const xRayPuppeteer = () => {
 
       let page = await browser.newPage()
       await page.goto(ctx.url)
+
+      if (interactWithPage) {
+        await interactWithPage(page, ctx)
+      }
 
       if (!ctx.body) {
         ctx.body = await page.content()
