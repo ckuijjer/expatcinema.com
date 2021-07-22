@@ -5,7 +5,7 @@ const debug = require('debug')('ketelhuis')
 const { shortMonthToNumber, fullMonthToNumber } = require('./monthToNumber')
 const guessYear = require('./guessYear')
 const splitTime = require('./splitTime')
-const { xRayChrome } = require('x-ray-chrome')
+const xRayPuppeteer = require('../xRayPuppeteer')
 
 const xray = Xray({
   filters: {
@@ -18,13 +18,7 @@ const xray = Xray({
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
-  .driver(
-    xRayChrome({
-      cl: async (page, ctx) => {
-        // console.log('called')
-      },
-    }),
-  )
+  .driver(xRayPuppeteer())
   .concurrency(10)
   .throttle(10, 300)
 

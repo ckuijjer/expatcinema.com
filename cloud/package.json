@@ -21,6 +21,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.21",
     "axios": "^0.21.1",
+    "chrome-aws-lambda": "^10.1.0",
     "debug": "^4.0.1",
     "got": "^11.5.2",
     "graphql": "^15.5.1",
@@ -28,14 +29,15 @@
     "luxon": "^2.0.1",
     "node-fetch": "^2.6.1",
     "p-map": "4",
+    "puppeteer-core": "^10.1.0",
     "ramda": "^0.27.1",
     "react": "^17.0.2",
     "serverless-offline": "^7.0.0",
-    "x-ray": "^2.3.4",
-    "x-ray-chrome": "^1.0.1"
+    "x-ray": "^2.3.4"
   },
   "devDependencies": {
     "prettier": "^2.3.2",
+    "puppeteer": "^10.1.0",
     "serverless": "^2.52.0",
     "serverless-plugin-monorepo": "^0.10.0"
   }
