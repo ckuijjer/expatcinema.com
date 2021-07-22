@@ -72,7 +72,7 @@ exports.scrapers = async () => {
     // 'liff',
     'filmhuislumen',
     'forumgroningen',
-    // 'ketelhuis',
+    'ketelhuis',
   ]
 
   const results = Object.fromEntries(
