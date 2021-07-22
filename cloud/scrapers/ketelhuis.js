@@ -136,7 +136,7 @@ const extractFromMoviePage = async ({ url, title }) => {
     date,
     url,
     cinema: 'Ketelhuis',
-    url,
+    title,
   }))
 
   debug('screenings %O', screenings)
