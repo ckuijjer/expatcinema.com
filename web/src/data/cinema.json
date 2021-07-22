@@ -68,5 +68,10 @@
     "name": "Filmhuis Lumen",
     "city": "Delft",
     "url": "https://www.filmhuis-lumen.nl/"
+  },
+  {
+    "name": "Ketelhuis",
+    "city": "Amsterdam",
+    "url": "https://www.ketelhuis.nl/"
   }
 ]
