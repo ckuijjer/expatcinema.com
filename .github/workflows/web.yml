@@ -8,7 +8,7 @@ on:
       - 'web/**'
       - '.github/workflows/web.yml'
   schedule:
-    - cron: '30 3 * * *' # daily at 3.30 UTC
+    - cron: '30 3 * * *' # daily at 3.30 UTC.
 
 jobs:
   build:
