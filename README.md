@@ -1,10 +1,10 @@
 # Expat Cinema
 
-Cloud and SPA deploy should be handled by GitHub Actions
+Cloud and Web deploy should be handled by GitHub Actions
 
 - `cd cloud; yarn deploy` to deploy the lambda functions -- now handled by GitHub Actions
 - `cd cloud; yarn start` to manually run the scrapers
-- `cd spa; yarn deploy` to deploy the SPA to GitHub Pages
+- `cd web; yarn deploy` to deploy the SPA to GitHub Pages
 
 ## Scratchpad
 
