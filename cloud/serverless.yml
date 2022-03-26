@@ -38,7 +38,7 @@ provider:
   environment:
     DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
 
-  logRetentionInDays: 14
+  logRetentionInDays: 180
   lambdaHashingVersion: 20201221
 
 functions:
