@@ -34,6 +34,7 @@ module.exports = {
       resolve: 'gatsby-source-remote-file',
       options: {
         url: 'https://a8kqub7595.execute-api.eu-west-1.amazonaws.com/analytics',
+        // url: 'http://localhost:3000/analytics',
         name: 'analytics',
         ext: '.json',
       },
