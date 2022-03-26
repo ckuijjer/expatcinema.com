@@ -67,14 +67,15 @@ exports.scrapers = async () => {
     'lantarenvenster',
     'springhaver',
     'hartlooper',
-    'rialto',
+    // 'rialto',
     'cinecenter',
     // 'liff',
     'filmhuislumen',
     'forumgroningen',
-    'ketelhuis',
+    // 'ketelhuis',
   ]
 
+  debug('start scraping %O', SCRAPERS)
   const results = Object.fromEntries(
     await Promise.all(
       SCRAPERS.map(async (name) => {
@@ -83,20 +84,25 @@ exports.scrapers = async () => {
       }),
     ),
   )
+  debug('done scraping')
 
   results.all = sort(Object.values(results).flat())
   results.filtered = applyFilters(results.all)
 
-  // write all to S3
+  debug('writing all to private S3 bucket')
   await Promise.all(
     Object.entries(results).map(
       async ([name, data]) => await writeToFile(`${name}/${now}.json`)(data),
     ),
   )
+
+  debug('writing filtered to public S3 bucket')
   await writeToPublicFile('screenings.json')(results.filtered)
 
   const countPerScraper = Object.fromEntries(
     Object.entries(results).map(([name, data]) => [name, data.length]),
   )
+
+  debug('writing to analytics json %O', countPerScraper)
   await writeToAnalytics('count')(countPerScraper)
 }

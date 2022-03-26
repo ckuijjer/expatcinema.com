@@ -86,6 +86,7 @@ const extractFromMoviePage = ({ url }) => {
 }
 
 const extractFromMainPage = () => {
+  debug('extracting main page')
   return (
     xray(
       'https://www.lantarenvenster.nl/#all',
@@ -112,6 +113,12 @@ const extractFromMainPage = () => {
 }
 
 module.exports = extractFromMainPage
+
+if (require.main === module) {
+  extractFromMainPage()
+    .then((x) => JSON.stringify(x, null, 2))
+    .then(console.log)
+}
 
 // Promise.resolve([
 //   {
