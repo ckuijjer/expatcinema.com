@@ -3,7 +3,7 @@ name: Cloud
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'cloud/**'
       - '.github/workflows/cloud.yml'
