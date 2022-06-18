@@ -28,7 +28,7 @@ jobs:
           cd web/
           yarn build
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@36e7d6be3ae491bda245af50d04b012d956c1f14
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
