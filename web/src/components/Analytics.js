@@ -1,6 +1,7 @@
 import React from 'react'
 import * as Plot from '@observablehq/plot'
 import { css } from '@emotion/react'
+import Header from './Header'
 
 // Grid component that has cells with a width of 200px and using css grid layout
 const Grid = ({ children }) => (
@@ -137,6 +138,7 @@ const Analytics = ({ points }) => {
 
   return (
     <>
+      <Header />
       <div
         dangerouslySetInnerHTML={{
           __html: svg.outerHTML,
