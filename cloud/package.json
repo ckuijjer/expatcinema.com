@@ -6,13 +6,13 @@
   "scripts": {
     "start": "AWS_PROFILE=casper NODE_OPTIONS='--inspect --enable-source-maps' serverless offline --aws-profile casper",
     "scrapers": "serverless invoke -f scrapers --aws-profile casper",
-    "scrapers:local": "NODE_TLS_REJECT_UNAUTHORIZED=0 serverless invoke local -f scrapers --aws-profile casper",
+    "scrapers:local": "NODE_TLS_REJECT_UNAUTHORIZED=0 serverless invoke local -f scrapers --aws-profile casper --stage local",
     "playground": "serverless invoke -f playground --aws-profile casper",
-    "playground:local": "serverless invoke local -f playground --aws-profile casper",
+    "playground:local": "serverless invoke local -f playground --aws-profile casper --stage local",
     "analytics": "serverless invoke -f analytics --aws-profile casper",
-    "analytics:local": "serverless invoke local -f analytics --aws-profile casper",
+    "analytics:local": "serverless invoke local -f analytics --aws-profile casper --stage local",
     "fillAnalytics": "serverless invoke -f fillAnalytics --aws-profile casper",
-    "fillAnalytics:local": "serverless invoke local -f fillAnalytics --aws-profile casper",
+    "fillAnalytics:local": "serverless invoke local -f fillAnalytics --aws-profile casper --stage local",
     "deploy": "serverless deploy --aws-profile casper",
     "deploy:ci": "serverless deploy"
   },

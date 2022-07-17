@@ -1,3 +1,5 @@
+// Used for the initial filling of the analytics DynamoDB table based on the contents of the scrapers S3 bucket
+
 const AWS = require('aws-sdk')
 const { inspect } = require('util')
 const pMap = require('p-map')
