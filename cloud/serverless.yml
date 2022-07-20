@@ -49,8 +49,8 @@ functions:
     environment:
       DEBUG: ${env:DEBUG}
       NODE_TLS_REJECT_UNAUTHORIZED: 0 # for the filmhuis lumen scraper
-      PRIVATE_BUCKET: ${custom.scrapersOutputBucketName}
-      PUBLIC_BUCKET: ${custom.publicBucketName}
+      PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
+      PUBLIC_BUCKET: ${self:custom.publicBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
   playground:
     handler: handler.playground
@@ -72,7 +72,7 @@ functions:
   fillAnalytics:
     handler: handler.fillAnalytics
     environment:
-      PRIVATE_BUCKET: ${custom.scrapersOutputBucketName}
+      PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
 
 resources:
