@@ -27,6 +27,11 @@ jobs:
   #   needs: [build]
 
   #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: Install dependencies
+  #       run: |
+  #         cd cloud/
+  #         yarn install --frozen-lockfile
   #     - name: Deploy to Production
   #       env:
   #         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

@@ -14,6 +14,8 @@ provider:
         - Effect: 'Allow'
           Action:
             - 's3:PutObject'
+            - 's3:GetObject'
+            - 's3:ListObjectsV2'
           Resource:
             - 'arn:aws:s3:::${self:custom.scrapersOutputBucketName}/*'
 
@@ -77,12 +79,6 @@ functions:
     iam:
       role:
         statements:
-          - Effect: 'Allow'
-            Action:
-              - 's3:GetObject'
-              - 's3:ListObjectsV2'
-            Resource:
-              - 'arn:aws:s3:::${self:custom.scrapersOutputBucketName}/*'
 
 resources:
   Resources:
