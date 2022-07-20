@@ -1,4 +1,4 @@
-const { DateTime } = require('luxon')
+import { DateTime } from 'luxon'
 
 // if the date is over half a year in the past, it's likely one belonging to next year
 const guessYear = (date) => {
@@ -10,4 +10,4 @@ const guessYear = (date) => {
   }
 }
 
-module.exports = guessYear
+export default guessYear

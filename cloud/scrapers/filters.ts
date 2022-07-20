@@ -9,11 +9,11 @@ const filters = [
 const applyFilters = (results) =>
   results.filter((result) => filters.every((filter) => !filter(result)))
 
-if (require.main === module) {
-  const all = require('./output/2018-10-09T15:45:14.112Z_all.json')
-  const filtered = applyFilters(all)
+// if (require.main === module) {
+//   const all = await import('./output/2018-10-09T15:45:14.112Z_all.json')
+//   const filtered = applyFilters(all)
 
-  console.log({ all: all.length, filtered: filtered.length })
-}
+//   console.log({ all: all.length, filtered: filtered.length })
+// }
 
-module.exports = applyFilters
+export default applyFilters

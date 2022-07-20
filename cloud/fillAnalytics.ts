@@ -1,8 +1,8 @@
 // Used for the initial filling of the analytics DynamoDB table based on the contents of the scrapers S3 bucket
 
-const AWS = require('aws-sdk')
-const { inspect } = require('util')
-const pMap = require('p-map')
+import AWS from 'aws-sdk'
+import { inspect } from 'util'
+import pMap from 'p-map'
 
 const documentClient = require('./documentClient')
 
@@ -94,4 +94,4 @@ const getObjectFromS3 = async (key) => {
   return json
 }
 
-exports.fillAnalytics = fillAnalytics
+export default fillAnalytics

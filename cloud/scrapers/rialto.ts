@@ -1,9 +1,11 @@
-const Xray = require('x-ray')
-const { DateTime } = require('luxon')
-const debug = require('debug')('rialto')
-const { JSDOM } = require('jsdom')
+import Xray from 'x-ray'
+import { DateTime } from 'luxon'
+import debugFn from 'debug'
+import { JSDOM } from 'jsdom'
 
-const guessYear = require('./guessYear')
+import guessYear from './guessYear'
+
+const debug = debugFn('rialto')
 
 const xray = Xray({
   filters: {
@@ -70,4 +72,4 @@ if (require.main === module) {
   //   })
 }
 
-module.exports = extractFromMainPage
+export default extractFromMainPage

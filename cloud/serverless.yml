@@ -1,13 +1,13 @@
 service: expatcinema
 
 useDotenv: true
-variablesResolutionMode: 20210326
 configValidationMode: error
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   region: eu-west-1
+  stage: ${opt:stage, 'dev'}
   iam:
     role:
       statements:
@@ -37,9 +37,9 @@ provider:
                 - Arn
   environment:
     DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
+    NODE_OPTIONS: --enable-source-maps
 
   logRetentionInDays: 180
-  lambdaHashingVersion: 20201221
 
 functions:
   scrapers:
@@ -58,7 +58,7 @@ functions:
     environment:
       SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
     events:
-      - cloudwatchLog: '/aws/lambda/expatcinema-dev-scrapers'
+      - cloudwatchLog: /aws/lambda/expatcinema-${self:provider.stage}-scrapers
   analytics:
     handler: handler.analytics
     events:
@@ -131,10 +131,21 @@ resources:
           StreamViewType: NEW_AND_OLD_IMAGES
 
 custom:
-  publicBucketName: expatcinema-public
-  scrapersOutputBucketName: expatcinema-scrapers-output
-  scrapersAnalyticsTableName: expatcinema-scrapers-analytics
+  publicBucketName: expatcinema-public-${self:provider.stage}
+  scrapersOutputBucketName: expatcinema-scrapers-output-${self:provider.stage}
+  scrapersAnalyticsTableName: expatcinema-scrapers-analytics-${self:provider.stage}
+
+  esbuild:
+    minify: false
+    bundle: true
+    sourcemap: true
+    watch:
+      pattern: ['*.ts', '*.js']
+      ignore: ['.serverless', '.build', '.esbuild']
+    packager: yarn
+    external:
+      - emitter # as batch dynamically imports from emitter
 
 plugins:
-  - serverless-plugin-monorepo
+  - serverless-esbuild
   - serverless-offline

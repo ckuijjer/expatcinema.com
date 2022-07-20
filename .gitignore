@@ -19,5 +19,7 @@ yarn-error.log*
 
 cloud/.serverless
 cloud/output
+cloud/.esbuild
 web/.cache
 web/public
+backup/

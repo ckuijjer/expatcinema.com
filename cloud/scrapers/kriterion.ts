@@ -1,14 +1,9 @@
-const Xray = require('x-ray')
-const R = require('ramda')
-const { DateTime } = require('luxon')
-const debug = require('debug')('kriterion')
+import Xray from 'x-ray'
+import { DateTime } from 'luxon'
+import debugFn from 'debug'
+import { Screening } from '../types'
 
-const debugPromise =
-  (format, ...debugArgs) =>
-  (arg) => {
-    debug(format, ...debugArgs, arg)
-    return arg
-  }
+const debug = debugFn('kriterion')
 
 const xray = Xray({
   filters: {
@@ -20,7 +15,7 @@ const xray = Xray({
   .concurrency(10)
   .throttle(10, 300)
 
-const hasEnglishSubtitles = ({ metadata }) => {
+const hasEnglishSubtitles = ({ metadata }: XRayFromMoviePage) => {
   const hasEnglishSubtitles =
     metadata.includes('Ondertiteling Engels') ||
     metadata.includes('Ondertiteling English')
@@ -28,13 +23,19 @@ const hasEnglishSubtitles = ({ metadata }) => {
   return hasEnglishSubtitles
 }
 
-const flatten = (acc, cur) => [...acc, ...cur]
+type XRayFromMoviePage = {
+  metadata: string[]
+  sidebar: {
+    title: string
+    url: string
+    date: string
+  }[]
+}
 
-const extractFromMoviePage = (...args) => {
-  const { url } = args[0]
-  debug('extracting %s %O', url, args)
+const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
+  debug('extracting %s %O', url)
 
-  return xray(url, 'body', {
+  const movie: XRayFromMoviePage = await xray(url, 'body', {
     metadata: ['#filmposter p'], // iterate to get "Ondertiteling Engels"
     sidebar: xray('li[typeof="schema:TheaterEvent"]', [
       {
@@ -44,19 +45,28 @@ const extractFromMoviePage = (...args) => {
       },
     ]),
   })
-    .then(debugPromise('extracted xray %s: %j', url))
-    .then((movie) => {
-      if (!hasEnglishSubtitles(movie)) return []
 
-      return movie.sidebar
-        .filter((x) => x.url === url) // only look at the sidebar items that are about the current movie
-        .map(({ date, ...rest }) => ({
-          ...rest,
-          cinema: 'Kriterion',
-          date: DateTime.fromISO(date).toUTC().toISO(),
-        }))
-    })
-    .then(debugPromise('extracting done %s: %O', url))
+  debug('extracted xray %s: %j', url, movie)
+
+  if (!hasEnglishSubtitles(movie)) return []
+
+  const screenings = movie.sidebar
+    .filter((x) => x.url === url) // only look at the sidebar items that are about the current movie
+    .map(({ date, ...rest }) => ({
+      ...rest,
+      cinema: 'Kriterion',
+      date: DateTime.fromISO(date).toJSDate(),
+    }))
+
+  debug('extracted %s: %j', url, screenings)
+
+  return screenings
+}
+
+type XRayFromMainPage = {
+  title: string
+  url: string
+  date: string
 }
 
 // for now we only scrape movies that can be bought, so unfortunately not the ones
@@ -64,8 +74,8 @@ const extractFromMoviePage = (...args) => {
 // only semi structured, thus fragile. So now scraping of the main content '.highlightbox h4' but only
 // the sidebar, and using the sidebar in extractFromMoviePage again so we only make one request for every
 // movie, but still can easily get all the screenings
-const extractFromMainPage = () => {
-  return xray(
+const extractFromMainPage = async () => {
+  const xrayResult: XRayFromMainPage[] = await xray(
     'https://www.kriterion.nl/agenda-2-2-2-2',
     'li[typeof="schema:TheaterEvent"]',
     [
@@ -76,12 +86,17 @@ const extractFromMainPage = () => {
       },
     ],
   )
-    .then(debugPromise('main page before uniq: %j'))
-    .then(R.uniqWith(R.eqBy(R.prop('url')))) // only do uniq based on url, as the title is different from the main and the sidebar
-    .then(debugPromise('main page after uniq: %j'))
-    .then((results) => Promise.all(results.map(extractFromMoviePage)))
-    .then(debugPromise('before flatten: %j'))
-    .then((results) => results.reduce(flatten, []))
+
+  debug('main page before: %j', xrayResult)
+
+  const uniqueUrls = Array.from(new Set(xrayResult.map((x) => x.url)))
+
+  debug('main page after uniq: %j', uniqueUrls)
+
+  const screenings = await Promise.all(uniqueUrls.map(extractFromMoviePage))
+  debug('before flatten: %j', screenings)
+
+  return screenings.flat()
 }
 
 if (require.main === module) {
@@ -94,4 +109,4 @@ if (require.main === module) {
   // }).then(console.log)
 }
 
-module.exports = extractFromMainPage
+export default extractFromMainPage

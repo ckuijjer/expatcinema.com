@@ -1,10 +1,12 @@
-const Xray = require('x-ray')
-const R = require('ramda')
-const { DateTime } = require('luxon')
-const debug = require('debug')('lab111')
-const splitTime = require('./splitTime')
-const { shortMonthToNumber } = require('./monthToNumber')
-const guessYear = require('./guessYear')
+import Xray from 'x-ray'
+import * as R from 'ramda'
+import { DateTime } from 'luxon'
+import debugFn from 'debug'
+import splitTime from './splitTime'
+import { shortMonthToNumber } from './monthToNumber'
+import guessYear from './guessYear'
+
+const debug = debugFn('lab111')
 
 const debugPromise =
   (format, ...debugArgs) =>
@@ -30,8 +32,6 @@ const hasEnglishSubtitles = (movie) => {
     movie.titleMeta.includes('Engels ondertiteld')
   )
 }
-
-const flatten = (acc, cur) => [...acc, ...cur]
 
 const cleanTitle = (title) => title.replace(' (with English subtitles)', '')
 
@@ -101,7 +101,7 @@ const extractFromMainPage = () => {
     .then(debugPromise('main page: %J'))
     .then((results) => Promise.all(results.map(extractFromMoviePage)))
     .then(debugPromise('before flatten: %j'))
-    .then((results) => results.reduce(flatten, []))
+    .then((results) => results.flat())
 }
 
 if (require.main === module) {
@@ -114,4 +114,4 @@ if (require.main === module) {
   }).then(console.log)
 }
 
-module.exports = extractFromMainPage
+export default extractFromMainPage

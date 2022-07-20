@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-const fs = require('fs')
-const { DateTime } = require('luxon')
-const R = require('ramda')
+import fs from 'fs'
+import { DateTime } from 'luxon'
+import * as R from 'ramda'
 
 const sort = R.sortWith([
   (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),

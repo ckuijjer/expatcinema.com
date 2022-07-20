@@ -1,5 +1,5 @@
-const { DateTime, Settings } = require('luxon')
-const documentClient = require('./documentClient')
+import { DateTime, Settings } from 'luxon'
+import documentClient from './documentClient'
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
@@ -36,4 +36,4 @@ const analytics = async ({ event, context } = {}) => {
   }
 }
 
-exports.analytics = analytics
+export default analytics

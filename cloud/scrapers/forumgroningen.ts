@@ -1,7 +1,10 @@
-const Xray = require('x-ray')
-const { DateTime } = require('luxon')
-const debug = require('debug')('forumgroningen')
-const guessYear = require('./guessYear')
+import Xray from 'x-ray'
+import { DateTime } from 'luxon'
+import debugFn from 'debug'
+import guessYear from './guessYear'
+import { Screening } from '../types'
+
+const debug = debugFn('forumgroningen')
 
 const xray = Xray({
   filters: {
@@ -15,10 +18,16 @@ const xray = Xray({
   .concurrency(10)
   .throttle(10, 300)
 
-const extractFromMainPage = async () => {
+type XRayFromMainPage = {
+  date: string
+  time: string
+  title: string
+}
+
+const extractFromMainPage = async (): Promise<Screening[]> => {
   const url = 'https://forum.nl/en/whats-on/international-movie-night'
 
-  const scrapeResults = await xray(url, '.calendar-day', [
+  const scrapeResults: XRayFromMainPage[] = await xray(url, '.calendar-day', [
     {
       date: '.calendar-day-head | normalizeWhitespace | trim',
       time: '.calendar-day-content .time div | normalizeWhitespace | trim',
@@ -47,7 +56,7 @@ const extractFromMainPage = async () => {
       return {
         url,
         title,
-        date: d.toUTC().toISO(),
+        date: d.toJSDate(),
         cinema: 'Forum Groningen',
       }
     })
@@ -63,4 +72,4 @@ if (require.main === module) {
     .then(console.log)
 }
 
-module.exports = extractFromMainPage
+export default extractFromMainPage

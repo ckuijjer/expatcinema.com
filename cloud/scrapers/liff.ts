@@ -1,15 +1,19 @@
-const Xray = require('x-ray')
-const R = require('ramda')
-const { DateTime } = require('luxon')
-const debug = require('debug')('liff')
-const splitTime = require('./splitTime')
-const { shortMonthToNumber } = require('./monthToNumber')
-const guessYear = require('./guessYear')
+import Xray from 'x-ray'
+import * as R from 'ramda'
+import { DateTime } from 'luxon'
+import debugFn from 'debug'
+import splitTime from './splitTime'
+import { shortMonthToNumber } from './monthToNumber'
+import guessYear from './guessYear'
 
-const debugPromise = (format, ...debugArgs) => (arg) => {
-  debug(format, ...debugArgs, arg)
-  return arg
-}
+const debug = debugFn('liff')
+
+const debugPromise =
+  (format, ...debugArgs) =>
+  (arg) => {
+    debug(format, ...debugArgs, arg)
+    return arg
+  }
 
 const xray = Xray({
   filters: {
@@ -20,9 +24,7 @@ const xray = Xray({
   .throttle(10, 300)
 
 const hasEnglishSubtitles = (movie) =>
-  movie.metadata.filter((x) => x === 'SubtitlesEnglish').length === 1
-
-const flatten = (acc, cur) => [...acc, ...cur]
+  movie.metadata.filter((x) => x === 'SubtitlesEnglish').length === (1).flat()
 
 const extractFromMoviePage = ({ url }) => {
   debug('extracting %s', url)
@@ -85,7 +87,7 @@ const extractFromMainPage = () => {
     .then(debugPromise('main page: %J'))
     .then((results) => Promise.all(results.map(extractFromMoviePage)))
     .then(debugPromise('before flatten: %j'))
-    .then((results) => results.reduce(flatten, []))
+    .then((results) => results.flat())
 }
 
 if (require.main === module) {
@@ -98,4 +100,4 @@ if (require.main === module) {
   // })
 }
 
-module.exports = extractFromMainPage
+export default extractFromMainPage

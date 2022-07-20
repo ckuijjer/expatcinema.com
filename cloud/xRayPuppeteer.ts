@@ -1,4 +1,4 @@
-const chromium = require('chrome-aws-lambda')
+import chromium from 'chrome-aws-lambda'
 
 const xRayPuppeteer = ({ interactWithPage = async () => {} } = {}) => {
   return async (ctx, done) => {
@@ -34,4 +34,4 @@ const xRayPuppeteer = ({ interactWithPage = async () => {} } = {}) => {
   }
 }
 
-module.exports = xRayPuppeteer
+export default xRayPuppeteer

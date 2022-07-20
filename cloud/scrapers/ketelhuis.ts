@@ -1,11 +1,13 @@
-const Xray = require('x-ray')
-const { DateTime } = require('luxon')
-const R = require('ramda')
-const debug = require('debug')('ketelhuis')
-const { shortMonthToNumber, fullMonthToNumber } = require('./monthToNumber')
-const guessYear = require('./guessYear')
-const splitTime = require('./splitTime')
-const xRayPuppeteer = require('../xRayPuppeteer')
+import Xray from 'x-ray'
+import { DateTime } from 'luxon'
+import * as R from 'ramda'
+import debugFn from 'debug'
+import { shortMonthToNumber, fullMonthToNumber } from './monthToNumber'
+import guessYear from './guessYear'
+import splitTime from './splitTime'
+import xRayPuppeteer from '../xRayPuppeteer'
+
+const debug = debugFn('ketelhuis')
 
 const xray = Xray({
   filters: {
@@ -159,4 +161,4 @@ if (require.main === module) {
   //   .then(console.log)
 }
 
-module.exports = extractFromMainPage
+export default extractFromMainPage

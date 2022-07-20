@@ -1,9 +1,13 @@
-const { DateTime } = require('luxon')
-const debug = require('debug')('eyefilm')
-const { ApolloClient, gql, HttpLink, InMemoryCache } = require('@apollo/client')
-const fetch = require('node-fetch')
+import { DateTime } from 'luxon'
+import { ApolloClient, gql, HttpLink, InMemoryCache } from '@apollo/client'
+import fetch from 'cross-fetch'
+import debugFn from 'debug'
 
-const extractFromGraphQL = async () => {
+import { Screening } from '../types'
+
+const debug = debugFn('eyefilm')
+
+const extractFromGraphQL = async (): Promise<Screening[]> => {
   const client = new ApolloClient({
     link: new HttpLink({ uri: 'https://www.eyefilm.nl/graphql', fetch }),
     cache: new InMemoryCache(),
@@ -65,7 +69,7 @@ const extractFromGraphQL = async () => {
         title: show.production[0].title,
         url: show.url,
         cinema: 'Eye',
-        date: new Date(show.startDateTime).toISOString(),
+        date: new Date(show.startDateTime),
       }
     })
 
@@ -78,4 +82,4 @@ if (require.main === module) {
     .then(console.log)
 }
 
-module.exports = extractFromGraphQL
+export default extractFromGraphQL

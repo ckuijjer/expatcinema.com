@@ -1,6 +1,8 @@
-const { DateTime, Info, Settings } = require('luxon')
-const { inspect } = require('util')
-const ketelhuis = require('./scrapers/ketelhuis')
+import { Context, APIGatewayProxyCallback, APIGatewayEvent } from 'aws-lambda'
+
+import { DateTime, Info, Settings } from 'luxon'
+import { inspect } from 'util'
+import ketelhuis from './scrapers/ketelhuis'
 
 const documentClient = require('./documentClient')
 
@@ -45,4 +47,4 @@ if (require.main === module) {
   playground()
 }
 
-exports.playground = playground
+export default playground

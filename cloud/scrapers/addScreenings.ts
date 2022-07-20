@@ -1,11 +1,11 @@
-#!/usr/bin/env node
-const fs = require('fs')
-const { spawnSync } = require('child_process')
-const { DateTime } = require('luxon')
-const R = require('ramda')
+#!/usr/bin/env ts-eager
+import fs from 'fs'
+import { spawnSync } from 'child_process'
+import { DateTime } from 'luxon'
+import * as R from 'ramda'
 
 const currentFilename = '../screenings.json'
-const currentContents = fs.readFileSync(currentFilename)
+const currentContents = fs.readFileSync(currentFilename, 'utf-8')
 const currentJSON = JSON.parse(currentContents)
 
 const latestFilename = spawnSync('ls', ['-t', './output/*_all_filtered.json'], {
@@ -13,7 +13,7 @@ const latestFilename = spawnSync('ls', ['-t', './output/*_all_filtered.json'], {
 })
   .stdout.toString()
   .split('\n')[0]
-const latestContents = fs.readFileSync(latestFilename)
+const latestContents = fs.readFileSync(latestFilename, 'utf-8')
 const latestJSON = JSON.parse(latestContents)
 
 const combined = [...currentJSON, ...latestJSON]

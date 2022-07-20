@@ -1,5 +1,9 @@
-const Xray = require('x-ray')
-const debug = require('debug')('cinecenter')
+import Xray from 'x-ray'
+import debugFn from 'debug'
+
+import { Screening } from '../types'
+
+const debug = debugFn('cinecenter')
 
 const xray = Xray({
   filters: {
@@ -9,12 +13,17 @@ const xray = Xray({
   .concurrency(10)
   .throttle(10, 300)
 
-const cleanTitle = (title) => title.replace(/Cine Expat: /i, '')
+const cleanTitle = (title: string) => title.replace(/Cine Expat: /i, '')
 
-const extractFromMoviePage = async ({ url }) => {
+type XRayFromMoviePage = {
+  title: string
+  showings: number[]
+}
+
+const extractFromMoviePage = async ({ url }: { url: string }) => {
   debug('extracting %s', url)
 
-  const movie = await xray(url, 'body', {
+  const movie: XRayFromMoviePage = await xray(url, 'body', {
     title: 'h1.film_title',
     showings: [
       '.tickets .collapse:not([id=cinedinerkaarten]) a[data-timestamp]@data-timestamp',
@@ -35,8 +44,13 @@ const extractFromMoviePage = async ({ url }) => {
   return result
 }
 
-const extractFromMainPage = async () => {
-  const movies = await xray(
+type XRayFromMainPage = {
+  title: string
+  url: string
+}
+
+const extractFromMainPage = async (): Promise<Screening[]> => {
+  const movies: XRayFromMainPage[] = await xray(
     'https://cinecenter.nl/film/?expat=true',
     'a.film-link',
     [
@@ -62,4 +76,4 @@ if (require.main === module) {
   //   })
 }
 
-module.exports = extractFromMainPage
+export default extractFromMainPage

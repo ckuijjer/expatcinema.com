@@ -38,4 +38,4 @@ const postToSlack = (logEvent) => {
   })
 }
 
-exports.notifySlack = notifySlack
+export default notifySlack
