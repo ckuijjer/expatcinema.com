@@ -74,6 +74,15 @@ functions:
     environment:
       PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
+    iam:
+      role:
+        statements:
+          - Effect: 'Allow'
+            Action:
+              - 's3:GetObject'
+              - 's3:ListObjectsV2'
+            Resource:
+              - 'arn:aws:s3:::${self:custom.scrapersOutputBucketName}/*'
 
 resources:
   Resources:

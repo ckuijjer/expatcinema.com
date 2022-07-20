@@ -10,6 +10,8 @@ const s3 = new AWS.S3()
 
 const PRIVATE_BUCKET = process.env.PRIVATE_BUCKET
 
+console.log({ PRIVATE_BUCKET })
+
 // https://stackoverflow.com/a/57540786/65971
 async function* listAllKeys(opts) {
   opts = { ...opts }
@@ -47,6 +49,7 @@ const writeToAnalytics = async (data) => {
 }
 
 const fillAnalytics = async ({ event, context } = {}) => {
+  return // TODO: remove
   const keys = await getAllKeysFromS3()
 
   const keyAndScraperAndCreatedAt = addScraperAndCreatedAt(keys)
