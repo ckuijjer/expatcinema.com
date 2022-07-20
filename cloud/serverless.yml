@@ -76,9 +76,6 @@ functions:
     environment:
       PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
-    iam:
-      role:
-        statements:
 
 resources:
   Resources:
