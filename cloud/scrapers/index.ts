@@ -57,8 +57,8 @@ Settings.defaultZone = 'Europe/Amsterdam'
 
 const s3 = new AWS.S3()
 
-const PRIVATE_BUCKET = 'expatcinema-scrapers-output'
-const PUBLIC_BUCKET = 'expatcinema-public'
+const PRIVATE_BUCKET = process.env.PRIVATE_BUCKET
+const PUBLIC_BUCKET = process.env.PUBLIC_BUCKET
 
 const sort = R.sortWith([
   R.ascend(R.prop('date')),

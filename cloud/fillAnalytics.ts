@@ -8,7 +8,7 @@ const documentClient = require('./documentClient')
 
 const s3 = new AWS.S3()
 
-const PRIVATE_BUCKET = 'expatcinema-scrapers-output'
+const PRIVATE_BUCKET = process.env.PRIVATE_BUCKET
 
 // https://stackoverflow.com/a/57540786/65971
 async function* listAllKeys(opts) {

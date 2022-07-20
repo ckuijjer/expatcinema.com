@@ -36,7 +36,6 @@ provider:
                 - ScrapersAnalyticsDynamoDbTable
                 - Arn
   environment:
-    DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
     NODE_OPTIONS: --enable-source-maps
 
   logRetentionInDays: 180
@@ -50,6 +49,9 @@ functions:
     environment:
       DEBUG: ${env:DEBUG}
       NODE_TLS_REJECT_UNAUTHORIZED: 0 # for the filmhuis lumen scraper
+      PRIVATE_BUCKET: ${custom.scrapersOutputBucketName}
+      PUBLIC_BUCKET: ${custom.publicBucketName}
+      DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
   playground:
     handler: handler.playground
     timeout: 300
@@ -65,8 +67,13 @@ functions:
       - httpApi:
           method: GET
           path: /analytics
+    environment:
+      DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
   fillAnalytics:
     handler: handler.fillAnalytics
+    environment:
+      PRIVATE_BUCKET: ${custom.scrapersOutputBucketName}
+      DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
 
 resources:
   Resources:
