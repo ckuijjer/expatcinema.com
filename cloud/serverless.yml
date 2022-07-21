@@ -52,7 +52,9 @@ functions:
     handler: handler.scrapers
     timeout: 300
     events:
-      - schedule: cron(0 3 * * ? *)
+      - schedule:
+          rate: cron(0 3 * * ? *)
+          enabled: ${self:custom.scraperScheduleEnabled.${self:provider.stage}}
     environment:
       DEBUG: ${env:DEBUG}
       NODE_TLS_REJECT_UNAUTHORIZED: 0 # for the filmhuis lumen scraper
@@ -153,6 +155,10 @@ custom:
   publicBucketName: expatcinema-public-${self:provider.stage}
   scrapersOutputBucketName: expatcinema-scrapers-output-${self:provider.stage}
   scrapersAnalyticsTableName: expatcinema-scrapers-analytics-${self:provider.stage}
+
+  scraperScheduleEnabled:
+    dev: false
+    prod: true
 
   esbuild:
     minify: false
