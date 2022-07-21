@@ -57,7 +57,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
       return {
         title: item.film.title,
-        url: item.film.uri,
+        url: `https://filmhuisdenhaag.nl${item.film.uri},
         cinema: 'Filmhuis Den Haag',
         date: DateTime.fromObject({
           year,
