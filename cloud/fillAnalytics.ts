@@ -4,7 +4,7 @@ import AWS from 'aws-sdk'
 import { inspect } from 'util'
 import pMap from 'p-map'
 
-const documentClient = require('./documentClient')
+import documentClient from './documentClient'
 
 const s3 = new AWS.S3()
 
