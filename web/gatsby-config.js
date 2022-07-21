@@ -26,15 +26,14 @@ module.exports = {
     {
       resolve: 'gatsby-source-remote-file',
       options: {
-        url: 'https://s3-eu-west-1.amazonaws.com/expatcinema-public/screenings.json',
+        url: `https://s3-eu-west-1.amazonaws.com/${process.env.PUBLIC_BUCKET}/screenings.json`,
         name: 'screening',
       },
     },
     {
       resolve: 'gatsby-source-remote-file',
       options: {
-        url: 'https://a8kqub7595.execute-api.eu-west-1.amazonaws.com/analytics',
-        // url: 'http://localhost:3000/analytics',
+        url: `https://${process.env.APIGW_ID}.execute-api.eu-west-1.amazonaws.com/analytics`,
         name: 'analytics',
         ext: '.json',
       },
