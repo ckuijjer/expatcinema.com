@@ -32,7 +32,7 @@ jobs:
         run: |
           cd cloud/
           yarn install --frozen-lockfile
-      - name: Deploy to Production
+      - name: Deploy to Development
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -46,7 +46,6 @@ jobs:
     name: Deploy to Production
     environment: production
     runs-on: ubuntu-latest
-    # needs: [build]
     needs: [deploy_to_dev]
 
     steps:
