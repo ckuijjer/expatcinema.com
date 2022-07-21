@@ -59,15 +59,18 @@ functions:
       PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
       PUBLIC_BUCKET: ${self:custom.publicBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
+
   playground:
     handler: handler.playground
     timeout: 300
+
   notifySlack:
     handler: handler.notifySlack
     environment:
       SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
     events:
       - cloudwatchLog: /aws/lambda/expatcinema-${self:provider.stage}-scrapers
+
   analytics:
     handler: handler.analytics
     events:
@@ -76,8 +79,10 @@ functions:
           path: /analytics
     environment:
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
+
   fillAnalytics:
     handler: handler.fillAnalytics
+    timeout: 600
     environment:
       PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
