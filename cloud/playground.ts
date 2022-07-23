@@ -41,8 +41,16 @@ const timezonePlayground = async ({ event, context } = {}) => {
 const playground = async ({ event, context } = {}) => {
   // const results = await ketelhuis()
 
-  const response = await got('https://www.lab111.nl')
-  console.log(response)
+  const response = await got('https://www.lab111.nl', {
+    hooks: {
+      beforeRequest: [
+        function (options) {
+          console.log(options)
+        },
+      ],
+    },
+  })
+  console.log(response.statusCode)
 }
 
 if (require.main === module) {

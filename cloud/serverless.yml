@@ -157,6 +157,7 @@ custom:
   scrapersAnalyticsTableName: expatcinema-scrapers-analytics-${self:provider.stage}
 
   scraperScheduleEnabled:
+    local: false
     dev: false
     prod: true
 
