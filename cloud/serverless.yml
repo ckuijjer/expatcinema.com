@@ -85,6 +85,8 @@ functions:
           path: /analytics
     environment:
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
+    layers:
+      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:31 # https://github.com/shelfio/chrome-aws-lambda-layer
 
   fillAnalytics:
     handler: handler.fillAnalytics
@@ -92,6 +94,8 @@ functions:
     environment:
       PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
+    layers:
+      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:31 # https://github.com/shelfio/chrome-aws-lambda-layer
 
 resources:
   Resources:
