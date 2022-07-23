@@ -2,9 +2,10 @@ import { Context, APIGatewayProxyCallback, APIGatewayEvent } from 'aws-lambda'
 
 import { DateTime, Info, Settings } from 'luxon'
 import { inspect } from 'util'
-import ketelhuis from './scrapers/ketelhuis'
+// import ketelhuis from './scrapers/ketelhuis'
+import got from 'got'
 
-const documentClient = require('./documentClient')
+// const documentClient = require('./documentClient')
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
@@ -26,7 +27,6 @@ const timezonePlayground = async ({ event, context } = {}) => {
     .toUTC()
     .toISO()
 
-
   const result = {
     // features,
     amsterdamFromFormatWithZone,
@@ -39,8 +39,10 @@ const timezonePlayground = async ({ event, context } = {}) => {
 }
 
 const playground = async ({ event, context } = {}) => {
-  const results = await ketelhuis()
-  console.log(results)
+  // const results = await ketelhuis()
+
+  const response = await got('https://www.lab111.nl')
+  console.log(response)
 }
 
 if (require.main === module) {
