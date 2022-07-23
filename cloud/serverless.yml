@@ -76,6 +76,8 @@ functions:
       SLACK_WEBHOOK: ${env:SLACK_WEBHOOK}
     events:
       - cloudwatchLog: /aws/lambda/expatcinema-${self:provider.stage}-scrapers
+    layers:
+      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:31 # https://github.com/shelfio/chrome-aws-lambda-layer
 
   analytics:
     handler: handler.analytics
