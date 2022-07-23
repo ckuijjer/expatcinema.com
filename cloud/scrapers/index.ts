@@ -46,7 +46,7 @@ const SCRAPERS = {
   // liff,
   filmhuislumen,
   forumgroningen,
-  // ketelhuis,
+  ketelhuis,
 }
 
 const debug = debugFn('combined scraper')

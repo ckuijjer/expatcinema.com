@@ -1,4 +1,4 @@
-import chromium from 'chrome-aws-lambda'
+import chromium from '@sparticuz/chrome-aws-lambda'
 
 const xRayPuppeteer = ({ interactWithPage = async () => {} } = {}) => {
   return async (ctx, done) => {

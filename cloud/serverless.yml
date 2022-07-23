@@ -61,10 +61,14 @@ functions:
       PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
       PUBLIC_BUCKET: ${self:custom.publicBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
+    layers:
+      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:31 # https://github.com/shelfio/chrome-aws-lambda-layer
 
   playground:
     handler: handler.playground
     timeout: 300
+    layers:
+      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:31 # https://github.com/shelfio/chrome-aws-lambda-layer
 
   notifySlack:
     handler: handler.notifySlack
@@ -165,10 +169,15 @@ custom:
     minify: false
     bundle: true
     sourcemap: true
+    metafile: true
     watch:
       pattern: ['*.ts', '*.js']
       ignore: ['.serverless', '.build', '.esbuild']
     packager: yarn
+    exclude:
+      - puppeteer-core # as we're using the lambda layer, no need to bundle it
+      - '@sparticuz/chrome-aws-lambda' # as we're using the lambda layer, no need to bundle it
+      - aws-sdk
     external:
       - emitter # as batch dynamically imports from emitter
 

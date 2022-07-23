@@ -1,5 +1,4 @@
 import Xray from 'x-ray'
-import * as R from 'ramda'
 import { DateTime } from 'luxon'
 import debugFn from 'debug'
 import splitTime from './splitTime'
@@ -8,56 +7,50 @@ import guessYear from './guessYear'
 
 const debug = debugFn('lab111')
 
-const debugPromise =
-  (format, ...debugArgs) =>
-  (arg) => {
-    debug(format, ...debugArgs, arg)
-    return arg
-  }
-
 const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    cleanTitle: (value) =>
+      typeof value === 'string' ? value.replace(/\(.*\)\s+$/, '') : value,
+    normalizeWhitespace: (value) =>
+      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
   .concurrency(10)
   .throttle(10, 300)
 
-const hasEnglishSubtitles = (movie) => {
-  const metadata = {}
-  movie.meta.forEach(({ key, value }) => (metadata[key] = value))
+const hasEnglishSubtitles = (movie: XRayFromMainPage) =>
+  movie.metadata.includes('Ondertiteling: Engels')
 
-  return (
-    metadata.Subtitles === 'Engels' ||
-    movie.titleMeta.includes('Engels ondertiteld')
-  )
+const cleanTitle = (title: string) =>
+  title.replace(' (with English subtitles)', '')
+
+type XRayFromMainPage = {
+  title: string
+  url: string
+  metadata: string
+  dates: string[]
 }
 
-const cleanTitle = (title) => title.replace(' (with English subtitles)', '')
-
-const extractFromMoviePage = ({ url }) => {
-  debug('extracting %s', url)
-
-  return xray(url, 'body', {
-    title: 'h1',
-    titleMeta: ['.zmovietitel h5'],
-    meta: xray('.zmovie-meta', [
+const extractFromMainPage = async () => {
+  // scraping google cache as lab111 blocks the scraper lambda
+  const scrapeResult: XRayFromMainPage[] = await xray(
+    'http://webcache.googleusercontent.com/search?q=cache:https://www.lab111.nl/programma/',
+    '#programmalist .filmdetails',
+    [
       {
-        key: 'h4 | trim',
-        value: 'li | trim',
+        title: 'h2.hidemobile a | trim | cleanTitle',
+        url: 'h2.hidemobile a@href | trim',
+        metadata: '.row.hidemobile | normalizeWhitespace',
+        dates: ['.day td:first-child | trim'],
       },
-    ]),
-    screenings: xray('tr.day', [
-      {
-        date: 'td:nth-child(1) | trim',
-      },
-    ]),
-  })
-    .then(debugPromise('extracted xray %s: %j', url))
-    .then((movie) => {
-      if (!hasEnglishSubtitles(movie)) return []
+    ],
+  )
 
-      return movie.screenings.map(({ date }) => {
+  const screenings = scrapeResult
+    .filter(hasEnglishSubtitles)
+    .flatMap((movie) => {
+      return movie.dates.map((date) => {
         const [dayOfWeek, dayString, monthString, time] = date.split(/\s+/)
         const day = Number(dayString)
         const month = shortMonthToNumber(monthString)
@@ -73,7 +66,7 @@ const extractFromMoviePage = ({ url }) => {
 
         return {
           title: cleanTitle(movie.title),
-          url,
+          url: movie.url,
           cinema: 'Lab111',
           date: DateTime.fromObject({
             day,
@@ -81,37 +74,22 @@ const extractFromMoviePage = ({ url }) => {
             hour,
             minute,
             year,
-          })
-            .toUTC()
-            .toISO(),
+          }).toJSDate(),
         }
       })
     })
-    .then(debugPromise('extracting done %s: %O', url))
-}
 
-const extractFromMainPage = () => {
-  return xray('https://www.lab111.nl', '.agenda tr td:nth-child(2)', [
-    {
-      url: 'a@href',
-      title: 'a | trim',
-    },
-  ])
-    .then(R.uniq) // as the agenda has lots of duplicate movie urls, make it unique
-    .then(debugPromise('main page: %J'))
-    .then((results) => Promise.all(results.map(extractFromMoviePage)))
-    .then(debugPromise('before flatten: %j'))
-    .then((results) => results.flat())
+  return screenings
 }
 
 if (require.main === module) {
-  // extractFromMainPage()
-  //   .then((x) => JSON.stringify(x, null, 2))
-  //   .then(console.log)
+  extractFromMainPage()
+    .then((x) => JSON.stringify(x, null, 2))
+    .then(console.log)
 
-  extractFromMoviePage({
-    url: 'https://www.lab111.nl/movie/tampopo/',
-  }).then(console.log)
+  // extractFromMoviePage({
+  //   url: 'https://www.lab111.nl/movie/tampopo/',
+  // }).then(console.log)
 }
 
 export default extractFromMainPage
