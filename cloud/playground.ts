@@ -2,7 +2,7 @@ import { Context, APIGatewayProxyCallback, APIGatewayEvent } from 'aws-lambda'
 
 import { DateTime, Info, Settings } from 'luxon'
 import { inspect } from 'util'
-// import ketelhuis from './scrapers/ketelhuis'
+import ketelhuis from './scrapers/ketelhuis'
 import got from 'got'
 import { publicIp, publicIpv4, publicIpv6 } from 'public-ip'
 // import chromium from 'chrome-aws-lambda'
@@ -72,42 +72,8 @@ const getUsingChromium = async (url: string) => {
 }
 
 const playground = async ({ event, context } = {}) => {
-  // const results = await ketelhuis()
-
-  // try {
-  //   const response = await got('https://www.lab111.nl/programma', {
-  //     headers: {
-  //       'User-Agent':
-  //         'Mozilla/5.0 (Macintosh; Intel Mac OS X 12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
-  //     },
-  //     hooks: {
-  //       beforeRequest: [
-  //         function (options) {
-  //           // console.log(options)
-  //         },
-  //       ],
-  //     },
-  //   })
-  //   console.log(response.statusCode)
-  // } catch (error) {
-  //   console.error(error)
-  // }
-
-  try {
-    // const content = await getUsingChromium('https://www.lab111.nl/programma')
-    const content = await getUsingChromium(
-      'http://webcache.googleusercontent.com/search?q=cache:https://www.lab111.nl/programma/',
-    )
-    console.log(content)
-  } catch (error) {
-    console.error(error)
-  }
-
-  console.log('ip addressess')
-  // console.log('publicIp', await publicIp())
-  console.log('publicIpv4', await publicIpv4())
-  // console.log('publicIpv6', await publicIpv6())
-  console.log('end ip addressess')
+  const results = await ketelhuis()
+  console.log({ results })
 }
 
 if (require.main === module) {
