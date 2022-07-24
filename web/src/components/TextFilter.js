@@ -25,6 +25,8 @@ const Input = (props) => (
       borderRadius: 4,
       border: '1px solid #aaa',
       margin: 0,
+      backgroundColor: 'var(--background-color)',
+      color: 'var(--text-color)',
     })}
     {...props}
   />

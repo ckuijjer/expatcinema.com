@@ -8,12 +8,12 @@ const A = (props) => (
     css={css({
       display: 'block',
       textDecoration: 'none',
-      color: '#333',
+      color: 'var(--text-color)',
       marginLeft: -10,
       marginRight: -10,
 
       ':hover': {
-        backgroundColor: '#f6f6f6',
+        backgroundColor: 'var(--background-highlight-color)',
         borderRadius: 10,
       },
     })}
@@ -51,7 +51,7 @@ const Cinema = (props) => (
     css={css({
       fontSize: 16,
       gridColumnStart: 'rest',
-      color: '#666',
+      color: 'var(--text-muted-color)',
     })}
     {...props}
   />

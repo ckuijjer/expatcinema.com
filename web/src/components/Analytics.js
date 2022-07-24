@@ -23,7 +23,11 @@ const Tile = ({
   isHighlighted = false,
   isDimmed = false,
 }) => {
-  const color = isHighlighted ? '#0650D0' : isDimmed ? '#ddd' : '#888'
+  const color = isHighlighted
+    ? 'var(--primary-color)'
+    : isDimmed
+    ? 'var(--text-muted-color)'
+    : 'var(--text-color)'
 
   return (
     <div
@@ -113,7 +117,9 @@ const Analytics = ({ points }) => {
             return 'currentColor'
           } else {
             // If a scraper is highlighted, use the primary color and make the other scrapers less visible
-            return scraper === highlight ? '#0650D0' : '#ddd'
+            return scraper === highlight
+              ? 'var(--primary-color)'
+              : 'var(--text-muted-color)'
           }
         }),
     },
@@ -121,7 +127,7 @@ const Analytics = ({ points }) => {
     width: 960,
     style: {
       overflow: 'visible',
-      color: '#888',
+      color: 'var(--text-color)',
       fontSize: 10,
     },
   })

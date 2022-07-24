@@ -50,7 +50,9 @@ const CityFilter = () => {
           css={css({
             display: 'inline-block',
             fontSize: 24,
-            color: isCurrent ? '#0650d0' : '#888',
+            color: isCurrent
+              ? 'var(--primary-color)'
+              : 'var(--text-muted-color)',
             padding: '12px 16px',
             cursor: 'pointer',
             textDecoration: 'none',
