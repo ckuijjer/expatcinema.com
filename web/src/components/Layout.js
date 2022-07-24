@@ -39,6 +39,7 @@ const globalStyles = css`
       'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
     --text-color: #333;
     --text-muted-color: #888;
     --background-color: #fff;
