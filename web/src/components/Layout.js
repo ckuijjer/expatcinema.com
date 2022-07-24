@@ -41,13 +41,13 @@ const globalStyles = css`
     -moz-osx-font-smoothing: grayscale;
     --text-color: #333;
     --text-muted-color: #888;
-    --background-color: #fff
+    --background-color: #fff;
     --background-highlight-color: #f6f6f6;
     --primary-color: #0650d0;
 
     @media (prefers-color-scheme: dark) {
       --text-color: #eee;
-      --text-muded-color: #555;      
+      --text-muded-color: #555;
       --background-color: #121212;
       --background-highlight-color: #1f1f1f;
     }
