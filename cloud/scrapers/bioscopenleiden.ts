@@ -3,66 +3,8 @@ import debugFn from 'debug'
 import got from 'got'
 
 import { Screening } from '../types'
-import splitTime from './splitTime'
-import { times } from 'lodash'
 
 const debug = debugFn('bioscopenleiden')
-
-const example = {
-  'after-ever-happy': {
-    post_id: 17501,
-    title: 'After Ever Happy',
-    starring_short:
-      'Josephine Langford, Hero Fiennes Tiffin, Chance Perdomo, Louise Lombard, Rob Estes, Arielle Kebbel, Carter Jenkins',
-    synopsis:
-      '<div class="row">\n<div class="text">In het vierde en laatste deel van de After-serie worden Tessa en Hardin gedwongen om volwassen te worden. Ze zijn tegen alle verwachtingen in nog bij elkaar, maar het spant er nu om of hun liefdesverhaal zal eindigen als een sprookje, of dat hun gepassioneerde maar giftige relatie definitief tot een einde komt.</div>\n<div></div>\n<div class="text">Een onthulling uit het verleden brengt de onvoorspelbare Hardin van slag en ook Tessa krijgt flink wat te verwerken. Ze is niet langer het lieve, eenvoudige meisje dat ze was toen ze Hardin leerde kennen. Hoe meer er naar boven komt uit Hardins tragische verleden, hoe harder hij iedereen van zich afstoot. Tessa begrijpt de heftige gevoelens die hij probeert te verbergen achter zijn stoere façade en is de enige die hem kan kalmeren. Hij heeft haar nodig, maar heeft zij hem ook nodig? Tessa twijfelt of ze hem kan redden zonder zichzelf te verliezen. Ze wil vechten voor hun relatie, maar voor wie vecht ze eigenlijk?</div>\n</div>\n',
-    image: '',
-    poster:
-      'https://bioscopenleiden.nl/content/uploads/2022/04/After-Ever-Happy_ps_1_jpg_sd-high-1-729x1080.jpg',
-    classification: [],
-    spoken_language: {
-      label: 'Taal',
-      value: 'Engels',
-    },
-    language: {
-      label: 'Ondertitels',
-      value: 'Nederlands',
-    },
-    director_name: {
-      label: 'Regie',
-      value: 'Castille Landon',
-    },
-    duration: {
-      label: 'Speeltijd',
-      value: '95',
-    },
-    tags: {
-      expected: 'Verwacht',
-    },
-    review: false,
-    permalink: 'https://bioscopenleiden.nl/films/after-ever-happy/',
-    poster_small:
-      'https://bioscopenleiden.nl/content/uploads/2022/04/After-Ever-Happy_ps_1_jpg_sd-high-1-72x108.jpg',
-    dates: {
-      cinema_id: '6',
-      release: '20220825',
-      last_week: '',
-    },
-    times: [
-      {
-        child_id: 23593,
-        provider_id: '52565',
-        program_start: '202207181200',
-        program_end: '202207181337',
-        ticket_status: 'no-websale',
-        cinema_id: '4',
-        location: 'Trianon 3',
-        tags: [],
-        duration: '97',
-      },
-    ],
-  },
-}
 
 type BioscopenLeidenAPIResponse = {
   [key: string]: BioscopenLeidenMovie

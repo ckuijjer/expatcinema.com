@@ -30,6 +30,7 @@ import liff from './liff'
 import filmhuislumen from './filmhuislumen'
 import forumgroningen from './forumgroningen'
 import ketelhuis from './ketelhuis'
+import studiok from './studiok'
 
 const SCRAPERS = {
   bioscopenleiden,
@@ -47,6 +48,7 @@ const SCRAPERS = {
   filmhuislumen,
   forumgroningen,
   // ketelhuis,
+  studiok,
 }
 
 const debug = debugFn('combined scraper')
