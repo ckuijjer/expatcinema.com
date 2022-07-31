@@ -58,7 +58,6 @@ const Cinema = (props) => (
 )
 
 const Screening = ({ url, date, title, cinema, showCity = true }) => {
-  console.log({ url, date, title, cinema, showCity })
   return (
     <A href={url}>
       <Container>
