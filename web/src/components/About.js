@@ -61,6 +61,10 @@ const About = () => {
         </Link>
         : Kino, Lantarenvenster
         <br />
+        <p>
+          Contact us at{' '}
+          <a href="mailto:info@expatcinema.com">info@expatcinema.com</a>
+        </p>
       </Container>
     </>
   )

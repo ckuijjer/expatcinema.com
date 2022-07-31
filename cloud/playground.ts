@@ -10,6 +10,7 @@ import { publicIp, publicIpv4, publicIpv6 } from 'public-ip'
 import chromium from '@sparticuz/chrome-aws-lambda'
 
 import puppeteer from 'puppeteer'
+import { Screening } from 'types'
 
 // const documentClient = require('./documentClient')
 
@@ -71,9 +72,38 @@ const getUsingChromium = async (url: string) => {
   }
 }
 
+const searchMovie = async (query: string) => {
+  const api_key = process.env.TMDB_API_KEY
+
+  try {
+    const screenings: Screening[] = await got
+      .get(
+        `https://s3-eu-west-1.amazonaws.com/${process.env.PUBLIC_BUCKET}/screenings.json`,
+      )
+      .json()
+
+    const data = await got
+      .get(`https://api.themoviedb.org/3/search/movie`, {
+        searchParams: {
+          query,
+          api_key,
+        },
+      })
+      .json()
+
+    const uniqueTitles = Array.from(
+      new Set(screenings.map(({ title }) => title.toLowerCase())),
+    ).sort()
+
+    return { data, screenings, uniqueTitles }
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 const playground = async ({ event, context } = {}) => {
-  const results = await ketelhuis()
-  console.log({ results })
+  const results = await searchMovie('suk suk')
+  console.log(JSON.stringify({ results }, null, 2))
 }
 
 if (require.main === module) {

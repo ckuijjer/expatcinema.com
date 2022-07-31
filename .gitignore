@@ -25,3 +25,5 @@ cloud/.esbuild
 web/.cache
 web/public
 backup/
+.env.*
+!.env.example
