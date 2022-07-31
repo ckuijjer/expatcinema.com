@@ -57,22 +57,25 @@ const Cinema = (props) => (
   />
 )
 
-const Screening = ({ url, date, title, cinema, showCity = true }) => (
-  <A href={url}>
-    <Container>
-      <Time>{date}</Time>
-      <Title>{title}</Title>
-      <Cinema>
-        {cinema.name}
-        {showCity ? (
-          <>
-            <br />
-            {cinema.city.name}
-          </>
-        ) : null}
-      </Cinema>
-    </Container>
-  </A>
-)
+const Screening = ({ url, date, title, cinema, showCity = true }) => {
+  console.log({ url, date, title, cinema, showCity })
+  return (
+    <A href={url}>
+      <Container>
+        <Time>{date}</Time>
+        <Title>{title}</Title>
+        <Cinema>
+          {cinema.name}
+          {showCity ? (
+            <>
+              <br />
+              {cinema.city.name}
+            </>
+          ) : null}
+        </Cinema>
+      </Container>
+    </A>
+  )
+}
 
 export default Screening
