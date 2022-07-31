@@ -7,9 +7,9 @@ const DirectCalendar = ({ rows, showCity }) => {
     <>
       {rows.map((row, i) =>
         row.component === 'RelativeDate' ? (
-          <RelativeDate {...row.props} key={i} />
+          <RelativeDate {...row.props} />
         ) : (
-          <Screening {...row.props} showCity={showCity} key={i} />
+          <Screening {...row.props} showCity={showCity} />
         ),
       )}
     </>
