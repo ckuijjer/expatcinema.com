@@ -8,6 +8,7 @@ import { publicIp, publicIpv4, publicIpv6 } from 'public-ip'
 // import chromium from 'chrome-aws-lambda'
 // const chromium = require('chrome-aws-lambda')
 import chromium from '@sparticuz/chrome-aws-lambda'
+import pMap from 'p-map'
 
 import puppeteer from 'puppeteer'
 import { Screening } from 'types'
@@ -72,7 +73,7 @@ const getUsingChromium = async (url: string) => {
   }
 }
 
-const searchMovie = async (query: string) => {
+const tmdbPlayground = async () => {
   const api_key = process.env.TMDB_API_KEY
 
   try {
@@ -82,27 +83,77 @@ const searchMovie = async (query: string) => {
       )
       .json()
 
-    const data = await got
-      .get(`https://api.themoviedb.org/3/search/movie`, {
+    const tmdb = got.extend({
+      prefixUrl: 'https://api.themoviedb.org/3',
+      responseType: 'json', // to have json parsing
+      resolveBodyOnly: true, // to have the response only contain the body, not the entire response, got internal things etc
+      searchParams: {
+        api_key,
+      },
+    })
+
+    const configuration = await tmdb.get('configuration')
+
+    const imageBaseUrl = configuration.images.secure_base_url
+    const posterWidth = configuration.images.poster_sizes[2] // w185 (could make this dynamic)
+
+    const getImageUrl = (imagePath: string) =>
+      [imageBaseUrl, posterWidth, imagePath].join('')
+
+    const searchMovie = async (query: string) =>
+      tmdb.get('search/movie', {
         searchParams: {
           query,
-          api_key,
         },
       })
-      .json()
+
+    const addFirstSearchResult = async (query: string) => {
+      const { results } = await searchMovie(query)
+
+      if (results.length === 0) {
+        return { query, correct: '❌' }
+      }
+
+      const { title, poster_path, id } = results[0]
+      const image = getImageUrl(poster_path)
+
+      return { query, title, image, id, correct: '️❓' }
+    }
+
+    const searchResult = await tmdb.get('search/movie', {
+      searchParams: {
+        query: 'suk suk',
+      },
+    })
+
+    const searchImage = getImageUrl(searchResult.results[0].poster_path)
 
     const uniqueTitles = Array.from(
       new Set(screenings.map(({ title }) => title.toLowerCase())),
     ).sort()
 
-    return { data, screenings, uniqueTitles }
+    const uniqueTitlesAndFirstSearchResult = await pMap(
+      uniqueTitles,
+      addFirstSearchResult,
+      {
+        concurrency: 5,
+      },
+    )
+
+    return {
+      // screenings,
+      searchResult,
+      searchImage,
+      uniqueTitles,
+      uniqueTitlesAndFirstSearchResult,
+    }
   } catch (err) {
     console.error(err)
   }
 }
 
 const playground = async ({ event, context } = {}) => {
-  const results = await searchMovie('suk suk')
+  const results = await tmdbPlayground()
   console.log(JSON.stringify({ results }, null, 2))
 }
 
