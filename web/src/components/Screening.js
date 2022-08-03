@@ -3,23 +3,35 @@ import { css } from '@emotion/react'
 
 import Time from './Time'
 
-const A = (props) => (
-  <a
-    css={css({
-      display: 'block',
-      textDecoration: 'none',
-      color: 'var(--text-color)',
-      marginLeft: -10,
-      marginRight: -10,
+const A = ({ href, children }) => {
+  // workaround for react rehydration not being able to handle attribute changes, and e.g.
+  // visiting https://expatcinema.com/?search=studio directly giving wrong results
+  const openLink = (event) => {
+    window.location.href = href
+    event.preventDefault()
+  }
 
-      ':hover': {
-        backgroundColor: 'var(--background-highlight-color)',
-        borderRadius: 10,
-      },
-    })}
-    {...props}
-  />
-)
+  return (
+    <a
+      href={href}
+      onClick={openLink}
+      css={css({
+        display: 'block',
+        textDecoration: 'none',
+        color: 'var(--text-color)',
+        marginLeft: -10,
+        marginRight: -10,
+
+        ':hover': {
+          backgroundColor: 'var(--background-highlight-color)',
+          borderRadius: 10,
+        },
+      })}
+    >
+      {children}
+    </a>
+  )
+}
 
 const Container = (props) => (
   <div
