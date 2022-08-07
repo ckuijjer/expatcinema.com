@@ -12,7 +12,7 @@ Cloud and Web deploy is handled by GitHub Actions
 yarn scrapers:local
 ```
 
-Stores the output in _cloud/output_ instead of S3 buckets and DynamoDB
+Stores the output in _cloud/.esbuild/.build/output_ instead of S3 buckets and DynamoDB
 
 Use SCRAPERS environment variable in _.env.local_ to define a comma separated list of scrapers to locally run and diverge from the default set of scrapers in _scrapers/index.js_
 

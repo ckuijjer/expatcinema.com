@@ -9,7 +9,9 @@ const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
     cleanTitle: (value) =>
-      typeof value === 'string' ? value.replace(/ ENG SUBS$/, '') : value,
+      typeof value === 'string'
+        ? value.replace(/ ENG SUBS$/, '').replace(' (ENG SUBS)', '')
+        : value,
   },
 })
   .concurrency(10)

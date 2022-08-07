@@ -10,7 +10,9 @@ const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
     cleanTitle: (value) =>
-      typeof value === 'string' ? value.replace('Movie: ', '') : value,
+      typeof value === 'string'
+        ? value.replace('Movie: ', '').replace('Film: ', '')
+        : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },

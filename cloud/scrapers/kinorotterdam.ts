@@ -14,17 +14,14 @@ const xray = Xray({
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+    cleanTitle: (value) =>
+      typeof value === 'string'
+        ? value.replace(/ \(\d{4}\)$/, '').trim()
+        : value,
   },
 })
   .concurrency(10)
   .throttle(10, 300)
-
-const hasEnglishSubtitles = ({ title = '', movieMetadata = '' }) =>
-  /Ondertiteling:\s*English/.test(movieMetadata) ||
-  /Ondertiteling:\s*Engels/.test(movieMetadata) ||
-  title.startsWith('Expat Arthouse: ') ||
-  title.startsWith('KINO Expat: ') ||
-  title.startsWith('KINO Expat Special: ')
 
 type XRayFromMoviePage = {
   title: string
@@ -53,7 +50,7 @@ const extractDate = (date: string) => {
 
 const extractFromMoviePage = async (url: string) => {
   const movie: XRayFromMoviePage = await xray(url, 'body', {
-    title: '.hero__title | trim',
+    title: '.hero__title | trim | cleanTitle',
     timetable: xray('.timetable__date', [
       {
         date: '.timetable__day | trim',

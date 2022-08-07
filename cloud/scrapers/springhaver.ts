@@ -25,6 +25,8 @@ const cleanTitle = (title: string) =>
   title
     .replace(/Language No Problem: /i, '')
     .replace(/ \(English Subtitles\)/i, '')
+    .replace(/^Cine De Vuelta: /i, '')
+    .replace(/ \(\d{4}\).*?$/, '')
 
 type XRayFromMoviePage = {
   title: string
@@ -41,7 +43,7 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
   debug('extracting %s', url)
 
   const movie: XRayFromMoviePage = await xray(url, 'body', {
-    title: '.intro-content h1',
+    title: '.intro-content h1 | trim',
     screenings: xray('.play-times td', [
       {
         date: xray('a', {
