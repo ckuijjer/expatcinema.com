@@ -12,8 +12,10 @@ const debug = debugFn('studiok')
 const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
-    removeEnglishSubs: (value) =>
-      typeof value === 'string' ? value.replace('(ENG SUBS)', '') : value,
+    cleanTitle: (value) =>
+      typeof value === 'string'
+        ? value.replace('(ENG SUBS)', '').replace('COMMUNITIES OF PRIDE │', '')
+        : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
@@ -33,7 +35,7 @@ type XRayFromMoviePage = {
 
 const extractFromMoviePage = async (url: string) => {
   const movie: XRayFromMoviePage = await xray(url, 'body', {
-    title: 'h1 | removeEnglishSubs | normalizeWhitespace | trim',
+    title: 'h1 | cleanTitle | normalizeWhitespace | trim',
     meta: '.meta',
     timetable: xray('#shows li[id]', [
       {
