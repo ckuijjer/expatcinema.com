@@ -73,8 +73,11 @@ const getUsingChromium = async (url: string) => {
   }
 }
 
-const tmdbPlayground = async () => {
-  const api_key = process.env.TMDB_API_KEY
+const movieMetadataPlayground = async () => {
+  const tmdbApiKey = process.env.TMDB_API_KEY
+  const omdbApiKey = process.env.OMDB_API_KEY
+  const googleCustomSearchApiKey = process.env.GOOGLE_CUSTOM_SEARCH_API_KEY
+  const googleCustomSearchId = process.env.GOOGLE_CUSTOM_SEARCH_ID
 
   try {
     const screenings: Screening[] = await got
@@ -88,7 +91,7 @@ const tmdbPlayground = async () => {
       responseType: 'json', // to have json parsing
       resolveBodyOnly: true, // to have the response only contain the body, not the entire response, got internal things etc
       searchParams: {
-        api_key,
+        api_key: tmdbApiKey,
       },
     })
 
@@ -107,45 +110,128 @@ const tmdbPlayground = async () => {
         },
       })
 
-    const addFirstSearchResult = async (query: string) => {
+    const getExternalIds = async (id: number) =>
+      tmdb.get(`movie/${id}/external_ids`)
+
+    const getFirstTMDBSearchResult = async (query: string) => {
       const { results } = await searchMovie(query)
 
       if (results.length === 0) {
-        return { query, correct: '❌' }
+        return { correct: '❌' }
       }
 
-      const { title, poster_path, id } = results[0]
+      const {
+        title,
+        poster_path,
+        id: tmdbId,
+        original_title: originalTitle,
+      } = results[0]
       const image = getImageUrl(poster_path)
 
-      return { query, title, image, id, correct: '️❓' }
+      const { imdb_id: imdbId } = await getExternalIds(tmdbId)
+
+      return { title, originalTitle, image, tmdbId, imdbId, correct: '️❓' }
     }
 
-    const searchResult = await tmdb.get('search/movie', {
-      searchParams: {
-        query: 'suk suk',
-      },
-    })
+    const getDuckDuckGoInfoBoxResult = async (query: string) => {
+      const result: any = await got.get('https://api.duckduckgo.com', {
+        searchParams: {
+          q: query,
+          format: 'json',
+          t: 'expatcinema.com',
+        },
+        responseType: 'json', // to have json parsing
+        resolveBodyOnly: true, // to have the response only contain the body, not the entire response, got internal things etc
+      })
 
-    const searchImage = getImageUrl(searchResult.results[0].poster_path)
+      if (result.Entity === 'film') {
+        return {
+          title: result.Heading,
+          imdbId: result.Infobox.content.find(
+            ({ data_type }) => data_type === 'imdb_id',
+          )?.value,
+          rottenTomatoesId: result.Infobox.content.find(
+            ({ data_type }) => data_type === 'rotten_tomatoes',
+          )?.value,
+          correct: '️❓',
+        }
+      } else {
+        return { correct: '❌' }
+      }
+
+      return result
+    }
+
+    const getFirstOMDBSearchResult = async (query: string) => {
+      const result = await got.get('https://www.omdbapi.com', {
+        searchParams: {
+          apikey: omdbApiKey,
+          t: query,
+          type: 'movie',
+        },
+        responseType: 'json', // to have json parsing
+        resolveBodyOnly: true, // to have the response only contain the body, not the entire response, got internal things etc
+      })
+
+      if (result) {
+        return {
+          title: result.Title,
+          imdbId: result.imdbID,
+          correct: '️❓',
+        }
+      } else {
+        return { correct: '❌' }
+      }
+    }
+
+    const getGoogleCustomSearchResult = async (query: string) => {
+      const result = await got.get(
+        'https://www.googleapis.com/customsearch/v1',
+        {
+          searchParams: {
+            q: query,
+            cx: googleCustomSearchId,
+            key: googleCustomSearchApiKey,
+          },
+          responseType: 'json', // to have json parsing
+          resolveBodyOnly: true, // to have the response only contain the body, not the entire response, got internal things etc
+        },
+      )
+
+      if (result.items?.length > 0) {
+        return {
+          title: result.items[0].title.replace(/ \(\d{4}\) - IMDb/, ''),
+          imdbId: result.items[0].pagemap.metatags[0]['imdb:pageconst'],
+          correct: '️❓',
+        }
+      } else {
+        return { correct: '❌' }
+      }
+    }
+
+    const addMetadata = async (query: string) => {
+      const tmdb = await getFirstTMDBSearchResult(query)
+      const duckduckgo = await getDuckDuckGoInfoBoxResult(query)
+      const omdb = await getFirstOMDBSearchResult(query)
+      const google = await getGoogleCustomSearchResult(query)
+
+      return { query, tmdb, duckduckgo, omdb, google }
+    }
 
     const uniqueTitles = Array.from(
       new Set(screenings.map(({ title }) => title.toLowerCase())),
     ).sort()
 
-    const uniqueTitlesAndFirstSearchResult = await pMap(
-      uniqueTitles,
-      addFirstSearchResult,
-      {
-        concurrency: 5,
-      },
-    )
+    const uniqueTitlesAndMetadata = await pMap(uniqueTitles, addMetadata, {
+      concurrency: 5,
+    })
 
     return {
       // screenings,
-      searchResult,
-      searchImage,
+      // searchResult,
+      // searchImage,
       uniqueTitles,
-      uniqueTitlesAndFirstSearchResult,
+      uniqueTitlesAndMetadata,
     }
   } catch (err) {
     console.error(err)
@@ -153,12 +239,11 @@ const tmdbPlayground = async () => {
 }
 
 const playground = async ({ event, context } = {}) => {
-  const results = await tmdbPlayground()
+  const results = await movieMetadataPlayground()
   console.log(JSON.stringify({ results }, null, 2))
 }
 
 if (require.main === module) {
-  // console.log(playground({}))
   playground()
 }
 

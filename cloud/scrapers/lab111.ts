@@ -1,11 +1,9 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
 import splitTime from './splitTime'
 import { shortMonthToNumber } from './monthToNumber'
 import guessYear from './guessYear'
-
-const debug = debugFn('lab111')
+import xRayPuppeteer from '../xRayPuppeteer'
 
 const xray = Xray({
   filters: {
@@ -16,6 +14,7 @@ const xray = Xray({
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
+  .driver(xRayPuppeteer())
   .concurrency(10)
   .throttle(10, 300)
 
