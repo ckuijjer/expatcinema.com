@@ -93,9 +93,7 @@ const movieMetadataPlayground = async () => {
       new Set(
         screenings.map(({ title }) => diacritics.remove(title.toLowerCase())),
       ),
-    )
-      .sort()
-      .slice(0, 5) // TODO: Remove this line
+    ).sort()
 
     const uniqueTitlesAndMetadata = await pMap(uniqueTitles, getMetadata, {
       concurrency: 5,
