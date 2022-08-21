@@ -183,8 +183,6 @@ resources:
         AttributeDefinitions:
           - AttributeName: query
             AttributeType: S
-          - AttributeName: createdAt
-            AttributeType: S
         KeySchema:
           - AttributeName: query
             KeyType: HASH
