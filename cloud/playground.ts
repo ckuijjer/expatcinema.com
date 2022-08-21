@@ -9,9 +9,17 @@ import { publicIp, publicIpv4, publicIpv6 } from 'public-ip'
 // const chromium = require('chrome-aws-lambda')
 import chromium from '@sparticuz/chrome-aws-lambda'
 import pMap from 'p-map'
+import diacritics from 'diacritics'
 
 import puppeteer from 'puppeteer'
 import { Screening } from 'types'
+
+import getTmdbClient from './clients/tmdb'
+import getOmdbClient from './clients/omdb'
+import getDuckDuckGoClient from './clients/duckduckgo'
+import getGoogleCustomSearchClient from './clients/google-customsearch'
+
+import getMetadata from './metadata'
 
 // const documentClient = require('./documentClient')
 
@@ -74,11 +82,6 @@ const getUsingChromium = async (url: string) => {
 }
 
 const movieMetadataPlayground = async () => {
-  const tmdbApiKey = process.env.TMDB_API_KEY
-  const omdbApiKey = process.env.OMDB_API_KEY
-  const googleCustomSearchApiKey = process.env.GOOGLE_CUSTOM_SEARCH_API_KEY
-  const googleCustomSearchId = process.env.GOOGLE_CUSTOM_SEARCH_ID
-
   try {
     const screenings: Screening[] = await got
       .get(
@@ -86,143 +89,15 @@ const movieMetadataPlayground = async () => {
       )
       .json()
 
-    const tmdb = got.extend({
-      prefixUrl: 'https://api.themoviedb.org/3',
-      responseType: 'json', // to have json parsing
-      resolveBodyOnly: true, // to have the response only contain the body, not the entire response, got internal things etc
-      searchParams: {
-        api_key: tmdbApiKey,
-      },
-    })
-
-    const configuration = await tmdb.get('configuration')
-
-    const imageBaseUrl = configuration.images.secure_base_url
-    const posterWidth = configuration.images.poster_sizes[2] // w185 (could make this dynamic)
-
-    const getImageUrl = (imagePath: string) =>
-      [imageBaseUrl, posterWidth, imagePath].join('')
-
-    const searchMovie = async (query: string) =>
-      tmdb.get('search/movie', {
-        searchParams: {
-          query,
-        },
-      })
-
-    const getExternalIds = async (id: number) =>
-      tmdb.get(`movie/${id}/external_ids`)
-
-    const getFirstTMDBSearchResult = async (query: string) => {
-      const { results } = await searchMovie(query)
-
-      if (results.length === 0) {
-        return { correct: '❌' }
-      }
-
-      const {
-        title,
-        poster_path,
-        id: tmdbId,
-        original_title: originalTitle,
-      } = results[0]
-      const image = getImageUrl(poster_path)
-
-      const { imdb_id: imdbId } = await getExternalIds(tmdbId)
-
-      return { title, originalTitle, image, tmdbId, imdbId, correct: '️❓' }
-    }
-
-    const getDuckDuckGoInfoBoxResult = async (query: string) => {
-      const result: any = await got.get('https://api.duckduckgo.com', {
-        searchParams: {
-          q: query,
-          format: 'json',
-          t: 'expatcinema.com',
-        },
-        responseType: 'json', // to have json parsing
-        resolveBodyOnly: true, // to have the response only contain the body, not the entire response, got internal things etc
-      })
-
-      if (result.Entity === 'film') {
-        return {
-          title: result.Heading,
-          imdbId: result.Infobox.content.find(
-            ({ data_type }) => data_type === 'imdb_id',
-          )?.value,
-          rottenTomatoesId: result.Infobox.content.find(
-            ({ data_type }) => data_type === 'rotten_tomatoes',
-          )?.value,
-          correct: '️❓',
-        }
-      } else {
-        return { correct: '❌' }
-      }
-
-      return result
-    }
-
-    const getFirstOMDBSearchResult = async (query: string) => {
-      const result = await got.get('https://www.omdbapi.com', {
-        searchParams: {
-          apikey: omdbApiKey,
-          t: query,
-          type: 'movie',
-        },
-        responseType: 'json', // to have json parsing
-        resolveBodyOnly: true, // to have the response only contain the body, not the entire response, got internal things etc
-      })
-
-      if (result) {
-        return {
-          title: result.Title,
-          imdbId: result.imdbID,
-          correct: '️❓',
-        }
-      } else {
-        return { correct: '❌' }
-      }
-    }
-
-    const getGoogleCustomSearchResult = async (query: string) => {
-      const result = await got.get(
-        'https://www.googleapis.com/customsearch/v1',
-        {
-          searchParams: {
-            q: query,
-            cx: googleCustomSearchId,
-            key: googleCustomSearchApiKey,
-          },
-          responseType: 'json', // to have json parsing
-          resolveBodyOnly: true, // to have the response only contain the body, not the entire response, got internal things etc
-        },
-      )
-
-      if (result.items?.length > 0) {
-        return {
-          title: result.items[0].title.replace(/ \(\d{4}\) - IMDb/, ''),
-          imdbId: result.items[0].pagemap.metatags[0]['imdb:pageconst'],
-          correct: '️❓',
-        }
-      } else {
-        return { correct: '❌' }
-      }
-    }
-
-    const addMetadata = async (query: string) => {
-      const tmdb = await getFirstTMDBSearchResult(query)
-      const duckduckgo = await getDuckDuckGoInfoBoxResult(query)
-      const omdb = await getFirstOMDBSearchResult(query)
-      const google = await getGoogleCustomSearchResult(query)
-
-      return { query, tmdb, duckduckgo, omdb, google }
-    }
-
     const uniqueTitles = Array.from(
-      new Set(screenings.map(({ title }) => title.toLowerCase())),
-    ).sort()
+      new Set(
+        screenings.map(({ title }) => diacritics.remove(title.toLowerCase())),
+      ),
+    )
+      .sort()
+      .slice(0, 5) // TODO: Remove this line
 
-    const uniqueTitlesAndMetadata = await pMap(uniqueTitles, addMetadata, {
+    const uniqueTitlesAndMetadata = await pMap(uniqueTitles, getMetadata, {
       concurrency: 5,
     })
 
@@ -240,7 +115,10 @@ const movieMetadataPlayground = async () => {
 
 const playground = async ({ event, context } = {}) => {
   const results = await movieMetadataPlayground()
-  console.log(JSON.stringify({ results }, null, 2))
+  // const results = await findMetadata('chungking express')
+  // const results = await findMetadata('Caché')
+
+  console.log(JSON.stringify(results, null, 2))
 }
 
 if (require.main === module) {

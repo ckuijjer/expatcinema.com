@@ -8,7 +8,6 @@ import { dirname } from 'path'
 import debugFn from 'debug'
 
 import documentClient from '../documentClient'
-import applyFilters from './filters'
 
 // TODO: esbuild doesn't support dynamic import, hence all the imports below
 // SCRAPERS.map(async (name) => {
@@ -133,6 +132,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
   const results = Object.fromEntries(
     await Promise.all(
       Object.entries(ENABLED_SCRAPERS).map(async ([name, fn]) => {
+        // call the scraper function
         return [name, sort(await fn())]
       }),
     ),
@@ -140,7 +140,6 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
   debug('done scraping')
 
   results.all = sort(Object.values(results).flat())
-  results.filtered = applyFilters(results.all)
 
   debug('writing all to private S3 bucket')
   await Promise.all(
@@ -149,8 +148,8 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     ),
   )
 
-  debug('writing filtered to public S3 bucket')
-  await writeToPublicFile('screenings.json')(results.filtered)
+  debug('writing all, the combined json, to public S3 bucket')
+  await writeToPublicFile('screenings.json')(results.all)
 
   const countPerScraper = Object.fromEntries(
     Object.entries(results).map(([name, data]) => [name, data.length]),

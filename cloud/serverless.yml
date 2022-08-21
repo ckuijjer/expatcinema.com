@@ -42,6 +42,10 @@ provider:
             - Fn::GetAtt:
                 - ScrapersAnalyticsDynamoDbTable
                 - Arn
+            - Fn::GetAtt:
+                - ScrapersMovieMetadataDynamoDbTable
+                - Arn
+
   environment:
     NODE_OPTIONS: --enable-source-maps
 
@@ -61,6 +65,11 @@ functions:
       PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
       PUBLIC_BUCKET: ${self:custom.publicBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
+      DYNAMODB_MOVIE_METADATA: ${self:custom.scrapersMovieMetadataTableName}
+      TMDB_API_KEY: ${env:TMDB_API_KEY}
+      OMDB_API_KEY: ${env:OMDB_API_KEY}
+      GOOGLE_CUSTOM_SEARCH_ID: ${env:GOOGLE_CUSTOM_SEARCH_ID}
+      GOOGLE_CUSTOM_SEARCH_API_KEY: ${env:GOOGLE_CUSTOM_SEARCH_API_KEY}
     layers:
       - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:31 # https://github.com/shelfio/chrome-aws-lambda-layer
 
@@ -69,6 +78,11 @@ functions:
     timeout: 300
     layers:
       - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:31 # https://github.com/shelfio/chrome-aws-lambda-layer
+    environment:
+      TMDB_API_KEY: ${env:TMDB_API_KEY}
+      OMDB_API_KEY: ${env:OMDB_API_KEY}
+      GOOGLE_CUSTOM_SEARCH_ID: ${env:GOOGLE_CUSTOM_SEARCH_ID}
+      GOOGLE_CUSTOM_SEARCH_API_KEY: ${env:GOOGLE_CUSTOM_SEARCH_API_KEY}
 
   notifySlack:
     handler: handler.notifySlack
@@ -161,10 +175,31 @@ resources:
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
 
+    ScrapersMovieMetadataDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      UpdateReplacePolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: query
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+        KeySchema:
+          - AttributeName: query
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        TableName: ${self:custom.scrapersMovieMetadataTableName}
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+
 custom:
   publicBucketName: expatcinema-public-${self:provider.stage}
   scrapersOutputBucketName: expatcinema-scrapers-output-${self:provider.stage}
   scrapersAnalyticsTableName: expatcinema-scrapers-analytics-${self:provider.stage}
+  scrapersMovieMetadataTableName: expatcinema-scrapers-movie-metadata-${self:provider.stage}
 
   scraperScheduleEnabled:
     local: false
