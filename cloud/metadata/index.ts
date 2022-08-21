@@ -19,6 +19,7 @@ const getMetadata = async (title: string) => {
 
   // if there is no metadata, search for it, create it in DynamoDB, and return it
   if (data.Items.length === 0) {
+    console.log(`❌ couldn't get metadata for ${title}, searching for it`)
     const metadata = await searchMetadata(title)
     const item = {
       query: title,
@@ -35,6 +36,7 @@ const getMetadata = async (title: string) => {
 
     return item
   } else {
+    console.log(`✅ found the get metadata for ${title}`)
     return data.Items[0]
   }
 }
