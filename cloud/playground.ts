@@ -85,7 +85,7 @@ const movieMetadataPlayground = async () => {
   try {
     const screenings: Screening[] = await got
       .get(
-        `https://s3-eu-west-1.amazonaws.com/${process.env.PUBLIC_BUCKET}/screenings.json`,
+        `https://s3-eu-west-1.amazonaws.com/expatcinema-public-prod/screenings.json`,
       )
       .json()
 
