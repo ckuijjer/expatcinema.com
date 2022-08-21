@@ -79,6 +79,7 @@ functions:
     layers:
       - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:31 # https://github.com/shelfio/chrome-aws-lambda-layer
     environment:
+      DYNAMODB_MOVIE_METADATA: ${self:custom.scrapersMovieMetadataTableName}
       TMDB_API_KEY: ${env:TMDB_API_KEY}
       OMDB_API_KEY: ${env:OMDB_API_KEY}
       GOOGLE_CUSTOM_SEARCH_ID: ${env:GOOGLE_CUSTOM_SEARCH_ID}
