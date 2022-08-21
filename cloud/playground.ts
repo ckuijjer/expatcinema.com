@@ -99,12 +99,29 @@ const movieMetadataPlayground = async () => {
       concurrency: 5,
     })
 
+    const allWithMetadata = screenings.map((screening) => {
+      const metadata = uniqueTitlesAndMetadata.find(
+        ({ query }) =>
+          query === diacritics.remove(screening.title.toLowerCase()),
+      )
+
+      if (metadata && metadata.title) {
+        return {
+          ...screening,
+          title: metadata.title,
+        }
+      } else {
+        return screening
+      }
+    })
+
     return {
       // screenings,
       // searchResult,
       // searchImage,
       uniqueTitles,
       uniqueTitlesAndMetadata,
+      allWithMetadata,
     }
   } catch (err) {
     console.error(err)
