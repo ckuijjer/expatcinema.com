@@ -161,7 +161,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
         (metadata) => metadata.query === normalizeTitle(movie.title),
       )
 
-      if (metadata) {
+      if (metadata?.title) {
         return {
           ...movie,
           title: metadata.title,
