@@ -1,7 +1,15 @@
 import searchMetadata from './searchMetadata'
 import documentClient from '../documentClient'
 
-const getMetadata = async (title: string) => {
+type Metadata = {
+  query: string
+  createdAt: string
+  title?: string
+  imdbId?: string
+  tmdb?: any
+}
+
+const getMetadata = async (title: string): Promise<Metadata> => {
   // find the metadata in dynamoDB
   // TODO: should be a .get
   const data = await documentClient

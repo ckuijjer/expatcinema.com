@@ -6,8 +6,11 @@ import AWS from 'aws-sdk'
 import { writeFile, mkdir } from 'fs/promises'
 import { dirname } from 'path'
 import debugFn from 'debug'
+import diacritics from 'diacritics'
+import pMap from 'p-map'
 
 import documentClient from '../documentClient'
+import getMetadata from '../metadata'
 
 // TODO: esbuild doesn't support dynamic import, hence all the imports below
 // SCRAPERS.map(async (name) => {
@@ -141,6 +144,34 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
 
   results.all = sort(Object.values(results).flat())
 
+  // get metadata for all movies
+  const normalizeTitle = (title) => diacritics.remove(title.toLowerCase())
+
+  const uniqueTitles = Array.from(
+    new Set(results.all.map(({ title }) => normalizeTitle(title))),
+  ).sort()
+
+  const uniqueTitlesAndMetadata = await pMap(uniqueTitles, getMetadata, {
+    concurrency: 5,
+  })
+
+  results.allWithMetadata = sort(
+    results.all.map((movie) => {
+      const metadata = uniqueTitlesAndMetadata.find(
+        (metadata) => metadata.query === normalizeTitle(movie.title),
+      )
+
+      if (metadata) {
+        return {
+          ...movie,
+          title: metadata.title,
+        }
+      } else {
+        return movie
+      }
+    }),
+  )
+
   debug('writing all to private S3 bucket')
   await Promise.all(
     Object.entries(results).map(
@@ -148,8 +179,15 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     ),
   )
 
+  const movies = uniqueTitlesAndMetadata.map(
+    ({ query, createdAt, ...rest }) => {
+      return { ...rest }
+    },
+  )
+
   debug('writing all, the combined json, to public S3 bucket')
-  await writeToPublicFile('screenings.json')(results.all)
+  await writeToPublicFile('screenings.json')(results.allWithMetadata)
+  await writeToPublicFile('movies.json')(movies)
 
   const countPerScraper = Object.fromEntries(
     Object.entries(results).map(([name, data]) => [name, data.length]),
