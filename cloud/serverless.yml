@@ -222,11 +222,6 @@ custom:
     external:
       - emitter # as batch dynamically imports from emitter
 
-  prune:
-    automatic: true
-    number: 0
-
 plugins:
   - serverless-esbuild
   - serverless-offline
-  - serverless-prune-plugin
