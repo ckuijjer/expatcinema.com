@@ -8,6 +8,7 @@ provider:
   runtime: nodejs16.x
   region: eu-west-1
   stage: ${opt:stage, 'dev'}
+  versionFunctions: false
   iam:
     role:
       statements:
@@ -221,6 +222,11 @@ custom:
     external:
       - emitter # as batch dynamically imports from emitter
 
+  prune:
+    automatic: true
+    number: 0
+
 plugins:
   - serverless-esbuild
   - serverless-offline
+  - serverless-prune-plugin
