@@ -9,18 +9,17 @@ import { Screening } from '../types'
 
 const debug = debugFn('studiok')
 
+const cleanTitle = (title: string) =>
+  title.replace('(ENG SUBS)', '').replace(/^.*│/, '').trim()
+
 const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
-    cleanTitle: (value) =>
-      typeof value === 'string'
-        ? value.replace('(ENG SUBS)', '').replace('COMMUNITIES OF PRIDE │', '')
-        : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
-  .concurrency(10)
+  .concurrency(1)
   .throttle(10, 300)
 
 type XRayFromMoviePage = {
@@ -35,7 +34,7 @@ type XRayFromMoviePage = {
 
 const extractFromMoviePage = async (url: string) => {
   const movie: XRayFromMoviePage = await xray(url, 'body', {
-    title: 'h1 | cleanTitle | normalizeWhitespace | trim',
+    title: 'h1 | normalizeWhitespace | trim',
     meta: '.meta',
     timetable: xray('#shows li[id]', [
       {
@@ -55,13 +54,20 @@ const extractFromMoviePage = async (url: string) => {
       const month = shortMonthToNumber(monthString)
 
       const timesAndSubtitles = times.map((time, index) => ({
-        time,
+        title: movie.title,
         subtitle: subtitles[index],
+        time,
       }))
 
       return timesAndSubtitles
-        .filter(({ subtitle }) => subtitle?.toLowerCase().includes('english'))
-        .map(({ time }) => {
+        .filter(({ subtitle, title }) => {
+          return (
+            subtitle?.toLowerCase().includes('english') ||
+            subtitle?.toLowerCase().includes('engels') ||
+            title.includes('ENG SUBS')
+          )
+        })
+        .map(({ time, title }) => {
           const [hour, minute] = splitTime(time)
           const year = guessYear(
             DateTime.fromObject({
@@ -73,7 +79,7 @@ const extractFromMoviePage = async (url: string) => {
           )
 
           return {
-            title: movie.title,
+            title: cleanTitle(title),
             url,
             cinema: 'Studio/K',
             date: DateTime.fromObject({
@@ -129,9 +135,10 @@ if (require.main === module) {
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
 
-  //   extractFromMoviePage('https://studio-k.nu/film/107-mothers-eng-subs/').then(
-  //     console.log,
-  //   )
+  // extractFromMoviePage(
+  //   // 'https://studio-k.nu/film/cinema-kulinair-%e2%94%82-a-simple-life-2011/',
+  //   'https://studio-k.nu/film/cinema-kulinair-%e2%94%82-eat-drink-man-woman-1994/',
+  // ).then(console.log)
 }
 
 export default extractFromMainPage
