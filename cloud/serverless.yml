@@ -55,6 +55,7 @@ provider:
 functions:
   scrapers:
     handler: handler.scrapers
+    memorySize: 2048
     timeout: 300
     events:
       - schedule:
