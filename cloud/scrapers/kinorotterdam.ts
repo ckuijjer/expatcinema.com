@@ -1,13 +1,17 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
+
 import splitTime from './splitTime'
 import { shortMonthToNumber } from './monthToNumber'
 import guessYear from './guessYear'
-
 import { Screening } from '../types'
+import { logger as parentLogger } from '../powertools'
 
-const debug = debugFn('kinorotterdam')
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'kinorotterdam',
+  },
+})
 
 const xray = Xray({
   filters: {
@@ -59,7 +63,7 @@ const extractFromMoviePage = async (url: string) => {
     ]),
   })
 
-  debug('movie', movie)
+  logger.info('movie', { movie })
 
   const screenings: Screening[] = movie.timetable
     .map(({ date, times }) => {
@@ -99,7 +103,7 @@ const extractFromMoviePage = async (url: string) => {
     })
     .flat()
 
-  debug('screenings', screenings)
+  logger.info('screenings', { screenings })
   return screenings
 }
 
@@ -118,12 +122,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ],
   )
 
-  debug('main page', scrapeResult)
+  logger.info('main page', { scrapeResult })
 
   const uniqueUrls = Array.from(new Set(scrapeResult.map((x) => x.url)))
 
-  debug('uniqueUrls', uniqueUrls)
-  debug('uniqueUrls length', uniqueUrls.length)
+  logger.info('uniqueUrls', { uniqueUrls, length: uniqueUrls.length })
 
   const screenings = await (
     await Promise.all(uniqueUrls.map(extractFromMoviePage))

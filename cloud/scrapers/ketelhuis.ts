@@ -1,13 +1,18 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
 import * as R from 'ramda'
-import debugFn from 'debug'
 import { shortMonthToNumber, fullMonthToNumber } from './monthToNumber'
 import guessYear from './guessYear'
 import splitTime from './splitTime'
 import xRayPuppeteer from '../xRayPuppeteer'
 
-const debug = debugFn('ketelhuis')
+import { logger as parentLogger } from '../powertools'
+
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'ketelhuis',
+  },
+})
 
 const xray = Xray({
   filters: {
@@ -37,20 +42,20 @@ const extractFromMainPage = async () => {
     '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
     selector,
   )
-  debug('scraped /expat-cinema', expatCinemaResults)
+  logger.info('scraped /expat-cinema', { expatCinemaResults })
 
   const deutschesKinoResults = await xray(
     'https://www.ketelhuis.nl/specials/deutsches-kino/',
     '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
     selector,
   )
-  debug('scraped /deutsches-kino', deutschesKinoResults)
+  logger.info('scraped /deutsches-kino', { deutschesKinoResults })
 
   const results = [...expatCinemaResults, ...deutschesKinoResults]
   const uniqueResults = R.uniq(results)
 
-  debug('results', results)
-  debug('uniqueResults', uniqueResults)
+  logger.info('results', { results })
+  logger.info('uniqueResults', { uniqueResults })
 
   const extracted = await (
     await Promise.all(uniqueResults.map(extractFromMoviePage))
@@ -64,7 +69,7 @@ const hasEnglishSubtitles = ({ metadata, mainContent }) =>
   mainContent?.includes('Engels ondertiteld')
 
 const extractFromMoviePage = async ({ url, title }) => {
-  debug('extracting %s', url)
+  logger.info('extracting', { url })
 
   const scrapeResult = await xray(url, {
     title: '.c-filmheader__content h1 > span | cleanTitle | trim',
@@ -80,10 +85,10 @@ const extractFromMoviePage = async ({ url, title }) => {
     ]),
   })
 
-  debug('extracted %s: %O', url, scrapeResult)
+  logger.info('extracted', { url, scrapeResult })
 
   if (!hasEnglishSubtitles(scrapeResult)) {
-    debug('hasEnglishSubtitles false %s', url)
+    logger.info('hasEnglishSubtitles false', { url })
 
     return []
   }
@@ -141,7 +146,7 @@ const extractFromMoviePage = async ({ url, title }) => {
     title,
   }))
 
-  debug('screenings %O', screenings)
+  logger.info('screenings', { screenings })
   return screenings
 }
 

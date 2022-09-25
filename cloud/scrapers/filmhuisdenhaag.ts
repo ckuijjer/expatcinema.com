@@ -1,11 +1,16 @@
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
 import got from 'got'
 
 import { Screening } from '../types'
 import splitTime from './splitTime'
 
-const debug = debugFn('filmhuisdenhaag')
+import { logger as parentLogger } from '../powertools'
+
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'filmhuisdenhaag',
+  },
+})
 
 type FilmhuisDenhaagAPIResponse = {
   data: {
@@ -42,7 +47,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     'https://filmhuisdenhaag.nl/api/program',
   ).json()
 
-  debug('extracted api response: %j', apiResponse)
+  logger.info('extracted api response', { apiResponse })
 
   const screenings: Screening[] = apiResponse.data
     .filter(
@@ -69,7 +74,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       }
     })
 
-  debug('extracted screenings: %j', screenings)
+  logger.info('extracted screenings', { screenings })
   return screenings
 }
 

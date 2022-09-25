@@ -1,10 +1,15 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
+
 import guessYear from './guessYear'
 import { Screening } from '../types'
+import { logger as parentLogger } from '../powertools'
 
-const debug = debugFn('forumgroningen')
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'forumgroningen',
+  },
+})
 
 const xray = Xray({
   filters: {
@@ -37,7 +42,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     },
   ])
 
-  debug('scraped', scrapeResults)
+  logger.info('scraped', { scrapeResults })
 
   const screenings = scrapeResults
     .filter((x) => x.title !== undefined)
@@ -63,7 +68,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       }
     })
 
-  debug('extracted', screenings)
+  logger.info('extracted', { screenings })
 
   return screenings
 }

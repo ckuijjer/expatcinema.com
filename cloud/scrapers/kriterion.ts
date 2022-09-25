@@ -1,9 +1,14 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
-import { Screening } from '../types'
 
-const debug = debugFn('kriterion')
+import { Screening } from '../types'
+import { logger as parentLogger } from '../powertools'
+
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'kriterion',
+  },
+})
 
 const xray = Xray({
   filters: {
@@ -21,7 +26,7 @@ const hasEnglishSubtitles = ({ metadata }: XRayFromMoviePage) => {
   const hasEnglishSubtitles =
     metadata.includes('Ondertiteling Engels') ||
     metadata.includes('Ondertiteling English')
-  debug('hasEnglishSubtitles: %s metadata %j', hasEnglishSubtitles, metadata)
+  logger.info('hasEnglishSubtitles', { hasEnglishSubtitles, metadata })
   return hasEnglishSubtitles
 }
 
@@ -35,7 +40,7 @@ type XRayFromMoviePage = {
 }
 
 const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
-  debug('extracting %s %O', url)
+  logger.info('extracting', { url })
 
   const movie: XRayFromMoviePage = await xray(url, 'body', {
     metadata: ['#filmposter p'], // iterate to get "Ondertiteling Engels"
@@ -48,7 +53,7 @@ const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
     ]),
   })
 
-  debug('extracted xray %s: %j', url, movie)
+  logger.info('extracted xray', { url, movie })
 
   if (!hasEnglishSubtitles(movie)) return []
 
@@ -60,7 +65,7 @@ const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
       date: DateTime.fromISO(date).toJSDate(),
     }))
 
-  debug('extracted %s: %j', url, screenings)
+  logger.info('extracted', { url, screenings })
 
   return screenings
 }
@@ -89,14 +94,14 @@ const extractFromMainPage = async () => {
     ],
   )
 
-  debug('main page before: %j', xrayResult)
+  logger.info('main page before', { xrayResult })
 
   const uniqueUrls = Array.from(new Set(xrayResult.map((x) => x.url)))
 
-  debug('main page after uniq: %j', uniqueUrls)
+  logger.info('main page after uniq', { uniqueUrls })
 
   const screenings = await Promise.all(uniqueUrls.map(extractFromMoviePage))
-  debug('before flatten: %j', screenings)
+  logger.info('before flatten', { screenings })
 
   return screenings.flat()
 }

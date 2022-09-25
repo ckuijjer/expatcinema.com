@@ -27,11 +27,12 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@aws-lambda-powertools/logger": "^1.2.1",
+    "@middy/core": "^3.3.4",
     "@sparticuz/chrome-aws-lambda": "^14.4.1",
     "axios": "^0.27.2",
     "camelcase-keys": "^8.0.1",
     "cross-fetch": "^3.1.5",
-    "debug": "^4.3.4",
     "diacritics": "^1.3.0",
     "got": "^12.1.0",
     "graphql": "^16.5.0",
@@ -50,6 +51,7 @@
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
     "@types/aws-lambda": "^8.10.101",
+    "@types/diacritics": "^1.3.1",
     "@types/jsdom": "^16.2.14",
     "@types/luxon": "^2.3.2",
     "@types/ramda": "^0.28.15",

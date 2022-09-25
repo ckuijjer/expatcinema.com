@@ -5,9 +5,10 @@ import * as R from 'ramda'
 import AWS from 'aws-sdk'
 import { writeFile, mkdir } from 'fs/promises'
 import { dirname } from 'path'
-import debugFn from 'debug'
 import diacritics from 'diacritics'
 import pMap from 'p-map'
+import { injectLambdaContext } from '@aws-lambda-powertools/logger'
+import middy from '@middy/core'
 
 import documentClient from '../documentClient'
 import getMetadata from '../metadata'
@@ -53,7 +54,13 @@ const SCRAPERS = {
   studiok,
 }
 
-const debug = debugFn('combined scraper')
+import { logger as parentLogger } from '../powertools'
+
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'combined',
+  },
+})
 
 // Set the default timezone to Europe/Amsterdam, otherwise AWS Lambda will scrape as UTC and running it locally
 // as Europe/Amsterdam
@@ -129,8 +136,8 @@ const getEnabledScrapers = () => {
 const scrapers = async (event: APIGatewayEvent, context: Context) => {
   const ENABLED_SCRAPERS = getEnabledScrapers()
 
-  debug('start scraping %O', SCRAPERS)
-  debug('start enabled scraping %O', ENABLED_SCRAPERS)
+  logger.info('start scraping', { SCRAPERS })
+  logger.info('start enabled scraping', { ENABLED_SCRAPERS })
 
   const results = Object.fromEntries(
     await Promise.all(
@@ -140,7 +147,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
       }),
     ),
   )
-  debug('done scraping')
+  logger.info('done scraping')
 
   results.all = sort(Object.values(results).flat())
 
@@ -172,7 +179,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     }),
   )
 
-  debug('writing all to private S3 bucket')
+  logger.info('writing all to private S3 bucket')
   await Promise.all(
     Object.entries(results).map(
       async ([name, data]) => await writeToFile(`${name}/${now}.json`)(data),
@@ -185,7 +192,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     },
   )
 
-  debug('writing all, the combined json, to public S3 bucket')
+  logger.info('writing all, the combined json, to public S3 bucket')
   await writeToPublicFile('screenings.json')(results.allWithMetadata)
   await writeToPublicFile('movies.json')(movies)
 
@@ -193,8 +200,12 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     Object.entries(results).map(([name, data]) => [name, data.length]),
   )
 
-  debug('writing to analytics json %O', countPerScraper)
+  logger.warn('writing to analytics json', { countPerScraper })
   await writeToAnalytics('count')(countPerScraper)
 }
 
-export default scrapers
+const handler = middy(scrapers).use(
+  injectLambdaContext(logger, { clearState: true }),
+)
+
+export default handler

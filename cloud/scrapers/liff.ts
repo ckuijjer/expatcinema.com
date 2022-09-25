@@ -1,19 +1,18 @@
 import Xray from 'x-ray'
 import * as R from 'ramda'
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
+
 import splitTime from './splitTime'
 import { shortMonthToNumber } from './monthToNumber'
 import guessYear from './guessYear'
 
-const debug = debugFn('liff')
+import { logger as parentLogger } from '../powertools'
 
-const debugPromise =
-  (format, ...debugArgs) =>
-  (arg) => {
-    debug(format, ...debugArgs, arg)
-    return arg
-  }
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'liff',
+  },
+})
 
 const xray = Xray({
   filters: {
@@ -27,7 +26,7 @@ const hasEnglishSubtitles = (movie) =>
   movie.metadata.filter((x) => x === 'SubtitlesEnglish').length === (1).flat()
 
 const extractFromMoviePage = ({ url }) => {
-  debug('extracting %s', url)
+  logger.info('extracting', { url })
 
   return xray(url, 'body', {
     title: '.film-title span | trim',
@@ -42,39 +41,36 @@ const extractFromMoviePage = ({ url }) => {
         time: '.h4',
       },
     ]),
+  }).then((movie) => {
+    if (!hasEnglishSubtitles(movie)) return []
+
+    const format = 'cccc d MMMM H:mm'
+
+    const date = movie.firstScreening.date
+    const time = movie.firstScreening.time.match(/[\d:]*/)[0] // 17:00 - 18:35 \r\n\r\n-\r\n\r\n'
+
+    const screenings = [
+      DateTime.fromFormat(`${date} ${time}`, format).toUTC().toISO(),
+      ...movie.restScreenings.map((screening) => {
+        const time = screening.time.match(/[\d:]*/)[0] // 17:00 - 18:35 \r\n\r\n-\r\n\r\n'
+
+        const dayIndex = screening.date.match(/\d+/).index // 'Thursday8 November'
+        const date = [
+          screening.date.slice(0, dayIndex),
+          screening.date.slice(dayIndex),
+        ].join(' ')
+
+        return DateTime.fromFormat(`${date} ${time}`, format).toUTC().toISO()
+      }),
+    ]
+
+    return screenings.map((screening) => ({
+      title: movie.title,
+      url,
+      date: screening,
+      cinema: 'LIFF - Multiple locations',
+    }))
   })
-    .then(debugPromise('extracted xray %s: %O', url))
-    .then((movie) => {
-      if (!hasEnglishSubtitles(movie)) return []
-
-      const format = 'cccc d MMMM H:mm'
-
-      const date = movie.firstScreening.date
-      const time = movie.firstScreening.time.match(/[\d:]*/)[0] // 17:00 - 18:35 \r\n\r\n-\r\n\r\n'
-
-      const screenings = [
-        DateTime.fromFormat(`${date} ${time}`, format).toUTC().toISO(),
-        ...movie.restScreenings.map((screening) => {
-          const time = screening.time.match(/[\d:]*/)[0] // 17:00 - 18:35 \r\n\r\n-\r\n\r\n'
-
-          const dayIndex = screening.date.match(/\d+/).index // 'Thursday8 November'
-          const date = [
-            screening.date.slice(0, dayIndex),
-            screening.date.slice(dayIndex),
-          ].join(' ')
-
-          return DateTime.fromFormat(`${date} ${time}`, format).toUTC().toISO()
-        }),
-      ]
-
-      return screenings.map((screening) => ({
-        title: movie.title,
-        url,
-        date: screening,
-        cinema: 'LIFF - Multiple locations',
-      }))
-    })
-    .then(debugPromise('extracting done %s: %O', url))
 }
 
 const extractFromMainPage = () => {
@@ -84,9 +80,7 @@ const extractFromMainPage = () => {
       title: 'a',
     },
   ])
-    .then(debugPromise('main page: %J'))
     .then((results) => Promise.all(results.map(extractFromMoviePage)))
-    .then(debugPromise('before flatten: %j'))
     .then((results) => results.flat())
 }
 

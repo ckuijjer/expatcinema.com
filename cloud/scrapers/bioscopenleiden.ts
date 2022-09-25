@@ -1,10 +1,14 @@
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
 import got from 'got'
 
 import { Screening } from '../types'
+import { logger as parentLogger } from 'powertools'
 
-const debug = debugFn('bioscopenleiden')
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'bioscopenleiden',
+  },
+})
 
 type BioscopenLeidenAPIResponse = {
   [key: string]: BioscopenLeidenMovie
@@ -63,7 +67,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     'https://bioscopenleiden.nl/fk-feed/agenda',
   ).json()
 
-  debug('extracted api response: %j', apiResponse)
+  logger.info('extracted api response', { apiResponse })
 
   const moviesWithEnglishSubtitlesTimes: BioscopenLeidenMovie[] = Object.values(
     apiResponse,
@@ -79,10 +83,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     })
     .filter((movie: BioscopenLeidenMovie) => movie.times?.length > 0)
 
-  debug(
-    'movies with times having english subtitles: %j',
+  logger.info('movies with times having english subtitles', {
     moviesWithEnglishSubtitlesTimes,
-  )
+  })
 
   const screenings = moviesWithEnglishSubtitlesTimes.flatMap((movie) => {
     return movie.times.map((time) => {
@@ -99,7 +102,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     })
   })
 
-  debug('extracted screenings: %j', screenings)
+  logger.info('extracted screenings', { screenings })
 
   return screenings
 }

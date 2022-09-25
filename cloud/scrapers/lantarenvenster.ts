@@ -1,13 +1,17 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
 
 import splitTime from './splitTime'
 import { shortMonthToNumber } from './monthToNumber'
 import guessYear from './guessYear'
 import { Screening } from '../types'
+import { logger as parentLogger } from '../powertools'
 
-const debug = debugFn('lantarenvenster')
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'lantarenvenster',
+  },
+})
 
 const xray = Xray({
   filters: {
@@ -35,7 +39,7 @@ type XRayFromMoviePage = {
 export const extractFromMoviePage = async (
   url: string,
 ): Promise<Screening[]> => {
-  debug('extracting %s', url)
+  logger.info('extracting', { url })
 
   const movie: XRayFromMoviePage = await xray(url, '.page-content-aside', {
     title: '.wp_theatre_prod_title',
@@ -48,7 +52,7 @@ export const extractFromMoviePage = async (
     ]),
   })
 
-  debug('extracted xray %s: %j', url, movie)
+  logger.info('extracted xray', { url, movie })
 
   if (!hasEnglishSubtitles(movie)) return []
 
@@ -86,7 +90,7 @@ export const extractFromMoviePage = async (
     })
     .flat()
 
-  debug('extracting done %s: %O', url, screenings)
+  logger.info('extracting done', { url, screenings })
 
   return screenings
 }
@@ -97,7 +101,7 @@ type XRayFromMainPage = {
 }
 
 const extractFromMainPage = async () => {
-  debug('extracting main page')
+  logger.info('extracting main page')
 
   const xrayResult: XRayFromMainPage[] = await xray(
     'https://www.lantarenvenster.nl/#all',
@@ -112,11 +116,11 @@ const extractFromMainPage = async () => {
 
   const uniqueUrls = Array.from(new Set(xrayResult.map((x) => x.url)))
 
-  debug('main page: %j', uniqueUrls)
+  logger.info('main page', { uniqueUrls })
 
   const screenings = await Promise.all(uniqueUrls.map(extractFromMoviePage))
 
-  debug('before flatten: %j', screenings)
+  logger.info('before flatten', { screenings })
 
   return screenings.flat()
 }

@@ -1,11 +1,15 @@
 import { DateTime } from 'luxon'
 import { ApolloClient, gql, HttpLink, InMemoryCache } from '@apollo/client'
 import fetch from 'cross-fetch'
-import debugFn from 'debug'
 
 import { Screening } from '../types'
+import { logger as parentLogger } from '../powertools'
 
-const debug = debugFn('eyefilm')
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'eyefilm',
+  },
+})
 
 const extractFromGraphQL = async (): Promise<Screening[]> => {
   const client = new ApolloClient({

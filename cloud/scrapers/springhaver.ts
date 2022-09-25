@@ -1,13 +1,18 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
 import got from 'got'
-import debugFn from 'debug'
+
 import splitTime from './splitTime'
 import { fullMonthToNumber } from './monthToNumber'
 import guessYear from './guessYear'
 import { Screening } from '../types'
+import { logger as parentLogger } from '../powertools'
 
-const debug = debugFn('springhaver')
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'springhaver',
+  },
+})
 
 const xray = Xray({
   filters: {
@@ -40,7 +45,7 @@ type XRayFromMoviePage = {
 }
 
 const extractFromMoviePage = async ({ url }: { url: string }) => {
-  debug('extracting %s', url)
+  logger.info('extracting', { url })
 
   const movie: XRayFromMoviePage = await xray(url, 'body', {
     title: '.intro-content h1 | trim',
@@ -55,7 +60,7 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
     ]),
   })
 
-  debug('extracted xray %s: %j', url, movie)
+  logger.info('extracted xray', { url, movie })
 
   if (!hasEnglishSubtitles(movie)) return []
 
@@ -91,7 +96,7 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
     )
     .flat()
 
-  debug('extracting done %s: %O', url, screenings)
+  logger.info('extracting done', { url, screenings })
 
   return screenings
 }
@@ -106,17 +111,17 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     url: link,
   }))
 
-  debug('main page: %J', formattedMovies)
+  logger.info('main page', { formattedMovies })
 
   const filteredMovies = formattedMovies.filter(hasEnglishSubtitles)
 
-  debug('main page with english subtitles: %J', filteredMovies)
+  logger.info('main page with english subtitles', { filteredMovies })
 
   const screenings: Screenings = await Promise.all(
     filteredMovies.map(extractFromMoviePage),
   )
 
-  debug('before flatten: %j', screenings)
+  logger.info('before flatten', { screenings })
 
   return screenings.flat()
 }

@@ -1,14 +1,18 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
+import pRetry from 'p-retry'
+
 import splitTime from './splitTime'
 import { shortMonthToNumber } from './monthToNumber'
 import guessYear from './guessYear'
-import pRetry, { AbortError } from 'p-retry'
-
 import { Screening } from '../types'
+import { logger as parentLogger } from '../powertools'
 
-const debug = debugFn('studiok')
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'studiok',
+  },
+})
 
 const cleanTitle = (title: string) =>
   title.replace('(ENG SUBS)', '').replace(/^.*│/, '').trim()
@@ -47,7 +51,7 @@ const extractFromMoviePage = async (url: string) => {
     ]),
   })
 
-  debug('movie %j', movie)
+  logger.info('movie', { movie })
 
   const screenings: Screening[] = movie.timetable
     .flatMap(({ date, times, subtitles }) => {
@@ -97,7 +101,7 @@ const extractFromMoviePage = async (url: string) => {
     })
     .flat()
 
-  debug('screenings', screenings)
+  logger.info('screenings', { screenings })
   return screenings
 }
 
@@ -116,12 +120,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ],
   )
 
-  debug('main page', scrapeResult)
+  logger.info('main page', { scrapeResult })
 
   const uniqueUrls = Array.from(new Set(scrapeResult.map((x) => x.url)))
 
-  debug('uniqueUrls', uniqueUrls)
-  debug('uniqueUrls length', uniqueUrls.length)
+  logger.info('uniqueUrls', { uniqueUrls, length: uniqueUrls.length })
 
   const screenings = await (
     await Promise.all(
@@ -133,7 +136,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
           },
           {
             onFailedAttempt: (error) => {
-              debug(
+              logger.warn(
                 `Scraping ${i} ${url}, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
               )
             },

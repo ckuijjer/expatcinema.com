@@ -1,11 +1,16 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
+
 import { shortMonthToNumber } from './monthToNumber'
 import guessYear from './guessYear'
 import { Screening } from '../types'
+import { logger as parentLogger } from '../powertools'
 
-const debug = debugFn('filmhuislumen')
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'filmhuislumen',
+  },
+})
 
 const splitTimeDot = (time) => time.split('.').map((x) => Number(x))
 
@@ -51,13 +56,13 @@ const extractFromMainPage = async () => {
     ],
   )
 
-  debug('scraped /deze-week %j', scrapeResults)
+  logger.info('scraped /deze-week', { scrapeResults })
 
   const screenings = (
     await Promise.all(scrapeResults.map(extractFromMoviePage))
   ).flat()
 
-  debug('screens %O', screenings)
+  logger.info('screens', { screenings })
 
   return screenings
 }
@@ -75,16 +80,16 @@ const extractFromMoviePage = async ({
   // Not all information is available on the movie page though. The only thing available on the movie
   // page that isn't available on the main page is the subtitle metadata
 
-  debug('extracting %s', url)
+  logger.info('extracting', { url })
 
   const scrapeResult = await xray(url, '.timetable', {
     metadata: '.theatre-post-info | normalizeWhitespace | trim',
   })
 
-  debug('scraped %s %J', url, scrapeResult)
+  logger.info('scraped', { url, scrapeResult })
 
   if (!hasEnglishSubtitles(scrapeResult)) {
-    debug('hasEnglishSubtitles false %s', url)
+    logger.info('hasEnglishSubtitles false', { url })
     return []
   }
 
@@ -127,7 +132,7 @@ const extractFromMoviePage = async ({
     })
     .filter((x) => x)
 
-  debug('extracted %s: %O', url, screenings)
+  logger.info('extracted', { url, screenings })
 
   return screenings
 }

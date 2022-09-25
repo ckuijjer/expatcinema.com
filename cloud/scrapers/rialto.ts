@@ -1,11 +1,15 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
-import debugFn from 'debug'
 import { JSDOM } from 'jsdom'
 
 import guessYear from './guessYear'
+import { logger as parentLogger } from '../powertools'
 
-const debug = debugFn('rialto')
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'rialto',
+  },
+})
 
 const xray = Xray({
   filters: {
@@ -54,7 +58,7 @@ const extractFromMainPage = async () => {
     }
   })
 
-  debug('main page', JSON.stringify(results, null, 2))
+  logger.info('main page', { results })
 
   return results
 }

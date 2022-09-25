@@ -1,9 +1,13 @@
 import Xray from 'x-ray'
-import debugFn from 'debug'
 
 import { Screening } from '../types'
+import { logger as parentLogger } from '../powertools'
 
-const debug = debugFn('cinecenter')
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'cinecenter',
+  },
+})
 
 const xray = Xray({
   filters: {
@@ -21,7 +25,7 @@ type XRayFromMoviePage = {
 }
 
 const extractFromMoviePage = async ({ url }: { url: string }) => {
-  debug('extracting %s', url)
+  logger.info('extracting', { url })
 
   const movie: XRayFromMoviePage = await xray(url, 'body', {
     title: 'h1.film_title',
@@ -30,7 +34,7 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
     ],
   })
 
-  debug('extracted xray %s: %j', url, movie)
+  logger.info('extracted xray', { url, movie })
 
   const result = movie.showings.map((showing) => ({
     title: cleanTitle(movie.title),
@@ -39,7 +43,7 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
     date: new Date(showing * 1000),
   }))
 
-  debug('extracting done %s: %O', url, result)
+  logger.info('extracting done', { url, result })
 
   return result
 }
@@ -61,7 +65,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ],
   )
 
-  debug('main page', movies)
+  logger.info('main page', { movies })
 
   return (await Promise.all(movies.map(extractFromMoviePage))).flat()
 }
