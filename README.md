@@ -1,10 +1,25 @@
 # Expat Cinema
 
-Cloud and Web deploy is handled by GitHub Actions
+## Deploy Cloud
 
-- `cd cloud; yarn deploy` to deploy the lambda functions -- now handled by GitHub Actions
-- `cd cloud; yarn start` to manually run the scrapers
-- `cd web; yarn deploy` to deploy the SPA to GitHub Pages
+### Scheduled
+
+The scrapers run on a daily schedule defined in `cloud/serverless.yml`
+
+### Manual
+
+- `cd cloud; yarn scrapers` to run the scrapers on the _dev_ stage
+- `cd cloud; yarn scrapers:prod` to run the scrapers on the _prod_ stage
+
+## Deploy Web
+
+### Scheduled
+
+The web is deployed on a daily schedule using GitHub Actions. The schedule is defined in `.github/workflows/web.yml`. The schedule is needed to have the SSG (static site generator) get the latest data from the scrapers.
+
+### Manual
+
+Easiest is to bump the version in `web/package.json` and push to master. This will trigger a GitHub Action that will deploy the web app to GitHub Pages.
 
 ## Running scrapers locally
 
