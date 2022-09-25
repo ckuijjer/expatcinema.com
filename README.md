@@ -2,11 +2,17 @@
 
 ## Deploy Cloud
 
-### Scheduled
+### Deploy
+
+A GitHub Action is used to deploy the Serverless application to AWS. The action is triggered by a push to the `main` branch.
+
+### Scrapers
+
+#### Scheduled
 
 The scrapers run on a daily schedule defined in `cloud/serverless.yml`
 
-### Manual
+#### Manual
 
 - `cd cloud; yarn scrapers` to run the scrapers on the _dev_ stage
 - `cd cloud; yarn scrapers:prod` to run the scrapers on the _prod_ stage
