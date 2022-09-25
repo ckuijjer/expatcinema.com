@@ -1,5 +1,6 @@
 import searchMetadata from './searchMetadata'
 import documentClient from '../documentClient'
+import { logger } from '../powertools'
 
 type Metadata = {
   query: string
@@ -27,7 +28,7 @@ const getMetadata = async (title: string): Promise<Metadata> => {
 
   // if there is no metadata, search for it, create it in DynamoDB, and return it
   if (data.Items.length === 0) {
-    console.log(`❌ couldn't get metadata for ${title}, searching for it`)
+    logger.info(`❌ couldn't get metadata for ${title}, searching for it`)
     const metadata = await searchMetadata(title)
     const item = {
       query: title,
@@ -44,7 +45,7 @@ const getMetadata = async (title: string): Promise<Metadata> => {
 
     return item
   } else {
-    console.log(`✅ found the get metadata for ${title}`)
+    logger.info(`✅ found the get metadata for ${title}`)
     return data.Items[0]
   }
 }
