@@ -4,6 +4,7 @@ import debugFn from 'debug'
 import splitTime from './splitTime'
 import { shortMonthToNumber } from './monthToNumber'
 import guessYear from './guessYear'
+import pRetry, { AbortError } from 'p-retry'
 
 import { Screening } from '../types'
 
@@ -19,8 +20,9 @@ const xray = Xray({
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
-  .concurrency(1)
+  .concurrency(10)
   .throttle(10, 300)
+  .timeout('5s')
 
 type XRayFromMoviePage = {
   title: string
@@ -122,7 +124,24 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   debug('uniqueUrls length', uniqueUrls.length)
 
   const screenings = await (
-    await Promise.all(uniqueUrls.map(extractFromMoviePage))
+    await Promise.all(
+      uniqueUrls.map(async (url, i) => {
+        return pRetry(
+          async () => {
+            const result = await extractFromMoviePage(url)
+            return result
+          },
+          {
+            onFailedAttempt: (error) => {
+              debug(
+                `Scraping ${i} ${url}, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
+              )
+            },
+            retries: 5,
+          },
+        )
+      }),
+    )
   )
     .filter((x) => x)
     .flat()
@@ -137,7 +156,9 @@ if (require.main === module) {
 
   // extractFromMoviePage(
   //   // 'https://studio-k.nu/film/cinema-kulinair-%e2%94%82-a-simple-life-2011/',
-  //   'https://studio-k.nu/film/cinema-kulinair-%e2%94%82-eat-drink-man-woman-1994/',
+  //   // 'https://studio-k.nu/film/cinema-kulinair-%e2%94%82-eat-drink-man-woman-1994/',
+  //   // 'https://studio-k.nu/film/boiling-point/',
+  //   'https://studio-k.nu/film/cinema-kulinair-%e2%94%82io-sono-lamore-2009/',
   // ).then(console.log)
 }
 

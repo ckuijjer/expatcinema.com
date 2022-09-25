@@ -135,14 +135,14 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 }
 
 if (require.main === module) {
-  // extractFromMainPage()
-  //   .then((x) => JSON.stringify(x, null, 2))
-  //   .then(console.log)
+  extractFromMainPage()
+    .then((x) => JSON.stringify(x, null, 2))
+    .then(console.log)
 
-  extractFromMoviePage(
-    'https://kinorotterdam.nl/films/cameron-on-film-aliens-1986/',
-    // 'https://kinorotterdam.nl/films/encore/',
-  ).then(console.log)
+  // extractFromMoviePage(
+  //   'https://kinorotterdam.nl/films/cameron-on-film-aliens-1986/',
+  //   // 'https://kinorotterdam.nl/films/encore/',
+  // ).then(console.log)
 }
 
 export default extractFromMainPage
