@@ -17,17 +17,25 @@ const filters = [
 const gunzip = util.promisify(zlib.gunzip)
 
 const notifySlack = async ({ event, context } = {}) => {
-  const payload = new Buffer(event.awslogs.data, 'base64')
+  try {
+    const payload = Buffer.from(event.awslogs.data, 'base64')
 
-  const unzippedPayload = await gunzip(payload)
+    const unzippedPayload = await gunzip(payload)
 
-  const { logEvents } = JSON.parse(unzippedPayload.toString())
+    const { logEvents } = JSON.parse(unzippedPayload.toString())
 
-  const filteredLogEvents = logEvents.filter(({ message }) =>
-    filters.some((f) => f.test(message)),
-  )
+    const filteredLogEvents = logEvents.filter(({ message }) =>
+      filters.some((f) => f.test(message)),
+    )
 
-  await Promise.all(filteredLogEvents.map(postToSlack))
+    console.log(
+      `Found ${logEvents.length} log events with ${filteredLogEvents.length} filtered to be posted to Slack`,
+    )
+
+    await Promise.all(filteredLogEvents.map(postToSlack))
+  } catch (err) {
+    console.error('notifySlack error', err)
+  }
 }
 
 const postToSlack = (logEvent) => {
