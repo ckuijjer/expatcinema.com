@@ -43,8 +43,7 @@ const levelsToEmoji = {
 
 const getSlackBlocks = (logEvent) => {
   try {
-    const [timestamp, json] = logEvent.message.split('\t')
-    const parsedJson = JSON.parse(json)
+    const parsedJson = JSON.parse(logEvent.message)
 
     const blocks = [
       {
