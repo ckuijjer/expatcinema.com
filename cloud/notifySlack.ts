@@ -78,4 +78,4 @@ const postToSlack = (blocks) => {
   })
 }
 
-export const handler = notifySlack
+export default notifySlack
