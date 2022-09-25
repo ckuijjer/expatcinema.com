@@ -16,9 +16,9 @@ const filters = [
 
 const gunzip = util.promisify(zlib.gunzip)
 
-const notifySlack = async ({ event, context } = {}) => {
+const notifySlack = async ({ awslogs } = {}) => {
   try {
-    const payload = Buffer.from(event.awslogs.data, 'base64')
+    const payload = Buffer.from(awslogs.data, 'base64')
 
     const unzippedPayload = await gunzip(payload)
 
