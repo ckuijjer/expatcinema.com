@@ -43,27 +43,30 @@ const levelsToEmoji = {
 
 const getSlackBlocks = (logEvent) => {
   try {
-    const parsedJson = JSON.parse(logEvent.message)
+    const json = JSON.parse(logEvent.message)
 
     const blocks = [
       {
         type: 'section',
         text: {
           type: 'plain_text',
-          text: `${levelsToEmoji[level]} ${parsedJson.message}`,
+          text: `${levelsToEmoji[json.level]} ${json.message}`,
         },
       },
       {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: '```' + JSON.stringify(parsedJson, null, 2) + '```',
+          text: '```' + JSON.stringify(json, null, 2) + '```',
         },
       },
     ]
     return blocks
   } catch (error) {
-    console.error('couldnt parse logEvent', { logEvent, error })
+    console.info('couldnt parse logEvent', {
+      logEvent,
+      error,
+    })
 
     return [
       { type: 'section', text: { type: 'plain_text', text: logEvent.message } },
