@@ -24,12 +24,13 @@ const xray = Xray({
 
 const hasEnglishSubtitles = ({ title }: { title: string }) =>
   title.toLowerCase().includes('language no problem') ||
-  title.toLowerCase().includes('(english subtitles)')
+  title.toLowerCase().includes('english subtitles')
 
 const cleanTitle = (title: string) =>
   title
     .replace(/Language No Problem: /i, '')
     .replace(/ \(English Subtitles\)/i, '')
+    .replace(/ \(with English subtitles\)/i, '')
     .replace(/^Cine De Vuelta: /i, '')
     .replace(/ \(\d{4}\).*?$/, '')
 
