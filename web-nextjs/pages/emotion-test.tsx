@@ -4,7 +4,6 @@ import Layout from '../components/Layout'
 import Header from '../components/Header'
 
 const EmotionTest = () => (
-  // <div style={{ margin: 100 }}>
   <Layout>
     <Header />
     <div
@@ -16,7 +15,6 @@ const EmotionTest = () => (
       EmotionTest
     </div>
   </Layout>
-  // </div>
 )
 
 export default EmotionTest

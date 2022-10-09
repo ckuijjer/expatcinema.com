@@ -31,33 +31,33 @@ const About = () => {
         find english subtitled movie screenings at the following cinemas.
         <br />
         <br />
-        <Link href="/city/amsterdam" css={linkStyle}>
-          Amsterdam
+        <Link href="/city/amsterdam">
+          <span css={linkStyle}>Amsterdam</span>
         </Link>
         : Cinecenter, Eye, Ketelhuis, Kriterion, Lab111, Rialto, Studio/K
         <br />
-        <Link href="/city/delft" css={linkStyle}>
-          Delft
+        <Link href="/city/delft">
+          <span css={linkStyle}>Delft</span>
         </Link>
         : Filmhuis Lumen
         <br />
-        <Link href="/city/den haag" css={linkStyle}>
-          Den Haag
+        <Link href="/city/den haag">
+          <span css={linkStyle}>Den Haag</span>
         </Link>
         : Filmhuis Den Haag
         <br />
-        <Link href="/city/groningen" css={linkStyle}>
-          Groningen
+        <Link href="/city/groningen">
+          <span css={linkStyle}>Groningen</span>
         </Link>
         : Forum Groningen
         <br />
-        <Link href="/city/leiden" css={linkStyle}>
-          Leiden
+        <Link href="/city/leiden">
+          <span css={linkStyle}>Leiden</span>
         </Link>
         : Kijkhuis
         <br />
-        <Link href="/city/rotterdam" css={linkStyle}>
-          Rotterdam
+        <Link href="/city/rotterdam">
+          <span css={linkStyle}>Rotterdam</span>
         </Link>
         : Kino, Lantarenvenster
         <br />

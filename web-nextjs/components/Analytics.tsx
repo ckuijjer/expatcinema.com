@@ -158,6 +158,7 @@ const Analytics = ({ points }) => {
           <Tile
             value={value}
             title={scraper}
+            key={scraper}
             onClick={handleTileClick(scraper)}
             isHighlighted={isHighlighted(scraper)}
             isDimmed={!isHighlighted(null)}

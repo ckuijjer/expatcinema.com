@@ -32,27 +32,28 @@ const Menu = ({ isOpen }) => {
         marginTop: 24,
       })}
     >
-      <MenuItem to="/">Home</MenuItem>
-      <MenuItem to="/about">About</MenuItem>
-      <MenuItem to="/analytics">Analytics</MenuItem>
+      <MenuItem href="/">Home</MenuItem>
+      <MenuItem href="/about">About</MenuItem>
+      <MenuItem href="/analytics">Analytics</MenuItem>
     </div>
   ) : null
 }
 
-const MenuItem = (props) => (
-  <Link
-    css={css({
-      display: 'inline-block',
-      fontSize: 24,
-      color: props.isCurrent
-        ? 'var(--primary-color)'
-        : 'var(--text-muted-color)',
-      padding: '12px 16px',
-      cursor: 'pointer',
-      textDecoration: 'none',
-    })}
-    {...props}
-  />
+const MenuItem = ({ href, children, isCurrent }) => (
+  <Link href={href} passHref>
+    <a
+      css={css({
+        display: 'inline-block',
+        fontSize: 24,
+        color: isCurrent ? 'var(--primary-color)' : 'var(--text-muted-color)',
+        padding: '12px 16px',
+        cursor: 'pointer',
+        textDecoration: 'none',
+      })}
+    >
+      {children}
+    </a>
+  </Link>
 )
 
 const Header = () => {

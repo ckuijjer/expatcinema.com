@@ -13,7 +13,8 @@ const CalendarComponent = isEnabled('virtualized-table')
 const flatten = (acc, cur) => [...acc, ...cur]
 
 const Calendar = ({ screenings, showCity }) => {
-  const [search] = useQueryParam('search', StringParam)
+  const [search] = '' //useQueryParam('search', StringParam)
+  console.log({ screenings })
 
   const screeningsByDate = Object.entries(
     groupAndSortScreenings(screenings),
