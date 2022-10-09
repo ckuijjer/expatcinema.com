@@ -17,18 +17,4 @@ const App = ({ screenings, showCity = true }) => {
   )
 }
 
-// export const query = graphql`
-//   fragment AppScreening on Screening {
-//     date
-//     cinema {
-//       name
-//       city {
-//         name
-//       }
-//     }
-//     title
-//     url
-//   }
-// `
-
 export default App
