@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import { useQueryParam, StringParam } from 'use-query-params'
 import loadable from '@loadable/component'
 
+import { Screening } from '../getScreenings'
 import groupAndSortScreenings from '../groupAndSortScreenings'
 import { isEnabled } from '../featureFlags'
 
@@ -12,13 +13,19 @@ const CalendarComponent = isEnabled('virtualized-table')
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
-const Calendar = ({ screenings, showCity }) => {
+const Calendar = ({
+  screenings,
+  showCity,
+}: {
+  screenings: Screening[]
+  showCity: boolean
+}) => {
   const [search] = useQueryParam('search', StringParam)
 
   const screeningsByDate = Object.entries(
     groupAndSortScreenings(screenings),
   ).sort(([a], [b]) => {
-    return DateTime.fromISO(a) - DateTime.fromISO(b)
+    return +DateTime.fromISO(a) - +DateTime.fromISO(b)
   })
 
   const rows = screeningsByDate

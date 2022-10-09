@@ -9,17 +9,17 @@ type ScreeningData = {
   url: string
 }
 
-type City = {
+export type City = {
   name: string
 }
 
-type Cinema = {
+export type Cinema = {
   name: string
   url: string
   city: City
 }
 
-type Screening = {
+export type Screening = {
   cinema: Cinema
   date: Date
   title: string

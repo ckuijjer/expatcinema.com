@@ -32,7 +32,7 @@ const CityFilter = () => {
     .map(({ text, href }) => ({
       text,
       href,
-      isCurrent: encodeURI(href) === router.pathname,
+      isCurrent: href === router.asPath,
     }))
     .map(({ href, ...rest }) => ({ href: `${href}${searchQuery}`, ...rest }))
 
