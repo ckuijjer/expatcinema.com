@@ -7,12 +7,10 @@ import TextFilter from './TextFilter'
 import Header from './Header'
 
 const App = ({ screenings, showCity = true }) => {
-  console.log({ screenings })
-
   return (
     <>
       <Header />
-      {/* <TextFilter /> */}
+      <TextFilter />
       {/* <CityFilter /> */}
       <Calendar screenings={screenings} showCity={showCity} />
     </>

@@ -1,6 +1,8 @@
 import type { AppProps } from 'next/app'
 import Layout from '../components/Layout'
 import { Global, css } from '@emotion/react'
+import { NextAdapter } from 'next-query-params'
+import { QueryParamProvider } from 'use-query-params'
 
 const globalStyles = css`
   body {
@@ -30,15 +32,18 @@ const globalStyles = css`
     color: var(--text-color);
   }
 `
+// function Adapter(props) {
+//   return <NextAdapter {...props} shallow={false} />
+// }
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <QueryParamProvider adapter={NextAdapter}>
       <Global styles={globalStyles} />
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </>
+    </QueryParamProvider>
   )
 }
 
