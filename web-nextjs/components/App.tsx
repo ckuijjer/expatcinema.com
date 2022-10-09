@@ -3,7 +3,7 @@ import React from 'react'
 
 import Calendar from './Calendar'
 import TextFilter from './TextFilter'
-// import CityFilter from './CityFilter.js.TODO'
+import CityFilter from './CityFilter'
 import Header from './Header'
 
 const App = ({ screenings, showCity = true }) => {
@@ -11,7 +11,7 @@ const App = ({ screenings, showCity = true }) => {
     <>
       <Header />
       <TextFilter />
-      {/* <CityFilter /> */}
+      <CityFilter />
       <Calendar screenings={screenings} showCity={showCity} />
     </>
   )
