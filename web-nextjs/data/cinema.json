@@ -1,0 +1,82 @@
+[
+  {
+    "name": "LIFF - Multiple locations",
+    "city": "Leiden",
+    "url": "https://www.liff.nl"
+  },
+  {
+    "name": "Kijkhuis",
+    "city": "Leiden",
+    "url": "https://www.bioscopenleiden.nl/Kijkhuis"
+  },
+  {
+    "name": "Filmhuis Den Haag",
+    "city": "Den Haag",
+    "url": "https://www.filmhuisdenhaag.nl/"
+  },
+  {
+    "name": "Kino",
+    "city": "Rotterdam",
+    "url": "https://www.kinorotterdam.nl/"
+  },
+  {
+    "name": "Lantarenvenster",
+    "city": "Rotterdam",
+    "url": "https://www.lantarenvenster.nl/"
+  },
+  {
+    "name": "Lab111",
+    "city": "Amsterdam",
+    "url": "https://www.lab111.nl/"
+  },
+  {
+    "name": "Eye",
+    "city": "Amsterdam",
+    "url": "https://www.eyefilm.nl/en"
+  },
+  {
+    "name": "Kriterion",
+    "city": "Amsterdam",
+    "url": "https://kriterion.nl"
+  },
+  {
+    "name": "Springhaver",
+    "city": "Utrecht",
+    "url": "https://www.springhaver.nl"
+  },
+  {
+    "name": "Louis Hartlooper Complex",
+    "city": "Utrecht",
+    "url": "https://www.hartlooper.nl"
+  },
+  {
+    "name": "Rialto",
+    "city": "Amsterdam",
+    "url": "https://rialtofilm.nl/"
+  },
+  {
+    "name": "Cinecenter",
+    "city": "Amsterdam",
+    "url": "https://cinecenter.nl/"
+  },
+  {
+    "name": "Forum Groningen",
+    "city": "Groningen",
+    "url": "https://www.forum.nl/"
+  },
+  {
+    "name": "Filmhuis Lumen",
+    "city": "Delft",
+    "url": "https://www.filmhuis-lumen.nl/"
+  },
+  {
+    "name": "Ketelhuis",
+    "city": "Amsterdam",
+    "url": "https://www.ketelhuis.nl/"
+  },
+  {
+    "name": "Studio/K",
+    "city": "Amsterdam",
+    "url": "https://www.studio-k.nu/"
+  }
+]
