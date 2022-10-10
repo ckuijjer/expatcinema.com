@@ -1,5 +1,4 @@
 import React from 'react'
-// import { graphql } from 'gatsby'
 
 import Calendar from './Calendar'
 import TextFilter from './TextFilter'

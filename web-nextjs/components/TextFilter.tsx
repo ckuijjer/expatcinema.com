@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { css } from '@emotion/react'
 import mobile from 'is-mobile'
 
 import Cross from './cross.svg'
-import { useQueryParam, StringParam } from 'use-query-params'
+import { useRouter } from 'next/router'
 
 const Container = (props) => (
   <div
@@ -50,7 +50,8 @@ const ClearButton = (props) => (
 )
 
 const TextFilter = () => {
-  const [search, setSearch] = useQueryParam('search', StringParam)
+  const router = useRouter()
+  const { search } = router.query
 
   return (
     <Container>
@@ -59,13 +60,30 @@ const TextFilter = () => {
         autoFocus={!mobile({ tablet: true })}
         value={search ?? ''}
         onChange={(e) => {
-          setSearch(e.target.value || undefined)
+          if (e.target.value === '') {
+            const { search, ...rest } = router.query
+            router.replace({ query: { ...rest } })
+          } else {
+            router.replace({
+              query: { ...router.query, search: e.target.value },
+            })
+          }
         }}
-        onKeyUp={(e) => e.key === 'Escape' && setSearch(undefined)}
+        onKeyUp={(e) => {
+          if (e.key === 'Escape') {
+            const { search, ...rest } = router.query
+            router.replace({ query: { ...rest } })
+          }
+        }}
         aria-label="Type to search"
       />
       {search && (
-        <ClearButton onClick={() => setSearch(undefined)}>
+        <ClearButton
+          onClick={() => {
+            const { search, ...rest } = router.query
+            router.replace({ query: { ...rest } })
+          }}
+        >
           <Cross />
         </ClearButton>
       )}

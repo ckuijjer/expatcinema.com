@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { graphql } from 'gatsby'
 import fetch from 'cross-fetch'
 
 import Layout from '../components/Layout'
