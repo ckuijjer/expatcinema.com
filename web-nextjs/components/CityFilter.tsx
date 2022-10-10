@@ -19,7 +19,7 @@ const Container = (props) => (
 
 const CityFilter = () => {
   const router = useRouter()
-  const [search] = useQueryParam('search', StringParam)
+  const { search } = router.query
   const searchQuery = search ? `?search=${search}` : ''
 
   const links = [
@@ -32,7 +32,8 @@ const CityFilter = () => {
     .map(({ text, href }) => ({
       text,
       href,
-      isCurrent: href === router.asPath,
+      isCurrent: encodeURI(href) === router.asPath,
+      // isCurrent: text.toLowerCase() === router.query.city,
     }))
     .map(({ href, ...rest }) => ({ href: `${href}${searchQuery}`, ...rest }))
 

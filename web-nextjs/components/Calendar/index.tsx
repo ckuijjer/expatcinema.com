@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import { DateTime } from 'luxon'
-import { useQueryParam, StringParam } from 'use-query-params'
 import loadable from '@loadable/component'
 
 import { Screening } from '../getScreenings'
 import groupAndSortScreenings from '../groupAndSortScreenings'
 import { isEnabled } from '../featureFlags'
+import { useRouter } from 'next/router'
 
 const CalendarComponent = isEnabled('virtualized-table')
   ? loadable(() => import('./VirtualizedCalendar'))
@@ -20,7 +20,8 @@ const Calendar = ({
   screenings: Screening[]
   showCity: boolean
 }) => {
-  const [search] = useQueryParam('search', StringParam)
+  const router = useRouter()
+  const { search } = router.query
 
   const screeningsByDate = Object.entries(
     groupAndSortScreenings(screenings),
