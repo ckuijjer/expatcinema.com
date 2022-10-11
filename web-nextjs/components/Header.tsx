@@ -34,7 +34,7 @@ const Menu = ({ isOpen }) => {
     >
       <MenuItem href="/">Home</MenuItem>
       <MenuItem href="/about">About</MenuItem>
-      <MenuItem href="/analytics">Analytics</MenuItem>
+      <MenuItem href="/statistics">Statistics</MenuItem>
     </div>
   ) : null
 }

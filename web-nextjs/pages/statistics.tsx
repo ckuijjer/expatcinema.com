@@ -6,17 +6,17 @@ import Layout from '../components/Layout'
 import Seo from '../components/Seo'
 import Header from '../components/Header'
 
-const LoadableAnalytics = dynamic(() => import('../components/Analytics'), {
+const LoadableStatistics = dynamic(() => import('../components/Statistics'), {
   ssr: false,
 })
 
-const AnalyticsPage = ({ data }) => {
+const StatisticsPage = ({ data }) => {
   return (
     <Layout>
       {/* <Seo title="Analytics" /> */}
       <Header />
       <React.Suspense fallback={<div>Loading</div>}>
-        <LoadableAnalytics points={data} />
+        <LoadableStatistics points={data} />
       </React.Suspense>
     </Layout>
   )
@@ -37,4 +37,4 @@ export const getStaticProps = async () => {
   }
 }
 
-export default AnalyticsPage
+export default StatisticsPage
