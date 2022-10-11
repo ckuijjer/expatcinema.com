@@ -144,7 +144,6 @@ const Analytics = ({ points }) => {
 
   return (
     <>
-      <Header />
       <div
         dangerouslySetInnerHTML={{
           __html: svg.outerHTML,

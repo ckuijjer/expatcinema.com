@@ -1,7 +1,5 @@
 import React from 'react'
 import { css } from '@emotion/react'
-// import { Location, globalHistory } from '@reach/router'
-// import { QueryParamProvider } from 'use-query-params'
 
 import { Settings } from 'luxon'
 
@@ -31,24 +29,9 @@ const Content = (props) => (
 )
 
 const Layout = ({ children }) => (
-  <>
-    <Container>
-      <Content>{children}</Content>
-    </Container>
-  </>
+  <Container>
+    <Content>{children}</Content>
+  </Container>
 )
-
-// const Layout = ({ children }) => (
-//   <Location>
-//     {({ location }) => (
-//       <QueryParamProvider location={location} reachHistory={globalHistory}>
-//         <Global styles={globalStyles} />
-//         <Container>
-//           <Content>{children}</Content>
-//         </Container>
-//       </QueryParamProvider>
-//     )}
-//   </Location>
-// )
 
 export default Layout

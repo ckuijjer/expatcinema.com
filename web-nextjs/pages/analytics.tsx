@@ -1,26 +1,23 @@
 import * as React from 'react'
 import fetch from 'cross-fetch'
+import dynamic from 'next/dynamic'
 
 import Layout from '../components/Layout'
 import Seo from '../components/Seo'
+import Header from '../components/Header'
 
-// can't use @loadable/component to determine client vs server side rendering, as
-// gatsby-plugin-loadable-components-ssr is used to render @loadable/component during ssr.
-const LoadableAnalytics = React.lazy(() => import('../components/Analytics'))
+const LoadableAnalytics = dynamic(() => import('../components/Analytics'), {
+  ssr: false,
+})
 
 const AnalyticsPage = ({ data }) => {
-  const isSSR = typeof window === 'undefined'
-
   return (
     <Layout>
       {/* <Seo title="Analytics" /> */}
-      <>
-        {!isSSR && (
-          <React.Suspense fallback={<div />}>
-            <LoadableAnalytics points={data} />
-          </React.Suspense>
-        )}
-      </>
+      <Header />
+      <React.Suspense fallback={<div>Loading</div>}>
+        <LoadableAnalytics points={data} />
+      </React.Suspense>
     </Layout>
   )
 }

@@ -1,15 +1,15 @@
 import React, { useReducer } from 'react'
 import { DateTime } from 'luxon'
-import loadable from '@loadable/component'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 
 import { Screening } from '../getScreenings'
 import groupAndSortScreenings from '../groupAndSortScreenings'
 import { isEnabled } from '../featureFlags'
-import { useRouter } from 'next/router'
 
 const CalendarComponent = isEnabled('virtualized-table')
-  ? loadable(() => import('./VirtualizedCalendar'))
-  : loadable(() => import('./DirectCalendar'))
+  ? dynamic(() => import('./VirtualizedCalendar'))
+  : dynamic(() => import('./DirectCalendar'))
 
 const flatten = (acc, cur) => [...acc, ...cur]
 

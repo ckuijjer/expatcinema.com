@@ -53,37 +53,33 @@ const TextFilter = () => {
   const router = useRouter()
   const { search } = router.query
 
+  const setSearch = (value?: string) => {
+    if (value == '') {
+      const { search, ...rest } = router.query
+      router.replace({ query: { ...rest } })
+    } else {
+      router.replace({
+        query: { ...router.query, search: value },
+      })
+    }
+  }
+
   return (
     <Container>
       <Input
         placeholder="Type to search"
         autoFocus={!mobile({ tablet: true })}
         value={search ?? ''}
-        onChange={(e) => {
-          if (e.target.value === '') {
-            const { search, ...rest } = router.query
-            router.replace({ query: { ...rest } })
-          } else {
-            router.replace({
-              query: { ...router.query, search: e.target.value },
-            })
-          }
-        }}
+        onChange={(e) => setSearch(e.target.value)}
         onKeyUp={(e) => {
           if (e.key === 'Escape') {
-            const { search, ...rest } = router.query
-            router.replace({ query: { ...rest } })
+            setSearch()
           }
         }}
         aria-label="Type to search"
       />
       {search && (
-        <ClearButton
-          onClick={() => {
-            const { search, ...rest } = router.query
-            router.replace({ query: { ...rest } })
-          }}
-        >
+        <ClearButton onClick={setSearch}>
           <Cross />
         </ClearButton>
       )}
