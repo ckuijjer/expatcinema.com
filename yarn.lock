@@ -2134,10 +2134,10 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@middy/core@^3.3.4":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@middy/core/-/core-3.4.0.tgz#2929fbd996e797d64bf328c0bafaa5602f3dcfce"
-  integrity sha512-SqUMM5OdEZzKYMVp6fIPLJAWxFpflNZg9E8f4sH517LCJ0KjN8YGLsuCb+i3ihdi8MSsys/xzK2MufMLmB9rfg==
+"@middy/core@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@middy/core/-/core-3.6.0.tgz#dc8f3da97c4f7caeed2695fa536f80da63dd61be"
+  integrity sha512-l3VyDBVqazLuQ8/ABEYwc1Y6EQwPvY8nYbBKToJz4IfSTIwmeEIzAFh9YhpuwHxH7qKhmw6AQh4nOidsx80yCA==
 
 "@netflix/nerror@^1.0.0":
   version "1.1.3"
