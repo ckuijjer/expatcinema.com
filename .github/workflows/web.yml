@@ -80,13 +80,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
-        run: ${{ env.package-manager-manager }} ${{ env.package-manager-manager-command }}
+        run: ${{ env.package-manager }} ${{ env.package-manager-command }}
       - name: Build with Next.js
-        run: ${{ env.package-manager-manager-runner }} next build
+        run: ${{ env.package-manager-runner }} next build
       - name: Generate a sitemap
-        run: ${{ env.package-manager-manager-runner }} next-sitemap
+        run: ${{ env.package-manager-runner }} next-sitemap
       - name: Static HTML export with Next.js
-        run: ${{ env.package-manager-manager-runner }} next export
+        run: ${{ env.package-manager-runner }} next export
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
