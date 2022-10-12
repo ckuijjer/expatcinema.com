@@ -28,6 +28,10 @@ concurrency:
   group: 'pages'
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: web
+
 jobs:
   # Build job
   build:
@@ -77,10 +81,6 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-      - name: Go into the web/ folder
-        run: |
-          cd web/
-          pwd
       - name: Check folder
         run: pwd
       - name: Build with Next.js
