@@ -35,16 +35,18 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.info('main page with english subtitles', { filteredMovies })
 
-  const screenings: Screening[][] = filteredMovies.map((movie) => {
-    return movie.times.map((time) => {
-      return {
-        title: movie.title,
-        url: movie.permalink,
-        cinema: 'Kino Rotterdam',
-        date: extractDate(time.program_start).toJSDate(),
-      }
+  const screenings: Screening[][] = filteredMovies
+    .map((movie) => {
+      return movie.times?.map((time) => {
+        return {
+          title: movie.title,
+          url: movie.permalink,
+          cinema: 'Kino Rotterdam',
+          date: extractDate(time.program_start).toJSDate(),
+        }
+      })
     })
-  })
+    .filter((x) => x)
 
   logger.info('before flatten', { screenings })
 
