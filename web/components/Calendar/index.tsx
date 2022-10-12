@@ -1,24 +1,32 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import { DateTime } from 'luxon'
-import { useQueryParam, StringParam } from 'use-query-params'
-import loadable from '@loadable/component'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 
+import { Screening } from '../getScreenings'
 import groupAndSortScreenings from '../groupAndSortScreenings'
 import { isEnabled } from '../featureFlags'
 
 const CalendarComponent = isEnabled('virtualized-table')
-  ? loadable(() => import('./VirtualizedCalendar'))
-  : loadable(() => import('./DirectCalendar'))
+  ? dynamic(() => import('./VirtualizedCalendar'))
+  : dynamic(() => import('./DirectCalendar'))
 
 const flatten = (acc, cur) => [...acc, ...cur]
 
-const Calendar = ({ screenings, showCity }) => {
-  const [search] = useQueryParam('search', StringParam)
+const Calendar = ({
+  screenings,
+  showCity,
+}: {
+  screenings: Screening[]
+  showCity: boolean
+}) => {
+  const router = useRouter()
+  const { search } = router.query
 
   const screeningsByDate = Object.entries(
     groupAndSortScreenings(screenings),
   ).sort(([a], [b]) => {
-    return DateTime.fromISO(a) - DateTime.fromISO(b)
+    return +DateTime.fromISO(a) - +DateTime.fromISO(b)
   })
 
   const rows = screeningsByDate

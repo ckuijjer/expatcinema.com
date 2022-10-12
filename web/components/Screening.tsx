@@ -4,17 +4,9 @@ import { css } from '@emotion/react'
 import Time from './Time'
 
 const A = ({ href, children }) => {
-  // workaround for react rehydration not being able to handle attribute changes, and e.g.
-  // visiting https://expatcinema.com/?search=studio directly giving wrong results
-  const openLink = (event) => {
-    window.location.href = href
-    event.preventDefault()
-  }
-
   return (
     <a
       href={href}
-      onClick={openLink}
       css={css({
         display: 'block',
         textDecoration: 'none',

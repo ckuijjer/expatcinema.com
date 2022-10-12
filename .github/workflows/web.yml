@@ -33,6 +33,6 @@ jobs:
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           branch: gh-pages
-          folder: web/public
+          folder: web/out
           clean: true
           single-commit: true

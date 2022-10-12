@@ -144,7 +144,6 @@ const Analytics = ({ points }) => {
 
   return (
     <>
-      <Header />
       <div
         dangerouslySetInnerHTML={{
           __html: svg.outerHTML,
@@ -158,6 +157,7 @@ const Analytics = ({ points }) => {
           <Tile
             value={value}
             title={scraper}
+            key={scraper as string} // TODO: fix
             onClick={handleTileClick(scraper)}
             isHighlighted={isHighlighted(scraper)}
             isDimmed={!isHighlighted(null)}
