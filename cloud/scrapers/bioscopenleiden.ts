@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import got from 'got'
 
 import { Screening } from '../types'
-import { logger as parentLogger } from 'powertools'
+import { logger as parentLogger } from '../powertools'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -10,119 +10,53 @@ const logger = parentLogger.createChild({
   },
 })
 
-type BioscopenLeidenAPIResponse = {
-  [key: string]: BioscopenLeidenMovie
+// e.g. 202210181005
+const extractDate = (time: string) => DateTime.fromFormat(time, 'yyyyMMddHHmm')
+
+type FkFeedItem = {
+  title: string
+  language: { label: string; value: string }
+  permalink: string
+  times: { program_start: string; program_end: string }[]
 }
 
-type BioscopenLeidenMovie = {
-  post_id: number
-  title: string
-  starring_short: string
-  synopsis: string
-  image: string
-  poster: string
-  classification: string[]
-  spoken_language: {
-    label: string
-    value: string
-  }
-  language: {
-    label: string
-    value: string
-  }
-  director_name: {
-    label: string
-    value: string
-  }
-  duration: {
-    label: string
-    value: string
-  }
-  tags: {
-    expected: string
-  }
-  review: boolean
-  permalink: string
-  poster_small: string
-  dates: {
-    cinema_id: number
-    release: string
-    last_week: string
-  }
-  times?: {
-    child_id: number
-    provider_id: string
-    program_start: string
-    program_end: string
-    ticket_status: string
-    cinema_id: number
-    location: string
-    tags: string[]
-    duration: string
-  }[]
+const hasEnglishSubtitles = (movie: FkFeedItem) => {
+  return movie.language.value === 'English' || movie.language.value === 'Engels'
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const apiResponse: BioscopenLeidenAPIResponse = await got(
-    'https://bioscopenleiden.nl/fk-feed/agenda',
-  ).json()
-
-  logger.info('extracted api response', { apiResponse })
-
-  const moviesWithEnglishSubtitlesTimes: BioscopenLeidenMovie[] = Object.values(
-    apiResponse,
+  const movies = Object.values<FkFeedItem>(
+    await got('https://bioscopenleiden.nl/fk-feed/agenda').json(),
   )
-    // first filter out times that don't have a 'en subs' tag
-    .map((movie: BioscopenLeidenMovie) => {
-      return {
-        ...movie,
-        times: movie.times?.filter((time) =>
-          time.tags.map((x) => x.toLowerCase()).includes('en subs'),
-        ),
-      }
+
+  logger.info('main page', { movies })
+
+  const filteredMovies = movies.filter(hasEnglishSubtitles)
+
+  logger.info('main page with english subtitles', { filteredMovies })
+
+  const screenings: Screening[][] = filteredMovies
+    .map((movie) => {
+      return movie.times?.map((time) => {
+        return {
+          title: movie.title,
+          url: movie.permalink,
+          cinema: 'Kijkhuis',
+          date: extractDate(time.program_start).toJSDate(),
+        }
+      })
     })
-    .filter((movie: BioscopenLeidenMovie) => movie.times?.length > 0)
+    .filter((x) => x)
 
-  logger.info('movies with times having english subtitles', {
-    moviesWithEnglishSubtitlesTimes,
-  })
+  logger.info('before flatten', { screenings })
 
-  const screenings = moviesWithEnglishSubtitlesTimes.flatMap((movie) => {
-    return movie.times.map((time) => {
-      const screening = {
-        title: movie.title,
-        url: movie.permalink,
-        cinema: 'Kijkhuis', // assumes all bioscopenleiden movies are in Kijkhuis
-        date: DateTime.fromFormat(
-          time.program_start,
-          'yyyyMMddHHmm',
-        ).toJSDate(),
-      }
-      return screening
-    })
-  })
-
-  logger.info('extracted screenings', { screenings })
-
-  return screenings
+  return screenings.flat()
 }
 
 if (require.main === module) {
-  const sort = R.sortWith([
-    (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),
-    R.ascend(R.prop('cinema')),
-    R.ascend(R.prop('title')),
-    R.ascend(R.prop('url')),
-  ])
-
   extractFromMainPage()
-    .then(sort)
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
-
-  // extractFromMoviePage({
-  // url: 'https://www.filmhuisdenhaag.nl/agenda/event/styx',
-  // }).then(console.log)
 }
 
 export default extractFromMainPage
