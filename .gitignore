@@ -22,8 +22,11 @@ yarn-error.log*
 cloud/.serverless
 cloud/output
 cloud/.esbuild
-web/.cache
-web/public
+web/public/robots.txt
+web/public/sitemap*
+web/.next
+web/out
+web/next-env.d.ts
 backup/
 .env.*
 !.env.example
