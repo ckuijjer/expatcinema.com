@@ -85,6 +85,8 @@ jobs:
         run: pwd
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+      - name: Generate a sitemap
+        run: ${{ steps.detect-package-manager.outputs.runner }} postbuild
       - name: Static HTML export with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next export
       - name: Upload artifact
