@@ -1,6 +1,5 @@
 {
   "files.exclude": {
-    //     "web": true,
     "node_modules": true,
     "cdk.out": true
   }
