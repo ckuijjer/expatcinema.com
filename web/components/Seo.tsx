@@ -32,6 +32,7 @@ function SEO({ title }) {
       <link rel="preconnect" href="https://www.google-analytics.com" />
       <link rel="dns-prefetch" href="https://www.google-analytics.com" />
       <link rel="canonical" href="https://expatcinema.com" />
+      <link rel="icon" href="/favicon.ico" />
     </Head>
   )
 }
