@@ -11,7 +11,8 @@ const logger = parentLogger.createChild({
 })
 
 // e.g. 202210181005
-const extractDate = (time: string) => DateTime.fromFormat(time, 'yyyyMMddHHmm')
+const extractDate = (time: string) =>
+  DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
 
 type FkFeedItem = {
   title: string
@@ -42,7 +43,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
           title: movie.title,
           url: movie.permalink,
           cinema: 'Kino Rotterdam',
-          date: extractDate(time.program_start).toJSDate(),
+          date: extractDate(time.program_start),
         }
       })
     })
