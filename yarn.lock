@@ -1711,6 +1711,11 @@
   resolved "https://registry.yarnpkg.com/@builder.io/partytown/-/partytown-0.5.4.tgz#1a89069978734e132fa4a59414ddb64e4b94fde7"
   integrity sha512-qnikpQgi30AS01aFlNQV6l8/qdZIcP76mp90ti+u4rucXHsn4afSKivQXApqxvrQG9+Ibv45STyvHizvxef/7A==
 
+"@corex/deepmerge@^4.0.29":
+  version "4.0.29"
+  resolved "https://registry.yarnpkg.com/@corex/deepmerge/-/deepmerge-4.0.29.tgz#af9debf07d7f6b0d2a9d04a266abf2c1418ed2f6"
+  integrity sha512-q/yVUnqckA8Do+EvAfpy7RLdumnBy9ZsducMUtZTvpdbJC7azEf1hGtnYYxm0QfphYxjwggv6XtH64prvS1W+A==
+
 "@emotion/babel-plugin-jsx-pragmatic@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@emotion/babel-plugin-jsx-pragmatic/-/babel-plugin-jsx-pragmatic-0.2.0.tgz#6fdd78600417973fa2610704693158181d8505b7"
@@ -12478,6 +12483,14 @@ netmask@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/netmask/-/netmask-1.0.6.tgz#20297e89d86f6f6400f250d9f4f6b4c1945fcd35"
   integrity sha512-3DWDqAtIiPSkBXZyYEjwebfK56nrlQfRGt642fu8RPaL+ePu750+HCMHxjJCG3iEHq/0aeMvX6KIzlv7nuhfrA==
+
+next-sitemap@^3.1.24:
+  version "3.1.24"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-3.1.24.tgz#4520db61616390d4e5272e471d43218b2c361bc3"
+  integrity sha512-dEFOI6cnNffDcmxis/1IVNK2JI1wtxxGoj2ipP7L8xDVbxjyuuH2V8MEajHPPrIhybfGk6gyZ5HDpXgVcTv9QA==
+  dependencies:
+    "@corex/deepmerge" "^4.0.29"
+    minimist "^1.2.6"
 
 next-tick@1, next-tick@^1.0.0, next-tick@^1.1.0:
   version "1.1.0"

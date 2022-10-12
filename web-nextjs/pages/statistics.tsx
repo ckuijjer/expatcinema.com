@@ -12,13 +12,13 @@ const LoadableStatistics = dynamic(() => import('../components/Statistics'), {
 
 const StatisticsPage = ({ data }) => {
   return (
-    <Layout>
-      {/* <Seo title="Analytics" /> */}
+    <>
+      <Seo title="Analytics" />
       <Header />
       <React.Suspense fallback={<div>Loading</div>}>
         <LoadableStatistics points={data} />
       </React.Suspense>
-    </Layout>
+    </>
   )
 }
 

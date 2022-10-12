@@ -4,6 +4,7 @@ import App from '../components/App'
 import Layout from '../components/Layout'
 // import Seo from '../components/Seo'
 import { getScreenings } from '../components/getScreenings'
+import Seo from '../components/Seo'
 
 export const getStaticProps = async () => {
   const screenings = await getScreenings()
@@ -17,10 +18,10 @@ export const getStaticProps = async () => {
 
 const IndexPage = ({ data }) => {
   return (
-    <Layout>
-      {/* <Seo title="Home" /> */}
+    <>
+      <Seo title="Home" />
       <App screenings={data} showCity />
-    </Layout>
+    </>
   )
 }
 

@@ -1,10 +1,10 @@
 import * as React from 'react'
 import About from '../components/About'
-// import Seo from '../components/Seo.js'
+import Seo from '../components/Seo'
 
 const AboutPage = () => (
   <>
-    {/* <Seo title="About" /> */}
+    <Seo title="About" />
     <About />
   </>
 )

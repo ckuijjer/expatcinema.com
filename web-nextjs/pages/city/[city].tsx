@@ -7,6 +7,7 @@ import Layout from '../../components/Layout'
 import { getScreenings } from '../../components/getScreenings'
 
 import cities from '../../data/city.json'
+import Seo from '../../components/Seo'
 
 export const getStaticPaths = () => {
   const paths = cities.map((city) => `/city/${city.name.toLowerCase()}`)
@@ -32,10 +33,10 @@ export const getStaticProps = async ({ params }) => {
 
 const CityPage = ({ data }) => {
   return (
-    <Layout>
-      {/* <Seo title="Home" /> */}
+    <>
+      <Seo title="Home" />
       <App screenings={data} />
-    </Layout>
+    </>
   )
 }
 
