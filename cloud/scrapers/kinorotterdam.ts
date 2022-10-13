@@ -42,7 +42,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         return {
           title: movie.title,
           url: movie.permalink,
-          cinema: 'Kino Rotterdam',
+          cinema: 'Kino',
           date: extractDate(time.program_start),
         }
       })
