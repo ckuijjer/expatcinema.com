@@ -1,7 +1,6 @@
 import React from 'react'
 import * as Plot from '@observablehq/plot'
 import { css } from '@emotion/react'
-import Header from './Header'
 
 // Grid component that has cells with a width of 200px and using css grid layout
 const Grid = ({ children }) => (
@@ -66,7 +65,7 @@ const Tile = ({
   )
 }
 
-const Analytics = ({ points }) => {
+const Statistics = ({ points }) => {
   const [highlight, setHighlight] = React.useState(null)
 
   const sortedPoints = [...points].sort((a, b) => {
@@ -168,4 +167,4 @@ const Analytics = ({ points }) => {
   )
 }
 
-export default Analytics
+export default Statistics
