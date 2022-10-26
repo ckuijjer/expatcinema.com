@@ -45,7 +45,10 @@ const getMetadata = async (title: string): Promise<Metadata> => {
 
     return item
   } else {
-    logger.info(`✅ found the get metadata for ${title}`)
+    logger.info(`✅ found the get metadata for ${title}`, {
+      title,
+      item: data.Items[0],
+    })
     return data.Items[0]
   }
 }

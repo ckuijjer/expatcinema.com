@@ -1,5 +1,6 @@
 import leven from 'leven'
 import diacritics from 'diacritics'
+import { logger } from '../powertools'
 
 import getTmdbClient from '../clients/tmdb'
 import getOmdbClient from '../clients/omdb'
@@ -122,7 +123,11 @@ const searchMetadata = async (title: string) => {
       imdbIds.filter((id) => id === a).length,
   )[0]
 
-  console.log({ normalizedTitle, firstSearchResults, winningImdbId })
+  logger.info('searchMetadata results', {
+    normalizedTitle,
+    firstSearchResults,
+    winningImdbId,
+  })
 
   // search tmdb for the imdbId
   const tmdbResult = await getTmdbUsingImdbId(winningImdbId)
@@ -131,15 +136,23 @@ const searchMetadata = async (title: string) => {
       (b, a) => leven(b, title) - leven(a, title),
     )[0]
 
+    logger.info('searchMetadata tmdb result', {
+      normalizedTitle,
+      winningImdbId,
+      tmdbResult,
+      winningTitle,
+    })
+
     return {
       imdbId: winningImdbId,
       title: winningTitle,
       tmdb: tmdbResult,
     }
   } else {
-    console.warn(
-      `No tmdb result found for ${normalizedTitle} - ${winningImdbId}`,
-    )
+    logger.warn('searchMetadata no tmdb result', {
+      normalizedTitle,
+      winningImdbId,
+    })
   }
 }
 
