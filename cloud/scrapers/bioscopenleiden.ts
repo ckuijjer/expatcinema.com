@@ -1,5 +1,7 @@
+// like Kino
 import { DateTime } from 'luxon'
 import got from 'got'
+import { decode } from 'html-entities'
 
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
@@ -11,7 +13,8 @@ const logger = parentLogger.createChild({
 })
 
 // e.g. 202210181005
-const extractDate = (time: string) => DateTime.fromFormat(time, 'yyyyMMddHHmm')
+const extractDate = (time: string) =>
+  DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
 
 type FkFeedItem = {
   title: string
@@ -39,10 +42,10 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     .map((movie) => {
       return movie.times?.map((time) => {
         return {
-          title: movie.title,
+          title: decode(movie.title),
           url: movie.permalink,
           cinema: 'Kijkhuis',
-          date: extractDate(time.program_start).toJSDate(),
+          date: extractDate(time.program_start),
         }
       })
     })

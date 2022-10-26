@@ -1,5 +1,7 @@
+// like Bioscopenleiden
 import { DateTime } from 'luxon'
 import got from 'got'
+import { decode } from 'html-entities'
 
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
@@ -40,7 +42,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     .map((movie) => {
       return movie.times?.map((time) => {
         return {
-          title: movie.title,
+          title: decode(movie.title),
           url: movie.permalink,
           cinema: 'Kino',
           date: extractDate(time.program_start),
