@@ -118,6 +118,7 @@ functions:
       - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:31 # https://github.com/shelfio/chrome-aws-lambda-layer
 
 resources:
+  Description: expatcinema.com - ${self:provider.stage} stage
   Resources:
     ScrapersOutputBucket:
       Type: AWS::S3::Bucket
