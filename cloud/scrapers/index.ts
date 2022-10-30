@@ -34,6 +34,7 @@ import filmhuislumen from './filmhuislumen'
 import forumgroningen from './forumgroningen'
 import ketelhuis from './ketelhuis'
 import studiok from './studiok'
+import deuitkijk from './deuitkijk'
 
 const SCRAPERS = {
   bioscopenleiden,
@@ -52,6 +53,7 @@ const SCRAPERS = {
   forumgroningen,
   // ketelhuis,
   studiok,
+  deuitkijk,
 }
 
 import { logger as parentLogger } from '../powertools'
