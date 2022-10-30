@@ -34,7 +34,8 @@ const About = () => {
         <Link href="/city/amsterdam">
           <span css={linkStyle}>Amsterdam</span>
         </Link>
-        : Cinecenter, Eye, Ketelhuis, Kriterion, Lab111, Rialto, Studio/K
+        : Cinecenter, Eye, Ketelhuis, Kriterion, Lab111, Rialto, Studio/K, De
+        Uitkijk
         <br />
         <Link href="/city/delft">
           <span css={linkStyle}>Delft</span>
