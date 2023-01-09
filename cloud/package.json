@@ -39,7 +39,7 @@
     "html-entities": "^2.3.3",
     "jsdom": "^20.0.0",
     "leven": "^4.0.0",
-    "luxon": "^3.0.1",
+    "luxon": "^3.2.1",
     "p-map": "5.5.0",
     "p-retry": "4.6.1",
     "public-ip": "^6.0.1",
