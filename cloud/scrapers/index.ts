@@ -150,10 +150,17 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
   const results = Object.fromEntries(
     await Promise.all(
       Object.entries(ENABLED_SCRAPERS).map(async ([name, fn]) => {
-        logger.info('starting scraper', { scraper: name })
+        logger.info('start scraping', { scraper: name })
 
         // call the scraper function
-        return [name, sort(await fn())]
+        const result = await fn()
+
+        logger.info('done scraping', {
+          scraper: name,
+          numberOfResults: result.length,
+        })
+
+        return [name, sort(result)]
       }),
     ),
   )
