@@ -138,8 +138,14 @@ const getEnabledScrapers = () => {
 const scrapers = async (event: APIGatewayEvent, context: Context) => {
   const ENABLED_SCRAPERS = getEnabledScrapers()
 
-  logger.info('start scraping', { SCRAPERS })
-  logger.info('start enabled scraping', { ENABLED_SCRAPERS })
+  logger.info('available scrapers', { SCRAPERS: Object.keys(SCRAPERS) })
+  logger.info('enabled scrapers', {
+    ENABLED_SCRAPERS: Object.keys(ENABLED_SCRAPERS),
+  })
+  logger.info('number of scrapers', {
+    numberOfAvailableScrapers: Object.keys(SCRAPERS).length,
+    numberOfEnabledScrapers: Object.keys(ENABLED_SCRAPERS).length,
+  })
 
   const results = Object.fromEntries(
     await Promise.all(
