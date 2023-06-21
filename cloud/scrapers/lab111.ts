@@ -5,6 +5,14 @@ import { shortMonthToNumber } from './monthToNumber'
 import guessYear from './guessYear'
 import xRayPuppeteer from '../xRayPuppeteer'
 
+import { logger as parentLogger } from '../powertools'
+
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'lab111',
+  },
+})
+
 const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
@@ -32,6 +40,8 @@ type XRayFromMainPage = {
 }
 
 const extractFromMainPage = async () => {
+  logger.info('main page')
+
   // scraping google cache as lab111 blocks the scraper lambda
   const scrapeResult: XRayFromMainPage[] = await xray(
     'http://webcache.googleusercontent.com/search?q=cache:https://www.lab111.nl/programma/',
@@ -45,6 +55,8 @@ const extractFromMainPage = async () => {
       },
     ],
   )
+
+  logger.info('scrape result', { scrapeResult })
 
   const screenings = scrapeResult
     .filter(hasEnglishSubtitles)
@@ -77,6 +89,8 @@ const extractFromMainPage = async () => {
         }
       })
     })
+
+  logger.info('screenings found', { screenings })
 
   return screenings
 }
