@@ -53,7 +53,7 @@ if (require.main === module) {
 
 GitHub actions is used, `web/` uses JamesIves/github-pages-deploy-action to deploy to the _gh-pages_ branch, and the GitHub settings has Pages take the source branch _gh-pages_ which triggers the GitHub built in _pages-build-deployment_
 
-`.env.*` files are only used locally, not in CI/CD, for that take a look at the GitHub secrets
+`.env.*` files are only used locally, not in CI/CD, for that take a look at the GitHub secrets and variables (on repository and environment level)
 
 ## Quick local backup
 
