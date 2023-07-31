@@ -46,7 +46,7 @@ const SCRAPERS = {
   lantarenvenster,
   springhaver,
   hartlooper,
-  // rialto,
+  rialto,
   cinecenter,
   // liff,
   filmhuislumen,
