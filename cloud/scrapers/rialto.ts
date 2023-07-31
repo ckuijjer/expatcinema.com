@@ -1,6 +1,7 @@
 import Xray from 'x-ray'
+import got from 'got'
+import { Screening } from 'types'
 import { DateTime } from 'luxon'
-import { JSDOM } from 'jsdom'
 
 import guessYear from './guessYear'
 import { logger as parentLogger } from '../powertools'
@@ -14,49 +15,77 @@ const logger = parentLogger.createChild({
 const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    cleanTitle: (value) =>
+      typeof value === 'string' ? value.replace(' - Expat Cinema', '') : value,
   },
 })
   .concurrency(10)
   .throttle(10, 300)
 
-const extractFromMainPage = async () => {
-  const url = 'https://rialtofilm.nl/en/specials/3/expat-monday'
+type RialtoFilmFeedResult = {
+  [cinema: string]: {
+    [date: string]: {
+      time: string
+      link: string
+      text: string
+    }[]
+  }
+}
 
-  const movies = await xray(url, '.blocks__content div:nth-child(2)', {
-    date: 'p em',
-    showings: xray('.text-block__text p:nth-child(2)', {
-      titles: ['a | trim'],
-      urls: ['a@href'],
-      raw: '@html',
-    }),
-  })
+const extractFromMoviePage = async ({
+  url,
+  title,
+}: {
+  url: string
+  title: string
+}) => {
+  // url example 'https://rialtofilm.nl/en/films/1519/a-hundred-flowers-expat-cinema'
+  const regex = /\/films\/(?<movieId>\d+)\//
+  const {
+    groups: { movieId },
+  } = url.match(regex)
 
-  const fragment = JSDOM.fragment(`<div>${movies.showings.raw}</div>`)
-  movies.showings.times = Array.from(fragment.firstChild.childNodes)
-    .filter((x) => x.nodeType === 3)
-    .map((x) => x.textContent.toUpperCase().trim())
+  const data: RialtoFilmFeedResult = await got(
+    `https://rialtofilm.nl/feed/en/film/${movieId}`,
+  ).json()
 
-  movies.showings.dates = movies.showings.times.map(
-    (time) => `${movies.date} ${time}`,
+  const screenings: Screening[] = Object.entries(data).flatMap(
+    ([cinema, dates]) => {
+      return Object.entries(dates).flatMap(([dateString, times]) => {
+        return times.map(({ time, link, text }) => {
+          let date = DateTime.fromFormat(
+            `${dateString} ${time}`,
+            'EEEE d MMMM H:mm',
+          )
+
+          const year = guessYear(date)
+          date = date.set({ year })
+
+          return {
+            title,
+            url,
+            cinema,
+            date: date.toJSDate(),
+          }
+        })
+      })
+    },
   )
 
-  const format = 'cccc LLLL d h:mm a'
+  return screenings
+}
 
-  const results = movies.showings.titles.map((title, i) => {
-    let date = DateTime.fromFormat(movies.showings.dates[i], format, {
-      zone: 'Europe/Amsterdam',
-    })
+const extractFromMainPage = async () => {
+  const url = 'https://rialtofilm.nl/en/english-subtitles'
 
-    const year = guessYear(date)
-    date = date.set({ year })
+  const movies = await xray(url, '.card', [
+    {
+      title: '.card__title | trim | cleanTitle',
+      url: '@href',
+    },
+  ])
 
-    return {
-      title,
-      url: movies.showings.urls[i],
-      cinema: 'Rialto',
-      date: date.toUTC().toISO(),
-    }
-  })
+  const results = (await Promise.all(movies.map(extractFromMoviePage))).flat()
 
   logger.info('main page', { results })
 
@@ -67,13 +96,6 @@ if (require.main === module) {
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
-
-  //   extractFromMoviePage({
-  // url: 'https://rialtofilm.nl/en/films/462/parasite-zw',
-  // url: 'https://rialtofilm.nl/nl/films/426/the-lighthouse',
-  // url: 'https://rialtofilm.nl/en/films/424/les-miserables',
-  // url: 'https://rialtofilm.nl/en/films/481/ghost-tropic',
-  //   })
 }
 
 export default extractFromMainPage

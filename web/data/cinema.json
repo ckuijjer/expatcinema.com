@@ -50,7 +50,12 @@
     "url": "https://www.hartlooper.nl"
   },
   {
-    "name": "Rialto",
+    "name": "Rialto De Pijp",
+    "city": "Amsterdam",
+    "url": "https://rialtofilm.nl/"
+  },
+  {
+    "name": "Rialto VU",
     "city": "Amsterdam",
     "url": "https://rialtofilm.nl/"
   },

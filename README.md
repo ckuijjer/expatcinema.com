@@ -39,7 +39,7 @@ Stores the output in _cloud/.esbuild/.build/output_ instead of S3 buckets and Dy
 
 Use SCRAPERS environment variable in _.env.local_ to define a comma separated list of scrapers to locally run and diverge from the default set of scrapers in _scrapers/index.js_
 
-And to call a single scraper, e.g. `yarn ts-eager scrapers/kinorotterdam.ts` and then have e.g.
+And to call a single scraper, e.g. `yarn tsx scrapers/kinorotterdam.ts` and then have e.g.
 
 ```
 if (require.main === module) {
