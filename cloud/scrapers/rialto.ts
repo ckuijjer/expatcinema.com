@@ -85,11 +85,13 @@ const extractFromMainPage = async () => {
     },
   ])
 
-  const results = (await Promise.all(movies.map(extractFromMoviePage))).flat()
+  const screenings = (
+    await Promise.all(movies.map(extractFromMoviePage))
+  ).flat()
 
-  logger.info('main page', { results })
+  logger.info('main page', { screenings })
 
-  return results
+  return screenings
 }
 
 if (require.main === module) {
