@@ -27,7 +27,7 @@ The web is deployed on a daily schedule using GitHub Actions. The schedule is de
 
 ### Manual
 
-Easiest is to bump the version in `web/package.json` and push to master. This will trigger a GitHub Action that will deploy the web app to GitHub Pages.
+Easiest is to bump the version in `web/package.json` and push to master. This will trigger a GitHub Action that will deploy the web app to GitHub Pages. Note there's only a _prod_ stage for the web app.
 
 ## Running scrapers locally
 
@@ -53,7 +53,7 @@ if (require.main === module) {
 
 GitHub actions is used, `web/` uses JamesIves/github-pages-deploy-action to deploy to the _gh-pages_ branch, and the GitHub settings has Pages take the source branch _gh-pages_ which triggers the GitHub built in _pages-build-deployment_
 
-`.env.*` files are only used locally, not in CI/CD, for that take a look at the GitHub secrets and variables (on repository and environment level)
+`.env.*` files are only used for the local stage, not for running other stages locally, and not for CI/CD, for that take a look at the GitHub secrets and variables (on repository and environment level)
 
 ## Quick local backup
 
