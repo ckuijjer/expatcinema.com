@@ -88,5 +88,10 @@
     "name": "De Uitkijk",
     "city": "Amsterdam",
     "url": "https://www.uitkijk.nl/"
+  },
+  {
+    "name": "The Movies",
+    "city": "Amsterdam",
+    "url": "https://www.themovies.nl/"
   }
 ]
