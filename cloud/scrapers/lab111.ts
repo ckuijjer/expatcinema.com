@@ -67,7 +67,7 @@ const extractFromMainPage = async () => {
       return movie.dates.map((date) => {
         const [dayOfWeek, dayString, monthString, time] = date.split(/\s+/)
         const day = Number(dayString)
-        const month = shortMonthToNumberDutch(monthString)
+        const month = shortMonthToNumberEnglish(monthString)
         const [hour, minute] = splitTime(time)
         const year = guessYear(
           DateTime.fromObject({
