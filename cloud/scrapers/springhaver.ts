@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import got from 'got'
 
 import splitTime from './splitTime'
-import { fullMonthToNumber } from './monthToNumber'
+import { fullMonthToNumberDutch } from './monthToNumber'
 import guessYear from './guessYear'
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
@@ -69,7 +69,7 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
     .map(({ date, times }) =>
       times.map((time) => {
         const day = +date.day
-        const month = fullMonthToNumber(date.month)
+        const month = fullMonthToNumberDutch(date.month)
         const [hour, minute] = splitTime(time)
 
         const year = guessYear(

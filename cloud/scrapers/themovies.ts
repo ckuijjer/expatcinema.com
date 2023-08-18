@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 
 import guessYear from './guessYear'
 import { logger as parentLogger } from '../powertools'
-import { shortMonthToNumber } from './monthToNumber'
+import { shortMonthToNumberEnglish } from './monthToNumber'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -42,7 +42,7 @@ const extractFromMainPage = async () => {
         .map((screening) => {
           const [dayString, monthString, time] = screening.split(/\s+/).slice(2) // ['21', 'Aug', '18:15', 'EN', 'SUBS']
           const day = Number(dayString)
-          const month = shortMonthToNumber(monthString)
+          const month = shortMonthToNumberEnglish(monthString)
 
           const [hour, minute] = time.split(':').map(Number)
 

@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import pRetry from 'p-retry'
 
 import splitTime from './splitTime'
-import { shortMonthToNumber } from './monthToNumber'
+import { shortMonthToNumberDutch } from './monthToNumber'
 import guessYear from './guessYear'
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
@@ -57,7 +57,7 @@ const extractFromMoviePage = async (url: string) => {
     .flatMap(({ date, times, subtitles }) => {
       const [dayOfWeek, dayString, monthString] = date.split(' ')
       const day = Number(dayString)
-      const month = shortMonthToNumber(monthString)
+      const month = shortMonthToNumberDutch(monthString)
 
       const timesAndSubtitles = times.map((time, index) => ({
         title: movie.title,

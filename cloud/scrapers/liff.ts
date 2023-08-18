@@ -3,7 +3,7 @@ import * as R from 'ramda'
 import { DateTime } from 'luxon'
 
 import splitTime from './splitTime'
-import { shortMonthToNumber } from './monthToNumber'
+import { shortMonthToNumberDutch } from './monthToNumber'
 import guessYear from './guessYear'
 
 import { logger as parentLogger } from '../powertools'

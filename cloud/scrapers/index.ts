@@ -155,7 +155,12 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
         logger.info('start scraping', { scraper: name })
 
         // call the scraper function
-        const result = await fn()
+        let result = []
+        try {
+          result = await fn()
+        } catch (error) {
+          logger.error('error scraping', { scraper: name, error })
+        }
 
         logger.info('done scraping', {
           scraper: name,

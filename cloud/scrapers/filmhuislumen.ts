@@ -1,7 +1,7 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
 
-import { shortMonthToNumber } from './monthToNumber'
+import { shortMonthToNumberDutch } from './monthToNumber'
 import guessYear from './guessYear'
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
@@ -99,7 +99,7 @@ const extractFromMoviePage = async ({
       const [dayOfWeek, dayString, monthString] = date.split(' ')
 
       const day = Number(dayString)
-      const month = shortMonthToNumber(monthString)
+      const month = shortMonthToNumberDutch(monthString)
 
       return rooms.map(({ times }) => {
         const time = times[i]

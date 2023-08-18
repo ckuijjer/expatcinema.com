@@ -1,7 +1,10 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
 import * as R from 'ramda'
-import { shortMonthToNumber, fullMonthToNumber } from './monthToNumber'
+import {
+  shortMonthToNumberDutch,
+  fullMonthToNumberDutch,
+} from './monthToNumber'
 import guessYear from './guessYear'
 import splitTime from './splitTime'
 import xRayPuppeteer from '../xRayPuppeteer'
@@ -97,7 +100,7 @@ const extractFromMoviePage = async ({ url, title }) => {
     const [dayOfWeek, dayString, monthString, year] =
       scrapeResult.firstDate.split(' ')
     const day = Number(dayString)
-    const month = fullMonthToNumber(monthString)
+    const month = fullMonthToNumberDutch(monthString)
     const [hour, minute] = splitTime(time)
 
     return DateTime.fromObject({
@@ -114,7 +117,7 @@ const extractFromMoviePage = async ({ url, title }) => {
   const otherDates = scrapeResult.other.flatMap(({ date, times }) => {
     const [dayOfWeek, dayString, monthString] = date.split(' ')
     const day = Number(dayString)
-    const month = shortMonthToNumber(monthString)
+    const month = shortMonthToNumberDutch(monthString)
 
     return times.map((time) => {
       const [hour, minute] = splitTime(time)

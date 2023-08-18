@@ -2,7 +2,7 @@ import Xray from 'x-ray'
 import { DateTime } from 'luxon'
 
 import splitTime from './splitTime'
-import { shortMonthToNumber } from './monthToNumber'
+import { shortMonthToNumberDutch } from './monthToNumber'
 import guessYear from './guessYear'
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
@@ -63,7 +63,7 @@ export const extractFromMoviePage = async (
         .map((time) => {
           const [dayOfWeek, dayString, monthString] = date.split(' ')
           const day = Number(dayString)
-          const month = shortMonthToNumber(monthString)
+          const month = shortMonthToNumberDutch(monthString)
           const [hour, minute] = splitTime(time)
           const year = guessYear(
             DateTime.fromObject({

@@ -39,7 +39,7 @@ Stores the output in _cloud/.esbuild/.build/output_ instead of S3 buckets and Dy
 
 Use SCRAPERS environment variable in _.env.local_ to define a comma separated list of scrapers to locally run and diverge from the default set of scrapers in _scrapers/index.js_
 
-And to call a single scraper, e.g. `yarn tsx scrapers/kinorotterdam.ts` and then have e.g.
+And to call a single scraper, e.g. `LOG_LEVEL=debug yarn tsx scrapers/kinorotterdam.ts` and then have e.g.
 
 ```
 if (require.main === module) {
@@ -48,6 +48,8 @@ if (require.main === module) {
   ).then(console.log)
 }
 ```
+
+with the LOG_LEVEL=debug used to have debug output from the scrapers show up in the console
 
 ## CI/CD
 
