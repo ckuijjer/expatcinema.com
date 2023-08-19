@@ -24,8 +24,8 @@ const xRayPuppeteer = ({ interactWithPage = async () => {} } = {}) => {
         ctx.body = await page.content()
       }
       done(null, ctx)
-    } catch (err) {
-      return done(err, null)
+    } catch (error) {
+      return done(error, null)
     } finally {
       if (browser !== null) {
         await browser.close()

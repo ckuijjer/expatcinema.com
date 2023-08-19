@@ -138,94 +138,98 @@ const getEnabledScrapers = () => {
 }
 
 const scrapers = async (event: APIGatewayEvent, context: Context) => {
-  const ENABLED_SCRAPERS = getEnabledScrapers()
+  try {
+    const ENABLED_SCRAPERS = getEnabledScrapers()
 
-  logger.info('available scrapers', { SCRAPERS: Object.keys(SCRAPERS) })
-  logger.info('enabled scrapers', {
-    ENABLED_SCRAPERS: Object.keys(ENABLED_SCRAPERS),
-  })
-  logger.info('number of scrapers', {
-    numberOfAvailableScrapers: Object.keys(SCRAPERS).length,
-    numberOfEnabledScrapers: Object.keys(ENABLED_SCRAPERS).length,
-  })
+    logger.info('available scrapers', { SCRAPERS: Object.keys(SCRAPERS) })
+    logger.info('enabled scrapers', {
+      ENABLED_SCRAPERS: Object.keys(ENABLED_SCRAPERS),
+    })
+    logger.info('number of scrapers', {
+      numberOfAvailableScrapers: Object.keys(SCRAPERS).length,
+      numberOfEnabledScrapers: Object.keys(ENABLED_SCRAPERS).length,
+    })
 
-  const results = Object.fromEntries(
-    await Promise.all(
-      Object.entries(ENABLED_SCRAPERS).map(async ([name, fn]) => {
-        logger.info('start scraping', { scraper: name })
+    const results = Object.fromEntries(
+      await Promise.all(
+        Object.entries(ENABLED_SCRAPERS).map(async ([name, fn]) => {
+          logger.info('start scraping', { scraper: name })
 
-        // call the scraper function
-        let result = []
-        try {
-          result = await fn()
-        } catch (error) {
-          logger.error('error scraping', { scraper: name, error })
+          // call the scraper function
+          let result = []
+          try {
+            result = await fn()
+          } catch (error) {
+            logger.error('error scraping', { scraper: name, error })
+          }
+
+          logger.info('done scraping', {
+            scraper: name,
+            numberOfResults: result.length,
+          })
+
+          return [name, sort(result)]
+        }),
+      ),
+    )
+    logger.info('done scraping')
+
+    results.all = sort(Object.values(results).flat())
+
+    // get metadata for all movies
+    const normalizeTitle = (title) => diacritics.remove(title.toLowerCase())
+
+    const uniqueTitles = Array.from(
+      new Set(results.all.map(({ title }) => normalizeTitle(title))),
+    ).sort()
+
+    const uniqueTitlesAndMetadata = await pMap(uniqueTitles, getMetadata, {
+      concurrency: 5,
+    })
+
+    results.allWithMetadata = sort(
+      results.all.map((movie) => {
+        const metadata = uniqueTitlesAndMetadata.find(
+          (metadata) => metadata.query === normalizeTitle(movie.title),
+        )
+
+        if (metadata?.title) {
+          return {
+            ...movie,
+            title: metadata.title,
+          }
+        } else {
+          return movie
         }
-
-        logger.info('done scraping', {
-          scraper: name,
-          numberOfResults: result.length,
-        })
-
-        return [name, sort(result)]
       }),
-    ),
-  )
-  logger.info('done scraping')
+    )
 
-  results.all = sort(Object.values(results).flat())
+    logger.info('writing all to private S3 bucket')
+    await Promise.all(
+      Object.entries(results).map(
+        async ([name, data]) => await writeToFile(`${name}/${now}.json`)(data),
+      ),
+    )
 
-  // get metadata for all movies
-  const normalizeTitle = (title) => diacritics.remove(title.toLowerCase())
+    const movies = uniqueTitlesAndMetadata.map(
+      ({ query, createdAt, ...rest }) => {
+        return { ...rest }
+      },
+    )
 
-  const uniqueTitles = Array.from(
-    new Set(results.all.map(({ title }) => normalizeTitle(title))),
-  ).sort()
+    logger.info('writing all, the combined json, to public S3 bucket')
+    await writeToPublicFile('screenings.json')(results.allWithMetadata)
+    await writeToPublicFile('movies.json')(movies)
 
-  const uniqueTitlesAndMetadata = await pMap(uniqueTitles, getMetadata, {
-    concurrency: 5,
-  })
+    const countPerScraper = Object.fromEntries(
+      Object.entries(results).map(([name, data]) => [name, data.length]),
+    )
 
-  results.allWithMetadata = sort(
-    results.all.map((movie) => {
-      const metadata = uniqueTitlesAndMetadata.find(
-        (metadata) => metadata.query === normalizeTitle(movie.title),
-      )
-
-      if (metadata?.title) {
-        return {
-          ...movie,
-          title: metadata.title,
-        }
-      } else {
-        return movie
-      }
-    }),
-  )
-
-  logger.info('writing all to private S3 bucket')
-  await Promise.all(
-    Object.entries(results).map(
-      async ([name, data]) => await writeToFile(`${name}/${now}.json`)(data),
-    ),
-  )
-
-  const movies = uniqueTitlesAndMetadata.map(
-    ({ query, createdAt, ...rest }) => {
-      return { ...rest }
-    },
-  )
-
-  logger.info('writing all, the combined json, to public S3 bucket')
-  await writeToPublicFile('screenings.json')(results.allWithMetadata)
-  await writeToPublicFile('movies.json')(movies)
-
-  const countPerScraper = Object.fromEntries(
-    Object.entries(results).map(([name, data]) => [name, data.length]),
-  )
-
-  logger.warn('writing to analytics json', { countPerScraper })
-  await writeToAnalytics('count')(countPerScraper)
+    logger.warn('writing to analytics json', { countPerScraper })
+    await writeToAnalytics('count')(countPerScraper)
+  } catch (error) {
+    logger.error('error scraping', { error })
+  }
 }
 
 const handler = middy(scrapers).use(

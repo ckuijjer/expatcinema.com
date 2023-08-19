@@ -123,8 +123,8 @@ const movieMetadataPlayground = async () => {
       uniqueTitlesAndMetadata,
       allWithMetadata,
     }
-  } catch (err) {
-    console.error(err)
+  } catch (error) {
+    console.error(error)
   }
 }
 
