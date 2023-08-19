@@ -35,7 +35,7 @@ const About = () => {
           <span css={linkStyle}>Amsterdam</span>
         </Link>
         : Cinecenter, Eye, Ketelhuis, Kriterion, Lab111, Rialto De Pijp, Rialto
-        VU, Studio/K, De Uitkijk
+        VU, The Movies VU, Studio/K, De Uitkijk
         <br />
         <Link href="/city/delft">
           <span css={linkStyle}>Delft</span>
