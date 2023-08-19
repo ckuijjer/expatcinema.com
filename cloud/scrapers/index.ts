@@ -59,6 +59,7 @@ const SCRAPERS = {
 }
 
 import { logger as parentLogger } from '../powertools'
+import { Screening } from 'types'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -156,7 +157,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
           logger.info('start scraping', { scraper: name })
 
           // call the scraper function
-          let result = []
+          let result: Screening[] = []
           try {
             result = await fn()
           } catch (error) {

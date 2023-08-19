@@ -43,70 +43,74 @@ type XRayFromMainPage = {
 }
 
 const extractFromMainPage = async () => {
-  logger.info('main page')
+  try {
+    logger.info('main page')
 
-  // scraping google cache as lab111 blocks the scraper lambda
-  const scrapeResult: XRayFromMainPage[] = await xray(
-    'http://webcache.googleusercontent.com/search?q=cache:https://www.lab111.nl/programma/',
-    '#programmalist .filmdetails',
-    [
-      {
-        title: 'h2.hidemobile a | trim | cleanTitle',
-        url: 'h2.hidemobile a@href | trim',
-        metadata: '.row.hidemobile | normalizeWhitespace',
-        dates: ['.day td:first-child | trim'],
-      },
-    ],
-  )
+    // scraping google cache as lab111 blocks the scraper lambda
+    const scrapeResult: XRayFromMainPage[] = await xray(
+      'http://webcache.googleusercontent.com/search?q=cache:https://www.lab111.nl/programma/',
+      '#programmalist .filmdetails',
+      [
+        {
+          title: 'h2.hidemobile a | trim | cleanTitle',
+          url: 'h2.hidemobile a@href | trim',
+          metadata: '.row.hidemobile | normalizeWhitespace',
+          dates: ['.day td:first-child | trim'],
+        },
+      ],
+    )
 
-  logger.info('scrape result', { scrapeResult })
+    logger.info('scrape result', { scrapeResult })
 
-  const screenings = scrapeResult
-    .filter(hasEnglishSubtitles)
-    .flatMap((movie) => {
-      return movie.dates.map((date) => {
-        const [dayOfWeek, dayString, monthString, time] = date.split(/\s+/)
-        const day = Number(dayString)
-        const month = shortMonthToNumberEnglish(monthString)
-        const [hour, minute] = splitTime(time)
-        const year = guessYear(
-          DateTime.fromObject({
-            day,
-            month,
-            hour,
-            minute,
-          }),
-        )
+    const screenings = scrapeResult
+      .filter(hasEnglishSubtitles)
+      .flatMap((movie) => {
+        return movie.dates.map((date) => {
+          const [dayOfWeek, dayString, monthString, time] = date.split(/\s+/)
+          const day = Number(dayString)
+          const month = shortMonthToNumberEnglish(monthString)
+          const [hour, minute] = splitTime(time)
+          const year = guessYear(
+            DateTime.fromObject({
+              day,
+              month,
+              hour,
+              minute,
+            }),
+          )
 
-        logger.debug('extracted date', {
-          dateString: date,
-          date: {
-            day,
-            month,
-            hour,
-            minute,
-            year,
-          },
+          logger.debug('extracted date', {
+            dateString: date,
+            date: {
+              day,
+              month,
+              hour,
+              minute,
+              year,
+            },
+          })
+
+          return {
+            title: cleanTitle(movie.title),
+            url: movie.url,
+            cinema: 'Lab111',
+            date: DateTime.fromObject({
+              day,
+              month,
+              hour,
+              minute,
+              year,
+            }).toJSDate(),
+          }
         })
-
-        return {
-          title: cleanTitle(movie.title),
-          url: movie.url,
-          cinema: 'Lab111',
-          date: DateTime.fromObject({
-            day,
-            month,
-            hour,
-            minute,
-            year,
-          }).toJSDate(),
-        }
       })
-    })
 
-  logger.info('screenings found', { screenings })
+    logger.info('screenings found', { screenings })
 
-  return screenings
+    return screenings
+  } catch (error) {
+    logger.error('error scraping lab111', { error })
+  }
 }
 
 if (require.main === module) {

@@ -19,7 +19,7 @@ const xray = Xray({
         : value,
   },
 })
-  .concurrency(10)
+  .concurrency(2)
   .throttle(10, 300)
   .timeout('5s')
 
@@ -83,28 +83,32 @@ type XRayFromMainPage = {
 // the sidebar, and using the sidebar in extractFromMoviePage again so we only make one request for every
 // movie, but still can easily get all the screenings
 const extractFromMainPage = async () => {
-  const xrayResult: XRayFromMainPage[] = await xray(
-    'https://www.kriterion.nl/agenda-2-2-2-2',
-    'li[typeof="schema:TheaterEvent"]',
-    [
-      {
-        title: '[property="schema:name"] | trim',
-        url: 'span[property="schema:url"] | trim', // as the <a> has a ?start_date appended
-        date: '[property="schema:startDate"]@datetime',
-      },
-    ],
-  )
+  try {
+    const xrayResult: XRayFromMainPage[] = await xray(
+      'https://www.kriterion.nl/agenda-2-2-2-2',
+      'li[typeof="schema:TheaterEvent"]',
+      [
+        {
+          title: '[property="schema:name"] | trim',
+          url: 'span[property="schema:url"] | trim', // as the <a> has a ?start_date appended
+          date: '[property="schema:startDate"]@datetime',
+        },
+      ],
+    )
 
-  logger.info('main page before', { xrayResult })
+    logger.info('main page before', { xrayResult })
 
-  const uniqueUrls = Array.from(new Set(xrayResult.map((x) => x.url)))
+    const uniqueUrls = Array.from(new Set(xrayResult.map((x) => x.url)))
 
-  logger.info('main page after uniq', { uniqueUrls })
+    logger.info('main page after uniq', { uniqueUrls })
 
-  const screenings = await Promise.all(uniqueUrls.map(extractFromMoviePage))
-  logger.info('before flatten', { screenings })
+    const screenings = await Promise.all(uniqueUrls.map(extractFromMoviePage))
+    logger.info('before flatten', { screenings })
 
-  return screenings.flat()
+    return screenings.flat()
+  } catch (error) {
+    logger.error('error scraping kriterion', { error })
+  }
 }
 
 if (require.main === module) {
