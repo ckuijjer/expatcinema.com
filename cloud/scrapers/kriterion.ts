@@ -21,6 +21,7 @@ const xray = Xray({
 })
   .concurrency(10)
   .throttle(10, 300)
+  .timeout('5s')
 
 const hasEnglishSubtitles = ({ metadata }: XRayFromMoviePage) => {
   const hasEnglishSubtitles =

@@ -5,7 +5,7 @@ configValidationMode: error
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs16.x
   region: eu-west-1
   stage: ${opt:stage, 'dev'}
   versionFunctions: false
@@ -48,7 +48,7 @@ provider:
                 - Arn
 
   environment:
-    NODE_OPTIONS: --enable-source-maps
+    NODE_OPTIONS: --enable-source-maps --trace-warnings
     POWERTOOLS_SERVICE_NAME: ${self:service}-${self:provider.stage}
 
   logRetentionInDays: 60
