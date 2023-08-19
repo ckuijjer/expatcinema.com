@@ -4,11 +4,11 @@ import Screening from '../Screening'
 
 const DirectCalendar = ({ rows, showCity }) => (
   <>
-    {rows.map((row) =>
+    {rows.map((row, i) =>
       row.component === 'RelativeDate' ? (
-        <RelativeDate {...row.props} />
+        <RelativeDate key={i} {...row.props} />
       ) : (
-        <Screening {...row.props} showCity={showCity} />
+        <Screening key={i} {...row.props} showCity={showCity} />
       ),
     )}
   </>
