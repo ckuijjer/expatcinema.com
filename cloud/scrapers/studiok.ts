@@ -24,8 +24,8 @@ const xray = Xray({
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
-  .concurrency(10)
-  .throttle(10, 300)
+  .concurrency(3)
+  .throttle(3, 600)
   .timeout('5s')
 
 type XRayFromMoviePage = {
