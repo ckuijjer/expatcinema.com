@@ -42,7 +42,7 @@ type FilmhuisDenhaagAPIResponse = {
   }[]
 }
 
-const cleanTitle = (title: string) => title.replace(/ – EN subs$/, '')
+const cleanTitle = (title: string) => title.replace(/ – EN subs$/i, '')
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const apiResponse: FilmhuisDenhaagAPIResponse = await got(
