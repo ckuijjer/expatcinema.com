@@ -42,6 +42,8 @@ type FilmhuisDenhaagAPIResponse = {
   }[]
 }
 
+const cleanTitle = (title: string) => title.replace(/ – EN subs$/, '')
+
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const apiResponse: FilmhuisDenhaagAPIResponse = await got(
     'https://filmhuisdenhaag.nl/api/program',
@@ -61,7 +63,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       const [hour, minute] = splitTime(item.starts_at_time)
 
       return {
-        title: item.film.title,
+        title: cleanTitle(item.film.title),
         url: `https://filmhuisdenhaag.nl${item.film.uri}`,
         cinema: 'Filmhuis Den Haag',
         date: DateTime.fromObject({

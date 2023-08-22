@@ -17,7 +17,8 @@ const xray = Xray({
   .concurrency(10)
   .throttle(10, 300)
 
-const cleanTitle = (title: string) => title.replace(/Cine Expat: /i, '')
+const cleanTitle = (title: string) =>
+  title.replace(/Cine Expat: /i, '').replace(/^ENG SUBS: /i, '')
 
 type XRayFromMoviePage = {
   title: string
