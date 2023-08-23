@@ -42,7 +42,10 @@ type FilmhuisDenhaagAPIResponse = {
   }[]
 }
 
-const cleanTitle = (title: string) => title.replace(/ – EN subs$/i, '')
+const cleanTitle = (title: string) =>
+  title
+    .replace(/ - EN subs$/i, '') // remove subs from the title
+    .replace(/ -(.*?)$/, '') // actually remove the last dash and everything after it (bit questionable)
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const apiResponse: FilmhuisDenhaagAPIResponse = await got(
@@ -81,18 +84,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 }
 
 if (require.main === module) {
-  const sort = R.sortWith([
-    (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),
-    R.ascend(R.prop('cinema')),
-    R.ascend(R.prop('title')),
-    R.ascend(R.prop('url')),
-  ])
-
   extractFromMainPage()
-    .then(sort)
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
-
   // extractFromMoviePage({
   // url: 'https://www.filmhuisdenhaag.nl/agenda/event/styx',
   // }).then(console.log)
