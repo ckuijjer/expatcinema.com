@@ -31,7 +31,7 @@ const extractFromMainPage = async () => {
     {
       title: '.tile__title a | trim',
       url: '.tile__title a@href',
-      screenings: ['.schedule__item'],
+      screenings: ['.schedule__item | trim'],
     },
   ])
 
@@ -40,11 +40,27 @@ const extractFromMainPage = async () => {
       return screenings
         .filter((screening) => screening.includes('EN SUBS'))
         .map((screening) => {
-          const [dayString, monthString, time] = screening.split(/\s+/).slice(2) // ['21', 'Aug', '18:15', 'EN', 'SUBS']
-          const day = Number(dayString)
-          const month = shortMonthToNumberEnglish(monthString)
+          let day, month
 
-          const [hour, minute] = time.split(':').map(Number)
+          if (screening.startsWith('Today')) {
+            day = DateTime.local().day
+            month = DateTime.local().month
+          } else if (screening.startsWith('Tomorrow')) {
+            const tomorrow = DateTime.local().plus({ days: 1 })
+
+            day = tomorrow.day
+            month = tomorrow.month
+          } else {
+            const [dayOfWeek, dayString, monthString] = screening.split(/\s+/) // ['Wed', '21', 'Aug', '18:15', 'EN', 'SUBS']
+
+            day = Number(dayString)
+            month = shortMonthToNumberEnglish(monthString)
+          }
+
+          const [hour, minute] = screening
+            .match(/\d\d:\d\d/)[0]
+            .split(':')
+            .map(Number)
 
           const year = guessYear(
             DateTime.fromObject({
