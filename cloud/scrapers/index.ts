@@ -54,7 +54,7 @@ const SCRAPERS = {
   lab111,
   lantarenvenster,
   // liff,
-  lumiere
+  lumiere,
   rialto,
   slachtstraat,
   springhaver,
