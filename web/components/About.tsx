@@ -62,6 +62,11 @@ const About = () => {
         </Link>
         : Kino, Lantarenvenster
         <br />
+        <Link href="/city/utrecht">
+          <span css={linkStyle}>Rotterdam</span>
+        </Link>
+        : Hartlooper, Slachtstraat, Springhaver
+        <br />
         <p>
           Contact us at{' '}
           <a href="mailto:info@expatcinema.com">info@expatcinema.com</a>
