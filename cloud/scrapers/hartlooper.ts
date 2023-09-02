@@ -109,7 +109,7 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
         return {
           title: cleanTitle(movie.title),
           url,
-          cinema: 'Hartlooper',
+          cinema: 'Louis Hartlooper Complex',
           date: DateTime.fromObject({
             day,
             month,
