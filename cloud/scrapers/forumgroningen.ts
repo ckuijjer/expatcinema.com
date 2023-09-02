@@ -4,6 +4,8 @@ import { DateTime } from 'luxon'
 import guessYear from './guessYear'
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
+import { fullMonthToNumberDutch } from './monthToNumber'
+import splitTime from './splitTime'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -25,55 +27,110 @@ const xray = Xray({
   .concurrency(10)
   .throttle(10, 300)
 
-type XRayFromMainPage = {
-  date: string
-  time: string
+type XRayFromMoviePage = {
   title: string
+  screenings: {
+    date: string
+    times: {
+      time: string
+      tags: string
+    }[]
+  }[]
+}
+
+const extractFromMoviePage = async ({
+  url,
+}: {
+  url: string
+}): Promise<Screening[]> => {
+  const scrapeResult: XRayFromMoviePage = await xray(url, {
+    title: 'h1.title',
+    screenings: xray('.calendar-day', [
+      {
+        date: '.calendar-day-head | normalizeWhitespace | trim',
+        times: xray('.calendar-day-content .time', [
+          {
+            time: 'div | normalizeWhitespace | trim',
+            tags: '.warning | cleanTitle | trim',
+          },
+        ]),
+      },
+    ]),
+  })
+
+  logger.info('scrapeResult', { scrapeResult })
+
+  const screenings: Screening[] = scrapeResult.screenings.flatMap(
+    ({ date, times }) => {
+      return times
+        .filter(({ tags }) => tags?.toLowerCase().includes('english subtitles'))
+        .map(({ time }) => {
+          const [dayOfWeek, dayString, monthString] = date.split(/\s+/)
+          const day = Number(dayString)
+          const month = fullMonthToNumberDutch(monthString)
+          const [startTime, endTime] = time.split(/ tot /)
+          const [hour, minute] = splitTime(startTime)
+
+          const year = guessYear(
+            DateTime.fromObject({
+              day,
+              month,
+              hour,
+              minute,
+            }),
+          )
+
+          return {
+            title: scrapeResult.title,
+            url,
+            cinema: 'Forum Groningen',
+            date: DateTime.fromObject({
+              year,
+              day,
+              month,
+              hour,
+              minute,
+            }).toJSDate(),
+          }
+        })
+    },
+  )
+
+  logger.info('screenings', { screenings })
+  return screenings
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
+  // note that the program might have more expat-friendly movies than this page, however there's no
+  // easy way to go through the entire agenda
   const url = 'https://forum.nl/en/whats-on/international-movie-night'
 
-  const scrapeResults: XRayFromMainPage[] = await xray(url, '.calendar-day', [
+  const movies = await xray(url, '.content-row-medium.text-and-image', [
     {
-      date: '.calendar-day-head | normalizeWhitespace | trim',
-      time: '.calendar-day-content .time div | normalizeWhitespace | trim',
-      title: '.calendar-day-content .time .warning | cleanTitle | trim',
+      title: 'h2 | cleanTitle | trim',
+      url: 'a@href',
     },
   ])
 
-  logger.info('scraped', { scrapeResults })
+  logger.info('extracted', { movies })
 
-  const screenings = scrapeResults
-    .filter((x) => x.title !== undefined)
-    .map(({ title, date, time }) => {
-      const format = 'cccc d LLLL H:mm'
+  const screenings = (
+    await Promise.all(movies.map(extractFromMoviePage))
+  ).flat()
 
-      let d = DateTime.fromFormat(
-        `${date} ${time.split(/ till /)[0]}`,
-        format,
-        {
-          zone: 'Europe/Amsterdam',
-        },
-      )
-
-      const year = guessYear(date)
-      d = d.set({ year })
-
-      return {
-        url,
-        title,
-        date: d.toJSDate(),
-        cinema: 'Forum Groningen',
-      }
-    })
-
-  logger.info('extracted', { screenings })
+  logger.info('screenings', { screenings })
 
   return screenings
 }
 
 if (require.main === module) {
+  // extractFromMoviePage({
+  //   // url: 'https://forum.nl/nl/agenda/gaia',
+  //   // url: 'https://forum.nl/nl/agenda/ringu',
+  //   // url: 'https://forum.nl/nl/agenda/passages',p
+  //   url: 'https://forum.nl/nl/agenda/pans-labyrinth',
+  // })
+
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
