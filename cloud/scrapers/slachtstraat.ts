@@ -12,7 +12,7 @@ import { logger as parentLogger } from '../powertools'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
-    scraper: 'hartlooper',
+    scraper: 'slachtstraat',
   },
 })
 
@@ -109,7 +109,7 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
         return {
           title: cleanTitle(movie.title),
           url,
-          cinema: 'Hartlooper',
+          cinema: 'Slachtstraat',
           date: DateTime.fromObject({
             day,
             month,
@@ -129,7 +129,7 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const movies: { post_title: string; link: string }[] = await got(
-    'https://www.hartlooper.nl/wp-admin/admin-ajax.php?action=get_movies&day=movies',
+    'https://www.slachtstraat.nl/wp-admin/admin-ajax.php?action=get_movies&day=movies',
   ).json()
 
   const formattedMovies = movies.map(({ post_title, link }) => ({

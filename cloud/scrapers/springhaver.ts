@@ -17,31 +17,41 @@ const logger = parentLogger.createChild({
 const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    toLowerCase: (value) =>
+      typeof value === 'string' ? value.toLowerCase() : value,
   },
 })
   .concurrency(10)
   .throttle(10, 300)
 
-const hasEnglishSubtitles = ({ title }: { title: string }) =>
-  title.toLowerCase().includes('language no problem') ||
-  title.toLowerCase().includes('english subtitles')
+const metadataDescribedEnglishSubtitles = (metadata: {
+  [key: string]: string
+}) => {
+  const subtitles = metadata['ondertitelde taal']
+
+  return subtitles === 'english' || subtitles === 'engels'
+}
 
 const cleanTitle = (title: string) =>
   title
     .replace(/Language No Problem: /i, '')
     .replace(/ \(English Subtitles\)/i, '')
     .replace(/ \(with English subtitles\)/i, '')
-    .replace(/^Cine De Vuelta: /i, '')
+    .replace(/^.*?: /, '')
     .replace(/ \(\d{4}\).*?$/, '')
 
 type XRayFromMoviePage = {
   title: string
   screenings: {
     date: {
-      day: number
-      month: number
+      day: string
+      month: string
     }
     times: string[]
+  }[]
+  metadata: {
+    key: string
+    value: string
   }[]
 }
 
@@ -59,11 +69,24 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
         times: ['.time span | trim'],
       },
     ]),
+    metadata: xray('.movie-info tr', [
+      {
+        key: 'td:nth-child(1) | toLowerCase | trim',
+        value: 'td:nth-child(2) | toLowerCase | trim',
+      },
+    ]),
   })
 
   logger.info('extracted xray', { url, movie })
 
-  if (!hasEnglishSubtitles(movie)) return []
+  const metadata = movie.metadata.reduce(
+    (acc, { key, value }) => ({ ...acc, [key]: value }),
+    {} as { [key: string]: string },
+  )
+
+  logger.info('metadata', { metadata })
+
+  if (!metadataDescribedEnglishSubtitles(metadata)) return []
 
   const screenings = movie.screenings
     .map(({ date, times }) =>
@@ -114,13 +137,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.info('main page', { formattedMovies })
 
-  const filteredMovies = formattedMovies.filter(hasEnglishSubtitles)
-
-  logger.info('main page with english subtitles', { filteredMovies })
-
-  const screenings: Screenings = await Promise.all(
-    filteredMovies.map(extractFromMoviePage),
-  )
+  const screenings: Screening[] = (
+    await Promise.all(formattedMovies.map(extractFromMoviePage))
+  ).flat()
 
   logger.info('before flatten', { screenings })
 
@@ -133,7 +152,7 @@ if (require.main === module) {
     .then(console.log)
 
   // extractFromMoviePage({
-  //   url: 'https://www.springhaver.nl/movies/1458/17/blackkklansman',
+  //   url: 'https://www.springhaver.nl/films/language-no-problem-roter-himmel-english-subtitles/',
   // })
 }
 
