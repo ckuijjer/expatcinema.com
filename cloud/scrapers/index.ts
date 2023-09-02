@@ -19,42 +19,46 @@ import getMetadata from '../metadata'
 //   return [name, sort(await fn())]
 // }),
 import bioscopenleiden from './bioscopenleiden'
+import cinecenter from './cinecenter'
+import deuitkijk from './deuitkijk'
 import eyefilm from './eyefilm'
 import filmhuisdenhaag from './filmhuisdenhaag'
+import filmhuislumen from './filmhuislumen'
+import forumgroningen from './forumgroningen'
+import hartlooper from './hartlooper'
+import ketelhuis from './ketelhuis'
 import kinorotterdam from './kinorotterdam'
 import kriterion from './kriterion'
 import lab111 from './lab111'
 import lantarenvenster from './lantarenvenster'
-import springhaver from './springhaver'
-import hartlooper from './hartlooper'
-import rialto from './rialto'
-import cinecenter from './cinecenter'
 import liff from './liff'
-import filmhuislumen from './filmhuislumen'
-import forumgroningen from './forumgroningen'
-import ketelhuis from './ketelhuis'
+import lumiere from './lumiere'
+import rialto from './rialto'
+import slachtstraat from './slachtstraat'
+import springhaver from './springhaver'
 import studiok from './studiok'
-import deuitkijk from './deuitkijk'
 import themovies from './themovies'
 
 const SCRAPERS = {
   bioscopenleiden,
+  cinecenter,
+  deuitkijk,
   eyefilm,
   filmhuisdenhaag,
+  filmhuislumen,
+  forumgroningen,
+  hartlooper,
+  // ketelhuis,
   kinorotterdam,
   kriterion,
   lab111,
   lantarenvenster,
-  springhaver,
-  hartlooper,
-  rialto,
-  cinecenter,
   // liff,
-  filmhuislumen,
-  forumgroningen,
-  // ketelhuis,
+  // lumiere
+  rialto,
+  slachtstraat,
+  springhaver,
   studiok,
-  deuitkijk,
   themovies,
 }
 
