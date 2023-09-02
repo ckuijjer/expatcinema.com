@@ -12,13 +12,17 @@ const logger = parentLogger.createChild({
   },
 })
 
-const splitTimeDot = (time) => time.split('.').map((x) => Number(x))
+const splitTimeDot = (time: string) => time.split('.').map((x) => Number(x))
 
 const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
     cleanTitle: (value) =>
-      typeof value === 'string' ? value.replace(/\(.*\)$/, '') : value,
+      typeof value === 'string'
+        ? value
+            .replace(/\(.*\)$/, '') // e.g. (English subtitles)
+            .replace(/^.*:/, '') // e.g. Expat Cinema:
+        : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
@@ -29,110 +33,62 @@ const xray = Xray({
 type XRayFromMainPage = {
   title: string
   url: string
-  dates: string[]
-  rooms: {
-    times: string[]
-  }[]
+  date: string
+  time: string
 }
 
 const extractFromMainPage = async () => {
   // look at the HTML for the page, not Chrome' DevTools, as there's JavaScript that changed the HTML.
   const scrapeResults: XRayFromMainPage[] = await xray(
-    'https://www.filmhuis-lumen.nl/deze-week/',
-    '.wp_theatre_prod',
+    'https://filmhuis-lumen.nl/expat-cinema/',
+    '.theater-show',
     [
       {
-        url: '.wp_theatre_prod_title a@href',
-        title: '.wp_theatre_prod_title  a | cleanTitle | trim',
-        dates: [
-          '.wpt_production_timetable tr:first-child th:not(:first-child)',
-        ],
-        rooms: xray('.wpt_production_timetable tr:not(:first-child)', [
-          {
-            times: ['td'],
-          },
-        ]),
+        title: 'h3 | normalizeWhitespace | cleanTitle | trim',
+        url: 'a@href',
+        date: '.dedate .dedatumblack | normalizeWhitespace | trim',
+        time: '.dedate a | trim',
       },
     ],
   )
 
-  logger.info('scraped /deze-week', { scrapeResults })
-
-  const screenings = (
-    await Promise.all(scrapeResults.map(extractFromMoviePage))
-  ).flat()
-
-  logger.info('screens', { screenings })
-
-  return screenings
-}
-
-const hasEnglishSubtitles = ({ metadata }: { metadata: string }) =>
-  metadata.includes('Engels ondertiteld')
-
-const extractFromMoviePage = async ({
-  url,
-  title,
-  dates,
-  rooms,
-}: XRayFromMainPage): Promise<Screening[]> => {
-  // All information about the movie, e.g. date, times is on the main page, we need to reuse it.
-  // Not all information is available on the movie page though. The only thing available on the movie
-  // page that isn't available on the main page is the subtitle metadata
-
-  logger.info('extracting', { url })
-
-  const scrapeResult = await xray(url, '.timetable', {
-    metadata: '.theatre-post-info | normalizeWhitespace | trim',
+  logger.info('scraped https://filmhuis-lumen.nl/expat-cinema/', {
+    scrapeResults,
   })
 
-  logger.info('scraped', { url, scrapeResult })
-
-  if (!hasEnglishSubtitles(scrapeResult)) {
-    logger.info('hasEnglishSubtitles false', { url })
-    return []
-  }
-
-  // convert to a list of screenings
-  const screenings: Screening[] = dates
-    .flatMap((date, i) => {
-      const [dayOfWeek, dayString, monthString] = date.split(' ')
-
+  const screenings: Screening[] = scrapeResults.map(
+    ({ title, url, date, time }) => {
+      const [dayString, monthString] = date.split(' ')
       const day = Number(dayString)
       const month = shortMonthToNumberDutch(monthString)
 
-      return rooms.map(({ times }) => {
-        const time = times[i]
-        if (time === '') return undefined // skip empty times
+      const [hour, minute] = splitTimeDot(time)
 
-        const [hour, minute] = splitTimeDot(time)
-        const year = guessYear(
-          DateTime.fromObject({
-            day,
-            month,
-            hour,
-            minute,
-          }),
-        )
+      const year = guessYear(
+        DateTime.fromObject({
+          day,
+          month,
+          hour,
+          minute,
+        }),
+      )
 
-        const screening = {
-          url,
-          title,
-          cinema: 'Filmhuis Lumen',
-          date: DateTime.fromObject({
-            day,
-            month,
-            hour,
-            minute,
-            year,
-          }).toJSDate(),
-        }
-        return screening
-      })
-    })
-    .filter((x) => x)
+      return {
+        title,
+        url,
+        cinema: 'Filmhuis Lumen',
+        date: DateTime.fromObject({
+          year,
+          day,
+          month,
+          hour,
+          minute,
+        }).toJSDate(),
+      }
+    },
+  )
 
-  logger.info('extracted', { url, screenings })
+  logger.info('screenings', { screenings })
 
   return screenings
 }
@@ -141,26 +97,6 @@ if (require.main === module) {
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
-
-  // extractFromMoviePage({
-  //   url: 'https://filmhuis-lumen.nl/film/the-last-bus-premiere/',
-  //   title: 'The Last Bus',
-  //   dates: [
-  //     'do 21 jul',
-  //     'vr 22 jul',
-  //     'za 23 jul',
-  //     'zo 24 jul',
-  //     'ma 25 jul',
-  //     'di 26 jul',
-  //     'wo 27 jul',
-  //   ],
-  //   rooms: [
-  //     { times: ['', '19.00', '19.00', '15.00', '', '', ''] },
-  //     { times: ['19.30', '', '', '', '', '', '19.30'] },
-  //   ],
-  // })
-  //   .then((x) => JSON.stringify(x, null, 2))
-  //   .then(console.log)
 }
 
 export default extractFromMainPage
