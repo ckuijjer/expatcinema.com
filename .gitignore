@@ -29,4 +29,5 @@ web/out
 web/next-env.d.ts
 backup/
 .env.*
-!.env.example
+
+data
