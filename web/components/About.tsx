@@ -57,6 +57,11 @@ const About = () => {
         </Link>
         : Kijkhuis
         <br />
+        <Link href="/city/maastricht">
+          <span css={linkStyle}>Maastricht</span>
+        </Link>
+        : Lumière
+        <br />
         <Link href="/city/rotterdam">
           <span css={linkStyle}>Rotterdam</span>
         </Link>
