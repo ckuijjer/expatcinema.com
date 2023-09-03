@@ -29,6 +29,7 @@ import hartlooper from './hartlooper'
 import ketelhuis from './ketelhuis'
 import kinorotterdam from './kinorotterdam'
 import kriterion from './kriterion'
+import lab1 from './lab1'
 import lab111 from './lab111'
 import lantarenvenster from './lantarenvenster'
 import liff from './liff'
@@ -51,6 +52,7 @@ const SCRAPERS = {
   // ketelhuis,
   kinorotterdam,
   kriterion,
+  lab1,
   lab111,
   lantarenvenster,
   // liff,
@@ -64,6 +66,7 @@ const SCRAPERS = {
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from 'types'
+import { closeBrowser } from 'xRayPuppeteer'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -170,13 +173,17 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
 
           logger.info('done scraping', {
             scraper: name,
-            numberOfResults: result.length,
+            numberOfResults: result?.length,
           })
 
           return [name, sort(result)]
         }),
       ),
     )
+
+    // close the browser
+    closeBrowser({ logger })
+
     logger.info('done scraping')
 
     results.all = sort(Object.values(results).flat())
