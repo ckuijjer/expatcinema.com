@@ -28,7 +28,16 @@ const About = () => {
       <Header />
       <Container>
         ExpatCinema uses a combination of automated and manual techniques to
-        find english subtitled movie screenings at the following cinemas.
+        find English subtitled movie screenings at the following cinemas.
+        <br />
+        Note that this means there's unfortunately no guarantee that the
+        screenings are actually with English subtitles, so please check the
+        cinema's website before going.
+        <br />
+        If you know of other cinemas that show English subtitled movies, if you
+        find there's screenings missing, or if you find any mistakes, please let
+        us know at{' '}
+        <a href="mailto:info@expatcinema.com">info@expatcinema.com</a>
         <br />
         <br />
         <Link href="/city/amsterdam">
