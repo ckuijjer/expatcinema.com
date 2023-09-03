@@ -35,7 +35,7 @@ const xray = Xray({
     trim,
   },
 })
-  .driver(xRayPuppeteer())
+  .driver(xRayPuppeteer({ logger }))
   .concurrency(10)
   .throttle(10, 300)
 
