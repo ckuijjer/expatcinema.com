@@ -39,7 +39,7 @@ const xRayPuppeteer = ({
       logger?.info('done retrieving content', { url: ctx.url })
       done(null, ctx)
     } catch (error) {
-      logger?.error('error retrieving', { url: ctx.url })
+      logger?.error('error retrieving', { url: ctx.url, error })
       return done(error, null)
     } finally {
       logger?.info('closing browser')
