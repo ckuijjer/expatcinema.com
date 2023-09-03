@@ -18,7 +18,7 @@ const xRayPuppeteer = ({
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath,
-        headless: true, //chromium.headless,
+        headless: chromium.headless,
         ignoreHTTPSErrors: true,
       }
 
