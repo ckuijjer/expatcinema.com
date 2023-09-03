@@ -63,7 +63,6 @@ functions:
           rate: cron(0 3 * * ? *)
           enabled: ${self:custom.scraperScheduleEnabled.${self:provider.stage}}
     environment:
-      NODE_TLS_REJECT_UNAUTHORIZED: 0 # for the filmhuis lumen scraper
       PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
       PUBLIC_BUCKET: ${self:custom.publicBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
