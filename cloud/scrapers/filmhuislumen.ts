@@ -56,8 +56,11 @@ const extractFromMainPage = async () => {
     scrapeResults,
   })
 
-  const screenings: Screening[] = scrapeResults.map(
-    ({ title, url, date, time }) => {
+  const screenings: Screening[] = scrapeResults
+    .filter(({ date, time }) => date && time) // remove the movies that don't have a screening time (yet)
+    .map(({ title, url, date, time }) => {
+      logger.info('mapping', { title, url, date, time })
+
       const [dayString, monthString] = date.split(' ')
       const day = Number(dayString)
       const month = shortMonthToNumberDutch(monthString)
@@ -85,8 +88,7 @@ const extractFromMainPage = async () => {
           minute,
         }).toJSDate(),
       }
-    },
-  )
+    })
 
   logger.info('screenings', { screenings })
 
