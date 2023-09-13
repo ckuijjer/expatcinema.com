@@ -23,7 +23,7 @@ const xray = Xray({
   .throttle(10, 300)
 
 const hasEnglishSubtitles = ({ metadata }: { metadata: string[] }) =>
-  metadata.includes('Ondertiteling: Engels')
+  metadata.some((x) => x.match(/ondertiteling:\s*engels/i))
 
 // 31-10-22-16:30
 const extractDate = (time: string) =>
@@ -31,6 +31,7 @@ const extractDate = (time: string) =>
 
 const cleanTitle = (title: string) =>
   title
+    .replace(/ \(.*?\)$/g, '')
     .replace(/^110 Jaar De Uitkijk:/i, '')
     .replace(/^Klassieker:/i, '')
     .trim()
