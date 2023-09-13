@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
+    "@next/font": "^13.4.19",
     "@observablehq/plot": "^0.6.0",
-    "cross-fetch": "^3.1.5",
-    "is-mobile": "^3.1.1",
-    "luxon": "^3.0.4",
-    "next": "12.3.1",
-    "next-sitemap": "^3.1.24",
+    "is-mobile": "^4.0.0",
+    "luxon": "^3.4.3",
+    "next": "13.4.19",
+    "next-sitemap": "^4.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-virtualized": "^9.22.3"
@@ -25,11 +25,12 @@
     "@emotion/babel-plugin": "^11.10.2",
     "@emotion/babel-preset-css-prop": "^11.10.0",
     "@svgr/webpack": "^6.4.0",
-    "@types/node": "18.8.3",
+    "@types/node": "20.5.9",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
-    "eslint": "8.25.0",
-    "eslint-config-next": "12.3.1",
+    "eslint": "8.48.0",
+    "eslint-config-next": "13.4.19",
+    "prettier": "^3.0.3",
     "typescript": "4.8.4"
   }
 }
