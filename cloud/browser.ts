@@ -10,6 +10,9 @@ let browser: Promise<Browser> | undefined
 // call it multiple times, and only have it launch the browser once.
 export const launchBrowser = async ({ logger }: { logger?: Logger }) => {
   if (browser !== undefined) {
+    logger?.info('returning earlier instantiated puppeteer browser', {
+      browser,
+    })
     return browser
   }
 
@@ -23,6 +26,7 @@ export const launchBrowser = async ({ logger }: { logger?: Logger }) => {
 
   logger?.info('launching puppeteer', { options })
   browser = chromium.puppeteer.launch(options)
+  logger?.info('launched puppeteer', { browser })
 
   return browser
 }
