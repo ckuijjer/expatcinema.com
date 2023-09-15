@@ -49,7 +49,7 @@ const SCRAPERS = {
   filmhuislumen,
   forumgroningen,
   hartlooper,
-  // ketelhuis,
+  ketelhuis,
   kinorotterdam,
   kriterion,
   lab1,
