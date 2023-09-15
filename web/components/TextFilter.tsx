@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { ComponentProps, useState, useEffect } from 'react'
 import { css } from '@emotion/react'
 import mobile from 'is-mobile'
 
-import Cross from './cross.svg'
+import Cross from './icons/cross.svg'
 import { useRouter } from 'next/router'
 
 const Container = (props) => (
@@ -14,7 +14,7 @@ const Container = (props) => (
   />
 )
 
-const Input = (props) => (
+const Input = (props: ComponentProps<'input'>) => (
   <input
     css={css({
       padding: 12,
@@ -49,6 +49,44 @@ const ClearButton = (props) => (
   />
 )
 
+type DebouncedInputProps = {
+  onDebounce: (value: string) => void
+  delay?: number
+} & ComponentProps<'input'>
+
+const DebouncedInput = ({
+  onDebounce,
+  delay = 200,
+  ...rest
+}: DebouncedInputProps) => {
+  const [value, setValue] = useState(rest.value || '')
+  console.log('rendering DebouncedInput', value)
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      console.log('onDebounce', value)
+      onDebounce(value)
+    }, delay)
+
+    return () => clearTimeout(timeoutId)
+  }, [])
+  //[value, delay, onDebounce])
+
+  return (
+    <Input
+      {...rest}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onKeyUp={(e) => {
+        if (e.key === 'Escape') {
+          console.log('onEscape')
+          setValue('')
+        }
+      }}
+    />
+  )
+}
+
 const TextFilter = () => {
   const router = useRouter()
   const { search } = router.query
@@ -66,21 +104,16 @@ const TextFilter = () => {
 
   return (
     <Container>
-      <Input
+      <DebouncedInput
         placeholder="Type to search"
         autoFocus={!mobile({ tablet: true })}
         value={search ?? ''}
-        onChange={(e) => setSearch(e.target.value)}
-        onKeyUp={(e) => {
-          if (e.key === 'Escape') {
-            setSearch()
-          }
-        }}
+        onDebounce={setSearch}
         aria-label="Type to search"
       />
       {search && (
         <ClearButton onClick={setSearch}>
-          <Cross />
+          <Cross color="var(--text-color)" />
         </ClearButton>
       )}
     </Container>

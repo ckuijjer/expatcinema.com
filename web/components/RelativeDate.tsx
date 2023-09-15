@@ -1,6 +1,8 @@
 import React from 'react'
 import { DateTime } from 'luxon'
 import getToday from './getToday'
+import { headerFont } from '../pages/_app'
+import { css } from '@emotion/react'
 
 class RelativeDate extends React.PureComponent {
   render() {
@@ -19,7 +21,17 @@ class RelativeDate extends React.PureComponent {
       relativeDate = 'Tomorrow'
     }
 
-    return <h3>{relativeDate}</h3>
+    return (
+      <h3
+        css={css`
+          font-size: 18px;
+          font-weight: 900;
+        `}
+        className={headerFont.className}
+      >
+        {relativeDate}
+      </h3>
+    )
   }
 }
 

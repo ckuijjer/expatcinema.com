@@ -9,7 +9,6 @@ const App = ({ screenings, showCity = true }) => {
   return (
     <>
       <Header />
-      <TextFilter />
       <CityFilter />
       <Calendar screenings={screenings} showCity={showCity} />
     </>

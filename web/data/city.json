@@ -1,11 +1,11 @@
 [
   { "name": "Amsterdam" },
-  { "name": "Delft" },
+  { "name": "Rotterdam" },
   { "name": "Den Haag" },
+  { "name": "Utrecht" },
+  { "name": "Delft" },
   { "name": "Eindhoven" },
   { "name": "Groningen" },
   { "name": "Leiden" },
-  { "name": "Maastricht" },
-  { "name": "Rotterdam" },
-  { "name": "Utrecht" }
+  { "name": "Maastricht" }
 ]

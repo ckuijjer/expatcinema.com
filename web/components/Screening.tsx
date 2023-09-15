@@ -41,7 +41,7 @@ const Container = (props) => (
 const Title = (props) => (
   <div
     css={css({
-      fontSize: 20,
+      fontSize: 18,
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
       overflow: 'hidden',

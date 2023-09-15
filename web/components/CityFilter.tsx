@@ -9,8 +9,10 @@ const Container = (props) => (
     css={css({
       marginLeft: -16,
       marginRight: -16,
-      marginTop: 12,
-      marginBottom: 12,
+      paddingLeft: 10,
+      backgroundColor: 'var(--background-highlight-color)',
+      whiteSpace: 'nowrap',
+      overflowX: 'auto',
     })}
     {...props}
   />
@@ -18,8 +20,8 @@ const Container = (props) => (
 
 const ActiveLink = ({ children, href, as, ...rest }) => {
   const { asPath, isReady } = useRouter()
-
   const [isCurrent, setIsCurrent] = useState(false)
+
   useEffect(() => {
     if (isReady) {
       // Using URL().pathname to get rid of query and hash
@@ -33,19 +35,27 @@ const ActiveLink = ({ children, href, as, ...rest }) => {
   }, [asPath, isReady, children, as, href, rest])
 
   return (
-    <Link href={href} key={children} passHref>
-      <a
-        css={css({
-          display: 'inline-block',
-          fontSize: 24,
-          color: isCurrent ? 'var(--primary-color)' : 'var(--text-muted-color)',
-          padding: '12px 16px',
-          cursor: 'pointer',
-          textDecoration: 'none',
-        })}
-      >
-        {children}
-      </a>
+    <Link
+      href={href}
+      key={children}
+      css={css({
+        display: 'inline-block',
+        fontSize: 18,
+        color: 'var(--text-color)',
+        backgroundColor: isCurrent
+          ? 'var(--background-filter-color)'
+          : 'transparent',
+        // fontStretch: 'expanded',
+        // fontWeight: isCurrent ? 700 : 400,
+        padding: '10px',
+        marginTop: '7px',
+        marginBottom: '7px',
+        cursor: 'pointer',
+        textDecoration: 'none',
+        borderRadius: '4px',
+      })}
+    >
+      {children}
     </Link>
   )
 }

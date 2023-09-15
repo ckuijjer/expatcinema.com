@@ -56,7 +56,7 @@ const Tile = ({
       </div>
       <div
         css={css`
-          font-size: 20px;
+          font-size: 18px;
         `}
       >
         {title}

@@ -1,4 +1,3 @@
-import fetch from 'cross-fetch'
 import cinemas from '../data/cinema.json'
 import cities from '../data/city.json'
 

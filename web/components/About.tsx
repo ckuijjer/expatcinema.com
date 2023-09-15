@@ -9,7 +9,7 @@ const Container = (props) => (
       marginTop: 16,
       paddingTop: 16,
       paddingBottom: 16,
-      fontSize: 20,
+      fontSize: 18,
       lineHeight: 1.4,
     })}
     {...props}
@@ -80,9 +80,9 @@ const About = () => {
         : Kino, Lantarenvenster
         <br />
         <Link href="/city/utrecht">
-          <span css={linkStyle}>Rotterdam</span>
+          <span css={linkStyle}>Utrecht</span>
         </Link>
-        : Hartlooper, Slachtstraat, Springhaver
+        : Louis Hartlooper Complex, Slachtstraat, Springhaver
         <br />
         <p>
           Contact us at{' '}
