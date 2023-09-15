@@ -29,11 +29,13 @@ export const launchBrowser = async ({ logger }: { logger?: Logger }) => {
 
 export const closeBrowser = async ({ logger }: { logger?: Logger }) => {
   if (browser !== undefined) {
+    const b = await browser
+
     logger?.info(
-      `closing browser, pid: ${browser.process()
-        ?.pid}, connected: ${browser.isConnected()}`,
+      `closing browser, pid: ${b.process()
+        ?.pid}, connected: ${b.isConnected()}`,
     )
-    await browser.close()
+    await b.close()
   } else {
     logger?.warn('browser already closed, cannot close again')
   }
