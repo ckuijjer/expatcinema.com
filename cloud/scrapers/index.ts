@@ -66,7 +66,7 @@ const SCRAPERS = {
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from 'types'
-import { closeBrowser } from 'xRayPuppeteer'
+import { closeBrowser } from '../browser'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -182,7 +182,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     )
 
     // close the browser
-    closeBrowser({ logger })
+    await closeBrowser({ logger })
 
     logger.info('done scraping')
 

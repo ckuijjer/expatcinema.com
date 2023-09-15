@@ -1,39 +1,11 @@
-import chromium from '@sparticuz/chrome-aws-lambda'
-import { Browser, PuppeteerLaunchOptions } from 'puppeteer-core'
 import { Logger } from '@aws-lambda-powertools/logger'
 import { Driver } from 'x-ray-crawler'
+
+import { launchBrowser } from './browser'
 
 type XRayPuppeteerOptions = {
   interactWithPage?: (page: any, ctx: any) => Promise<void>
   logger?: Logger
-}
-
-let _browser: Browser | undefined
-
-const launchBrowser = async ({ logger }: { logger?: Logger }) => {
-  if (_browser !== undefined) {
-    return _browser
-  }
-
-  const options: PuppeteerLaunchOptions = {
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
-    headless: chromium.headless,
-    ignoreHTTPSErrors: true,
-  }
-
-  logger?.info('launching puppeteer', { options })
-  _browser = await chromium.puppeteer.launch(options)
-
-  return _browser
-}
-
-export const closeBrowser = ({ logger }: { logger?: Logger }) => {
-  if (_browser !== undefined) {
-    logger?.info('closing browser')
-    _browser.close()
-  }
 }
 
 const xRayPuppeteer = ({
