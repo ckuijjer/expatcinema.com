@@ -2,44 +2,68 @@ import chromium from '@sparticuz/chrome-aws-lambda'
 import { Browser, PuppeteerLaunchOptions } from 'puppeteer-core'
 import { Logger } from '@aws-lambda-powertools/logger'
 
-let browser: Promise<Browser> | undefined
-let isLaunched = false
+const createBrowserSingleton = () => {
+  let instance: Browser
+  let isInitializing = false
+  const initQueue = []
 
-// launchBrowser returns a Promise of a Puppeteer Browser instance. This makes sure that
-// only one browser is launched per Lambda container, while you can still call
-// launchBrowser multiple times. Not awaiting in this function makes sure you can
-// call it multiple times, and only have it launch the browser once.
-export const launchBrowser = async ({ logger }: { logger?: Logger }) => {
-  if (isLaunched) {
-    logger?.info('browser already launched, returning earlier promise')
-    return browser
+  const initializeBrowser = async ({ logger }: { logger?: Logger }) => {
+    try {
+      const options: PuppeteerLaunchOptions = {
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath,
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
+      }
+
+      logger?.info('launching browser', { options })
+      instance = await chromium.puppeteer.launch(options)
+      isInitializing = false
+      logger?.info('browser launched')
+
+      // Resolve all pending promises in the queue
+      let i = 0
+      while (initQueue.length) {
+        logger?.info(`resolving pending promises in the queue: ${i++}`)
+        const resolver = initQueue.shift()
+        resolver(instance)
+      }
+    } catch (error) {
+      // Reject all pending promises in the queue on error
+      let i = 0
+      while (initQueue.length) {
+        logger?.info(`resolving pending promises in the queue: ${i++}`)
+        const resolver = initQueue.shift()
+        resolver(Promise.reject(error))
+      }
+    }
   }
-  isLaunched = true
 
-  const options: PuppeteerLaunchOptions = {
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
-    headless: chromium.headless,
-    ignoreHTTPSErrors: true,
+  return async ({ logger }: { logger?: Logger }): Promise<Browser> => {
+    if (!instance && !isInitializing) {
+      logger?.info('initializing browser')
+      isInitializing = true
+      initializeBrowser({ logger })
+    }
+
+    if (isInitializing) {
+      logger?.info('browser is initializing')
+      // If initialization is in progress, return a promise that resolves when it's done
+      return new Promise((resolve) => {
+        initQueue.push(resolve)
+      })
+    } else {
+      logger?.info('browser is initialized')
+      // If instance is available, return it
+      return instance
+    }
   }
-
-  logger?.info('launching puppeteer', { options })
-  browser = chromium.puppeteer.launch(options)
-
-  return browser
 }
 
-export const closeBrowser = async ({ logger }: { logger?: Logger }) => {
-  if (browser !== undefined) {
-    const b = await browser
+export const getBrowser = createBrowserSingleton()
 
-    logger?.info(
-      `closing browser, pid: ${b.process()
-        ?.pid}, connected: ${b.isConnected()}`,
-    )
-    await b.close()
-  } else {
-    logger?.warn('browser already closed, cannot close again')
-  }
+export const closeBrowser = async ({ logger }: { logger?: Logger }) => {
+  const browser = await getBrowser({ logger })
+  await browser.close()
 }

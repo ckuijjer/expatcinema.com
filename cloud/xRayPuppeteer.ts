@@ -1,7 +1,7 @@
 import { Logger } from '@aws-lambda-powertools/logger'
 import { Driver } from 'x-ray-crawler'
 
-import { launchBrowser } from './browser'
+import { getBrowser } from './browser'
 
 type XRayPuppeteerOptions = {
   interactWithPage?: (page: any, ctx: any) => Promise<void>
@@ -14,7 +14,7 @@ const xRayPuppeteer = ({
 }: XRayPuppeteerOptions = {}): Driver => {
   return async (ctx, done) => {
     try {
-      const browser = await launchBrowser({ logger })
+      const browser = await getBrowser({ logger })
 
       logger?.info('opening page', { url: ctx.url })
       let page = await browser.newPage()
