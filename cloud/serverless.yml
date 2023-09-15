@@ -47,6 +47,11 @@ provider:
                 - ScrapersMovieMetadataDynamoDbTable
                 - Arn
 
+  tags:
+    STAGE: ${self:provider.stage}
+  stackTags:
+    STAGE: ${self:provider.stage}
+
   environment:
     NODE_OPTIONS: --enable-source-maps --trace-warnings
     POWERTOOLS_SERVICE_NAME: ${self:service}-${self:provider.stage}
