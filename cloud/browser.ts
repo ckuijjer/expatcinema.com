@@ -5,7 +5,7 @@ import { Logger } from '@aws-lambda-powertools/logger'
 const createBrowserSingleton = () => {
   let instance: Browser
   let isInitializing = false
-  const initQueue = []
+  const initializationQueue = []
 
   const initializeBrowser = async ({ logger }: { logger?: Logger }) => {
     try {
@@ -24,17 +24,17 @@ const createBrowserSingleton = () => {
 
       // Resolve all pending promises in the queue
       let i = 0
-      while (initQueue.length) {
+      while (initializationQueue.length) {
         logger?.info(`resolving pending promises in the queue: ${i++}`)
-        const resolver = initQueue.shift()
+        const resolver = initializationQueue.shift()
         resolver(instance)
       }
     } catch (error) {
       // Reject all pending promises in the queue on error
       let i = 0
-      while (initQueue.length) {
+      while (initializationQueue.length) {
         logger?.info(`resolving pending promises in the queue: ${i++}`)
-        const resolver = initQueue.shift()
+        const resolver = initializationQueue.shift()
         resolver(Promise.reject(error))
       }
     }
@@ -51,7 +51,7 @@ const createBrowserSingleton = () => {
       logger?.info('browser is initializing')
       // If initialization is in progress, return a promise that resolves when it's done
       return new Promise((resolve) => {
-        initQueue.push(resolve)
+        initializationQueue.push(resolve)
       })
     } else {
       logger?.info('browser is initialized')
