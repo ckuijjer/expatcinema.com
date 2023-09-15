@@ -2,8 +2,12 @@ import chromium from '@sparticuz/chrome-aws-lambda'
 import { Browser, PuppeteerLaunchOptions } from 'puppeteer-core'
 import { Logger } from '@aws-lambda-powertools/logger'
 
-let browser: Browser | undefined
+let browser: Promise<Browser> | undefined
 
+// launchBrowser returns a Promise of a Puppeteer Browser instance. This makes sure that
+// only one browser is launched per Lambda container, while you can still call
+// launchBrowser multiple times. Not awaiting in this function makes sure you can
+// call it multiple times, and only have it launch the browser once.
 export const launchBrowser = async ({ logger }: { logger?: Logger }) => {
   if (browser !== undefined) {
     return browser
@@ -18,7 +22,7 @@ export const launchBrowser = async ({ logger }: { logger?: Logger }) => {
   }
 
   logger?.info('launching puppeteer', { options })
-  browser = await chromium.puppeteer.launch(options)
+  browser = chromium.puppeteer.launch(options)
 
   return browser
 }
