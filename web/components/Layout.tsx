@@ -1,15 +1,12 @@
 import React from 'react'
 import { css } from '@emotion/react'
 
-import { Settings } from 'luxon'
-
-Settings.defaultZone = 'Europe/Amsterdam'
-
-const Container = (props) => (
+const Container = ({ inverse = false, ...props }) => (
   <div
     css={css({
-      // marginTop: 32,
-      // marginBottom: 32,
+      backgroundColor: inverse
+        ? 'var(--background-inverse-color)'
+        : 'transparent',
     })}
     {...props}
   />
@@ -28,10 +25,12 @@ const Content = (props) => (
   />
 )
 
-const Layout = ({ children }) => (
-  <Container>
-    <Content>{children}</Content>
-  </Container>
-)
+const Layout = ({ inverse = false, children }) => {
+  return (
+    <Container inverse={inverse}>
+      <Content>{children}</Content>
+    </Container>
+  )
+}
 
 export default Layout

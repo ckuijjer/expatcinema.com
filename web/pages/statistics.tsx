@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import Layout from '../components/Layout'
 import Seo from '../components/Seo'
 import Header from '../components/Header'
+import { PageTitle } from '../components/PageTitle'
 
 const LoadableStatistics = dynamic(() => import('../components/Statistics'), {
   ssr: false,
@@ -14,7 +15,13 @@ const StatisticsPage = ({ data }) => {
   return (
     <>
       <Seo title="Statistics" />
-      <Header />
+      <Layout>
+        <Header />
+      </Layout>
+      <Layout inverse>
+        <PageTitle>Statistics</PageTitle>
+      </Layout>
+
       <React.Suspense fallback={<div>Loading</div>}>
         <LoadableStatistics points={data} />
       </React.Suspense>

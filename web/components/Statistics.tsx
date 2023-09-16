@@ -1,6 +1,7 @@
 import React from 'react'
 import * as Plot from '@observablehq/plot'
 import { css } from '@emotion/react'
+import Layout from './Layout'
 
 // Grid component that has cells with a width of 200px and using css grid layout
 const Grid = ({ children }) => (
@@ -127,6 +128,7 @@ const Statistics = ({ points }) => {
     style: {
       overflow: 'visible',
       color: 'var(--text-color)',
+      background: 'var(--background-color)',
       fontSize: 10,
     },
   })
@@ -142,12 +144,13 @@ const Statistics = ({ points }) => {
   }
 
   return (
-    <>
+    <Layout>
       <div
         dangerouslySetInnerHTML={{
           __html: svg.outerHTML,
         }}
         css={css`
+          margin-top: 32px;
           margin-bottom: 32px;
         `}
       ></div>
@@ -163,7 +166,7 @@ const Statistics = ({ points }) => {
           />
         ))}
       </Grid>
-    </>
+    </Layout>
   )
 }
 

@@ -111,11 +111,6 @@ const TextFilter = () => {
         onDebounce={setSearch}
         aria-label="Type to search"
       />
-      {search && (
-        <ClearButton onClick={setSearch}>
-          <Cross color="var(--text-color)" />
-        </ClearButton>
-      )}
     </Container>
   )
 }

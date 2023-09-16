@@ -1,14 +1,27 @@
 import type { AppProps } from 'next/app'
-import Layout from '../components/Layout'
 import { Global, css } from '@emotion/react'
-import { Libre_Baskerville, Libre_Franklin } from '@next/font/google'
+import { Libre_Baskerville, Libre_Franklin } from 'next/font/google'
+import { Settings } from 'luxon'
+
+Settings.defaultZone = 'Europe/Amsterdam'
 
 export const headerFont = Libre_Baskerville({
   subsets: ['latin'],
-  weight: '400',
+  weight: ['400', '700'],
 })
 
-export const bodyFont = Libre_Franklin({ subsets: ['latin'] })
+export const bodyFont = Libre_Franklin({
+  subsets: ['latin'],
+})
+
+const palette = {
+  pink100: '#FFF5F0' as const,
+  pink200: '#ffe5e0' as const,
+  pink300: '#FFAFB0' as const,
+  purple200: '#240a1a' as const,
+  white100: '#FFFFFF' as const,
+  white200: '#F6F6F6' as const,
+}
 
 const globalStyles = css`
   body {
@@ -27,17 +40,18 @@ const globalStyles = css`
       'Droid Sans',
       'Helvetica Neue',
       sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 
     --text-color: #333;
     --text-muted-color: #888;
-    --text-menu-color: #f6f6f6;
-    --background-color: #fff;
-    --background-highlight-color: #f6f6f6;
-    --background-menu-color: #240a1a;
-    --background-filter-color: #ffafb0;
-    --primary-color: #0650d0;
+    --text-inverse-color: ${palette.pink100};
+    --text-menu-color: ${palette.pink100};
+    --background-inverse-color: ${palette.purple200};
+    --background-color: ${palette.pink100};
+    --background-highlight-color: ${palette.pink200};
+    --background-menu-color: ${palette.purple200};
+    --background-filter-color: ${palette.purple200};
+    --background-filter-active-color: ${palette.pink300};
+    --primary-color: ${palette.purple200};
 
     @media (prefers-color-scheme: dark) {
       --text-color: #eee;
@@ -55,9 +69,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Global styles={globalStyles} />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Component {...pageProps} />
     </>
   )
 }

@@ -7,6 +7,7 @@ import SearchIcon from './icons/search.svg'
 import MenuIcon from './icons/menu.svg'
 import CrossIcon from './icons/cross.svg'
 import TextFilter from './TextFilter'
+import Layout from './Layout'
 
 const Title = (props) => (
   <h1
@@ -61,16 +62,24 @@ const Menu = ({ isOpen, onClose }) => {
         right: 0,
         position: 'fixed',
         backgroundColor: 'var(--background-menu-color)',
-        display: 'flex',
-        flexDirection: 'column',
-        paddingTop: 64,
       })}
       onClick={onClose}
     >
-      <MenuCloseButton onClose={onClose} />
-      <MenuItem href="/">Home</MenuItem>
-      <MenuItem href="/about">About</MenuItem>
-      <MenuItem href="/statistics">Statistics</MenuItem>
+      <Layout>
+        <div
+          css={css({
+            position: 'relative', // so the MenuCloseButton can position itself
+            display: 'flex',
+            flexDirection: 'column',
+            paddingTop: 64,
+          })}
+        >
+          <MenuCloseButton onClose={onClose} />
+          <MenuItem href="/">Home</MenuItem>
+          <MenuItem href="/about">About</MenuItem>
+          <MenuItem href="/statistics">Statistics</MenuItem>
+        </div>
+      </Layout>
     </div>
   ) : null
 }
@@ -79,18 +88,22 @@ const MenuCloseButton = ({ onClose }) => (
   <div
     css={css({
       position: 'absolute',
-      top: 24,
-      right: 16,
+      top: 28,
+      right: 0,
       width: 32,
       height: 32,
       boxSizing: 'border-box',
       cursor: 'pointer',
     })}
   >
-    <IconButton onClick={onClose}>
-      <CrossIcon color="var(--text-menu-color)" />
-    </IconButton>
+    <CloseButton onClose={onClose} />
   </div>
+)
+
+const CloseButton = ({ onClose }) => (
+  <IconButton onClick={onClose}>
+    <CrossIcon color="var(--text-menu-color)" />
+  </IconButton>
 )
 
 const MenuItem = ({ href, children }) => (
@@ -191,7 +204,7 @@ const Header = () => {
         </TitleContainer>
         <IconContainer>
           <IconButton onClick={toggleSearch}>
-            <SearchIcon />
+            {isSearchOpen ? <CrossIcon /> : <SearchIcon />}
           </IconButton>
           <IconButton onClick={openMenu}>
             <MenuIcon />

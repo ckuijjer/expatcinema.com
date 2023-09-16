@@ -1,16 +1,22 @@
 import React from 'react'
 
 import Calendar from './Calendar'
-import TextFilter from './TextFilter'
 import CityFilter from './CityFilter'
+import Layout from './Layout'
 import Header from './Header'
 
 const App = ({ screenings, showCity = true }) => {
   return (
     <>
-      <Header />
-      <CityFilter />
-      <Calendar screenings={screenings} showCity={showCity} />
+      <Layout>
+        <Header />
+      </Layout>
+      <Layout inverse>
+        <CityFilter />
+      </Layout>
+      <Layout>
+        <Calendar screenings={screenings} showCity={showCity} />
+      </Layout>
     </>
   )
 }

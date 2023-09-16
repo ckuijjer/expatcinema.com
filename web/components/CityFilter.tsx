@@ -10,7 +10,6 @@ const Container = (props) => (
       marginLeft: -16,
       marginRight: -16,
       paddingLeft: 10,
-      backgroundColor: 'var(--background-highlight-color)',
       whiteSpace: 'nowrap',
       overflowX: 'auto',
     })}
@@ -41,12 +40,12 @@ const ActiveLink = ({ children, href, as, ...rest }) => {
       css={css({
         display: 'inline-block',
         fontSize: 18,
-        color: 'var(--text-color)',
-        backgroundColor: isCurrent
+        color: isCurrent
           ? 'var(--background-filter-color)'
+          : 'var(--text-inverse-color)',
+        backgroundColor: isCurrent
+          ? 'var(--background-filter-active-color)'
           : 'transparent',
-        // fontStretch: 'expanded',
-        // fontWeight: isCurrent ? 700 : 400,
         padding: '10px',
         marginTop: '7px',
         marginBottom: '7px',
@@ -74,7 +73,11 @@ const CityFilter = () => {
   ]
 
   return (
-    <Container>
+    <Container
+      css={css`
+        background-color: var(--background-filter-color);
+      `}
+    >
       {links.map(({ text, href }) => (
         <ActiveLink href={href} key={text}>
           {text}

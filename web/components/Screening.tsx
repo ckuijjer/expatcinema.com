@@ -53,7 +53,7 @@ const Title = (props) => (
 const Cinema = (props) => (
   <div
     css={css({
-      fontSize: 16,
+      fontSize: 14,
       gridColumnStart: 'rest',
       color: 'var(--text-muted-color)',
     })}
