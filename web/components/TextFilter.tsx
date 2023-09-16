@@ -21,7 +21,7 @@ const Input = (props: ComponentProps<'input'>) => (
       paddingRight: 48,
       boxSizing: 'border-box',
       width: '100%',
-      fontSize: 20,
+      fontSize: 18,
       borderRadius: 4,
       border: '1px solid #aaa',
       margin: 0,

@@ -24,8 +24,8 @@ class RelativeDate extends React.PureComponent {
     return (
       <h3
         css={css`
-          font-size: 18px;
-          font-weight: 900;
+          font-size: 16px;
+          font-weight: 00;
         `}
         className={headerFont.className}
       >

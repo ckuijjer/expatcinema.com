@@ -31,7 +31,7 @@ const Container = (props) => (
       display: 'grid',
       gridTemplateColumns: '[time] 60px [rest] auto',
       gridColumnGap: 12,
-      lineHeight: 1.4,
+      lineHeight: 1.5,
       padding: 10,
     })}
     {...props}

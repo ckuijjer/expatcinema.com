@@ -29,7 +29,7 @@ const About = () => {
       <Layout>
         <Header />
       </Layout>
-      <Layout inverse>
+      <Layout>
         <PageTitle>About</PageTitle>
       </Layout>
       <Layout>

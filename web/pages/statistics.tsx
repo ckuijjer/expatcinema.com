@@ -18,7 +18,7 @@ const StatisticsPage = ({ data }) => {
       <Layout>
         <Header />
       </Layout>
-      <Layout inverse>
+      <Layout>
         <PageTitle>Statistics</PageTitle>
       </Layout>
 

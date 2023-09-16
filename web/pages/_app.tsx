@@ -41,8 +41,8 @@ const globalStyles = css`
       'Helvetica Neue',
       sans-serif;
 
-    --text-color: #333;
-    --text-muted-color: #888;
+    --text-color: rgba(0, 0, 0, 0.9);
+    --text-muted-color: rgba(0, 0, 0, 0.7);
     --text-inverse-color: ${palette.pink100};
     --text-menu-color: ${palette.pink100};
     --background-inverse-color: ${palette.purple200};

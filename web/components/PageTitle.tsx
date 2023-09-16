@@ -5,10 +5,11 @@ export const PageTitle = (props) => (
   <h1
     className={headerFont.className}
     css={css({
-      marginTop: 0,
+      marginTop: 16,
       marginBottom: 0,
       lineHeight: 1.8,
-      color: 'var(--text-inverse-color)',
+      borderBottom: '1px solid var(--primary-color)',
+      // color: 'var(--text-inverse-color)',
     })}
     {...props}
   />
