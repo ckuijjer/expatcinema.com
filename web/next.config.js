@@ -17,6 +17,10 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true, // TODO: Remove this when you fix all the errors.
   },
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+  },
 }
 
 module.exports = nextConfig
