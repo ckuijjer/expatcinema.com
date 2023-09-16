@@ -69,8 +69,7 @@ const DebouncedInput = ({
     }, delay)
 
     return () => clearTimeout(timeoutId)
-  }, [])
-  //[value, delay, onDebounce])
+  }, [value, delay])
 
   return (
     <Input
