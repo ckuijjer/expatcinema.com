@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
+import removeAccents from 'remove-accents'
 
 type UseSearch = {
   search: string
-  lowerCasedSearch: string
+  normalizedSearch: string
   searchQuery: string
   setSearch: (search: string) => void
 }
@@ -13,7 +14,7 @@ export const useSearch = (): UseSearch => {
 
   const search = (Array.isArray(rawSearch) ? rawSearch[0] : rawSearch) ?? ''
 
-  const lowerCasedSearch = search.toLowerCase()
+  const normalizedSearch = removeAccents(search.toLowerCase())
 
   const searchQuery = search ? `?search=${search}` : ''
 
@@ -30,7 +31,7 @@ export const useSearch = (): UseSearch => {
 
   return {
     search,
-    lowerCasedSearch,
+    normalizedSearch,
     searchQuery,
     setSearch,
   }
