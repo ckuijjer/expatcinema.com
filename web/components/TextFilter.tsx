@@ -28,6 +28,7 @@ const Input = (props: ComponentProps<'input'>) => (
       margin: 0,
       backgroundColor: 'var(--background-color)',
       color: 'var(--text-color)',
+      outlineColor: 'var(--primary-color)',
     })}
     {...props}
   />
