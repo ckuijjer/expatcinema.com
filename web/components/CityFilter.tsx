@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { css } from '@emotion/react'
 import cities from '../data/city.json'
+import { useSearch } from './useSearch'
 
 const Container = (props) => (
   <div
@@ -60,9 +61,7 @@ const ActiveLink = ({ children, href, as, ...rest }) => {
 }
 
 const CityFilter = () => {
-  const router = useRouter()
-  const { search } = router.query
-  const searchQuery = search ? `?search=${search}` : ''
+  const { searchQuery } = useSearch()
 
   const links = [
     { text: 'All', href: `/${searchQuery}` },

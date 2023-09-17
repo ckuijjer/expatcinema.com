@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { css } from '@emotion/react'
 import Link from 'next/link'
 import { headerFont } from '../pages/_app'
@@ -8,6 +8,8 @@ import MenuIcon from './icons/menu.svg'
 import CrossIcon from './icons/cross.svg'
 import TextFilter from './TextFilter'
 import Layout from './Layout'
+
+import { useSearch } from './useSearch'
 
 const Title = (props) => (
   <h1
@@ -137,12 +139,9 @@ const Container = (props) => (
 )
 
 const TitleContainer = (props) => (
-  <Link
-    href="/"
+  <div
     css={css`
       flex: 1;
-      color: inherit;
-      text-decoration: none;
       margin-right: 16px;
       display: flex;
       flex-direction: column;
@@ -168,6 +167,12 @@ const IconContainer = (props) => (
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const { search, setSearch } = useSearch()
+
+  useEffect(() => {
+    const isOpen = search !== ''
+    setIsSearchOpen(isOpen)
+  }, [search])
 
   const openMenu = () => {
     setIsMenuOpen(true)
@@ -186,7 +191,12 @@ const Header = () => {
   }
 
   const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen)
+    if (isSearchOpen) {
+      setSearch('')
+      closeSearch()
+    } else {
+      openSearch()
+    }
   }
 
   return (
@@ -196,10 +206,16 @@ const Header = () => {
           {isSearchOpen ? (
             <TextFilter />
           ) : (
-            <>
+            <Link
+              href="/"
+              css={css`
+                color: inherit;
+                text-decoration: none;
+              `}
+            >
               <Title>Expat Cinema</Title>
               <SubTitle>Foreign movies with English subtitles</SubTitle>
-            </>
+            </Link>
           )}
         </TitleContainer>
         <IconContainer>

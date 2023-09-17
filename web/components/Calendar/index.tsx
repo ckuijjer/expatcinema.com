@@ -1,11 +1,11 @@
 import React, { useReducer } from 'react'
 import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 
 import { Screening } from '../getScreenings'
 import groupAndSortScreenings from '../groupAndSortScreenings'
 import { isEnabled } from '../featureFlags'
+import { useSearch } from '../useSearch'
 
 const CalendarComponent = isEnabled('virtualized-table')
   ? dynamic(() => import('./VirtualizedCalendar'))
@@ -20,8 +20,7 @@ const Calendar = ({
   screenings: Screening[]
   showCity: boolean
 }) => {
-  const router = useRouter()
-  const { search } = router.query
+  const { lowerCasedSearch: search } = useSearch()
 
   const screeningsByDate = Object.entries(
     groupAndSortScreenings(screenings),
@@ -35,11 +34,9 @@ const Calendar = ({
       const filteredScreenings = screenings.filter(
         (screening) =>
           search === undefined ||
-          screening.title.toLowerCase().includes(search.toLowerCase()) ||
-          screening.cinema.name.toLowerCase().includes(search.toLowerCase()) ||
-          screening.cinema.city.name
-            .toLowerCase()
-            .includes(search.toLowerCase()),
+          screening.title.toLowerCase().includes(search) ||
+          screening.cinema.name.toLowerCase().includes(search) ||
+          screening.cinema.city.name.toLowerCase().includes(search),
       )
       if (filteredScreenings.length) {
         return [date, filteredScreenings]

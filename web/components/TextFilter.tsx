@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import mobile from 'is-mobile'
 
 import Cross from './icons/cross.svg'
-import { useRouter } from 'next/router'
+import { useSearch } from './useSearch'
 
 const Container = (props) => (
   <div
@@ -16,6 +16,7 @@ const Container = (props) => (
 
 const Input = (props: ComponentProps<'input'>) => (
   <input
+    name="search"
     css={css({
       padding: 12,
       paddingRight: 48,
@@ -60,11 +61,9 @@ const DebouncedInput = ({
   ...rest
 }: DebouncedInputProps) => {
   const [value, setValue] = useState(rest.value || '')
-  console.log('rendering DebouncedInput', value)
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      console.log('onDebounce', value)
       onDebounce(value)
     }, delay)
 
@@ -87,26 +86,14 @@ const DebouncedInput = ({
 }
 
 const TextFilter = () => {
-  const router = useRouter()
-  const { search } = router.query
-
-  const setSearch = (value?: string) => {
-    if (value == '') {
-      const { search, ...rest } = router.query
-      router.replace({ query: { ...rest } })
-    } else {
-      router.replace({
-        query: { ...router.query, search: value },
-      })
-    }
-  }
+  const { search, setSearch } = useSearch()
 
   return (
     <Container>
       <DebouncedInput
         placeholder="Type to search"
         autoFocus={!mobile({ tablet: true })}
-        value={search ?? ''}
+        value={search}
         onDebounce={setSearch}
         aria-label="Type to search"
       />
