@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import removeAccents from 'remove-accents'
 
@@ -35,4 +36,17 @@ export const useSearch = (): UseSearch => {
     searchQuery,
     setSearch,
   }
+}
+
+export const useKeypress = (key, action) => {
+  useEffect(() => {
+    const onKeyup = (e) => {
+      if (e.key === key) {
+        action()
+      }
+    }
+
+    window.addEventListener('keyup', onKeyup)
+    return () => window.removeEventListener('keyup', onKeyup)
+  }, [])
 }

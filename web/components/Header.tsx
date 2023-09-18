@@ -9,7 +9,7 @@ import CrossIcon from './icons/cross.svg'
 import TextFilter from './TextFilter'
 import Layout from './Layout'
 
-import { useSearch } from './useSearch'
+import { useKeypress, useSearch } from './hooks'
 
 const Title = (props) => (
   <h1
@@ -54,8 +54,10 @@ const IconButton = (props) => (
   />
 )
 
-const Menu = ({ isOpen, onClose }) => {
-  return isOpen ? (
+const Menu = ({ onClose }) => {
+  useKeypress('Escape', onClose)
+
+  return (
     <div
       css={css({
         top: 0,
@@ -83,7 +85,7 @@ const Menu = ({ isOpen, onClose }) => {
         </div>
       </Layout>
     </div>
-  ) : null
+  )
 }
 
 const MenuCloseButton = ({ onClose }) => (
@@ -227,7 +229,7 @@ const Header = () => {
           </IconButton>
         </IconContainer>
       </Container>
-      <Menu isOpen={isMenuOpen} onClose={closeMenu} />
+      {isMenuOpen && <Menu onClose={closeMenu} />}
     </>
   )
 }

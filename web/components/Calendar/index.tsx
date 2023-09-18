@@ -6,7 +6,7 @@ import removeAccents from 'remove-accents'
 import { Screening } from '../getScreenings'
 import groupAndSortScreenings from '../groupAndSortScreenings'
 import { isEnabled } from '../featureFlags'
-import { useSearch } from '../useSearch'
+import { useSearch } from '../hooks'
 
 const CalendarComponent = isEnabled('virtualized-table')
   ? dynamic(() => import('./VirtualizedCalendar'))
