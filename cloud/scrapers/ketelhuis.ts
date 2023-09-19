@@ -71,6 +71,21 @@ const hasEnglishSubtitles = ({ metadata, mainContent }) =>
   metadata?.includes('English subtitles') ||
   mainContent?.includes('Engels ondertiteld')
 
+const splitFirstDate = (date: string) => {
+  if (date === 'Vandaag') {
+    const { day, month, year } = DateTime.now()
+    return { day, month, year }
+  } else {
+    const [dayOfWeek, dayString, monthString, yearString] = date.split(' ')
+
+    const day = Number(dayString)
+    const month = fullMonthToNumberDutch(monthString)
+    const year = Number(yearString)
+
+    return { day, month, year }
+  }
+}
+
 const extractFromMoviePage = async ({ url, title }) => {
   logger.info('extracting', { url })
 
@@ -78,7 +93,7 @@ const extractFromMoviePage = async ({ url, title }) => {
     title: '.c-filmheader__content h1 > span | cleanTitle | trim',
     metadata: '.c-detail-info__filminfo | normalizeWhitespace',
     mainContent: '.c-main-content | normalizeWhitespace',
-    firstDate: '.c-detail-schedule__firstday div:first-of-type',
+    firstDate: '.c-detail-schedule__firstday div:first-of-type | trim',
     firstTimes: ['.c-detail-schedule__times a | normalizeWhitespace | trim'],
     other: xray('.c-detail-schedule-complete__wrapper li', [
       {
@@ -97,10 +112,8 @@ const extractFromMoviePage = async ({ url, title }) => {
   }
 
   const firstDates = scrapeResult.firstTimes.map((time) => {
-    const [dayOfWeek, dayString, monthString, year] =
-      scrapeResult.firstDate.split(' ')
-    const day = Number(dayString)
-    const month = fullMonthToNumberDutch(monthString)
+    const { day, month, year } = splitFirstDate(scrapeResult.firstDate)
+
     const [hour, minute] = splitTime(time)
 
     return DateTime.fromObject({
@@ -115,20 +128,13 @@ const extractFromMoviePage = async ({ url, title }) => {
   })
 
   const otherDates = scrapeResult.other.flatMap(({ date, times }) => {
-    const [dayOfWeek, dayString, monthString] = date.split(' ')
+    const [dayString, monthString, yearString] = date.split(' ')
     const day = Number(dayString)
     const month = shortMonthToNumberDutch(monthString)
+    const year = Number(yearString)
 
     return times.map((time) => {
       const [hour, minute] = splitTime(time)
-      const year = guessYear(
-        DateTime.fromObject({
-          day,
-          month,
-          hour,
-          minute,
-        }),
-      )
 
       return DateTime.fromObject({
         day,
@@ -157,13 +163,8 @@ if (require.main === module) {
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
-
   // extractFromMoviePage({
-  //   // url: 'https://www.ketelhuis.nl/films/quo-vadis-aida-english-subtitles/',
-  //   // url: 'https://www.ketelhuis.nl/films/bad-luck-banging-or-loony-porn-english-subtitles/',
-  //   // url: 'https://www.ketelhuis.nl/films/nur-eine-frau/',
-  //   // url: 'https://www.ketelhuis.nl/films/le-sorelle-macaluso/',
-  //   url: 'https://www.ketelhuis.nl/films/meskina/',
+  //   url: 'https://www.ketelhuis.nl/films/toen-we-van-de-duitsers-verloren/',
   // })
   //   .then((x) => JSON.stringify(x, null, 2))
   //   .then(console.log)
