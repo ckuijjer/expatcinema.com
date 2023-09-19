@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import mobile from 'is-mobile'
 
 import Cross from './icons/cross.svg'
-import { useSearch } from './hooks'
+import { useKeypress, useSearch } from './hooks'
 
 const Container = (props) => (
   <div
@@ -71,18 +71,10 @@ const DebouncedInput = ({
     return () => clearTimeout(timeoutId)
   }, [value, delay])
 
+  useKeypress('Escape', () => setValue(''))
+
   return (
-    <Input
-      {...rest}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onKeyUp={(e) => {
-        if (e.key === 'Escape') {
-          console.log('onEscape')
-          setValue('')
-        }
-      }}
-    />
+    <Input {...rest} value={value} onChange={(e) => setValue(e.target.value)} />
   )
 }
 
