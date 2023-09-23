@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import mobile from 'is-mobile'
 
 import Cross from './icons/cross.svg'
-import { useKeypress, useSearch } from './hooks'
+import { useKeypress, useSearch } from '../utils/hooks'
 
 const Container = (props) => (
   <div

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { css } from '@emotion/react'
 import Link from 'next/link'
-import { headerFont } from '../pages/_app'
+import { headerFont } from '../utils/theme'
 
 import SearchIcon from './icons/search.svg'
 import MenuIcon from './icons/menu.svg'
@@ -9,7 +9,7 @@ import CrossIcon from './icons/cross.svg'
 import TextFilter from './TextFilter'
 import Layout from './Layout'
 
-import { useKeypress, useSearch } from './hooks'
+import { useKeypress, useSearch } from '../utils/hooks'
 
 const Title = (props) => (
   <h1

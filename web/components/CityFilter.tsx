@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { css } from '@emotion/react'
 import cities from '../data/city.json'
-import { useSearch } from './hooks'
+import { useSearch } from '../utils/hooks'
 
 const Container = (props) => (
   <div

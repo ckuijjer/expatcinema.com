@@ -3,7 +3,7 @@ import Header from './Header'
 import { css } from '@emotion/react'
 import Link from 'next/link'
 import Layout from './Layout'
-import { headerFont } from '../pages/_app'
+import { headerFont } from '../utils/theme'
 import { PageTitle } from './PageTitle'
 
 const Container = (props) => (

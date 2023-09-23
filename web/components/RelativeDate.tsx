@@ -1,7 +1,7 @@
 import React from 'react'
 import { DateTime } from 'luxon'
-import getToday from './getToday'
-import { headerFont } from '../pages/_app'
+import getToday from '../utils/getToday'
+import { headerFont } from '../utils/theme'
 import { css } from '@emotion/react'
 
 class RelativeDate extends React.PureComponent {

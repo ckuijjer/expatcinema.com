@@ -3,10 +3,10 @@ import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
 import removeAccents from 'remove-accents'
 
-import { Screening } from '../getScreenings'
-import groupAndSortScreenings from '../groupAndSortScreenings'
-import { isEnabled } from '../featureFlags'
-import { useSearch } from '../hooks'
+import { Screening } from '../../utils/getScreenings'
+import groupAndSortScreenings from '../../utils/groupAndSortScreenings'
+import { isEnabled } from '../../utils/featureFlags'
+import { useSearch } from '../../utils/hooks'
 
 const CalendarComponent = isEnabled('virtualized-table')
   ? dynamic(() => import('./VirtualizedCalendar'))

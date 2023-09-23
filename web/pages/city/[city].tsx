@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import App from '../../components/App'
-import { getScreenings } from '../../components/getScreenings'
+import { getScreenings } from '../../utils/getScreenings'
 import cities from '../../data/city.json'
 import Seo from '../../components/Seo'
 
