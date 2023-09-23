@@ -6,6 +6,7 @@ import Layout from '../components/Layout'
 import Seo from '../components/Seo'
 import Header from '../components/Header'
 import { PageTitle } from '../components/PageTitle'
+import { palette } from '../utils/theme'
 
 const LoadableStatistics = dynamic(() => import('../components/Statistics'), {
   ssr: false,
@@ -15,8 +16,8 @@ const StatisticsPage = ({ data }) => {
   return (
     <>
       <Seo title="Statistics" />
-      <Layout>
-        <Header />
+      <Layout backgroundColor={palette.purple600}>
+        <Header showSearch={false} />
       </Layout>
       <Layout>
         <PageTitle>Statistics</PageTitle>

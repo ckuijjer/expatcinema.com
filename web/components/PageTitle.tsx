@@ -8,8 +8,6 @@ export const PageTitle = (props) => (
       marginTop: 16,
       marginBottom: 0,
       lineHeight: 1.8,
-      borderBottom: '1px solid var(--primary-color)',
-      // color: 'var(--text-inverse-color)',
     })}
     {...props}
   />

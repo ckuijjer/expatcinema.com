@@ -11,15 +11,12 @@ export const bodyFont = Libre_Franklin({
 })
 
 export const palette = {
-  pink100: '#FFF5F0' as const,
-  pink200: '#ffe5e0' as const,
-  pink300: '#FFAFB0' as const,
-  purple100: '#8C3547' as const,
-  purple200: '#310D23' as const,
-  purple300: '#240a1a' as const,
-
-  white100: '#FFFFFF' as const,
-  white200: '#F6F6F6' as const,
+  purple100: '#fff5f0' as const,
+  purple200: '#ffe5e0' as const,
+  purple300: '#ffafb0' as const,
+  purple400: '#8c3547' as const,
+  purple500: '#411d33' as const,
+  purple600: '#310d23' as const,
 }
 
 export const globalStyles = css`
@@ -42,22 +39,22 @@ export const globalStyles = css`
 
     --text-color: rgba(0, 0, 0, 0.9);
     --text-muted-color: rgba(0, 0, 0, 0.7);
-    --text-inverse-color: ${palette.pink100};
-    --text-menu-color: ${palette.pink100};
-    --background-inverse-color: ${palette.purple300};
-    --background-color: ${palette.pink100};
-    --background-highlight-color: ${palette.pink200};
-    --background-menu-color: ${palette.purple300};
-    --background-filter-color: ${palette.purple300};
-    --background-filter-active-color: ${palette.pink300};
-    --primary-color: ${palette.purple300};
+    --text-inverse-color: rgba(255, 255, 255, 0.9);
+    --text-inverse-muted-color: rgba(255, 255, 255, 0.7);
 
+    --background-color: ${palette.purple100};
+    --background-inverse-color: ${palette.purple600};
+    --background-highlight-color: ${palette.purple200};
+
+    --primary-color: ${palette.purple300};
+    --secondary-color: ${palette.purple400};
+
+    // note that in dark mode, there are no "inverse" colors
     @media (prefers-color-scheme: dark) {
-      --text-color: #eee;
-      --text-muted-color: #555;
-      --text-menu-color: #eee;
-      --background-color: #121212;
-      --background-highlight-color: #1f1f1f;
+      --text-color: rgba(255, 255, 255, 0.9);
+      --text-muted-color: rgba(255, 255, 255, 0.7);
+      --background-color: ${palette.purple600};
+      --background-highlight-color: ${palette.purple500};
     }
 
     background-color: var(--background-color);

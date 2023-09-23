@@ -129,7 +129,7 @@ const Statistics = ({ points }) => {
       overflow: 'visible',
       color: 'var(--text-color)',
       background: 'var(--background-color)',
-      fontSize: 10,
+      fontSize: '10px',
     },
   })
 

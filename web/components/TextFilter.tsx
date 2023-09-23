@@ -2,7 +2,6 @@ import React, { ComponentProps, useState, useEffect } from 'react'
 import { css } from '@emotion/react'
 import mobile from 'is-mobile'
 
-import Cross from './icons/cross.svg'
 import { useKeypress, useSearch } from '../utils/hooks'
 
 const Container = (props) => (
@@ -24,28 +23,11 @@ const Input = (props: ComponentProps<'input'>) => (
       width: '100%',
       fontSize: 18,
       borderRadius: 4,
-      border: '1px solid #aaa',
+      border: '2px solid var(--primary-color)',
       margin: 0,
-      backgroundColor: 'var(--background-color)',
-      color: 'var(--text-color)',
+      backgroundColor: 'var(--background-inverse-color)',
+      color: 'var(--text-inverse-color)',
       outlineColor: 'var(--primary-color)',
-    })}
-    {...props}
-  />
-)
-
-const ClearButton = (props) => (
-  <div
-    css={css({
-      position: 'absolute',
-      right: 8,
-      top: 8,
-      width: 32,
-      height: 32,
-      boxSizing: 'border-box',
-      paddingTop: 4,
-      paddingLeft: 4,
-      cursor: 'pointer',
     })}
     {...props}
   />
@@ -84,11 +66,11 @@ const TextFilter = () => {
   return (
     <Container>
       <DebouncedInput
-        placeholder="Type to search"
+        placeholder="Search for movies, cinema's or cities"
         autoFocus={!mobile({ tablet: true })}
         value={search}
         onDebounce={setSearch}
-        aria-label="Type to search"
+        aria-label="Search for movies, cinema's or cities"
       />
     </Container>
   )

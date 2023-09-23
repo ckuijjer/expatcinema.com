@@ -33,7 +33,7 @@ const SubTitle = (props) => (
       fontWeight: 400,
       marginTop: 0,
       marginBottom: 0,
-      color: 'var(--text-muted-color)',
+      color: 'var(--text-inverse-muted-color)',
     })}
     {...props}
   />
@@ -65,7 +65,7 @@ const Menu = ({ onClose }) => {
         bottom: 0,
         right: 0,
         position: 'fixed',
-        backgroundColor: 'var(--background-menu-color)',
+        backgroundColor: 'var(--background-inverse-color)',
       })}
       onClick={onClose}
     >
@@ -106,7 +106,7 @@ const MenuCloseButton = ({ onClose }) => (
 
 const CloseButton = ({ onClose }) => (
   <IconButton onClick={onClose}>
-    <CrossIcon color="var(--text-menu-color)" />
+    <CrossIcon color="var(--text-inverse-color)" />
   </IconButton>
 )
 
@@ -116,7 +116,7 @@ const MenuItem = ({ href, children }) => (
     css={css({
       fontSize: 24,
       fontWeight: 700,
-      color: 'var(--text-menu-color)',
+      color: 'var(--text-inverse-color)',
       padding: '12px 24px',
       cursor: 'pointer',
       textDecoration: 'none',
@@ -135,6 +135,8 @@ const Container = (props) => (
       alignItems: 'center',
       paddingTop: 16,
       paddingBottom: 16,
+      color: 'var(--text-inverse-color)',
+      backgroundColor: 'var(--background-inverse-color)',
     })}
     {...props}
   />
@@ -158,15 +160,15 @@ const IconContainer = (props) => (
   <div
     css={css({
       flex: 0,
-      display: 'grid',
-      gridTemplateColumns: 'repeat(2, 32px)',
-      gridGap: 16,
+      display: 'flex',
+      gap: 16,
     })}
     {...props}
   />
 )
 
-const Header = () => {
+// TODO: Header contains too much logic, see if we can split it up by e.g. removing the search logic
+const Header = ({ showSearch = true }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { search, setSearch } = useSearch()
@@ -221,9 +223,11 @@ const Header = () => {
           )}
         </TitleContainer>
         <IconContainer>
-          <IconButton onClick={toggleSearch}>
-            {isSearchOpen ? <CrossIcon /> : <SearchIcon />}
-          </IconButton>
+          {showSearch && (
+            <IconButton onClick={toggleSearch}>
+              {isSearchOpen ? <CrossIcon /> : <SearchIcon />}
+            </IconButton>
+          )}
           <IconButton onClick={openMenu}>
             <MenuIcon />
           </IconButton>

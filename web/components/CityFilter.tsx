@@ -42,11 +42,9 @@ const ActiveLink = ({ children, href, as, ...rest }) => {
         display: 'inline-block',
         fontSize: 18,
         color: isCurrent
-          ? 'var(--background-filter-color)'
+          ? 'var(--secondary-color)'
           : 'var(--text-inverse-color)',
-        backgroundColor: isCurrent
-          ? 'var(--background-filter-active-color)'
-          : 'transparent',
+        backgroundColor: isCurrent ? 'var(--primary-color)' : 'transparent',
         padding: '10px',
         marginTop: '7px',
         marginBottom: '7px',
@@ -74,7 +72,7 @@ const CityFilter = () => {
   return (
     <Container
       css={css`
-        background-color: var(--background-filter-color);
+        background-color: var(--secondary-color);
       `}
     >
       {links.map(({ text, href }) => (

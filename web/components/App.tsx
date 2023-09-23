@@ -4,14 +4,15 @@ import Calendar from './Calendar'
 import CityFilter from './CityFilter'
 import Layout from './Layout'
 import Header from './Header'
+import { palette } from '../utils/theme'
 
 const App = ({ screenings, showCity = true }) => {
   return (
     <>
-      <Layout>
+      <Layout backgroundColor={palette.purple600}>
         <Header />
       </Layout>
-      <Layout inverse>
+      <Layout backgroundColor={palette.purple400}>
         <CityFilter />
       </Layout>
       <Layout>

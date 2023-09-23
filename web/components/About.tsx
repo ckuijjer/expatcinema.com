@@ -3,7 +3,7 @@ import Header from './Header'
 import { css } from '@emotion/react'
 import Link from 'next/link'
 import Layout from './Layout'
-import { headerFont } from '../utils/theme'
+import { headerFont, palette } from '../utils/theme'
 import { PageTitle } from './PageTitle'
 
 const Container = (props) => (
@@ -17,22 +17,25 @@ const Container = (props) => (
   />
 )
 
-const About = () => {
-  const linkStyle = css({
-    color: 'var(--text-muted-color)',
-    cursor: 'pointer',
-    textDecoration: 'none',
-  })
+const cityLink = css({
+  color: 'var(--text-color)',
+  fontWeight: 700,
+  cursor: 'pointer',
+  textDecoration: 'none',
+})
 
+const textLinkStyle = css({
+  color: 'var(--secondary-color)',
+})
+
+const About = () => {
   return (
     <>
-      <Layout>
-        <Header />
+      <Layout backgroundColor={palette.purple600}>
+        <Header showSearch={false} />
       </Layout>
       <Layout>
         <PageTitle>About</PageTitle>
-      </Layout>
-      <Layout>
         <Container>
           <p>
             ExpatCinema uses a combination of automated and manual techniques to
@@ -47,53 +50,57 @@ const About = () => {
             If you know of other cinemas that show English subtitled movies, if
             you find there's screenings missing, or if you find any mistakes,
             please let us know at{' '}
-            <a href="mailto:info@expatcinema.com">info@expatcinema.com</a>
+            <Link href="mailto:info@expatcinema.com" css={textLinkStyle}>
+              info@expatcinema.com
+            </Link>
           </p>
           <br />
-          <Link href="/city/amsterdam">
-            <span css={linkStyle}>Amsterdam</span>
+          <Link href="/city/amsterdam" css={cityLink}>
+            Amsterdam
           </Link>
           : Cinecenter, Eye, Ketelhuis, Kriterion, Lab111, Rialto De Pijp,
           Rialto VU, The Movies VU, Studio/K, De Uitkijk
           <br />
-          <Link href="/city/delft">
-            <span css={linkStyle}>Delft</span>
+          <Link href="/city/delft" css={cityLink}>
+            Delft
           </Link>
           : Filmhuis Lumen
           <br />
-          <Link href="/city/den haag">
-            <span css={linkStyle}>Den Haag</span>
+          <Link href="/city/den haag" css={cityLink}>
+            Den Haag
           </Link>
           : Filmhuis Den Haag
           <br />
-          <Link href="/city/groningen">
-            <span css={linkStyle}>Groningen</span>
+          <Link href="/city/groningen" css={cityLink}>
+            Groningen
           </Link>
           : Forum Groningen
           <br />
-          <Link href="/city/leiden">
-            <span css={linkStyle}>Leiden</span>
+          <Link href="/city/leiden" css={cityLink}>
+            Leiden
           </Link>
           : Kijkhuis, Lido, Trianon
           <br />
-          <Link href="/city/maastricht">
-            <span css={linkStyle}>Maastricht</span>
+          <Link href="/city/maastricht" css={cityLink}>
+            Maastricht
           </Link>
           : Lumière
           <br />
-          <Link href="/city/rotterdam">
-            <span css={linkStyle}>Rotterdam</span>
+          <Link href="/city/rotterdam" css={cityLink}>
+            Rotterdam
           </Link>
           : Kino, Lantarenvenster
           <br />
-          <Link href="/city/utrecht">
-            <span css={linkStyle}>Utrecht</span>
+          <Link href="/city/utrecht" css={cityLink}>
+            Utrecht
           </Link>
           : Louis Hartlooper Complex, Slachtstraat, Springhaver
           <br />
           <p>
             Contact us at{' '}
-            <a href="mailto:info@expatcinema.com">info@expatcinema.com</a>
+            <Link href="mailto:info@expatcinema.com" css={textLinkStyle}>
+              info@expatcinema.com
+            </Link>
           </p>
         </Container>
       </Layout>
