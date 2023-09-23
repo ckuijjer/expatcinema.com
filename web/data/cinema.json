@@ -7,32 +7,38 @@
   {
     "name": "Kijkhuis",
     "city": "Leiden",
-    "url": "https://www.bioscopenleiden.nl/Kijkhuis"
+    "url": "https://www.bioscopenleiden.nl/Kijkhuis",
+    "logo": "bioscopenleiden.png"
   },
   {
     "name": "Trianon",
     "city": "Leiden",
-    "url": "https://www.bioscopenleiden.nl/Trianon"
+    "url": "https://www.bioscopenleiden.nl/Trianon",
+    "logo": "bioscopenleiden.png"
   },
   {
     "name": "Lido",
     "city": "Leiden",
-    "url": "https://www.bioscopenleiden.nl/Lido"
+    "url": "https://www.bioscopenleiden.nl/Lido",
+    "logo": "bioscopenleiden.png"
   },
   {
     "name": "Filmhuis Den Haag",
     "city": "Den Haag",
-    "url": "https://www.filmhuisdenhaag.nl/"
+    "url": "https://www.filmhuisdenhaag.nl/",
+    "logo": "filmhuisdenhaag.png"
   },
   {
     "name": "Kino",
     "city": "Rotterdam",
-    "url": "https://www.kinorotterdam.nl/"
+    "url": "https://www.kinorotterdam.nl/",
+    "logo": "kino.png"
   },
   {
     "name": "Lantarenvenster",
     "city": "Rotterdam",
-    "url": "https://www.lantarenvenster.nl/"
+    "url": "https://www.lantarenvenster.nl/",
+    "logo": "lantarenvenster.png"
   },
   {
     "name": "Lab-1",
@@ -42,52 +48,62 @@
   {
     "name": "Lab111",
     "city": "Amsterdam",
-    "url": "https://www.lab111.nl/"
+    "url": "https://www.lab111.nl/",
+    "logo": "lab111.png"
   },
   {
     "name": "Eye",
     "city": "Amsterdam",
-    "url": "https://www.eyefilm.nl/en"
+    "url": "https://www.eyefilm.nl/en",
+    "logo": "eye.png"
   },
   {
     "name": "Kriterion",
     "city": "Amsterdam",
-    "url": "https://kriterion.nl"
+    "url": "https://kriterion.nl",
+    "logo": "kriterion.png"
   },
   {
     "name": "Springhaver",
     "city": "Utrecht",
-    "url": "https://www.springhaver.nl"
+    "url": "https://www.springhaver.nl",
+    "logo": "springhaver.png"
   },
   {
     "name": "Louis Hartlooper Complex",
     "city": "Utrecht",
-    "url": "https://www.hartlooper.nl"
+    "url": "https://www.hartlooper.nl",
+    "logo": "louishartloopercomplex.png"
   },
   {
     "name": "Slachtstraat",
     "city": "Utrecht",
-    "url": "https://www.slachtstraat.nl"
+    "url": "https://www.slachtstraat.nl",
+    "logo": "slachtstraat.png"
   },
   {
     "name": "Rialto De Pijp",
     "city": "Amsterdam",
-    "url": "https://rialtofilm.nl/"
+    "url": "https://rialtofilm.nl/",
+    "logo": "rialto.png"
   },
   {
     "name": "Rialto VU",
     "city": "Amsterdam",
-    "url": "https://rialtofilm.nl/"
+    "url": "https://rialtofilm.nl/",
+    "logo": "rialto.png"
   },
   {
     "name": "Cinecenter",
     "city": "Amsterdam",
-    "url": "https://cinecenter.nl/"
+    "url": "https://cinecenter.nl/",
+    "logo": "cinecenter.png"
   },
   {
     "name": "Forum Groningen",
     "city": "Groningen",
-    "url": "https://www.forum.nl/"
+    "url": "https://www.forum.nl/",
+    "logo": "forumgroningen.png"
   },
   {
     "name": "Filmhuis Lumen",
@@ -97,22 +113,26 @@
   {
     "name": "Ketelhuis",
     "city": "Amsterdam",
-    "url": "https://www.ketelhuis.nl/"
+    "url": "https://www.ketelhuis.nl/",
+    "logo": "ketelhuis.png"
   },
   {
     "name": "Lumière",
     "city": "Maastricht",
-    "url": "https://lumiere.nl/"
+    "url": "https://lumiere.nl/",
+    "logo": "lumiere.png"
   },
   {
     "name": "Studio/K",
     "city": "Amsterdam",
-    "url": "https://www.studio-k.nu/"
+    "url": "https://www.studio-k.nu/",
+    "logo": "studiok.png"
   },
   {
     "name": "De Uitkijk",
     "city": "Amsterdam",
-    "url": "https://www.uitkijk.nl/"
+    "url": "https://www.uitkijk.nl/",
+    "logo": "deuitkijk.png"
   },
   {
     "name": "The Movies",

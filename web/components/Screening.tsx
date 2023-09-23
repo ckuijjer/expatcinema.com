@@ -1,5 +1,7 @@
 import React from 'react'
 import { css } from '@emotion/react'
+import Image from 'next/image'
+import { Cinema as CinemaType } from '../utils/getScreenings'
 
 import Time from './Time'
 
@@ -56,10 +58,36 @@ const Cinema = (props) => (
       fontSize: 14,
       gridColumnStart: 'rest',
       color: 'var(--text-muted-color)',
+      display: 'flex',
+      alignItems: 'center',
     })}
     {...props}
   />
 )
+
+type CinemaIconProps = {
+  cinema: CinemaType
+}
+
+const CinemaIcon = ({ cinema }: CinemaIconProps) => {
+  if (!cinema.logo) {
+    return null
+  }
+
+  return (
+    <Image
+      src={`/images/${cinema.logo}`}
+      width={16}
+      height={16}
+      alt={`Logo for ${cinema.name}`}
+      css={css({
+        filter: 'grayscale(100%) opacity(0.5)',
+        marginRight: 4,
+        display: 'inline',
+      })}
+    />
+  )
+}
 
 const Screening = ({ url, date, title, cinema, showCity = true }) => {
   return (
@@ -68,13 +96,9 @@ const Screening = ({ url, date, title, cinema, showCity = true }) => {
         <Time>{date}</Time>
         <Title>{title}</Title>
         <Cinema>
+          <CinemaIcon cinema={cinema} />
           {cinema.name}
-          {showCity ? (
-            <>
-              <br />
-              {cinema.city.name}
-            </>
-          ) : null}
+          {showCity ? <> | {cinema.city.name}</> : null}
         </Cinema>
       </Container>
     </A>

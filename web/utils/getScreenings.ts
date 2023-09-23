@@ -16,6 +16,7 @@ export type Cinema = {
   name: string
   url: string
   city: City
+  logo?: string
 }
 
 export type Screening = {
