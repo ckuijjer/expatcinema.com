@@ -74,7 +74,7 @@ const About = () => {
           <Link href="/city/leiden">
             <span css={linkStyle}>Leiden</span>
           </Link>
-          : Kijkhuis
+          : Kijkhuis, Lido, Trianon
           <br />
           <Link href="/city/maastricht">
             <span css={linkStyle}>Maastricht</span>

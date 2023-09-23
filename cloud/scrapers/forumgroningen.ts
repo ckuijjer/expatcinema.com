@@ -1,11 +1,11 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
 
-import guessYear from './guessYear'
+import guessYear from './utils/guessYear'
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
-import { fullMonthToNumberDutch } from './monthToNumber'
-import splitTime from './splitTime'
+import { fullMonthToNumberDutch } from './utils/monthToNumber'
+import splitTime from './utils/splitTime'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

@@ -3,10 +3,10 @@ import { Screening } from 'types'
 import { DateTime } from 'luxon'
 
 import xRayPuppeteer from '../xRayPuppeteer'
-import guessYear from './guessYear'
+import guessYear from './utils/guessYear'
 import { logger as parentLogger } from '../powertools'
-import { shortMonthToNumberDutch } from './monthToNumber'
-import splitTime from './splitTime'
+import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import splitTime from './utils/splitTime'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

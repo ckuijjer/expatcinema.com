@@ -4,9 +4,9 @@ import Xray from 'x-ray'
 import { DateTime } from 'luxon'
 import got from 'got'
 
-import splitTime from './splitTime'
-import { fullMonthToNumberDutch } from './monthToNumber'
-import guessYear from './guessYear'
+import splitTime from './utils/splitTime'
+import { fullMonthToNumberDutch } from './utils/monthToNumber'
+import guessYear from './utils/guessYear'
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
 

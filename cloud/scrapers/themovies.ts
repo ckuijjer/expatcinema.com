@@ -2,9 +2,9 @@ import Xray from 'x-ray'
 import { Screening } from 'types'
 import { DateTime } from 'luxon'
 
-import guessYear from './guessYear'
+import guessYear from './utils/guessYear'
 import { logger as parentLogger } from '../powertools'
-import { shortMonthToNumberEnglish } from './monthToNumber'
+import { shortMonthToNumberEnglish } from './utils/monthToNumber'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

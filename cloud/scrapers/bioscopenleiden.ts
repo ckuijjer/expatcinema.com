@@ -12,19 +12,39 @@ const logger = parentLogger.createChild({
   },
 })
 
-// e.g. 202210181005
+// e.g. 202210181005 -> 2022-10-18T10:05:00.000Z
 const extractDate = (time: string) =>
   DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
+
+// e.g. Kijkhuis 1 -> Kijkhuis
+const extractLocation = (room: string) => {
+  return room.replace(/\s+\d+$/, '')
+}
+
+// e.g. kijkhuis -> Kijkhuis
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 type FkFeedItem = {
   title: string
   language: { label: string; value: string }
   permalink: string
-  times: { program_start: string; program_end: string }[]
+  times: {
+    program_start: string
+    program_end: string
+    tags: string[]
+    location: string
+  }[]
 }
 
-const hasEnglishSubtitles = (movie: FkFeedItem) => {
-  return movie.language.value === 'English' || movie.language.value === 'Engels'
+const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
+  return (
+    movie.language.label === 'Ondertitels' &&
+    (movie.language.value === 'Engels' || movie.language.value === 'English')
+  )
+}
+
+const hasTimeWithEnglishSubtitlesTag = (time: FkFeedItem['times'][0]) => {
+  return time.tags.includes('EN SUBS')
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
@@ -34,20 +54,22 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.info('main page', { movies })
 
-  const filteredMovies = movies.filter(hasEnglishSubtitles)
-
-  logger.info('main page with english subtitles', { filteredMovies })
-
-  const screenings: Screening[][] = filteredMovies
+  const screenings: Screening[][] = movies
     .map((movie) => {
-      return movie.times?.map((time) => {
-        return {
-          title: decode(movie.title),
-          url: movie.permalink,
-          cinema: 'Kijkhuis',
-          date: extractDate(time.program_start),
-        }
-      })
+      return movie.times
+        ?.filter(
+          (time) =>
+            hasEnglishSubtitlesLabel(movie) ||
+            hasTimeWithEnglishSubtitlesTag(time),
+        )
+        .map((time) => {
+          return {
+            title: decode(movie.title),
+            url: movie.permalink,
+            cinema: capitalize(extractLocation(time.location)),
+            date: extractDate(time.program_start),
+          }
+        })
     })
     .filter((x) => x)
 

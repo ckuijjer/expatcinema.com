@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import got from 'got'
 
 import { Screening } from '../types'
-import splitTime from './splitTime'
+import splitTime from './utils/splitTime'
 
 import { logger as parentLogger } from '../powertools'
 

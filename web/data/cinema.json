@@ -10,6 +10,16 @@
     "url": "https://www.bioscopenleiden.nl/Kijkhuis"
   },
   {
+    "name": "Trianon",
+    "city": "Leiden",
+    "url": "https://www.bioscopenleiden.nl/Trianon"
+  },
+  {
+    "name": "Lido",
+    "city": "Leiden",
+    "url": "https://www.bioscopenleiden.nl/Lido"
+  },
+  {
     "name": "Filmhuis Den Haag",
     "city": "Den Haag",
     "url": "https://www.filmhuisdenhaag.nl/"

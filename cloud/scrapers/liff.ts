@@ -2,9 +2,9 @@ import Xray from 'x-ray'
 import * as R from 'ramda'
 import { DateTime } from 'luxon'
 
-import splitTime from './splitTime'
-import { shortMonthToNumberDutch } from './monthToNumber'
-import guessYear from './guessYear'
+import splitTime from './utils/splitTime'
+import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import guessYear from './utils/guessYear'
 
 import { logger as parentLogger } from '../powertools'
 

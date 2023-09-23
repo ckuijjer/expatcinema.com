@@ -1,11 +1,11 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
-import splitTime from './splitTime'
+import splitTime from './utils/splitTime'
 import {
   shortMonthToNumberDutch,
   shortMonthToNumberEnglish,
-} from './monthToNumber'
-import guessYear from './guessYear'
+} from './utils/monthToNumber'
+import guessYear from './utils/guessYear'
 import xRayPuppeteer from '../xRayPuppeteer'
 
 import { logger as parentLogger } from '../powertools'

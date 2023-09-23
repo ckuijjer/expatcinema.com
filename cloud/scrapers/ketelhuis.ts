@@ -4,9 +4,9 @@ import * as R from 'ramda'
 import {
   shortMonthToNumberDutch,
   fullMonthToNumberDutch,
-} from './monthToNumber'
-import guessYear from './guessYear'
-import splitTime from './splitTime'
+} from './utils/monthToNumber'
+import guessYear from './utils/guessYear'
+import splitTime from './utils/splitTime'
 import xRayPuppeteer from '../xRayPuppeteer'
 
 import { logger as parentLogger } from '../powertools'
