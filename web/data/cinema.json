@@ -43,7 +43,8 @@
   {
     "name": "Lab-1",
     "city": "Eindhoven",
-    "url": "https://www.lab111.nl/"
+    "url": "https://www.lab1.nl/",
+    "logo": "lab1.png"
   },
   {
     "name": "Lab111",
@@ -108,7 +109,8 @@
   {
     "name": "Filmhuis Lumen",
     "city": "Delft",
-    "url": "https://www.filmhuis-lumen.nl/"
+    "url": "https://www.filmhuis-lumen.nl/",
+    "logo": "filmhuislumen.png"
   },
   {
     "name": "Ketelhuis",
@@ -137,6 +139,7 @@
   {
     "name": "The Movies",
     "city": "Amsterdam",
-    "url": "https://www.themovies.nl/"
+    "url": "https://www.themovies.nl/",
+    "logo": "themovies.png"
   }
 ]
