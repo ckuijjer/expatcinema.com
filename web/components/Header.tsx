@@ -66,6 +66,7 @@ const Menu = ({ onClose }) => {
         right: 0,
         position: 'fixed',
         backgroundColor: 'var(--background-inverse-color)',
+        zIndex: 1,
       })}
       onClick={onClose}
     >
