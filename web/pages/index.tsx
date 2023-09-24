@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import App from '../components/App'
+import { App } from '../components/App'
 import { getScreenings } from '../utils/getScreenings'
-import Seo from '../components/Seo'
+import { SEO } from '../components/Seo'
 
 export const getStaticProps = async () => {
   const screenings = await getScreenings()
@@ -17,7 +17,7 @@ export const getStaticProps = async () => {
 const IndexPage = ({ data }) => {
   return (
     <>
-      <Seo title="Home" />
+      <SEO title="Home" />
       <App screenings={data} showCity />
     </>
   )

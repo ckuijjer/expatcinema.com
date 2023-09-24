@@ -1,8 +1,8 @@
 import React from 'react'
-import RelativeDate from '../RelativeDate'
-import Screening from '../Screening'
+import { RelativeDate } from '../RelativeDate'
+import { Screening } from '../Screening'
 
-const DirectCalendar = ({ rows, showCity }) => (
+export const DirectCalendar = ({ rows, showCity }) => (
   <>
     {rows.map((row, i) =>
       row.component === 'RelativeDate' ? (
@@ -13,5 +13,3 @@ const DirectCalendar = ({ rows, showCity }) => (
     )}
   </>
 )
-
-export default DirectCalendar

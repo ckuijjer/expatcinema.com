@@ -1,9 +1,9 @@
 import * as React from 'react'
 
-import App from '../../components/App'
+import { App } from '../../components/App'
 import { getScreenings } from '../../utils/getScreenings'
 import cities from '../../data/city.json'
-import Seo from '../../components/Seo'
+import { SEO } from '../../components/Seo'
 
 export const getStaticPaths = () => {
   const paths = cities.map((city) => `/city/${city.name.toLowerCase()}`)
@@ -30,7 +30,7 @@ export const getStaticProps = async ({ params }) => {
 const CityPage = ({ data }) => {
   return (
     <>
-      <Seo title="Home" />
+      <SEO title="Home" />
       <App screenings={data} />
     </>
   )

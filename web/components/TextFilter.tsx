@@ -60,7 +60,7 @@ const DebouncedInput = ({
   )
 }
 
-const TextFilter = () => {
+export const TextFilter = () => {
   const { search, setSearch } = useSearch()
 
   return (
@@ -75,5 +75,3 @@ const TextFilter = () => {
     </Container>
   )
 }
-
-export default TextFilter

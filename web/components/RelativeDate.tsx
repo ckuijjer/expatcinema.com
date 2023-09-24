@@ -1,10 +1,10 @@
 import React from 'react'
 import { DateTime } from 'luxon'
-import getToday from '../utils/getToday'
+import { getToday } from '../utils/getToday'
 import { headerFont } from '../utils/theme'
 import { css } from '@emotion/react'
 
-class RelativeDate extends React.PureComponent {
+export class RelativeDate extends React.PureComponent {
   render() {
     const date = DateTime.fromISO(this.props.children)
     const today = getToday()
@@ -34,5 +34,3 @@ class RelativeDate extends React.PureComponent {
     )
   }
 }
-
-export default RelativeDate

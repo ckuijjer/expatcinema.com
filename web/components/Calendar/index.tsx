@@ -4,17 +4,17 @@ import dynamic from 'next/dynamic'
 import removeAccents from 'remove-accents'
 
 import { Screening } from '../../utils/getScreenings'
-import groupAndSortScreenings from '../../utils/groupAndSortScreenings'
+import { groupAndSortScreenings } from '../../utils/groupAndSortScreenings'
 import { isEnabled } from '../../utils/featureFlags'
 import { useSearch } from '../../utils/hooks'
 
 const CalendarComponent = isEnabled('virtualized-table')
-  ? dynamic(() => import('./VirtualizedCalendar'))
-  : dynamic(() => import('./DirectCalendar'))
+  ? dynamic(() =>
+      import('./VirtualizedCalendar').then((m) => m.VirtualizedCalendar),
+    )
+  : dynamic(() => import('./DirectCalendar').then((m) => m.DirectCalendar))
 
-const flatten = (acc, cur) => [...acc, ...cur]
-
-const Calendar = ({
+export const Calendar = ({
   screenings,
   showCity,
 }: {
@@ -63,9 +63,7 @@ const Calendar = ({
         })),
       ]
     })
-    .reduce(flatten, [])
+    .flat()
 
   return <CalendarComponent rows={rows} showCity={showCity} />
 }
-
-export default Calendar

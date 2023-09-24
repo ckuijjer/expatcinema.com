@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { css } from '@emotion/react'
 import Link from 'next/link'
-import { headerFont } from '../utils/theme'
 
 import SearchIcon from './icons/search.svg'
 import MenuIcon from './icons/menu.svg'
 import CrossIcon from './icons/cross.svg'
-import TextFilter from './TextFilter'
-import Layout from './Layout'
+
+import { headerFont } from '../utils/theme'
+import { TextFilter } from './TextFilter'
+import { Layout } from './Layout'
 
 import { useKeypress, useSearch } from '../utils/hooks'
 
@@ -168,8 +169,7 @@ const IconContainer = (props) => (
   />
 )
 
-// TODO: Header contains too much logic, see if we can split it up by e.g. removing the search logic
-const Header = ({ showSearch = true }) => {
+export const NavigationBar = ({ showSearch = true }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { search, setSearch } = useSearch()
@@ -238,5 +238,3 @@ const Header = ({ showSearch = true }) => {
     </>
   )
 }
-
-export default Header

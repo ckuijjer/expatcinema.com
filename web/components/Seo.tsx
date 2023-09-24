@@ -4,7 +4,7 @@ import Head from 'next/head'
 const DESCRIPTION = 'Foreign movies with English subtitles'
 const AUTHOR = 'Expat Cinema'
 
-function SEO({ title }) {
+export const SEO = ({ title }) => {
   const fullTitle = title ? `${title} | Expat Cinema` : 'Expat Cinema'
 
   return (
@@ -36,5 +36,3 @@ function SEO({ title }) {
     </Head>
   )
 }
-
-export default SEO

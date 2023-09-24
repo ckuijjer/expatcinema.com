@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import Image from 'next/image'
 import { Cinema as CinemaType } from '../utils/getScreenings'
 
-import Time from './Time'
+import { Time } from './Time'
 
 const A = ({ href, children }) => {
   return (
@@ -89,7 +89,7 @@ const CinemaIcon = ({ cinema }: CinemaIconProps) => {
   )
 }
 
-const Screening = ({ url, date, title, cinema, showCity = true }) => {
+export const Screening = ({ url, date, title, cinema, showCity = true }) => {
   return (
     <A href={url}>
       <Container>
@@ -104,5 +104,3 @@ const Screening = ({ url, date, title, cinema, showCity = true }) => {
     </A>
   )
 }
-
-export default Screening

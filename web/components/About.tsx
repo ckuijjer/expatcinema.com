@@ -1,8 +1,8 @@
 import React from 'react'
-import Header from './Header'
+import { NavigationBar } from './NavigationBar'
 import { css } from '@emotion/react'
 import Link from 'next/link'
-import Layout from './Layout'
+import { Layout } from './Layout'
 import { headerFont, palette } from '../utils/theme'
 import { PageTitle } from './PageTitle'
 
@@ -28,11 +28,11 @@ const textLinkStyle = css({
   color: 'var(--secondary-color)',
 })
 
-const About = () => {
+export const About = () => {
   return (
     <>
       <Layout backgroundColor={palette.purple600}>
-        <Header showSearch={false} />
+        <NavigationBar showSearch={false} />
       </Layout>
       <Layout>
         <PageTitle>About</PageTitle>
@@ -107,5 +107,3 @@ const About = () => {
     </>
   )
 }
-
-export default About

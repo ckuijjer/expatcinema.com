@@ -2,22 +2,25 @@ import * as React from 'react'
 import fetch from 'cross-fetch'
 import dynamic from 'next/dynamic'
 
-import Layout from '../components/Layout'
-import Seo from '../components/Seo'
-import Header from '../components/Header'
+import { Layout } from '../components/Layout'
+import { SEO } from '../components/Seo'
+import { NavigationBar } from '../components/NavigationBar'
 import { PageTitle } from '../components/PageTitle'
 import { palette } from '../utils/theme'
 
-const LoadableStatistics = dynamic(() => import('../components/Statistics'), {
-  ssr: false,
-})
+const LoadableStatistics = dynamic(
+  () => import('../components/Statistics').then((m) => m.Statistics),
+  {
+    ssr: false,
+  },
+)
 
 const StatisticsPage = ({ data }) => {
   return (
     <>
-      <Seo title="Statistics" />
+      <SEO title="Statistics" />
       <Layout backgroundColor={palette.purple600}>
-        <Header showSearch={false} />
+        <NavigationBar showSearch={false} />
       </Layout>
       <Layout>
         <PageTitle>Statistics</PageTitle>

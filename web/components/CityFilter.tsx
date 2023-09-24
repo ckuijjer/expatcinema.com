@@ -5,7 +5,7 @@ import { css } from '@emotion/react'
 import cities from '../data/city.json'
 import { useSearch } from '../utils/hooks'
 
-const Container = (props) => (
+export const Container = (props) => (
   <div
     css={css({
       marginLeft: -16,
@@ -58,7 +58,7 @@ const ActiveLink = ({ children, href, as, ...rest }) => {
   )
 }
 
-const CityFilter = () => {
+export const CityFilter = () => {
   const { searchQuery } = useSearch()
 
   const links = [
@@ -83,5 +83,3 @@ const CityFilter = () => {
     </Container>
   )
 }
-
-export default CityFilter

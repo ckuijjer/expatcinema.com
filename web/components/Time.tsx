@@ -1,7 +1,7 @@
 import React from 'react'
 import { DateTime } from 'luxon'
 
-class Time extends React.PureComponent {
+export class Time extends React.PureComponent {
   render() {
     // TODO: Format in the Europe/Amsterdam timezone with English locale here
     return (
@@ -11,5 +11,3 @@ class Time extends React.PureComponent {
     )
   }
 }
-
-export default Time

@@ -41,12 +41,10 @@ type LayoutProps = {
   children: React.ReactNode
 }
 
-const Layout = ({ backgroundColor, children }: LayoutProps) => {
+export const Layout = ({ backgroundColor, children }: LayoutProps) => {
   return (
     <Container backgroundColor={backgroundColor}>
       <Content>{children}</Content>
     </Container>
   )
 }
-
-export default Layout
