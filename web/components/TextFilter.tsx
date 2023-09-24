@@ -1,6 +1,5 @@
 import React, { ComponentProps, useState, useEffect } from 'react'
 import { css } from '@emotion/react'
-import mobile from 'is-mobile'
 
 import { useKeypress, useSearch } from '../utils/hooks'
 
@@ -67,7 +66,7 @@ export const TextFilter = () => {
     <Container>
       <DebouncedInput
         placeholder="Search for movies, cinema's or cities"
-        autoFocus={!mobile({ tablet: true })}
+        autoFocus
         value={search}
         onDebounce={setSearch}
         aria-label="Search for movies, cinema's or cities"
