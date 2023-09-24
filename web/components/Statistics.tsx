@@ -16,18 +16,10 @@ const Grid = ({ children }) => (
   </div>
 )
 
-const Tile = ({
-  title,
-  value,
-  onClick = () => {},
-  isHighlighted = false,
-  isDimmed = false,
-}) => {
+const Tile = ({ title, value, onClick = () => {}, isHighlighted = false }) => {
   const color = isHighlighted
-    ? 'var(--primary-color)'
-    : isDimmed
-    ? 'var(--text-muted-color)'
-    : 'var(--text-color)'
+    ? 'var(--secondary-color)'
+    : 'var(--text-muted-color)'
 
   return (
     <div
@@ -118,8 +110,8 @@ export const Statistics = ({ points }) => {
           } else {
             // If a scraper is highlighted, use the primary color and make the other scrapers less visible
             return scraper === highlight
-              ? 'var(--primary-color)'
-              : 'var(--text-muted-color)'
+              ? 'var(--secondary-color)'
+              : 'var(--primary-color)'
           }
         }),
     },
@@ -127,7 +119,7 @@ export const Statistics = ({ points }) => {
     width: 960,
     style: {
       overflow: 'visible',
-      color: 'var(--text-color)',
+      color: 'var(--text-muted-color)',
       background: 'var(--background-color)',
       fontSize: '10px',
     },
@@ -162,7 +154,6 @@ export const Statistics = ({ points }) => {
             key={scraper as string} // TODO: fix
             onClick={handleTileClick(scraper)}
             isHighlighted={isHighlighted(scraper)}
-            isDimmed={!isHighlighted(null)}
           />
         ))}
       </Grid>
