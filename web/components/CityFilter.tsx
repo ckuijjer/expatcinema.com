@@ -7,13 +7,13 @@ import { useSearch } from '../utils/hooks'
 
 export const Container = (props) => (
   <div
-    css={css({
-      marginLeft: -16,
-      marginRight: -16,
-      paddingLeft: 10,
-      whiteSpace: 'nowrap',
-      overflowX: 'auto',
-    })}
+    css={css`
+      margin-left: -16px;
+      margin-right: -16px;
+      padding-left: 10px;
+      white-space: nowrap;
+      overflow-x: auto;
+    `}
     {...props}
   />
 )
@@ -38,20 +38,20 @@ const ActiveLink = ({ children, href, as, ...rest }) => {
     <Link
       href={href}
       key={children}
-      css={css({
-        display: 'inline-block',
-        fontSize: 18,
-        color: isCurrent
+      css={css`
+        display: inline-block;
+        font-size: 18px;
+        color: ${isCurrent
           ? 'var(--secondary-color)'
-          : 'var(--text-inverse-color)',
-        backgroundColor: isCurrent ? 'var(--primary-color)' : 'transparent',
-        padding: '10px',
-        marginTop: '7px',
-        marginBottom: '7px',
-        cursor: 'pointer',
-        textDecoration: 'none',
-        borderRadius: '4px',
-      })}
+          : 'var(--text-inverse-color)'};
+        background-color: ${isCurrent ? 'var(--primary-color)' : 'transparent'};
+        padding: 10px;
+        margin-top: 7px;
+        margin-bottom: 7px;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 4px;
+      `}
     >
       {children}
     </Link>

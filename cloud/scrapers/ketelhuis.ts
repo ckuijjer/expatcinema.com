@@ -5,7 +5,6 @@ import {
   shortMonthToNumberDutch,
   fullMonthToNumberDutch,
 } from './utils/monthToNumber'
-import guessYear from './utils/guessYear'
 import splitTime from './utils/splitTime'
 import xRayPuppeteer from '../xRayPuppeteer'
 

@@ -65,10 +65,9 @@ const Container = (props) => (
     css={css`
       display: flex;
       align-items: center;
-      padding-top: 16px;
-      padding-bottom: 16px;
       color: var(--text-inverse-color);
       background-color: var(--background-inverse-color);
+      height: 88px;
     `}
     {...props}
   />
@@ -78,11 +77,10 @@ const TitleContainer = (props) => (
   <div
     css={css`
       flex: 1;
-      margin-right: 16px;
+      margin-right: 8px; // 24px is better, but 8px makes the layout fit on a iPhone SE
       display: flex;
       flex-direction: column;
       justify-content: center;
-      height: 52px;
     `}
     {...props}
   />
@@ -93,7 +91,7 @@ const NavigationItems = (props) => (
     css={css`
       flex: 0;
       display: flex;
-      gap: 16px;
+      gap: 24px;
       align-items: center;
     `}
     {...props}

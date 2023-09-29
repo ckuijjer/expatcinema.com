@@ -121,12 +121,13 @@ const extractFromMainPage = async () => {
     )
 
     const screenings: Screening[] = showsApiResponse.shows
-      .filter((item) => item.name.includes('(ENG SUBS)'))
+      .filter((item) => /\(eng subs\)/i.test(item.name))
       .map((item) => {
-        const slug = productionIdToSlug[item.production_id].replace(
-          /-eng-subs/,
-          '',
-        )
+        const slug = productionIdToSlug[item.production_id]
+        // .replace(
+        //   /-eng-subs/,
+        //   '',
+        // )
         const url = `https://kriterion.nl/films/${slug}`
 
         const screening: Screening = {
