@@ -7,12 +7,23 @@ import { Screening } from '../../utils/getScreenings'
 import { groupAndSortScreenings } from '../../utils/groupAndSortScreenings'
 import { isEnabled } from '../../utils/featureFlags'
 import { useSearch } from '../../utils/hooks'
+import { css } from '@emotion/react'
 
 const CalendarComponent = isEnabled('virtualized-table')
   ? dynamic(() =>
       import('./VirtualizedCalendar').then((m) => m.VirtualizedCalendar),
     )
   : dynamic(() => import('./DirectCalendar').then((m) => m.DirectCalendar))
+
+const Container = (props) => (
+  <div
+    css={css`
+      margin-top: 24px;
+      margin-bottom: 24px;
+    `}
+    {...props}
+  />
+)
 
 export const Calendar = ({
   screenings,
@@ -65,5 +76,9 @@ export const Calendar = ({
     })
     .flat()
 
-  return <CalendarComponent rows={rows} showCity={showCity} />
+  return (
+    <Container>
+      <CalendarComponent rows={rows} showCity={showCity} />
+    </Container>
+  )
 }

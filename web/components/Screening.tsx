@@ -13,8 +13,8 @@ const A = ({ href, children }) => {
         display: 'block',
         textDecoration: 'none',
         color: 'var(--text-color)',
-        marginLeft: -10,
-        marginRight: -10,
+        marginLeft: -12,
+        marginRight: -12,
 
         ':hover': {
           backgroundColor: 'var(--background-highlight-color)',
@@ -34,7 +34,7 @@ const Container = (props) => (
       gridTemplateColumns: '[time] 60px [rest] auto',
       gridColumnGap: 12,
       lineHeight: 1.5,
-      padding: 10,
+      padding: 12,
     })}
     {...props}
   />

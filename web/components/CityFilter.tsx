@@ -46,8 +46,8 @@ const ActiveLink = ({ children, href, as, ...rest }) => {
           : 'var(--text-inverse-color)'};
         background-color: ${isCurrent ? 'var(--primary-color)' : 'transparent'};
         padding: 10px;
-        margin-top: 7px;
-        margin-bottom: 7px;
+        margin-top: 8px;
+        margin-bottom: 8px;
         cursor: pointer;
         text-decoration: none;
         border-radius: 4px;
@@ -72,7 +72,9 @@ export const CityFilter = () => {
   return (
     <Container
       css={css`
+        display: flex;
         background-color: var(--secondary-color);
+        gap: 12px;
       `}
     >
       {links.map(({ text, href }) => (
