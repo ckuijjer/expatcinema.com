@@ -8,26 +8,25 @@ import { PageTitle } from './PageTitle'
 
 const Container = (props) => (
   <div
-    css={css({
-      paddingBottom: 16,
-      fontSize: 18,
-      lineHeight: 1.4,
-    })}
+    css={css`
+      padding-bottom: 16px;
+      font-size: 18px;
+      line-height: 1.4;
+    `}
     {...props}
   />
 )
 
-const cityLink = css({
-  color: 'var(--text-color)',
-  fontWeight: 700,
-  cursor: 'pointer',
-  textDecoration: 'none',
-})
+const cityLink = css`
+  color: var(--text-color);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+`
 
-const textLinkStyle = css({
-  color: 'var(--secondary-color)',
-})
-
+const textLinkStyle = css`
+  color: var(--secondary-color);
+`
 export const About = () => {
   return (
     <>

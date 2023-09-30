@@ -4,11 +4,11 @@ import { headerFont } from '../utils/theme'
 export const PageTitle = (props) => (
   <h1
     className={headerFont.className}
-    css={css({
-      marginTop: 16,
-      marginBottom: 0,
-      lineHeight: 1.8,
-    })}
+    css={css`
+      margin-top: 16px;
+      margin-bottom: 0;
+      line-height: 1.8;
+    `}
     {...props}
   />
 )

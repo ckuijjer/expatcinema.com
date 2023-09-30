@@ -9,18 +9,18 @@ const A = ({ href, children }) => {
   return (
     <a
       href={href}
-      css={css({
-        display: 'block',
-        textDecoration: 'none',
-        color: 'var(--text-color)',
-        marginLeft: -12,
-        marginRight: -12,
+      css={css`
+        display: block;
+        text-decoration: none;
+        color: var(--text-color);
+        margin-left: -12px;
+        margin-right: -12px;
 
-        ':hover': {
-          backgroundColor: 'var(--background-highlight-color)',
-          borderRadius: 10,
-        },
-      })}
+        &:hover {
+          background-color: var(--background-highlight-color);
+          border-radius: 10px;
+        }
+      `}
     >
       {children}
     </a>
@@ -29,38 +29,38 @@ const A = ({ href, children }) => {
 
 const Container = (props) => (
   <div
-    css={css({
-      display: 'grid',
-      gridTemplateColumns: '[time] 60px [rest] auto',
-      gridColumnGap: 12,
-      lineHeight: 1.5,
-      padding: 12,
-    })}
+    css={css`
+      display: grid;
+      grid-template-columns: [time] 60px [rest] auto;
+      grid-column-gap: 12px;
+      line-height: 1.5;
+      padding: 12px;
+    `}
     {...props}
   />
 )
 
 const Title = (props) => (
   <div
-    css={css({
-      fontSize: 18,
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-    })}
+    css={css`
+      font-size: 18px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    `}
     {...props}
   />
 )
 
 const Cinema = (props) => (
   <div
-    css={css({
-      fontSize: 14,
-      gridColumnStart: 'rest',
-      color: 'var(--text-muted-color)',
-      display: 'flex',
-      alignItems: 'center',
-    })}
+    css={css`
+      font-size: 14px;
+      grid-column-start: rest;
+      color: var(--text-muted-color);
+      display: flex;
+      align-items: center;
+    `}
     {...props}
   />
 )
@@ -80,11 +80,11 @@ const CinemaIcon = ({ cinema }: CinemaIconProps) => {
       width={16}
       height={16}
       alt={`Logo for ${cinema.name}`}
-      css={css({
-        filter: 'grayscale(100%) opacity(0.5)',
-        marginRight: 4,
-        display: 'inline',
-      })}
+      css={css`
+        filter: grayscale(100%) opacity(0.5);
+        margin-right: 4px;
+        display: inline;
+      `}
     />
   )
 }

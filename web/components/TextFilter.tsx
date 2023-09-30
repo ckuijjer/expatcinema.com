@@ -5,9 +5,9 @@ import { useKeypress, useSearch } from '../utils/hooks'
 
 const Container = (props) => (
   <div
-    css={css({
-      position: 'relative',
-    })}
+    css={css`
+      position: 'relative';
+    `}
     {...props}
   />
 )
@@ -15,19 +15,19 @@ const Container = (props) => (
 const Input = (props: ComponentProps<'input'>) => (
   <input
     name="search"
-    css={css({
-      padding: 12,
-      paddingRight: 48,
-      boxSizing: 'border-box',
-      width: '100%',
-      fontSize: 18,
-      borderRadius: 4,
-      border: '2px solid var(--primary-color)',
-      margin: 0,
-      backgroundColor: 'var(--background-inverse-color)',
-      color: 'var(--text-inverse-color)',
-      outlineColor: 'var(--primary-color)',
-    })}
+    css={css`
+      padding: 12px;
+      padding-right: 48px;
+      box-sizing: border-box;
+      width: 100%;
+      font-size: 18px;
+      border-radius: 4px;
+      border: 2px solid var(--primary-color);
+      margin: 0;
+      background-color: var(--background-inverse-color);
+      color: var(--text-inverse-color);
+      outline-color: var(--primary-color);
+    `}
     {...props}
   />
 )

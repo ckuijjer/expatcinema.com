@@ -15,9 +15,9 @@ const Container = ({
   children,
 }: ContainerProps) => (
   <div
-    css={css({
-      backgroundColor,
-    })}
+    css={css`
+      background-color: ${backgroundColor};
+    `}
   >
     {children}
   </div>
@@ -25,13 +25,12 @@ const Container = ({
 
 const Content = (props) => (
   <div
-    css={css({
-      margin: '0 auto',
-
-      paddingLeft: 16,
-      paddingRight: 16,
-      maxWidth: 960,
-    })}
+    css={css`
+      margin: 0 auto;
+      padding-left: 16px;
+      padding-right: 16px;
+      max-width: 960px;
+    `}
     {...props}
   />
 )
