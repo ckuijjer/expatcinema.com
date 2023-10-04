@@ -188,7 +188,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     // close the browser
     await closeBrowser({ logger })
 
-    logger.info('done scraping')
+    logger.info('done scraping for all scrapers')
 
     results.all = sort(Object.values(results).flat())
 

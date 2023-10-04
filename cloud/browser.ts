@@ -63,18 +63,42 @@ const createBrowserSingleton = () => {
 
 export const getBrowser = createBrowserSingleton()
 
+const timeout = (ms: number) =>
+  new Promise((resolve, reject) =>
+    setTimeout(() => reject(`timeout triggered after ${ms}`), ms),
+  )
+
+const closePagesAndBrowser = async ({
+  browser,
+  logger,
+}: {
+  browser: Browser
+  logger?: Logger
+}) => {
+  const pages = await browser.pages()
+  logger?.info('closing pages', { numberOfPages: pages.length })
+  await Promise.all(pages.map((p) => p.close()))
+
+  logger?.info('closing browser')
+  await browser.close()
+  logger?.info('done closing browser')
+}
+
 export const closeBrowser = async ({ logger }: { logger?: Logger }) => {
   const browser = await getBrowser({ logger })
 
   const connected = browser.isConnected()
   logger?.info('is browser connected', { connected })
   if (connected) {
-    const pages = await browser.pages()
-    logger?.info('closing pages', { numberOfPages: pages.length })
-    await Promise.all(pages.map((p) => p.close()))
+    logger?.info('closing pages and browser')
 
-    logger?.info('closing browser')
-    await browser.close()
-    logger?.info('done closing browser')
+    try {
+      await Promise.race([
+        closePagesAndBrowser({ browser, logger }),
+        timeout(10_000),
+      ])
+    } catch (err) {
+      logger?.warn('failed closing browser', { err })
+    }
   }
 }
