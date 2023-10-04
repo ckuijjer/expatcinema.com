@@ -66,6 +66,7 @@ export const getBrowser = createBrowserSingleton()
 export const closeBrowser = async ({ logger }: { logger?: Logger }) => {
   logger?.info('closing the browser')
   const browser = await getBrowser({ logger })
+  logger?.info('browser is connected', { isConnected: browser.isConnected() })
   await browser.close()
   logger?.info('done closing the browser')
 }
