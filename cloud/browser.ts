@@ -64,9 +64,17 @@ const createBrowserSingleton = () => {
 export const getBrowser = createBrowserSingleton()
 
 export const closeBrowser = async ({ logger }: { logger?: Logger }) => {
-  logger?.info('closing the browser')
   const browser = await getBrowser({ logger })
-  logger?.info('browser is connected', { isConnected: browser.isConnected() })
-  await browser.close()
-  logger?.info('done closing the browser')
+
+  const connected = browser.isConnected()
+  logger?.info('is browser connected', { connected })
+  if (connected) {
+    const pages = await browser.pages()
+    logger?.info('closing pages', { numberOfPages: pages.length })
+    await Promise.all(pages.map((p) => p.close()))
+
+    logger?.info('closing browser')
+    await browser.close()
+    logger?.info('done closing browser')
+  }
 }
