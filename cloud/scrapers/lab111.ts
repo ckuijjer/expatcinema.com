@@ -46,7 +46,6 @@ const extractFromMainPage = async () => {
   try {
     logger.info('main page')
 
-    // scraping google cache as lab111 blocks the scraper lambda
     const scrapeResult: XRayFromMainPage[] = await xray(
       'http://webcache.googleusercontent.com/search?q=cache:https://www.lab111.nl/programma/',
       '#programmalist .filmdetails',
