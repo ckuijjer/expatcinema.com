@@ -147,5 +147,11 @@
     "city": "Tilburg",
     "url": "https://cinecitta.nl/",
     "logo": "cinecitta.png"
+  },
+  {
+    "name": "Schuur",
+    "city": "Haarlem",
+    "url": "https://schuur.nl/",
+    "logo": "schuur.png"
   }
 ]

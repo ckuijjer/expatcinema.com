@@ -75,6 +75,11 @@ export const About = () => {
           </Link>
           : Forum Groningen
           <br />
+          <Link href="/city/haarlem" css={cityLink}>
+            Haarlem
+          </Link>
+          : Schuur
+          <br />
           <Link href="/city/leiden" css={cityLink}>
             Leiden
           </Link>
