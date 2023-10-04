@@ -45,7 +45,7 @@ const extractFromMainPage = async () => {
       'main section > div > .items-start', // for each movie there is a .items-start
       [
         {
-          title: 'h4 | cleanTitle | trim',
+          title: 'h4 | normalizeWhitespace | trim | cleanTitle | trim',
           url: 'a@href | trim',
           date: 'h3 | trim',
           time: '.w-full > div > div > span | trim',
