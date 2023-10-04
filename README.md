@@ -51,6 +51,11 @@ if (require.main === module) {
 
 with the LOG_LEVEL=debug used to have debug output from the scrapers show up in the console
 
+
+### Installing Chromium for use by puppeteer-core locally
+
+See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how 
+
 ## CI/CD
 
 GitHub actions is used, `web/` uses JamesIves/github-pages-deploy-action to deploy to the _gh-pages_ branch, and the GitHub settings has Pages take the source branch _gh-pages_ which triggers the GitHub built in _pages-build-deployment_
