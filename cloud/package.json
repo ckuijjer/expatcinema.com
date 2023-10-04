@@ -8,6 +8,7 @@
     "scrapers": "AWS_CLIENT_TIMEOUT=360000 serverless invoke -f scrapers --aws-profile casper",
     "scrapers:local": "AWS_CLIENT_TIMEOUT=360000 NODE_OPTIONS='--inspect --enable-source-maps --trace-warnings' serverless invoke local -f scrapers --aws-profile casper --stage local",
     "scrapers:prod": "AWS_CLIENT_TIMEOUT=360000 serverless invoke -f scrapers --aws-profile casper --stage prod",
+    "tsx": "IS_LOCAL=true tsx",
     "playground": "serverless invoke -f playground --aws-profile casper",
     "playground:local": "NODE_OPTIONS='--inspect --enable-source-maps --trace-warnings' serverless invoke local -f playground --aws-profile casper --stage local",
     "analytics": "serverless invoke -f analytics --aws-profile casper",
