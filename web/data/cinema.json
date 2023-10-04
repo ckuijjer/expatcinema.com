@@ -141,5 +141,11 @@
     "city": "Amsterdam",
     "url": "https://www.themovies.nl/",
     "logo": "themovies.png"
+  },
+  {
+    "name": "Cinecitta",
+    "city": "Tilburg",
+    "url": "https://cinecitta.nl/",
+    "logo": "cinecitta.png"
   }
 ]

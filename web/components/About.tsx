@@ -90,6 +90,11 @@ export const About = () => {
           </Link>
           : Kino, Lantarenvenster
           <br />
+          <Link href="/city/tilburg" css={cityLink}>
+            Tilburg
+          </Link>
+          : Cinecitta
+          <br />
           <Link href="/city/utrecht" css={cityLink}>
             Utrecht
           </Link>

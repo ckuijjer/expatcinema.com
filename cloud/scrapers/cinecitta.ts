@@ -36,44 +36,43 @@ const cleanTitle = (movie: WpJsonMovie) => {
   return movie.title.rendered.replace(ENGLISH_SUBTITLES_REGEX, '')
 }
 
-// 1. https://cinecitta.nl/wp-json/wp/v2/movie?with_shows=true&type=&movie_post_id=&lang=en
-// 2. filter on english subtitles
-// 3. get the movie_sync_id
-// 4. https://cinecitta.nl/rest-api/v1/wordpress-integration/shows/?format=json&movie_sync_id=952
-
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const movies: WpJsonMovie[] = await got(
-    'https://cinecitta.nl/wp-json/wp/v2/movie?with_shows=true&type=&movie_post_id=&lang=en',
-  ).json()
+  try {
+    const movies: WpJsonMovie[] = await got(
+      'https://cinecitta.nl/wp-json/wp/v2/movie?with_shows=true&type=&movie_post_id=&lang=en',
+    ).json()
 
-  logger.info('movies found', { movies })
+    logger.info('movies found', { movies })
 
-  const moviesWithEnglishSubtitles = movies.filter(hasEnglishSubtitles)
+    const moviesWithEnglishSubtitles = movies.filter(hasEnglishSubtitles)
 
-  logger.info('movies with english subtitles', { moviesWithEnglishSubtitles })
+    logger.info('movies with english subtitles', { moviesWithEnglishSubtitles })
 
-  const screenings: Screening[][] = (
-    await Promise.all(
-      moviesWithEnglishSubtitles.map(async (movie) => {
-        const shows: ShowJson[] = await got(
-          `https://cinecitta.nl/rest-api/v1/wordpress-integration/shows/?format=json&movie_sync_id=${movie.movie_sync_id}`,
-        ).json()
+    const screenings: Screening[][] = (
+      await Promise.all(
+        moviesWithEnglishSubtitles.map(async (movie) => {
+          const shows: ShowJson[] = await got(
+            `https://cinecitta.nl/rest-api/v1/wordpress-integration/shows/?format=json&movie_sync_id=${movie.movie_sync_id}`,
+          ).json()
 
-        return shows.map((show) => {
-          return {
-            title: cleanTitle(movie),
-            url: movie.link,
-            cinema: 'Cinecitta',
-            date: extractDate(show.start),
-          }
-        })
-      }),
-    )
-  ).filter((x) => x)
+          return shows.map((show) => {
+            return {
+              title: cleanTitle(movie),
+              url: movie.link,
+              cinema: 'Cinecitta',
+              date: extractDate(show.start),
+            }
+          })
+        }),
+      )
+    ).filter((x) => x)
 
-  logger.info('before flatten', { screenings })
+    logger.info('before flatten', { screenings })
 
-  return screenings.flat()
+    return screenings.flat()
+  } catch (error) {
+    logger.error('error scraping cinecitta', { error })
+  }
 }
 
 if (require.main === module) {
