@@ -224,8 +224,7 @@ custom:
       ignore: ['.serverless', '.build', '.esbuild']
     packager: yarn
     exclude:
-      - puppeteer-core # as we're using the lambda layer, no need to bundle it
-      - '@sparticuz/chrome-aws-lambda' # as we're using the lambda layer, no need to bundle it
+      - '@sparticuz/chromium' # as we're using the lambda layer, no need to bundle it
       - aws-sdk
     external:
       - emitter # as batch dynamically imports from emitter

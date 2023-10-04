@@ -7,11 +7,11 @@ import got from 'got'
 import { publicIp, publicIpv4, publicIpv6 } from 'public-ip'
 // import chromium from 'chrome-aws-lambda'
 // const chromium = require('chrome-aws-lambda')
-import chromium from '@sparticuz/chrome-aws-lambda'
+import chromium from '@sparticuz/chromium'
 import pMap from 'p-map'
 import diacritics from 'diacritics'
 
-import puppeteer from 'puppeteer'
+import puppeteer from 'puppeteer-core'
 import { Screening } from 'types'
 
 import getTmdbClient from './clients/tmdb'
@@ -59,11 +59,11 @@ const getUsingChromium = async (url: string) => {
   let browser = null
 
   try {
-    browser = await chromium.puppeteer.launch({
+    browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless(),
       ignoreHTTPSErrors: true,
     })
 
