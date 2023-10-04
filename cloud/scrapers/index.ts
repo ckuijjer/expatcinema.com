@@ -20,6 +20,7 @@ import getMetadata from '../metadata'
 // }),
 import bioscopenleiden from './bioscopenleiden'
 import cinecenter from './cinecenter'
+import cinecitta from './cinecitta'
 import deuitkijk from './deuitkijk'
 import eyefilm from './eyefilm'
 import filmhuisdenhaag from './filmhuisdenhaag'
@@ -43,6 +44,7 @@ import themovies from './themovies'
 const SCRAPERS = {
   bioscopenleiden,
   cinecenter,
+  cinecitta,
   deuitkijk,
   eyefilm,
   filmhuisdenhaag,
