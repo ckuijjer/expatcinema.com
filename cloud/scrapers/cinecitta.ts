@@ -72,6 +72,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     return screenings.flat()
   } catch (error) {
     logger.error('error scraping cinecitta', { error })
+    return []
   }
 }
 

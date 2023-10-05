@@ -152,6 +152,7 @@ const extractFromMainPage = async () => {
     return screenings
   } catch (error) {
     logger.error('error scraping kriterion', { error })
+    return []
   }
 }
 

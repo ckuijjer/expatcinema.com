@@ -21,6 +21,7 @@ import getMetadata from '../metadata'
 import bioscopenleiden from './bioscopenleiden'
 import cinecenter from './cinecenter'
 import cinecitta from './cinecitta'
+import cinerama from './cinerama'
 import deuitkijk from './deuitkijk'
 import eyefilm from './eyefilm'
 import filmhuisdenhaag from './filmhuisdenhaag'
@@ -46,6 +47,7 @@ const SCRAPERS = {
   bioscopenleiden,
   cinecenter,
   cinecitta,
+  cinerama,
   deuitkijk,
   eyefilm,
   filmhuisdenhaag,

@@ -109,6 +109,7 @@ const extractFromMainPage = async () => {
     return screenings
   } catch (error) {
     logger.error('error scraping lab111', { error })
+    return []
   }
 }
 
