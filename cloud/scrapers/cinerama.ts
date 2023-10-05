@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
+import got from 'got'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -41,7 +42,7 @@ const hasEnglishSubtitles = (movie: KinepolisMovie) => {
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
   try {
-    const response: Response = await fetch(
+    const programmation: KinepolisProgrammation = await got(
       'https://kinepolisweb-programmation.kinepolis.com/api/Programmation/NL/NL/WWW/Cinema/Cinerama',
       {
         headers: {
@@ -65,9 +66,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
         },
       },
-    )
-
-    const programmation: KinepolisProgrammation = await response.json()
+    ).json()
 
     const moviesWithEnglishSubtitles =
       programmation.films.filter(hasEnglishSubtitles)
