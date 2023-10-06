@@ -18,6 +18,8 @@ const createBrowserSingleton = () => {
 
   const initializeBrowser = async ({ logger }: { logger?: Logger }) => {
     try {
+      logger?.info('running locally?', { isLocal: process.env.IS_LOCAL })
+
       const options: PuppeteerLaunchOptions = {
         args: process.env.IS_LOCAL ? defaultArgs() : chromium.args,
         defaultViewport: chromium.defaultViewport,

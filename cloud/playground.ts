@@ -19,7 +19,18 @@ import getOmdbClient from './clients/omdb'
 import getDuckDuckGoClient from './clients/duckduckgo'
 import getGoogleCustomSearchClient from './clients/google-customsearch'
 
+import { getBrowser } from './browser'
+import { logger as parentLogger } from 'powertools'
+
 import getMetadata from './metadata'
+import middy from '@middy/core'
+import { injectLambdaContext } from '@aws-lambda-powertools/logger'
+
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'playground',
+  },
+})
 
 // const documentClient = require('./documentClient')
 
@@ -54,31 +65,23 @@ const timezonePlayground = async ({ event, context } = {}) => {
   return result
 }
 
-const getUsingChromium = async (url: string) => {
-  let result = null
-  let browser = null
+const getUsingChromium = async () => {
+  const browser = await getBrowser({ logger })
 
-  try {
-    browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless(),
-      ignoreHTTPSErrors: true,
-    })
+  let page = await browser.newPage()
 
-    let page = await browser.newPage()
+  page.waitForResponse((response) => {
+    logger.info('waitForResponse', { response })
+  })
 
-    await page.goto(url)
+  await page.goto('https://cineramabios.nl/?main_section=films')
 
-    return await page.content()
-  } catch (error) {
-    throw error
-  } finally {
-    if (browser !== null) {
-      await browser.close()
-    }
-  }
+  await page.waitForSelector('body')
+  const textContent = await page.evaluate(
+    () => document.querySelector('body').textContent,
+  )
+
+  logger.info('Page title' + textContent)
 }
 
 const movieMetadataPlayground = async () => {
@@ -129,15 +132,19 @@ const movieMetadataPlayground = async () => {
 }
 
 const playground = async ({ event, context } = {}) => {
-  const results = await movieMetadataPlayground()
+  // const results = await movieMetadataPlayground()
   // const results = await findMetadata('chungking express')
   // const results = await findMetadata('Caché')
+  await getUsingChromium()
 
-  console.log(JSON.stringify(results, null, 2))
+  // console.log(JSON.stringify(results, null, 2))
 }
 
 if (require.main === module) {
   playground()
 }
+const handler = middy(playground).use(
+  injectLambdaContext(logger, { clearState: true }),
+)
 
-export default playground
+export default handler
