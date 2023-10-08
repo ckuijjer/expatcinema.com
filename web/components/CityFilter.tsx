@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { css } from '@emotion/react'
 import cities from '../data/city.json'
 import { useSearch } from '../utils/hooks'
+import { palette } from '../utils/theme'
 
 export const Container = (props) => (
   <div
@@ -41,9 +42,7 @@ const ActiveLink = ({ children, href, as, ...rest }) => {
       css={css`
         display: inline-block;
         font-size: 18px;
-        color: ${isCurrent
-          ? 'var(--secondary-color)'
-          : 'var(--text-inverse-color)'};
+        color: ${isCurrent ? palette.purple500 : 'var(--text-inverse-color)'};
         background-color: ${isCurrent ? 'var(--primary-color)' : 'transparent'};
         padding: 10px;
         margin-top: 8px;
