@@ -20,11 +20,24 @@ type FkFeedItem = {
   title: string
   language: { label: string; value: string }
   permalink: string
-  times: { program_start: string; program_end: string }[]
+  times: { program_start: string; program_end: string; tags: string[] }[]
 }
 
-const hasEnglishSubtitles = (movie: FkFeedItem) => {
-  return movie.language.value === 'English' || movie.language.value === 'Engels'
+const hasEnglishSubtitles = (
+  time: FkFeedItem['times'][0],
+  movie: FkFeedItem,
+) => {
+  const allScreeningsHaveEnglishSubtitels =
+    movie.language.label === 'Ondertitels' &&
+    (movie.language.value === 'English' || movie.language.value === 'Engels')
+
+  const specificScreeningHasEnglishSubtitles = time.tags.some((tag) =>
+    /en subs/i.test(tag),
+  )
+
+  return (
+    allScreeningsHaveEnglishSubtitels || specificScreeningHasEnglishSubtitles
+  )
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
@@ -34,20 +47,18 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.info('main page', { movies })
 
-  const filteredMovies = movies.filter(hasEnglishSubtitles)
-
-  logger.info('main page with english subtitles', { filteredMovies })
-
-  const screenings: Screening[][] = filteredMovies
+  const screenings: Screening[][] = movies
     .map((movie) => {
-      return movie.times?.map((time) => {
-        return {
-          title: decode(movie.title),
-          url: movie.permalink,
-          cinema: 'Kino',
-          date: extractDate(time.program_start),
-        }
-      })
+      return movie.times
+        ?.filter((time) => hasEnglishSubtitles(time, movie))
+        .map((time) => {
+          return {
+            title: decode(movie.title),
+            url: movie.permalink,
+            cinema: 'Kino',
+            date: extractDate(time.program_start),
+          }
+        })
     })
     .filter((x) => x)
 
