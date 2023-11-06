@@ -17,6 +17,8 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
     cache: new InMemoryCache(),
   })
 
+  // This is the query that the website uses to fetch the screenings, simply found by inspecting the network tab
+  // in the browser.
   const query = gql`
     query shows(
       $siteId: [String]
@@ -26,6 +28,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
       $label: [String] = null
       $productionThemeId: Int = null
       $language: String = null
+      $limit: Int = 40
     ) {
       shows(
         site: $siteId
@@ -35,6 +38,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
         startDateTime: $startDateTime
         label: $label
         language: $language
+        limit: $limit
       ) {
         ... on show_show_Entry {
           url
@@ -60,11 +64,14 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
     variables: {
       siteId: 'eyeEnglish',
       startDateTime: ['and', `> ${today}`, `< ${oneMonthInTheFuture}`],
+      limit: 1000, // by default the website only returns 40 results, and then when you scroll it loads more using e.g. offset: 40
     },
   })
 
   const hasEnglishSubtitles = (show) =>
     show.singleSubtitles === '42c27a5b-2d4e-4195-b547-cb6fbe9fcd49'
+
+  console.log(results.data.shows.length)
 
   const screenings = results.data.shows
     .filter(hasEnglishSubtitles)

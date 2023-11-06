@@ -129,7 +129,6 @@ const extractFromMainPage = async () => {
   try {
     logger.info('main page')
 
-    // scraping google cache as lab111 blocks the scraper lambda
     const scrapeResult: XRayFromMainPage[] = await xray(
       'https://www.lab-1.nl/bioscoopagenda/',
       '#content .zmoviecontainer', // for each movie there is a .zmoviecontainer
