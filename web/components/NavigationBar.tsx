@@ -9,7 +9,7 @@ import { headerFont } from '../utils/theme'
 import { TextFilter } from './TextFilter'
 import { Menu } from './Menu'
 
-import { useSearch } from '../utils/hooks'
+import { useKeypress, useSearch } from '../utils/hooks'
 
 const Title = (props) => (
   <h1
@@ -101,6 +101,7 @@ const NavigationItems = (props) => (
 export const NavigationBar = ({ showSearch = true }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { search, setSearch } = useSearch()
+  useKeypress('/', () => toggleSearch())
 
   useEffect(() => {
     const isOpen = search !== ''

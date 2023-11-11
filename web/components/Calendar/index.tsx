@@ -25,6 +25,25 @@ const Container = (props) => (
   />
 )
 
+const screeningMatchesSearch = (
+  screening: Screening,
+  searchComponents: string[],
+) => {
+  const title = removeAccents(screening.title.toLowerCase())
+  const cinema = removeAccents(screening.cinema.name.toLowerCase())
+  const city = removeAccents(screening.cinema.city.name.toLowerCase())
+
+  return (
+    searchComponents.length === 0 ||
+    searchComponents.every(
+      (searchComponent) =>
+        title.includes(searchComponent) ||
+        cinema.includes(searchComponent) ||
+        city.includes(searchComponent),
+    )
+  )
+}
+
 export const Calendar = ({
   screenings,
   showCity,
@@ -32,7 +51,7 @@ export const Calendar = ({
   screenings: Screening[]
   showCity: boolean
 }) => {
-  const { normalizedSearch } = useSearch()
+  const { searchComponents } = useSearch()
 
   const screeningsByDate = Object.entries(
     groupAndSortScreenings(screenings),
@@ -43,23 +62,11 @@ export const Calendar = ({
   const rows = screeningsByDate
     .map(([date, screenings]) => {
       // filter on text
-      const filteredScreenings = screenings.filter((screening) => {
-        const normalizedTitle = removeAccents(screening.title.toLowerCase())
-        const normalizedCinema = removeAccents(
-          screening.cinema.name.toLowerCase(),
-        )
-        const normalizedCity = removeAccents(
-          screening.cinema.city.name.toLowerCase(),
-        )
+      const filteredScreenings = screenings?.filter((screening: Screening) =>
+        screeningMatchesSearch(screening, searchComponents),
+      )
 
-        return (
-          normalizedSearch === undefined ||
-          normalizedTitle.includes(normalizedSearch) ||
-          normalizedCinema.includes(normalizedSearch) ||
-          normalizedCity.includes(normalizedSearch)
-        )
-      })
-      if (filteredScreenings.length) {
+      if (filteredScreenings?.length) {
         return [date, filteredScreenings]
       }
       return null

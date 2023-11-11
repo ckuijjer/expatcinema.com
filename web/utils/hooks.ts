@@ -4,7 +4,7 @@ import removeAccents from 'remove-accents'
 
 type UseSearch = {
   search: string
-  normalizedSearch: string
+  searchComponents: string[]
   searchQuery: string
   setSearch: (search: string) => void
 }
@@ -15,7 +15,8 @@ export const useSearch = (): UseSearch => {
 
   const search = (Array.isArray(rawSearch) ? rawSearch[0] : rawSearch) ?? ''
 
-  const normalizedSearch = removeAccents(search.toLowerCase())
+  const searchComponents =
+    search === '' ? [] : removeAccents(search.toLowerCase()).split(/\s+/)
 
   const searchQuery = search ? `?search=${search}` : ''
 
@@ -32,7 +33,7 @@ export const useSearch = (): UseSearch => {
 
   return {
     search,
-    normalizedSearch,
+    searchComponents,
     searchQuery,
     setSearch,
   }
