@@ -68,7 +68,7 @@ const extractFromMoviePage = async ({
           const [dayOfWeek, dayString, monthString] = date.split(/\s+/)
           const day = Number(dayString)
           const month = fullMonthToNumberDutch(monthString)
-          const [startTime, endTime] = time.split(/ tot /)
+          const [startTime, endTime] = time.split(/ tot | till /)
           const [hour, minute] = splitTime(startTime)
 
           const year = guessYear({
