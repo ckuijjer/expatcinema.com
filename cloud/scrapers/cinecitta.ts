@@ -19,6 +19,7 @@ type WpJsonMovie = {
   title: { rendered: string }
   link: string
   movie_sync_id: number
+  language_subtitles: string
 }
 
 type ShowJson = {
@@ -26,10 +27,19 @@ type ShowJson = {
   start: string
 }
 
-const ENGLISH_SUBTITLES_REGEX = /\s+\(English Subtitles\)$/i
+const ENGLISH_SUBTITLES_REGEX =
+  /\s+\(English Subtitles\)$|^Eng\s+|^Expat Cinema:\s+/i
 
 const hasEnglishSubtitles = (movie: WpJsonMovie) => {
-  return ENGLISH_SUBTITLES_REGEX.test(movie.title.rendered)
+  const titleDescribesEnglishSubtitles = ENGLISH_SUBTITLES_REGEX.test(
+    movie.title.rendered,
+  )
+
+  const metadataHasEnglishSubtitles =
+    movie.language_subtitles?.toLowerCase() === 'engels' ||
+    movie.language_subtitles?.toLowerCase() === 'english'
+
+  return titleDescribesEnglishSubtitles || metadataHasEnglishSubtitles
 }
 
 const cleanTitle = (movie: WpJsonMovie) => {
