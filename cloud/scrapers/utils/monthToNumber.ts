@@ -50,6 +50,32 @@ export const shortMonthToNumberDutch = (month: string) => {
   return monthNumber
 }
 
+export const fullMonthToNumberEnglish = (month: string) => {
+  const monthNumber =
+    [
+      'january',
+      'february',
+      'march',
+      'april',
+      'may',
+      'june',
+      'july',
+      'august',
+      'september',
+      'october',
+      'november',
+      'december',
+    ].indexOf(month.toLowerCase()) + 1
+
+  if (monthNumber === 0) {
+    throw new Error(
+      `invalid month ${month}, might you need the Dutch version of this function?`,
+    )
+  }
+
+  return monthNumber
+}
+
 export const shortMonthToNumberEnglish = (month: string) => {
   const monthNumber =
     [

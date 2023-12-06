@@ -93,12 +93,10 @@ const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
       const day = Number(dayString)
       const month = shortMonthToNumberDutch(monthString)
 
-      const year = guessYear(
-        DateTime.fromObject({
-          day,
-          month,
-        }),
-      )
+      const year = guessYear({
+        day,
+        month,
+      })
 
       return times.map((time) => {
         const [hour, minute] = splitTime(time)

@@ -95,14 +95,12 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
         const month = fullMonthToNumberDutch(date.month)
         const [hour, minute] = splitTime(time)
 
-        const year = guessYear(
-          DateTime.fromObject({
-            day,
-            month,
-            hour,
-            minute,
-          }),
-        )
+        const year = guessYear({
+          day,
+          month,
+          hour,
+          minute,
+        })
 
         return {
           title: cleanTitle(movie.title),

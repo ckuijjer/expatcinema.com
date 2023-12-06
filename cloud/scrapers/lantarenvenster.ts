@@ -63,16 +63,16 @@ export const extractFromMoviePage = async (
         .map((time) => {
           const [dayOfWeek, dayString, monthString] = date.split(' ')
           const day = Number(dayString)
+
           const month = shortMonthToNumberDutch(monthString)
           const [hour, minute] = splitTime(time)
-          const year = guessYear(
-            DateTime.fromObject({
-              day,
-              month,
-              hour,
-              minute,
-            }),
-          )
+
+          const year = guessYear({
+            day,
+            month,
+            hour,
+            minute,
+          })
 
           return {
             title: cleanTitle(movie.title),

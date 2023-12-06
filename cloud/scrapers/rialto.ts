@@ -5,6 +5,8 @@ import { DateTime } from 'luxon'
 
 import guessYear from './utils/guessYear'
 import { logger as parentLogger } from '../powertools'
+import { fullMonthToNumberEnglish } from './utils/monthToNumber'
+import splitTime from './utils/splitTime'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -53,13 +55,20 @@ const extractFromMoviePage = async ({
     ([cinema, dates]) => {
       return Object.entries(dates).flatMap(([dateString, times]) => {
         return times.map(({ time, link, text }) => {
-          let date = DateTime.fromFormat(
-            `${dateString} ${time}`,
-            'EEEE d MMMM H:mm',
-          )
+          const [dayOfWeek, dayString, monthString] = dateString.split(/\s+/)
+          const day = Number(dayString)
+          const month = fullMonthToNumberEnglish(monthString)
+          const [hour, minute] = splitTime(time)
 
-          const year = guessYear(date)
-          date = date.set({ year })
+          const year = guessYear({ day, month, hour, minute })
+
+          const date = DateTime.fromObject({
+            year,
+            day,
+            month,
+            hour,
+            minute,
+          })
 
           return {
             title,

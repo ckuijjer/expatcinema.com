@@ -69,14 +69,12 @@ const extractFromMainPage = async () => {
           const day = Number(dayString)
           const month = shortMonthToNumberEnglish(monthString)
           const [hour, minute] = splitTime(time)
-          const year = guessYear(
-            DateTime.fromObject({
-              day,
-              month,
-              hour,
-              minute,
-            }),
-          )
+          const year = guessYear({
+            day,
+            month,
+            hour,
+            minute,
+          })
 
           logger.debug('extracted date', {
             dateString: date,

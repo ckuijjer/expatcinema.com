@@ -62,14 +62,12 @@ const extractFromMainPage = async () => {
             .split(':')
             .map(Number)
 
-          const year = guessYear(
-            DateTime.fromObject({
-              day,
-              month,
-              hour,
-              minute,
-            }),
-          )
+          const year = guessYear({
+            day,
+            month,
+            hour,
+            minute,
+          })
 
           return {
             title,
