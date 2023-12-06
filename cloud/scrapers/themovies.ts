@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 import guessYear from './utils/guessYear'
 import { logger as parentLogger } from '../powertools'
 import { shortMonthToNumberEnglish } from './utils/monthToNumber'
+import got from 'got'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -24,14 +25,21 @@ type XRayFromMainPage = {
   screenings: string[]
 }
 
-const extractFromMainPage = async () => {
+type FkFeedItem = {
+  title: string
+  language: { label: string; value: string }
+  permalink: string
+  times: { program_start: string; program_end: string; tags: string[] }[]
+}
+
+const extractFromSpecialExpatCinemaPage = async () => {
   const url = 'https://themovies.nl/en/special/expat-cinema/'
 
   const movies: XRayFromMainPage[] = await xray(url, '.tile', [
     {
       title: '.tile__title a | trim',
       url: '.tile__title a@href',
-      screenings: ['.schedule__item | trim'],
+      // screenings: ['.schedule__item | trim'],
     },
   ])
 
@@ -88,6 +96,65 @@ const extractFromMainPage = async () => {
   logger.info('main page', { screenings })
 
   return screenings
+}
+
+const hasEnglishSubtitles = (
+  time: FkFeedItem['times'][0],
+  movie: FkFeedItem,
+) => {
+  const movieHasEnglishSubtitels =
+    movie.language?.label === 'Subtitles' && movie.language?.value === 'English'
+
+  return movieHasEnglishSubtitels
+}
+
+// e.g. 202210181005 -> 2022-10-18T10:05:00.000Z
+const extractDate = (time: string) =>
+  DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
+
+const extractFromMainPage = async () => {
+  const specialExpatScreenings = await extractFromSpecialExpatCinemaPage()
+
+  const movies = Object.values<FkFeedItem>(
+    await got('https://themovies.nl/en/fk-feed/agenda').json(),
+  )
+
+  logger.info('main page', { movies })
+
+  const screenings: Screening[][] = movies
+    .map((movie) => {
+      return movie.times
+        ?.filter((time) => hasEnglishSubtitles(time, movie))
+        .map((time) => {
+          return {
+            // title: decode(movie.title),
+            title: movie.title,
+            url: movie.permalink,
+            cinema: 'The Movies',
+            date: extractDate(time.program_start),
+          }
+        })
+    })
+    .filter((x) => x)
+
+  logger.info('before flatten', { screenings })
+
+  const allScreenings = [...specialExpatScreenings, ...screenings.flat()]
+
+  const uniqueScreenings = allScreenings.reduce(
+    (acc, screening) => {
+      const key = `${screening.title}${screening.url}${screening.cinema}${screening.date}`
+
+      if (!acc[key]) {
+        acc[key] = screening
+      }
+
+      return acc
+    },
+    {} as Record<string, Screening>,
+  )
+
+  return Object.values(uniqueScreenings)
 }
 
 if (require.main === module) {
