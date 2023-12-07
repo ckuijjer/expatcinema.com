@@ -166,9 +166,9 @@ const playground = async ({ event, context } = {}) => {
   // const results = await findMetadata('chungking express')
   // const results = await findMetadata('Caché')
   // await getUsingChromium()
-  await getUsingGot()
+  const result = await getUsingGot()
 
-  // console.log(JSON.stringify(results, null, 2))
+  console.log(JSON.stringify(result, null, 2))
 }
 
 if (require.main === module) {
