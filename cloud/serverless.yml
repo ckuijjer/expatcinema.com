@@ -91,7 +91,6 @@ functions:
       OMDB_API_KEY: ${env:OMDB_API_KEY}
       GOOGLE_CUSTOM_SEARCH_ID: ${env:GOOGLE_CUSTOM_SEARCH_ID}
       GOOGLE_CUSTOM_SEARCH_API_KEY: ${env:GOOGLE_CUSTOM_SEARCH_API_KEY}
-      SCRAPEOPS_API_KEY: ${env:SCRAPEOPS_API_KEY}
 
   notifySlack:
     handler: handler.notifySlack
