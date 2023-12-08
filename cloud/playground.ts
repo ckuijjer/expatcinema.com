@@ -162,7 +162,7 @@ const getUsingGot = async () => {
 }
 
 const getLux = async () => {
-  const response = await fetch(
+  const response = await got(
     'https://www.lux-nijmegen.nl/wp-json/lux/v1/discover',
     {
       headers: {
@@ -184,10 +184,9 @@ const getLux = async () => {
       body: '{"types":[],"genres":[122],"tags":[],"search":"","isVerwacht":false}',
       method: 'POST',
     },
-  )
+  ).json()
 
-  const json = await response.json()
-  return json
+  return response
 }
 
 const playground = async ({ event, context } = {}) => {
