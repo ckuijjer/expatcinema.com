@@ -90,6 +90,11 @@ export const About = () => {
           </Link>
           : Lumière
           <br />
+          <Link href="/city/nijmegen" css={cityLink}>
+            Nijmegen
+          </Link>
+          : Lux
+          <br />
           <Link href="/city/rotterdam" css={cityLink}>
             Rotterdam
           </Link>

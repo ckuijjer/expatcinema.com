@@ -153,5 +153,11 @@
     "city": "Haarlem",
     "url": "https://schuur.nl/",
     "logo": "schuur.png"
+  },
+  {
+    "name": "Lux",
+    "city": "Nijmegen",
+    "url": "https://www.lux-nijmegen.nl",
+    "logo": "lux.png"
   }
 ]
