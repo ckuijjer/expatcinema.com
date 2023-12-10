@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Layout } from './Layout'
 import { headerFont, palette } from '../utils/theme'
 import { PageTitle } from './PageTitle'
+import cinemas from '../data/cinema.json'
 
 const Container = (props) => (
   <div
@@ -27,6 +28,9 @@ const cityLink = css`
 const textLinkStyle = css`
   color: var(--secondary-color);
 `
+
+const cities = [...new Set(cinemas.map((cinema) => cinema.city))].sort()
+
 export const About = () => {
   return (
     <>
@@ -54,62 +58,33 @@ export const About = () => {
             </Link>
           </p>
           <br />
-          <Link href="/city/amsterdam" css={cityLink}>
-            Amsterdam
-          </Link>
-          : Cinecenter, Eye, Ketelhuis, Kriterion, Lab111, Rialto De Pijp,
-          Rialto VU, The Movies VU, Studio/K, De Uitkijk
-          <br />
-          <Link href="/city/delft" css={cityLink}>
-            Delft
-          </Link>
-          : Filmhuis Lumen
-          <br />
-          <Link href="/city/den haag" css={cityLink}>
-            Den Haag
-          </Link>
-          : Filmhuis Den Haag
-          <br />
-          <Link href="/city/groningen" css={cityLink}>
-            Groningen
-          </Link>
-          : Forum Groningen
-          <br />
-          <Link href="/city/haarlem" css={cityLink}>
-            Haarlem
-          </Link>
-          : Schuur
-          <br />
-          <Link href="/city/leiden" css={cityLink}>
-            Leiden
-          </Link>
-          : Kijkhuis, Lido, Trianon
-          <br />
-          <Link href="/city/maastricht" css={cityLink}>
-            Maastricht
-          </Link>
-          : Lumière
-          <br />
-          <Link href="/city/nijmegen" css={cityLink}>
-            Nijmegen
-          </Link>
-          : Lux
-          <br />
-          <Link href="/city/rotterdam" css={cityLink}>
-            Rotterdam
-          </Link>
-          : Kino, Lantarenvenster
-          <br />
-          <Link href="/city/tilburg" css={cityLink}>
-            Tilburg
-          </Link>
-          : Cinecitta
-          <br />
-          <Link href="/city/utrecht" css={cityLink}>
-            Utrecht
-          </Link>
-          : Louis Hartlooper Complex, Slachtstraat, Springhaver
-          <br />
+          {cities.map((city) => {
+            const href = `/city/${city.toLowerCase()}`
+            const cinemasInCity = cinemas
+              .filter((cinema) => cinema.city === city)
+              .sort((a, b) => a.name.localeCompare(b.name))
+
+            return (
+              <>
+                <Link href={href} css={cityLink}>
+                  {city}
+                </Link>
+                :{' '}
+                {cinemasInCity.map((cinema, i, arr) => {
+                  const isLast = i === arr.length - 1
+                  return (
+                    <>
+                      <Link href={cinema.url} css={textLinkStyle}>
+                        {cinema.name}
+                      </Link>
+                      {isLast ? '' : ', '}
+                    </>
+                  )
+                })}
+                <br />
+              </>
+            )
+          })}
           <p>
             Contact us at{' '}
             <Link href="mailto:info@expatcinema.com" css={textLinkStyle}>
