@@ -2,19 +2,19 @@
   {
     "name": "Kijkhuis",
     "city": "Leiden",
-    "url": "https://www.bioscopenleiden.nl/Kijkhuis",
+    "url": "https://bioscopenleiden.nl/kijkhuis/",
     "logo": "bioscopenleiden.png"
   },
   {
     "name": "Trianon",
     "city": "Leiden",
-    "url": "https://www.bioscopenleiden.nl/Trianon",
+    "url": "https://bioscopenleiden.nl/trianon/",
     "logo": "bioscopenleiden.png"
   },
   {
     "name": "Lido",
     "city": "Leiden",
-    "url": "https://www.bioscopenleiden.nl/Lido",
+    "url": "https://bioscopenleiden.nl/lido/",
     "logo": "bioscopenleiden.png"
   },
   {
@@ -38,7 +38,7 @@
   {
     "name": "Lab-1",
     "city": "Eindhoven",
-    "url": "https://www.lab1.nl/",
+    "url": "https://www.lab-1.nl/",
     "logo": "lab1.png"
   },
   {
