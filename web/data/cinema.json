@@ -160,5 +160,11 @@
     "city": "Amsterdam",
     "url": "https://www.filmhallen.nl/",
     "logo": "defilmhallen.png"
+  },
+  {
+    "name": "Filmkoepel",
+    "city": "Haarlem",
+    "url": "https://www.filmkoepel.nl/",
+    "logo": "defilmhallen.png"
   }
 ]

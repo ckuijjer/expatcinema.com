@@ -9,7 +9,7 @@ import got from 'got'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
-    scraper: 'themovies',
+    scraper: 'filmkoepel',
   },
 })
 
@@ -33,7 +33,7 @@ type FkFeedItem = {
 }
 
 const extractFromSpecialExpatCinemaPage = async () => {
-  const url = 'https://themovies.nl/en/special/expat-cinema/'
+  const url = 'https://filmkoepel.nl/special/expat-cinema/'
 
   const movies: XRayFromMainPage[] = await xray(url, '.tile', [
     {
@@ -80,7 +80,7 @@ const extractFromSpecialExpatCinemaPage = async () => {
           return {
             title,
             url,
-            cinema: 'The Movies',
+            cinema: 'Filmkoepel',
             date: DateTime.fromObject({
               day,
               month,
@@ -103,7 +103,8 @@ const hasEnglishSubtitles = (
   movie: FkFeedItem,
 ) => {
   const movieHasEnglishSubtitels =
-    movie.language?.label === 'Subtitles' && movie.language?.value === 'English'
+    movie.language?.label === 'Ondertitels' &&
+    movie.language?.value === 'Engels'
 
   return movieHasEnglishSubtitels
 }
@@ -116,7 +117,7 @@ const extractFromMainPage = async () => {
   const specialExpatScreenings = await extractFromSpecialExpatCinemaPage()
 
   const movies = Object.values<FkFeedItem>(
-    await got('https://themovies.nl/en/fk-feed/agenda').json(),
+    await got('https://filmkoepel.nl/fk-feed/agenda').json(),
   )
 
   logger.info('main page', { movies })
@@ -129,7 +130,7 @@ const extractFromMainPage = async () => {
           return {
             title: movie.title,
             url: movie.permalink,
-            cinema: 'The Movies',
+            cinema: 'Filmkoepel',
             date: extractDate(time.program_start),
           }
         })
