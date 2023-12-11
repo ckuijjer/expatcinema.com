@@ -69,3 +69,7 @@ aws s3 sync s3://expatcinema-scrapers-output expatcinema-scrapers-output --profi
 aws s3 sync s3://expatcinema-public expatcinema-public--profile casper
 aws dynamodb scan --table-name expatcinema-scrapers-analytics --profile casper > expatcinema-scrapers-analytics.json
 ```
+
+### Favicon
+
+Use https://favicongrabber.com/ to grab a favicon for the cinema.json file

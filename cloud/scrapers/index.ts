@@ -22,6 +22,7 @@ import bioscopenleiden from './bioscopenleiden'
 import cinecenter from './cinecenter'
 import cinecitta from './cinecitta'
 import cinerama from './cinerama'
+import defilmhallen from './defilmhallen'
 import deuitkijk from './deuitkijk'
 import eyefilm from './eyefilm'
 import filmhuisdenhaag from './filmhuisdenhaag'
@@ -49,6 +50,7 @@ const SCRAPERS = {
   cinecenter,
   cinecitta,
   // cinerama, // scraper gets 403 while running on AWS
+  defilmhallen,
   deuitkijk,
   eyefilm,
   filmhuisdenhaag,

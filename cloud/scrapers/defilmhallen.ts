@@ -1,0 +1,68 @@
+import { Screening } from 'types'
+import { DateTime } from 'luxon'
+import got from 'got'
+
+import { logger as parentLogger } from '../powertools'
+
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'defilmhallen',
+  },
+})
+
+type FkFeedItem = {
+  title: string
+  language: { label: string; value: string }
+  permalink: string
+  times: { program_start: string; program_end: string; tags: string[] }[]
+}
+
+const hasEnglishSubtitles = (
+  time: FkFeedItem['times'][0],
+  movie: FkFeedItem,
+) => {
+  const movieHasEnglishSubtitels =
+    movie.language?.label === 'Subtitles' && movie.language?.value === 'English'
+
+  return movieHasEnglishSubtitels
+}
+
+// e.g. 202210181005 -> 2022-10-18T10:05:00.000Z
+const extractDate = (time: string) =>
+  DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
+
+const extractFromMainPage = async () => {
+  const movies = Object.values<FkFeedItem>(
+    await got('https://filmhallen.nl/en/fk-feed/agenda').json(),
+  )
+
+  logger.info('main page', { movies })
+
+  const screenings: Screening[][] = movies
+    .map((movie) => {
+      return movie.times
+        ?.filter((time) => hasEnglishSubtitles(time, movie))
+        .map((time) => {
+          return {
+            // title: decode(movie.title),
+            title: movie.title,
+            url: movie.permalink,
+            cinema: 'De Filmhallen',
+            date: extractDate(time.program_start),
+          }
+        })
+    })
+    .filter((x) => x)
+
+  logger.info('before flatten', { screenings })
+
+  return screenings.flat()
+}
+
+if (require.main === module) {
+  extractFromMainPage()
+    .then((x) => JSON.stringify(x, null, 2))
+    .then(console.log)
+}
+
+export default extractFromMainPage

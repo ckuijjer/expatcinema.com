@@ -154,5 +154,11 @@
     "city": "Nijmegen",
     "url": "https://www.lux-nijmegen.nl",
     "logo": "lux.png"
+  },
+  {
+    "name": "De Filmhallen",
+    "city": "Amsterdam",
+    "url": "https://www.filmhallen.nl/",
+    "logo": "defilmhallen.png"
   }
 ]
