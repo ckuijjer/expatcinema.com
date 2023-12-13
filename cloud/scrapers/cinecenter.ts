@@ -1,4 +1,5 @@
 import Xray from 'x-ray'
+import { DateTime } from 'luxon'
 
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
@@ -41,7 +42,11 @@ const extractFromMoviePage = async ({ url }: { url: string }) => {
     title: cleanTitle(movie.title),
     url,
     cinema: 'Cinecenter',
-    date: new Date(showing * 1000),
+    date: DateTime.fromMillis(showing * 1000, { zone: 'utc' })
+      // the `showing` is in ms Amsterdam time, this way I try to hack the time back to UTC
+      // wonder however if this is correct for times where it's close to midnight (and crosses a day boundary)
+      .setZone('Europe/Amsterdam', { keepLocalTime: true })
+      .toUTC(),
   }))
 
   logger.info('extracting done', { url, result })
