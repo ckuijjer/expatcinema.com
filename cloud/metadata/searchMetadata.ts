@@ -99,15 +99,14 @@ const searchMetadata = async (title: string) => {
   const normalizedTitle = diacritics.remove(title.toLowerCase())
 
   const tmdb = await getFirstTmdbSearchResult(normalizedTitle)
-  const omdb = await getFirstOmdbSearchResult(normalizedTitle)
+  // const omdb = await getFirstOmdbSearchResult(normalizedTitle)  // OMDB throws 500 errors
   const duckduckgo = await getFirstDuckDuckGoResult(normalizedTitle)
-  const googleCustomSearch = await getFirstGoogleCustomSearchResult(
-    normalizedTitle,
-  )
+  const googleCustomSearch =
+    await getFirstGoogleCustomSearchResult(normalizedTitle)
 
   const firstSearchResults = Object.entries({
     tmdb,
-    omdb,
+    // omdb, // OMDB throws 500 errors
     duckduckgo,
     googleCustomSearch,
   }).map(([name, value]) => ({ name, imdbId: value?.imdbId ?? null }))

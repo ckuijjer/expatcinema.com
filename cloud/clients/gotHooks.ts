@@ -8,7 +8,7 @@ export const camelcaseKeysHook = (response: any) => {
 }
 
 export const logErrorHook = (error: RequestError) => {
-  logger.warn(
+  logger.error(
     `Error retrieving ${error.options.url}: ${error.response?.statusCode} ${error.code} ${error.message}`,
   )
   return error
