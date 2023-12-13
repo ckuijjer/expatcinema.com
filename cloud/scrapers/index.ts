@@ -194,7 +194,11 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     )
 
     // close the browser
-    await closeBrowser({ logger })
+    try {
+      await closeBrowser({ logger })
+    } catch (error) {
+      logger.warn('failed closing browser', { error })
+    }
 
     logger.info('done scraping for all scrapers')
 
