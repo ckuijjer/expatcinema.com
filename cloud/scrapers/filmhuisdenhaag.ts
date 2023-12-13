@@ -13,33 +13,54 @@ const logger = parentLogger.createChild({
 })
 
 type FilmhuisDenhaagAPIResponse = {
-  data: {
-    id: number
-    starts_at_time: string
-    starts_at_date: string
-    genre: string
-    availability: string
-    tickets_left: number
-    ticket_url: string
-    location: string
-    expected: number
-    additional_title: string
-    information: string
-    online: number
-    film: {
-      title: string
-      image: string
-      description: string
-      director: string
-      duration: string
-      location: string
-      subtitle: string
-      uri: string
-      theme: string
-      theme_color: string
-      category: string[]
+  [date: string]: {
+    date: string
+    day: string
+    day_month: string
+    films: {
+      [id: string]: {
+        title: string
+        image: string
+        poster: string
+        poster_fit: boolean
+        description: string
+        director: string
+        duration: string
+        location: string
+        subtitle: string
+        uri: string
+        category: string[]
+        genre: string
+        kijkwijzer: string[]
+        programs: {
+          id: number
+          past: boolean
+          starts_at_time: string
+          starts_at_date: string
+          starts_at_day: string
+          starts_at_day_month: string
+          availability: string
+          is_tickets_available: boolean
+          is_last_tickets: boolean
+          is_sold_out: boolean
+          is_free: boolean
+          tickets_left: number
+          ticket_url: string
+          location: string
+          expected: number
+          cancelled: number
+          rescheduled: number
+          label: string
+          subs: string
+          online: number
+          ticket_status: {
+            css_class: string
+            title: string
+          }
+        }[]
+      }
     }
-  }[]
+  }
 }
 
 const cleanTitle = (title: string) =>
@@ -54,11 +75,20 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.info('extracted api response', { apiResponse })
 
-  const screenings: Screening[] = apiResponse.data
-    .filter(
-      (item) =>
-        item.film.subtitle === 'Engels' || item.film.subtitle === 'English',
-    )
+  // make a flat list of all screenings
+  const programs = Object.values(apiResponse)
+    .map((item) => item.films)
+    .flatMap((film) => Object.values(film))
+    .flatMap((film) => {
+      const { programs, ...rest } = film
+      return film.programs.map((program) => ({
+        ...rest,
+        ...program,
+      }))
+    })
+
+  const screenings: Screening[] = programs
+    .filter((item) => item.subtitle === 'Engels' || item.subtitle === 'English')
     .map((item) => {
       const [year, month, day] = item.starts_at_date
         .split('-')
@@ -66,8 +96,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       const [hour, minute] = splitTime(item.starts_at_time)
 
       return {
-        title: cleanTitle(item.film.title),
-        url: `https://filmhuisdenhaag.nl${item.film.uri}`,
+        title: cleanTitle(item.title),
+        url: `https://filmhuisdenhaag.nl${item.uri}`,
         cinema: 'Filmhuis Den Haag',
         date: DateTime.fromObject({
           year,
