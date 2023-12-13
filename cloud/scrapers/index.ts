@@ -180,7 +180,10 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
           try {
             result = await fn()
           } catch (error) {
-            logger.error('error scraping', { scraper: name, error })
+            logger.error('error scraping (scrapers Promise.all loop)', {
+              scraper: name,
+              error,
+            })
           }
 
           logger.info('done scraping', {
@@ -256,7 +259,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     logger.warn('writing to analytics json', { countPerScraper })
     await writeToAnalytics('count')(countPerScraper)
   } catch (error) {
-    logger.error('error scraping', { error })
+    logger.error('error scraping (main loop)', { error })
   }
 }
 
