@@ -50,10 +50,16 @@ const extractFromSpecialExpatCinemaPage = async () => {
         .map((screening) => {
           let day, month
 
-          if (screening.startsWith('Today')) {
+          if (
+            screening.startsWith('Today') ||
+            screening.startsWith('Vandaag')
+          ) {
             day = DateTime.local().day
             month = DateTime.local().month
-          } else if (screening.startsWith('Tomorrow')) {
+          } else if (
+            screening.startsWith('Tomorrow') ||
+            screening.startsWith('Morgen')
+          ) {
             const tomorrow = DateTime.local().plus({ days: 1 })
 
             day = tomorrow.day
