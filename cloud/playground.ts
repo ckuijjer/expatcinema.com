@@ -132,30 +132,33 @@ const movieMetadataPlayground = async () => {
 }
 
 const getUsingGot = async () => {
-  const json = await got(
-    'https://kinepolisweb-programmation.kinepolis.com/api/Programmation/NL/NL/WWW/Cinema/Cinerama',
-    {
-      headers: {
-        authority: 'kinepolisweb-programmation.kinepolis.com',
-        //   accept: 'application/json, text/javascript, */*; q=0.01',
-        accept:
-          'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'accept-language': 'en-US,en;q=0.9',
-        'if-modified-since': 'Wed, 04 Oct 2023 19:44:34 GMT',
-        'if-none-match': '"14021a8ddd8adf9db8db447b7f94cc59:1696448674.360531"',
-        'sec-ch-ua': '"Chromium";v="117", "Not;A=Brand";v="8"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"macOS"',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'cross-site',
-        Referer: 'https://cineramabios.nl/',
-        'Referrer-Policy': 'strict-origin-when-cross-origin',
-        'user-agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
-      },
+  const url =
+    'https://kinepolisweb-programmation.kinepolis.com/api/Programmation/NL/NL/WWW/Cinema/Cinerama'
+  const scrapeOpsProxyUrl = `https://proxy.scrapeops.io/v1/?api_key=${
+    process.env.SCRAPEOPS_API_KEY
+  }&url=${encodeURIComponent(url)}`
+
+  const json = await got(scrapeOpsProxyUrl, {
+    headers: {
+      authority: 'kinepolisweb-programmation.kinepolis.com',
+      //   accept: 'application/json, text/javascript, */*; q=0.01',
+      accept:
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+      'accept-language': 'en-US,en;q=0.9',
+      'if-modified-since': 'Wed, 04 Oct 2023 19:44:34 GMT',
+      'if-none-match': '"14021a8ddd8adf9db8db447b7f94cc59:1696448674.360531"',
+      'sec-ch-ua': '"Chromium";v="117", "Not;A=Brand";v="8"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': '"macOS"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'cross-site',
+      Referer: 'https://cineramabios.nl/',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'user-agent':
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
     },
-  ).json()
+  }).json()
 
   logger.info('result', { json })
   return json
@@ -185,8 +188,8 @@ const playground = async ({ event, context } = {}) => {
   // const results = await findMetadata('chungking express')
   // const results = await findMetadata('Caché')
   // await getUsingChromium()
-  // const result = await getUsingGot()
-  const result = await getLux()
+  const result = await getUsingGot()
+  // const result = await getLux()
 
   console.log(JSON.stringify(result, null, 2))
 }

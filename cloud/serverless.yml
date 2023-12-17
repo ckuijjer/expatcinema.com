@@ -77,6 +77,7 @@ functions:
       GOOGLE_CUSTOM_SEARCH_ID: ${env:GOOGLE_CUSTOM_SEARCH_ID}
       GOOGLE_CUSTOM_SEARCH_API_KEY: ${env:GOOGLE_CUSTOM_SEARCH_API_KEY}
       SCRAPERS: ${env:SCRAPERS, ''} # '' as default value, as SCRAPERS is the only optional env var
+      SCRAPEOPS_API_KEY: ${env:SCRAPEOPS_API_KEY}
     layers:
       - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:38 # https://github.com/shelfio/chrome-aws-lambda-layer
 
@@ -91,6 +92,7 @@ functions:
       OMDB_API_KEY: ${env:OMDB_API_KEY}
       GOOGLE_CUSTOM_SEARCH_ID: ${env:GOOGLE_CUSTOM_SEARCH_ID}
       GOOGLE_CUSTOM_SEARCH_API_KEY: ${env:GOOGLE_CUSTOM_SEARCH_API_KEY}
+      SCRAPEOPS_API_KEY: ${env:SCRAPEOPS_API_KEY}
 
   notifySlack:
     handler: handler.notifySlack
