@@ -136,7 +136,7 @@ const getUsingGot = async () => {
     'https://kinepolisweb-programmation.kinepolis.com/api/Programmation/NL/NL/WWW/Cinema/Cinerama'
   const scrapeOpsProxyUrl = `https://proxy.scrapeops.io/v1/?api_key=${
     process.env.SCRAPEOPS_API_KEY
-  }&url=${encodeURIComponent(url)}`
+  }&url=${encodeURIComponent(url)}&residential=true`
 
   const json = await got(scrapeOpsProxyUrl, {
     headers: {
