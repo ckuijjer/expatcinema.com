@@ -34,6 +34,7 @@ jobs:
           GOOGLE_CUSTOM_SEARCH_API_KEY: ${{ secrets.GOOGLE_CUSTOM_SEARCH_API_KEY }}
           DYNAMODB_MOVIE_METADATA: ${{ secrets.DYNAMODB_MOVIE_METADATA }}
           SCRAPERS: ${{ vars.SCRAPERS }}
+          SCRAPEOPS_API_KEY: ${{ secrets.SCRAPEOPS_API_KEY }}
         run: |
           cd cloud/
           yarn deploy:ci --stage dev
@@ -63,6 +64,7 @@ jobs:
           GOOGLE_CUSTOM_SEARCH_API_KEY: ${{ secrets.GOOGLE_CUSTOM_SEARCH_API_KEY }}
           DYNAMODB_MOVIE_METADATA: ${{ secrets.DYNAMODB_MOVIE_METADATA }}
           SCRAPERS: ${{ vars.SCRAPERS }}
+          SCRAPEOPS_API_KEY: ${{ secrets.SCRAPEOPS_API_KEY }}
         run: |
           cd cloud/
           yarn deploy:ci --stage prod
