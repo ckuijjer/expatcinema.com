@@ -166,5 +166,11 @@
     "city": "Haarlem",
     "url": "https://www.filmkoepel.nl/",
     "logo": "defilmhallen.png"
+  },
+  {
+    "name": "Cinerama",
+    "city": "Rotterdam",
+    "url": "https://cineramabios.nl/",
+    "logo": "cinerama.png"
   }
 ]
