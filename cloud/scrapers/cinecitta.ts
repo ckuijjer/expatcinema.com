@@ -29,7 +29,7 @@ type ShowJson = {
 }
 
 const ENGLISH_SUBTITLES_REGEX =
-  /\s+\(English Subtitles\)$|^Eng\s+|^Expat Cinema:\s+/i
+  /\s+\(English Subtitles\)$|^Eng\s+|^Expat Cinema:\s+| \(EN\)$/i
 
 const hasEnglishSubtitles = (movie: WpJsonMovie) => {
   const titleDescribesEnglishSubtitles = ENGLISH_SUBTITLES_REGEX.test(
