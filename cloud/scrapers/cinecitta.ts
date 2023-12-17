@@ -20,6 +20,7 @@ type WpJsonMovie = {
   link: string
   movie_sync_id: number
   language_subtitles: string
+  status_other: string
 }
 
 type ShowJson = {
@@ -37,7 +38,8 @@ const hasEnglishSubtitles = (movie: WpJsonMovie) => {
 
   const metadataHasEnglishSubtitles =
     movie.language_subtitles?.toLowerCase() === 'engels' ||
-    movie.language_subtitles?.toLowerCase() === 'english'
+    movie.language_subtitles?.toLowerCase() === 'english' ||
+    movie.status_other?.toLowerCase() === 'english subtitled'
 
   return titleDescribesEnglishSubtitles || metadataHasEnglishSubtitles
 }
