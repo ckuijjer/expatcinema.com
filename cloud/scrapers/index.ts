@@ -50,7 +50,7 @@ const SCRAPERS = {
   bioscopenleiden,
   cinecenter,
   cinecitta,
-  // cinerama, // scraper gets 403 while running on AWS
+  cinerama,
   defilmhallen,
   deuitkijk,
   eyefilm,
