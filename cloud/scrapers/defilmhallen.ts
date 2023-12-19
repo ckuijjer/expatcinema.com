@@ -21,10 +21,17 @@ const hasEnglishSubtitles = (
   time: FkFeedItem['times'][0],
   movie: FkFeedItem,
 ) => {
-  const movieHasEnglishSubtitels =
-    movie.language?.label === 'Subtitles' && movie.language?.value === 'English'
+  return hasEnglishSubtitlesLabel(movie) || hasTimeWithEnglishSubtitlesTag(time)
+}
 
-  return movieHasEnglishSubtitels
+const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
+  return (
+    movie.language.label === 'Subtitles' && movie.language.value === 'English'
+  )
+}
+
+const hasTimeWithEnglishSubtitlesTag = (time: FkFeedItem['times'][0]) => {
+  return time.tags.includes('EN SUBS')
 }
 
 // e.g. 202210181005 -> 2022-10-18T10:05:00.000Z
