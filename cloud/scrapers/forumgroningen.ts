@@ -103,12 +103,14 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   // easy way to go through the entire agenda
   const url = 'https://forum.nl/en/whats-on/international-movie-night'
 
-  const movies = await xray(url, '.content-row-medium.text-and-image', [
-    {
-      title: 'h2 | cleanTitle | trim',
-      url: 'a@href',
-    },
-  ])
+  const movies = (
+    await xray(url, '.content-row-medium.text-and-image', [
+      {
+        title: 'h2 | cleanTitle | trim',
+        url: 'a@href',
+      },
+    ])
+  ).filter(({ url }) => url !== undefined) // remove movies without url (e.g. in the past)
 
   logger.info('extracted', { movies })
 
