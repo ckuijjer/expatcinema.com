@@ -73,14 +73,3 @@ aws dynamodb scan --table-name expatcinema-scrapers-analytics --profile casper >
 ### Favicon
 
 Use https://favicongrabber.com/ to grab a favicon for the cinema.json file
-
-## Troubleshooting
-
-```
-Error: Failed to launch the browser process! spawn /tmp/localChromium/chromium/mac_arm-1205129/chrome-mac/Chromium.app/Contents/MacOS/Chromium ENOENT
-
-
-TROUBLESHOOTING: https://pptr.dev/troubleshooting
-```
-
-You're trying to run a scraper that uses puppeteer-core locally, using `yarn tsx scrapers/...` but you don't have Chromium installed. Easiest is to update _.env.local_ and set the `SCRAPERS=` to the scraper you're testing
