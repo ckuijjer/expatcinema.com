@@ -53,7 +53,18 @@ const extractFromMainPage = async () => {
   )
   logger.info('scraped /deutsches-kino', { deutschesKinoResults })
 
-  const results = [...expatCinemaResults, ...deutschesKinoResults]
+  const italianCineclubResults = await xray(
+    'https://www.ketelhuis.nl/specials/italian-cineclub/',
+    '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
+    selector,
+  )
+  logger.info('scraped /italian-cineclub', { italianCineclubResults })
+
+  const results = [
+    ...expatCinemaResults,
+    ...deutschesKinoResults,
+    ...italianCineclubResults,
+  ]
   const uniqueResults = R.uniq(results)
 
   logger.info('results', { results })
@@ -66,9 +77,11 @@ const extractFromMainPage = async () => {
   return extracted
 }
 
-const hasEnglishSubtitles = ({ metadata, mainContent }) =>
-  metadata?.includes('English subtitles') ||
-  mainContent?.includes('Engels ondertiteld')
+const hasEnglishSubtitles = ({ metadata, mainContent, title }) =>
+  title?.toLowerCase().includes('english subs') ||
+  metadata?.toLowerCase().includes('english subtitles') ||
+  metadata?.toLowerCase().includes('engels ondertiteld') ||
+  mainContent?.toLowerCase().includes('engels ondertiteld')
 
 const splitFirstDate = (date: string) => {
   if (date === 'Vandaag') {

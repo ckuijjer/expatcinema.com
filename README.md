@@ -73,3 +73,13 @@ aws dynamodb scan --table-name expatcinema-scrapers-analytics --profile casper >
 ### Favicon
 
 Use https://favicongrabber.com/ to grab a favicon for the cinema.json file
+
+## Troubleshooting
+
+When running a puppeteer based scraper locally, e.g. `yarn tsx scrapers/ketelhuis.ts` and getting an error like
+
+```
+Error: Failed to launch the browser process! spawn /tmp/localChromium/chromium/mac_arm-1205129/chrome-mac/Chromium.app/Contents/MacOS/Chromium ENOENT
+````
+
+you need to install Chromium locally, run `yarn install-chromium` to do so and update `LOCAL_CHROMIUM_EXECUTABLE_PATH` in `browser.ts` to point to the Chromium executable
