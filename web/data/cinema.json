@@ -172,5 +172,11 @@
     "city": "Rotterdam",
     "url": "https://cineramabios.nl/",
     "logo": "cinerama.png"
+  },
+  {
+    "name": "Melkweg",
+    "city": "Amsterdam",
+    "url": "https://www.melkweg.nl/en/film/",
+    "logo": "melkweg.svg"
   }
 ]

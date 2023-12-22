@@ -39,6 +39,7 @@ import lantarenvenster from './lantarenvenster'
 import liff from './liff'
 import lumiere from './lumiere'
 import lux from './lux'
+import melkweg from './melkweg'
 import rialto from './rialto'
 import schuur from './schuur'
 import slachtstraat from './slachtstraat'
@@ -68,6 +69,7 @@ const SCRAPERS = {
   // liff,
   lumiere,
   lux,
+  melkweg,
   rialto,
   schuur,
   slachtstraat,
