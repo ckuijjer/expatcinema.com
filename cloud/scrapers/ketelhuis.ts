@@ -27,7 +27,7 @@ const xray = Xray({
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
-  .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 60000 } }))
+  .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 90000 } }))
   .concurrency(2)
   .throttle(10, 300)
 
