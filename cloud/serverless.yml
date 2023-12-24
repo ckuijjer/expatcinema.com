@@ -62,7 +62,7 @@ functions:
   scrapers:
     handler: handler.scrapers
     memorySize: 2048
-    timeout: 600
+    timeout: 540 # 9 minutes
     events:
       - schedule:
           rate: cron(0 3 * * ? *)
