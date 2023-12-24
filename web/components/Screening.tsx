@@ -95,6 +95,7 @@ export const Screening = ({ url, date, title, cinema, showCity = true }) => {
       <Container>
         <Time>{date}</Time>
         <Title>{title}</Title>
+        {/* {showCity ? <Cinema>{cinema.city.name}</Cinema> : null} */}
         <Cinema>
           <CinemaIcon cinema={cinema} />
           {cinema.name}
