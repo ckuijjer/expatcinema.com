@@ -28,7 +28,7 @@ const xray = Xray({
   },
 })
   .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 60000 } }))
-  .concurrency(1)
+  .concurrency(2)
   .throttle(10, 300)
 
 const extractFromMainPage = async () => {
