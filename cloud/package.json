@@ -23,7 +23,7 @@
     "prettify-log": "awk -F'\\t' '{if ($5 && $5 ~ /^{/ && !system(\"echo \\x27\" $5 \"\\x27 | jq -e > /dev/null 2>&1\")) { print $1\"\\t\"$2\"\\t\"$3\"\\t\"$4 system(\"echo \\x27\" $5 \"\\x27 | jq\") } else { print $0 }}'",
     "prettify-log:test": "cat tail-cloudwatch-logs.example.log | yarn prettify-log",
     "log": "yarn tail-cloudwatch-logs|yarn prettify-log",
-    "install-local-chromium": "npx @puppeteer/browsers install chromium@latest --path /tmp/localChromium"
+    "install-chromium": "npx @puppeteer/browsers install chromium@latest --path /tmp/localChromium"
   },
   "author": "Casper Kuijjer",
   "license": "ISC",

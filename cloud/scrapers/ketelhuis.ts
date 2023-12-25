@@ -9,6 +9,7 @@ import splitTime from './utils/splitTime'
 import xRayPuppeteer from '../xRayPuppeteer'
 
 import { logger as parentLogger } from '../powertools'
+import pRetry from 'p-retry'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -27,9 +28,10 @@ const xray = Xray({
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
-  .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 90000 } }))
-  .concurrency(2)
-  .throttle(10, 300)
+  .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 30_000 } }))
+  .concurrency(3)
+  .throttle(3, 600)
+  .timeout('35s')
 
 const extractFromMainPage = async () => {
   const selector = [
@@ -70,11 +72,28 @@ const extractFromMainPage = async () => {
   logger.info('results', { results })
   logger.info('uniqueResults', { uniqueResults })
 
-  const extracted = await (
-    await Promise.all(uniqueResults.map(extractFromMoviePage))
+  const screenings = await (
+    await Promise.all(
+      uniqueResults.map(async ({ url, title }, i) => {
+        return pRetry(
+          async () => {
+            const result = await extractFromMoviePage({ url, title })
+            return result
+          },
+          {
+            onFailedAttempt: (error) => {
+              logger.warn(
+                `Scraping ${i} ${url}, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
+              )
+            },
+            retries: 5,
+          },
+        )
+      }),
+    )
   ).flat()
 
-  return extracted
+  return screenings
 }
 
 const hasEnglishSubtitles = ({ metadata, mainContent, title }) =>
