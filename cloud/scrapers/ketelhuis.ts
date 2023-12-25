@@ -41,24 +41,57 @@ const extractFromMainPage = async () => {
     },
   ]
 
-  const expatCinemaResults = await xray(
-    'https://www.ketelhuis.nl/specials/expat-cinema/',
-    '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
-    selector,
+  const expatCinemaResults = await pRetry(
+    async () =>
+      xray(
+        'https://www.ketelhuis.nl/specials/expat-cinema/',
+        '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
+        selector,
+      ),
+    {
+      onFailedAttempt: (error) => {
+        logger.warn(
+          `Scraping https://www.ketelhuis.nl/specials/expat-cinema/, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
+        )
+      },
+      retries: 5,
+    },
   )
   logger.info('scraped /expat-cinema', { expatCinemaResults })
 
-  const deutschesKinoResults = await xray(
-    'https://www.ketelhuis.nl/specials/deutsches-kino/',
-    '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
-    selector,
+  const deutschesKinoResults = await pRetry(
+    async () =>
+      xray(
+        'https://www.ketelhuis.nl/specials/deutsches-kino/',
+        '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
+        selector,
+      ),
+    {
+      onFailedAttempt: (error) => {
+        logger.warn(
+          `Scraping https://www.ketelhuis.nl/specials/deutsches-kino/, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
+        )
+      },
+      retries: 5,
+    },
   )
   logger.info('scraped /deutsches-kino', { deutschesKinoResults })
 
-  const italianCineclubResults = await xray(
-    'https://www.ketelhuis.nl/specials/italian-cineclub/',
-    '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
-    selector,
+  const italianCineclubResults = await pRetry(
+    async () =>
+      xray(
+        'https://www.ketelhuis.nl/specials/italian-cineclub/',
+        '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
+        selector,
+      ),
+    {
+      onFailedAttempt: (error) => {
+        logger.warn(
+          `Scraping https://www.ketelhuis.nl/specials/italian-cineclub/, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
+        )
+      },
+      retries: 5,
+    },
   )
   logger.info('scraped /italian-cineclub', { italianCineclubResults })
 
