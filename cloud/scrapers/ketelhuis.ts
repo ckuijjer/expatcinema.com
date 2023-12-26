@@ -28,10 +28,10 @@ const xray = Xray({
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
-  .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 30_000 } }))
+  .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 40_000 } }))
   .concurrency(3)
   .throttle(3, 600)
-  .timeout('35s')
+  .timeout('45s')
 
 const extractFromMainPage = async () => {
   const selector = [
