@@ -1,10 +1,7 @@
 import Xray from 'x-ray'
 import { DateTime } from 'luxon'
 import splitTime from './utils/splitTime'
-import {
-  shortMonthToNumberDutch,
-  shortMonthToNumberEnglish,
-} from './utils/monthToNumber'
+import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import guessYear from './utils/guessYear'
 import xRayPuppeteer from '../xRayPuppeteer'
 
@@ -67,7 +64,7 @@ const extractFromMainPage = async () => {
         return movie.dates.map((date) => {
           const [dayOfWeek, dayString, monthString, time] = date.split(/\s+/)
           const day = Number(dayString)
-          const month = shortMonthToNumberEnglish(monthString)
+          const month = shortMonthToNumberDutch(monthString)
           const [hour, minute] = splitTime(time)
           const year = guessYear({
             day,
