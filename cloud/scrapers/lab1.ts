@@ -30,7 +30,8 @@ type XRayFromMainPage = {
 }
 
 type XRayFromMoviePage = {
-  jsonLd: string
+  date: string
+  subtitles: string
 }
 
 type ScreeningEvent = {
@@ -95,29 +96,51 @@ const cleanTitle = (title: string) =>
     .replace(/\s+\(.*?\)$/i, '') // e.g. (English subtitled)
     .replace(/^.*?:\s+/, '') // e.g. Nordic Watching:
 
-const hasEnglishSubtitles = (title: string) =>
-  title.toLowerCase().includes('english subtitled')
+// const hasEnglishSubtitles = (title: string) =>
+//   title.toLowerCase().includes('english subtitled')
 
-const extractFromMoviePage = async ({ url }: { url: string }) => {
+const hasEnglishSubtitles = (subtitles: string) => {
+  return /ENG\s+SUBS/i.test(subtitles) // \s+ to catch whatever the &nbsp; in ENG&nbsp;SUBS becomes
+}
+
+// Time in Amsterdam time, this is a bit of a hack to get the time in UTC
+const extractDate = (time: string) =>
+  DateTime.fromISO(time, { zone: 'utc' })
+    .setZone('Europe/Amsterdam', { keepLocalTime: true })
+    .toJSDate()
+
+const extractFromMoviePage = async ({
+  url,
+  title,
+}: {
+  url: string
+  title: string
+}) => {
   logger.info('movie page', { url })
 
   // #content so we get the 2nd JSON-LD script tag
-  const scrapeResult: XRayFromMoviePage = await xray(url, '#content', {
-    jsonLd: 'script[type="application/ld+json"]',
-  })
+  // const scrapeResult: XRayFromMoviePage = await xray(url, '#content', {
+  //   jsonLd: 'script[type="application/ld+json"]',
+  // })
+  // const screeningEvents: ScreeningEvent[] = JSON.parse(scrapeResult.jsonLd)
+
+  const scrapeResult: XRayFromMoviePage[] = await xray(url, '.shows a', [
+    {
+      date: 'time@datetime | trim',
+      subtitles: '.subtitles | trim',
+    },
+  ])
 
   logger.info('scrape result', { scrapeResult })
 
-  const screeningEvents: ScreeningEvent[] = JSON.parse(scrapeResult.jsonLd)
-
-  const screenings: Screening[] = screeningEvents
-    .filter((screeningEvent) => hasEnglishSubtitles(screeningEvent.name))
-    .map((screeningEvent) => {
+  const screenings: Screening[] = scrapeResult
+    .filter(({ subtitles }) => hasEnglishSubtitles(subtitles))
+    .map(({ date }) => {
       return {
-        title: cleanTitle(screeningEvent.name),
-        url: screeningEvent.url,
+        title: cleanTitle(title),
+        url: url,
         cinema: 'Lab-1',
-        date: DateTime.fromISO(screeningEvent.startDate).toJSDate(),
+        date: extractDate(date),
       }
     })
 
@@ -143,11 +166,7 @@ const extractFromMainPage = async () => {
     logger.info('scrape result', { scrapeResult })
 
     const screenings: Screening[] = (
-      await Promise.all(
-        scrapeResult
-          .filter((movie) => hasEnglishSubtitles(movie.title))
-          .map(extractFromMoviePage),
-      )
+      await Promise.all(scrapeResult.map(extractFromMoviePage))
     ).flat()
 
     logger.info('screenings found', { screenings })
@@ -164,9 +183,10 @@ if (require.main === module) {
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
 
-  //   extractFromMoviePage({
-  //     url: 'https://www.lab-1.nl/film/nordic-watching-unruly-english-subtitled/',
-  //   }).then(console.log)
+  // extractFromMoviePage({
+  //   url: 'https://www.lab-1.nl/film/evil-does-not-exist/',
+  //   title: 'Evil Does Not Exist',
+  // }).then(console.log)
 }
 
 export default extractFromMainPage
