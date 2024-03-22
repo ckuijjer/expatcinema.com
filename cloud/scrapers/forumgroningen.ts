@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 import guessYear from './utils/guessYear'
 import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
-import { fullMonthToNumberDutch } from './utils/monthToNumber'
+import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 import splitTime from './utils/splitTime'
 
 const logger = parentLogger.createChild({
@@ -67,9 +67,9 @@ const extractFromMoviePage = async ({
         .map(({ time }) => {
           const [dayOfWeek, dayString, monthString] = date.split(/\s+/)
           const day = Number(dayString)
-          const month = fullMonthToNumberDutch(monthString)
+          const month = fullMonthToNumberEnglish(monthString)
           const [startTime, endTime] = time.split(/ tot | till /)
-          const [hour, minute] = splitTime(startTime)
+          const { hour, minute } = DateTime.fromFormat(startTime, 'h:mm a')
 
           const year = guessYear({
             day,
@@ -104,10 +104,10 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const url = 'https://forum.nl/en/whats-on/international-movie-night'
 
   const movies = (
-    await xray(url, '.content-row-medium.text-and-image', [
+    await xray(url, '.calendar-list .ticket-row', [
       {
-        title: 'h2 | cleanTitle | trim',
-        url: 'a@href',
+        title: '.content .main | cleanTitle | trim',
+        url: '@href',
       },
     ])
   ).filter(({ url }) => url !== undefined) // remove movies without url (e.g. in the past)
@@ -125,10 +125,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
 if (require.main === module) {
   // extractFromMoviePage({
-  //   // url: 'https://forum.nl/nl/agenda/gaia',
-  //   // url: 'https://forum.nl/nl/agenda/ringu',
-  //   // url: 'https://forum.nl/nl/agenda/passages',p
-  //   url: 'https://forum.nl/nl/agenda/pans-labyrinth',
+  //   url: 'https://forum.nl/en/whats-on/the-zone-of-interest',
   // })
 
   extractFromMainPage()

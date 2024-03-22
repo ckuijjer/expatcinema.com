@@ -1,5 +1,19 @@
-export const fullMonthToNumberDutch = (month: string) => {
-  const monthNumber =
+const monthToNumber = (name: string, listOfMonths: string[], month: string) => {
+  const lowerCaseMonth = month.toLowerCase()
+
+  const monthNumber = listOfMonths.indexOf(lowerCaseMonth) + 1
+  if (monthNumber === 0) {
+    throw new Error(
+      `${name}: invalid month ${lowerCaseMonth}, might you need another function?`,
+    )
+  }
+
+  return monthNumber
+}
+
+export function fullMonthToNumberDutch(month: string) {
+  return monthToNumber(
+    'fullMonthToNumberDutch',
     [
       'januari',
       'februari',
@@ -13,19 +27,14 @@ export const fullMonthToNumberDutch = (month: string) => {
       'oktober',
       'november',
       'december',
-    ].indexOf(month.toLowerCase()) + 1
-
-  if (monthNumber === 0) {
-    throw new Error(
-      `invalid month ${month}, might you need the English version of this function?`,
-    )
-  }
-
-  return monthNumber
+    ],
+    month,
+  )
 }
 
-export const shortMonthToNumberDutch = (month: string) => {
-  const monthNumber =
+export function shortMonthToNumberDutch(month: string) {
+  return monthToNumber(
+    'shortMonthToNumberDutch',
     [
       'jan',
       'feb',
@@ -39,19 +48,14 @@ export const shortMonthToNumberDutch = (month: string) => {
       'okt',
       'nov',
       'dec',
-    ].indexOf(month.toLowerCase()) + 1
-
-  if (monthNumber === 0) {
-    throw new Error(
-      `invalid month ${month}, might you need the English version of this function?`,
-    )
-  }
-
-  return monthNumber
+    ],
+    month,
+  )
 }
 
-export const fullMonthToNumberEnglish = (month: string) => {
-  const monthNumber =
+export function fullMonthToNumberEnglish(month: string) {
+  return monthToNumber(
+    'fullMonthToNumberEnglish',
     [
       'january',
       'february',
@@ -65,19 +69,14 @@ export const fullMonthToNumberEnglish = (month: string) => {
       'october',
       'november',
       'december',
-    ].indexOf(month.toLowerCase()) + 1
-
-  if (monthNumber === 0) {
-    throw new Error(
-      `invalid month ${month}, might you need the Dutch version of this function?`,
-    )
-  }
-
-  return monthNumber
+    ],
+    month,
+  )
 }
 
-export const shortMonthToNumberEnglish = (month: string) => {
-  const monthNumber =
+export function shortMonthToNumberEnglish(month: string) {
+  return monthToNumber(
+    'shortMonthToNumberEnglish',
     [
       'jan',
       'feb',
@@ -91,13 +90,7 @@ export const shortMonthToNumberEnglish = (month: string) => {
       'oct',
       'nov',
       'dec',
-    ].indexOf(month.toLowerCase()) + 1
-
-  if (monthNumber === 0) {
-    throw new Error(
-      `invalid month ${month}, might you need the Dutch version of this function?`,
-    )
-  }
-
-  return monthNumber
+    ],
+    month,
+  )
 }
