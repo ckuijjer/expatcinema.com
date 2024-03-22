@@ -4,7 +4,10 @@ import { DateTime } from 'luxon'
 
 import guessYear from './utils/guessYear'
 import { logger as parentLogger } from '../powertools'
-import { shortMonthToNumberEnglish } from './utils/monthToNumber'
+import {
+  shortMonthToNumberDutch,
+  shortMonthToNumberEnglish,
+} from './utils/monthToNumber'
 import got from 'got'
 
 const logger = parentLogger.createChild({
@@ -43,6 +46,8 @@ const extractFromSpecialExpatCinemaPage = async () => {
     },
   ])
 
+  logger.info('special expat cinema page', { movies })
+
   const screenings: Screening[] = movies.flatMap(
     ({ title, url, screenings }) => {
       return screenings
@@ -68,7 +73,12 @@ const extractFromSpecialExpatCinemaPage = async () => {
             const [dayOfWeek, dayString, monthString] = screening.split(/\s+/) // ['Wed', '21', 'Aug', '18:15', 'EN', 'SUBS']
 
             day = Number(dayString)
-            month = shortMonthToNumberEnglish(monthString)
+            let month: number
+            try {
+              month = shortMonthToNumberEnglish(monthString)
+            } catch (e) {
+              month = shortMonthToNumberDutch(monthString)
+            }
           }
 
           const [hour, minute] = screening
