@@ -1,4 +1,84 @@
-const monthToNumber = (name: string, listOfMonths: string[], month: string) => {
+const FULL_MONTHS_DUTCH = [
+  'januari',
+  'februari',
+  'maart',
+  'april',
+  'mei',
+  'juni',
+  'juli',
+  'augustus',
+  'september',
+  'oktober',
+  'november',
+  'december',
+]
+
+const SHORT_MONTHS_DUTCH = [
+  'jan',
+  'feb',
+  'mrt',
+  'apr',
+  'mei',
+  'jun',
+  'jul',
+  'aug',
+  'sep',
+  'okt',
+  'nov',
+  'dec',
+]
+
+const FULL_MONTHS_ENGLISH = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december',
+]
+
+const SHORT_MONTHS_ENGLISH = [
+  'jan',
+  'feb',
+  'mar',
+  'apr',
+  'may',
+  'jun',
+  'jul',
+  'aug',
+  'sep',
+  'oct',
+  'nov',
+  'dec',
+]
+
+export function monthToNumber(month: string) {
+  const lowerCaseMonth = month.toLowerCase()
+
+  const monthNumber =
+    FULL_MONTHS_DUTCH.indexOf(lowerCaseMonth) + 1 ||
+    SHORT_MONTHS_DUTCH.indexOf(lowerCaseMonth) + 1 ||
+    FULL_MONTHS_ENGLISH.indexOf(lowerCaseMonth) + 1 ||
+    SHORT_MONTHS_ENGLISH.indexOf(lowerCaseMonth) + 1
+
+  if (monthNumber === 0) {
+    throw new Error(`monthToNumber: invalid month ${lowerCaseMonth}`)
+  }
+
+  return monthNumber
+}
+
+const monthToNumberWithWarning = (
+  name: string,
+  listOfMonths: string[],
+  month: string,
+) => {
   const lowerCaseMonth = month.toLowerCase()
 
   const monthNumber = listOfMonths.indexOf(lowerCaseMonth) + 1
@@ -10,87 +90,32 @@ const monthToNumber = (name: string, listOfMonths: string[], month: string) => {
 
   return monthNumber
 }
-
 export function fullMonthToNumberDutch(month: string) {
-  return monthToNumber(
+  return monthToNumberWithWarning(
     'fullMonthToNumberDutch',
-    [
-      'januari',
-      'februari',
-      'maart',
-      'april',
-      'mei',
-      'juni',
-      'juli',
-      'augustus',
-      'september',
-      'oktober',
-      'november',
-      'december',
-    ],
+    FULL_MONTHS_DUTCH,
     month,
   )
 }
 
 export function shortMonthToNumberDutch(month: string) {
-  return monthToNumber(
+  return monthToNumberWithWarning(
     'shortMonthToNumberDutch',
-    [
-      'jan',
-      'feb',
-      'mrt',
-      'apr',
-      'mei',
-      'jun',
-      'jul',
-      'aug',
-      'sep',
-      'okt',
-      'nov',
-      'dec',
-    ],
+    SHORT_MONTHS_DUTCH,
     month,
   )
 }
-
 export function fullMonthToNumberEnglish(month: string) {
-  return monthToNumber(
+  return monthToNumberWithWarning(
     'fullMonthToNumberEnglish',
-    [
-      'january',
-      'february',
-      'march',
-      'april',
-      'may',
-      'june',
-      'july',
-      'august',
-      'september',
-      'october',
-      'november',
-      'december',
-    ],
+    FULL_MONTHS_ENGLISH,
     month,
   )
 }
-
 export function shortMonthToNumberEnglish(month: string) {
-  return monthToNumber(
+  return monthToNumberWithWarning(
     'shortMonthToNumberEnglish',
-    [
-      'jan',
-      'feb',
-      'mar',
-      'apr',
-      'may',
-      'jun',
-      'jul',
-      'aug',
-      'sep',
-      'oct',
-      'nov',
-      'dec',
-    ],
+    SHORT_MONTHS_ENGLISH,
     month,
   )
 }

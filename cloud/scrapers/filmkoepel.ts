@@ -4,10 +4,7 @@ import { DateTime } from 'luxon'
 
 import guessYear from './utils/guessYear'
 import { logger as parentLogger } from '../powertools'
-import {
-  shortMonthToNumberDutch,
-  shortMonthToNumberEnglish,
-} from './utils/monthToNumber'
+import { monthToNumber } from './utils/monthToNumber'
 import got from 'got'
 
 const logger = parentLogger.createChild({
@@ -73,12 +70,7 @@ const extractFromSpecialExpatCinemaPage = async () => {
             const [dayOfWeek, dayString, monthString] = screening.split(/\s+/) // ['Wed', '21', 'Aug', '18:15', 'EN', 'SUBS']
 
             day = Number(dayString)
-            let month: number
-            try {
-              month = shortMonthToNumberEnglish(monthString)
-            } catch (e) {
-              month = shortMonthToNumberDutch(monthString)
-            }
+            month = monthToNumber(monthString)
           }
 
           const [hour, minute] = screening
