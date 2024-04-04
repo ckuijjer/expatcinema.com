@@ -178,5 +178,11 @@
     "city": "Amsterdam",
     "url": "https://www.melkweg.nl/en/film/",
     "logo": "melkweg.svg"
+  },
+  {
+    "name": "Natlab",
+    "city": "Eindhover",
+    "url": "https://www.natlab.nl/",
+    "logo": "natlab.png"
   }
 ]

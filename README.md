@@ -51,10 +51,9 @@ if (require.main === module) {
 
 with the LOG_LEVEL=debug used to have debug output from the scrapers show up in the console
 
-
 ### Installing Chromium for use by puppeteer-core locally
 
-See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how 
+See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how
 
 ## CI/CD
 
@@ -72,7 +71,8 @@ aws dynamodb scan --table-name expatcinema-scrapers-analytics --profile casper >
 
 ### Favicon
 
-Use https://favicongrabber.com/ to grab a favicon for the cinema.json file
+- Use https://favicongrabber.com/ to grab a favicon for the cinema.json file
+- Use https://www.google.com/s2/favicons?domain=www.natlab.nl to get the favicon for the cinema.json file
 
 ## Troubleshooting
 
@@ -80,6 +80,6 @@ When running a puppeteer based scraper locally, e.g. `yarn tsx scrapers/ketelhui
 
 ```
 Error: Failed to launch the browser process! spawn /tmp/localChromium/chromium/mac_arm-1205129/chrome-mac/Chromium.app/Contents/MacOS/Chromium ENOENT
-````
+```
 
 you need to install Chromium locally, run `yarn install-chromium` to do so and update `LOCAL_CHROMIUM_EXECUTABLE_PATH` in `browser.ts` to point to the Chromium executable
