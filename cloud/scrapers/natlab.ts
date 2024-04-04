@@ -104,7 +104,8 @@ const extractFromMoviePage = async ({
 }
 
 const extractFromMainPage = async () => {
-  const url = 'https://www.natlab.nl/nl/programma/film?start=&end=' // genre 194 = ENGELSE ONDERTITELING
+  const url =
+    'https://www.natlab.nl/nl/programma/film?start=&end=&genres%5B%5D=194' // genre 194 = ENGELSE ONDERTITELING
 
   const scrapeResult: XRayFromMainPage[] = await xray(
     url,
