@@ -1,10 +1,14 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
+  "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
+    // improve debugging experience
+    "sourceMap": true,
+    // allow importing like import logger from 'src/logger'
+    "baseUrl": "./",
+    // allow importing fs from 'fs' instead of * as fs from 'fs'
     "esModuleInterop": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "downlevelIteration": true,
-    "baseUrl": "."
-  }
+    "module": "ES2022",
+    "moduleResolution": "Bundler"
+  },
+  "exclude": ["node_modules"]
 }

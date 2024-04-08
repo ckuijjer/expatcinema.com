@@ -9,7 +9,7 @@ import puppeteer, {
 // see https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode
 // for how to install a locally running chromium
 const LOCAL_CHROMIUM_EXECUTABLE_PATH =
-  '/tmp/localChromium/chromium/mac_arm-1274971/chrome-mac/Chromium.app/Contents/MacOS/Chromium'
+  '/tmp/localChromium/chromium/mac_arm-1283827/chrome-mac/Chromium.app/Contents/MacOS/Chromium'
 
 const createBrowserSingleton = () => {
   let instance: Browser

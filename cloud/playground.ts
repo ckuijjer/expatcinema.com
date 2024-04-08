@@ -1,4 +1,4 @@
-import { injectLambdaContext } from '@aws-lambda-powertools/logger'
+import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware'
 import middy from '@middy/core'
 // import chromium from 'chrome-aws-lambda'
 // const chromium = require('chrome-aws-lambda')
