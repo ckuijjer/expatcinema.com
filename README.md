@@ -82,6 +82,7 @@ Some scrapers need to run in a real browser, for which we use puppeteer and a la
 
 ```sh
 yarn add puppeteer-core@22.6.3 @sparticuz/chromium@^123.0.1
+yarn add -D puppeteer@22.6.3
 ```
 
 After installing the new version of puppeteer and chromium update the lambda layer in serverless.yml, by doing a search and replace on `arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:` and change e.g. `44` to `45`

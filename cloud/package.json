@@ -64,6 +64,7 @@
     "esbuild": "^0.20.2",
     "lumigo-cli": "^0.48.4",
     "prettier": "^3.2.5",
+    "puppeteer": "22.6.3",
     "serverless": "^3.38.0",
     "serverless-esbuild": "^1.52.1",
     "serverless-offline": "^13.3.3",
