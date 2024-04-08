@@ -50,7 +50,7 @@ const DebouncedInput = ({
     }, delay)
 
     return () => clearTimeout(timeoutId)
-  }, [value, delay])
+  }, [value, delay, onDebounce])
 
   useKeypress('Escape', () => setValue(''))
 

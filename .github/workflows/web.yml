@@ -83,8 +83,6 @@ jobs:
         run: ${{ env.package-manager-runner }} next build
       - name: Generate a sitemap
         run: ${{ env.package-manager-runner }} next-sitemap
-      - name: Static HTML export with Next.js
-        run: ${{ env.package-manager-runner }} next export
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:

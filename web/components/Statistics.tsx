@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import * as Plot from '@observablehq/plot'
+import { line, plot } from '@observablehq/plot'
 import React from 'react'
 
 import { Layout } from './Layout'
@@ -60,6 +60,8 @@ const Tile = ({ title, value, onClick = () => {}, isHighlighted = false }) => {
 }
 
 export const Statistics = ({ points }) => {
+  console.log({ points })
+
   const [highlight, setHighlight] = React.useState(null)
 
   const sortedPoints = [...points].sort((a, b) => {
@@ -83,14 +85,14 @@ export const Statistics = ({ points }) => {
     })
     .sort((a, b) => b.value - a.value)
 
-  const svg = Plot.plot({
+  const svg = plot({
     marks: [
-      Plot.line(sortedPoints, {
+      line(sortedPoints, {
         x: 'createdAt',
         y: 'value',
         z: 'scraper',
         curve: 'bump-x',
-        stroke: 'scraper',
+        stroke: (d) => d.scraper === highlight,
         strokeWidth: 2,
       }),
     ],
@@ -103,18 +105,10 @@ export const Statistics = ({ points }) => {
       tickFormat: (d) => d.toLocaleDateString(),
     },
     color: {
-      range: (x) =>
-        x.map((scraper) => {
-          if (!highlight) {
-            // If no highlight, use the default color
-            return 'currentColor'
-          } else {
-            // If a scraper is highlighted, use the primary color and make the other scrapers less visible
-            return scraper === highlight
-              ? 'var(--secondary-color)'
-              : 'var(--primary-color)'
-          }
-        }),
+      domain: highlight ? [true, false] : [false],
+      range: highlight
+        ? ['var(--secondary-color)', 'var(--primary-color)']
+        : ['currentColor'],
     },
     grid: true,
     width: 960,
