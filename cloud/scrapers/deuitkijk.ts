@@ -1,8 +1,8 @@
-import Xray from 'x-ray'
 import { DateTime } from 'luxon'
+import Xray from 'x-ray'
 
-import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
+import { Screening } from '../types'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

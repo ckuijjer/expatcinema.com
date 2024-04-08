@@ -1,10 +1,10 @@
-import { Context, APIGatewayEvent } from 'aws-lambda'
+import { APIGatewayEvent, Context } from 'aws-lambda'
 
-import scrapers from './scrapers'
-import playground from './playground'
-import notifySlack from './notifySlack'
 import analytics from './analytics'
 import fillAnalytics from './fillAnalytics'
+import notifySlack from './notifySlack'
+import playground from './playground'
+import scrapers from './scrapers'
 
 const scrapersWrappedWithHTTP = async (
   event: APIGatewayEvent,

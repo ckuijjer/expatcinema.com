@@ -1,5 +1,6 @@
-import React from 'react'
 import { css } from '@emotion/react'
+import React from 'react'
+
 import { palette } from '../utils/theme'
 
 type Color = keyof typeof palette // e.g. purple100

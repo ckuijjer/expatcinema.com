@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
-import Link from 'next/link'
 import { css } from '@emotion/react'
+import Link from 'next/link'
+import React, { useState } from 'react'
 
-import { Layout } from './Layout'
 import { useKeypress } from '../utils/hooks'
-
-import MenuIcon from './icons/menu.svg'
-import CrossIcon from './icons/cross.svg'
 import { headerFont } from '../utils/theme'
+import { Layout } from './Layout'
+import CrossIcon from './icons/cross.svg'
+import MenuIcon from './icons/menu.svg'
 
 export const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)

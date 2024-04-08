@@ -1,11 +1,11 @@
-import * as React from 'react'
 import fetch from 'cross-fetch'
 import dynamic from 'next/dynamic'
+import * as React from 'react'
 
 import { Layout } from '../components/Layout'
-import { SEO } from '../components/Seo'
 import { NavigationBar } from '../components/NavigationBar'
 import { PageTitle } from '../components/PageTitle'
+import { SEO } from '../components/Seo'
 import { palette } from '../utils/theme'
 
 const LoadableStatistics = dynamic(

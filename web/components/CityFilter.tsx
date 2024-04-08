@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { css } from '@emotion/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { css } from '@emotion/react'
+import React, { useEffect, useState } from 'react'
+
 import cities from '../data/city.json'
 import { useSearch } from '../utils/hooks'
 import { palette } from '../utils/theme'

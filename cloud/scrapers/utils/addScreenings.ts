@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
-import fs from 'fs'
 import { spawnSync } from 'child_process'
+import fs from 'fs'
 import { DateTime } from 'luxon'
 import * as R from 'ramda'
 

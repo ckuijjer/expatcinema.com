@@ -1,5 +1,6 @@
-import got from 'got'
 import camelcaseKeys from 'camelcase-keys'
+import got from 'got'
+
 import { camelcaseKeysHook, logErrorHook } from './gotHooks'
 
 const USER_AGENT: string = 'expatcinema.com'

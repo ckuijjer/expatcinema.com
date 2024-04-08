@@ -1,8 +1,8 @@
-import { groupBy } from 'ramda'
 import { DateTime } from 'luxon'
+import { groupBy } from 'ramda'
 
-import { getToday } from './getToday'
 import { Screening } from './getScreenings'
+import { getToday } from './getToday'
 
 // TODO: The grouping should be based on the Europe/Amsterdam timezone
 

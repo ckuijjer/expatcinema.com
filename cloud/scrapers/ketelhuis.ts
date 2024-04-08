@@ -1,15 +1,15 @@
-import Xray from 'x-ray'
 import { DateTime } from 'luxon'
+import pRetry from 'p-retry'
 import * as R from 'ramda'
-import {
-  shortMonthToNumberDutch,
-  fullMonthToNumberDutch,
-} from './utils/monthToNumber'
-import splitTime from './utils/splitTime'
-import xRayPuppeteer from '../xRayPuppeteer'
+import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
-import pRetry from 'p-retry'
+import xRayPuppeteer from '../xRayPuppeteer'
+import {
+  fullMonthToNumberDutch,
+  shortMonthToNumberDutch,
+} from './utils/monthToNumber'
+import splitTime from './utils/splitTime'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

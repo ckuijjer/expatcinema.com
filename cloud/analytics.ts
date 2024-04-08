@@ -1,4 +1,5 @@
 import { DateTime, Settings } from 'luxon'
+
 import documentClient from './documentClient'
 
 Settings.defaultZone = 'Europe/Amsterdam'

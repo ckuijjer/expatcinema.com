@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { palette } from '../utils/theme'
 import { Calendar } from './Calendar'
 import { CityFilter } from './CityFilter'
 import { Layout } from './Layout'
 import { NavigationBar } from './NavigationBar'
-import { palette } from '../utils/theme'
 
 export const App = ({ screenings, showCity = true }) => {
   return (

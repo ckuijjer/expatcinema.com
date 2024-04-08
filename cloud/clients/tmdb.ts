@@ -1,4 +1,5 @@
 import got from 'got'
+
 import { camelcaseKeysHook, logErrorHook } from './gotHooks'
 
 const getClient = (apiKey: string) => {

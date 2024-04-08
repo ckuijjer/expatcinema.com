@@ -1,8 +1,8 @@
-import React from 'react'
 import { css } from '@emotion/react'
 import Image from 'next/image'
-import { Cinema as CinemaType } from '../utils/getScreenings'
+import React from 'react'
 
+import { Cinema as CinemaType } from '../utils/getScreenings'
 import { Time } from './Time'
 
 const A = ({ href, children }) => {

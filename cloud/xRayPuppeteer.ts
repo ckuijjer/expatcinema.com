@@ -1,8 +1,8 @@
 import { Logger } from '@aws-lambda-powertools/logger'
+import { WaitForOptions } from 'puppeteer-core'
 import { Driver } from 'x-ray-crawler'
 
 import { getBrowser } from './browser'
-import { WaitForOptions } from 'puppeteer-core'
 
 type XRayPuppeteerOptions = {
   interactWithPage?: (page: any, ctx: any) => Promise<void>

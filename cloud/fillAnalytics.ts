@@ -1,8 +1,7 @@
 // Used for the initial filling of the analytics DynamoDB table based on the contents of the scrapers S3 bucket
-
 import AWS from 'aws-sdk'
-import { inspect } from 'util'
 import pMap from 'p-map'
+import { inspect } from 'util'
 
 import documentClient from './documentClient'
 

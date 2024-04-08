@@ -1,13 +1,13 @@
-import Xray from 'x-ray'
 import got from 'got'
-import { Screening } from 'types'
+import { has } from 'lodash'
 import { DateTime } from 'luxon'
+import { Screening } from 'types'
+import Xray from 'x-ray'
 
-import guessYear from './utils/guessYear'
 import { logger as parentLogger } from '../powertools'
+import guessYear from './utils/guessYear'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 import splitTime from './utils/splitTime'
-import { has } from 'lodash'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

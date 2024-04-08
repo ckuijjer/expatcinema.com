@@ -1,6 +1,6 @@
-import type { AppProps } from 'next/app'
 import { Global } from '@emotion/react'
 import { Settings } from 'luxon'
+import type { AppProps } from 'next/app'
 import Script from 'next/script'
 
 import { globalStyles } from '../utils/theme'

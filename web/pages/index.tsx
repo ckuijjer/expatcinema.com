@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 import { App } from '../components/App'
-import { getScreenings } from '../utils/getScreenings'
 import { SEO } from '../components/Seo'
+import { getScreenings } from '../utils/getScreenings'
 
 export const getStaticProps = async () => {
   const screenings = await getScreenings()

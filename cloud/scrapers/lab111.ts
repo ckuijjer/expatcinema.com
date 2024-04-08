@@ -1,11 +1,11 @@
-import Xray from 'x-ray'
 import { DateTime } from 'luxon'
-import splitTime from './utils/splitTime'
-import { shortMonthToNumberDutch } from './utils/monthToNumber'
-import guessYear from './utils/guessYear'
-import xRayPuppeteer from '../xRayPuppeteer'
+import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
+import xRayPuppeteer from '../xRayPuppeteer'
+import guessYear from './utils/guessYear'
+import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import splitTime from './utils/splitTime'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

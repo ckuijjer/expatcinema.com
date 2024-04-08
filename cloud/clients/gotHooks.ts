@@ -1,5 +1,6 @@
 import camelcaseKeys from 'camelcase-keys'
 import { RequestError } from 'got'
+
 import { logger } from '../powertools'
 
 export const camelcaseKeysHook = (response: any) => {

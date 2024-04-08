@@ -1,4 +1,4 @@
-import { DateTime, DateObjectUnits } from 'luxon'
+import { DateObjectUnits, DateTime } from 'luxon'
 
 // if the date is over half a year in the past, it's likely one belonging to next year
 const guessYear = (dateObjects: DateObjectUnits) => {

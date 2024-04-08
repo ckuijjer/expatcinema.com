@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+
 import { headerFont } from '../utils/theme'
 
 export const PageTitle = (props) => (

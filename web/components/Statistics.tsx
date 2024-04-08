@@ -1,6 +1,7 @@
-import React from 'react'
-import * as Plot from '@observablehq/plot'
 import { css } from '@emotion/react'
+import * as Plot from '@observablehq/plot'
+import React from 'react'
+
 import { Layout } from './Layout'
 
 // Grid component that has cells with a width of 200px and using css grid layout

@@ -1,5 +1,5 @@
-import React, { ComponentProps, useState, useEffect } from 'react'
 import { css } from '@emotion/react'
+import React, { ComponentProps, useEffect, useState } from 'react'
 
 import { useKeypress, useSearch } from '../utils/hooks'
 

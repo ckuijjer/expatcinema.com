@@ -8,14 +8,13 @@
   "workspaces": {
     "packages": [
       "cloud",
-      "web",
-      "web-nextjs"
+      "web"
     ]
   },
   "scripts": {
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "prettier": "^2.3.2"
+    "prettier": "^3.2.5"
   }
 }

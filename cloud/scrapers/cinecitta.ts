@@ -1,8 +1,8 @@
-import { DateTime } from 'luxon'
 import got from 'got'
+import { DateTime } from 'luxon'
 
-import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
+import { Screening } from '../types'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

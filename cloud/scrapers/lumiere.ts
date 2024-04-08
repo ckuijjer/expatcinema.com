@@ -1,10 +1,10 @@
-import Xray from 'x-ray'
-import { Screening } from 'types'
 import { DateTime } from 'luxon'
+import { Screening } from 'types'
+import Xray from 'x-ray'
 
+import { logger as parentLogger } from '../powertools'
 import xRayPuppeteer from '../xRayPuppeteer'
 import guessYear from './utils/guessYear'
-import { logger as parentLogger } from '../powertools'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import splitTime from './utils/splitTime'
 

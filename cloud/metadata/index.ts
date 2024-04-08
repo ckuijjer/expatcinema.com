@@ -1,6 +1,6 @@
-import searchMetadata from './searchMetadata'
 import documentClient from '../documentClient'
 import { logger } from '../powertools'
+import searchMetadata from './searchMetadata'
 
 type Metadata = {
   query: string

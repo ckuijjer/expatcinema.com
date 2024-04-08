@@ -1,10 +1,10 @@
+import { Logger } from '@aws-lambda-powertools/logger'
 import chromium from '@sparticuz/chromium'
 import puppeteer, {
-  defaultArgs,
   Browser,
   PuppeteerLaunchOptions,
+  defaultArgs,
 } from 'puppeteer-core'
-import { Logger } from '@aws-lambda-powertools/logger'
 
 // see https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode
 // for how to install a locally running chromium

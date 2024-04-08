@@ -1,30 +1,26 @@
-import { Context, APIGatewayProxyCallback, APIGatewayEvent } from 'aws-lambda'
-
-import { DateTime, Info, Settings } from 'luxon'
-import { inspect } from 'util'
-import ketelhuis from './scrapers/ketelhuis'
-import got from 'got'
-import { publicIp, publicIpv4, publicIpv6 } from 'public-ip'
+import { injectLambdaContext } from '@aws-lambda-powertools/logger'
+import middy from '@middy/core'
 // import chromium from 'chrome-aws-lambda'
 // const chromium = require('chrome-aws-lambda')
 import chromium from '@sparticuz/chromium'
-import pMap from 'p-map'
+import { APIGatewayEvent, APIGatewayProxyCallback, Context } from 'aws-lambda'
 import diacritics from 'diacritics'
-
+import got from 'got'
+import { DateTime, Info, Settings } from 'luxon'
+import pMap from 'p-map'
+import { logger as parentLogger } from 'powertools'
+import { publicIp, publicIpv4, publicIpv6 } from 'public-ip'
 import puppeteer from 'puppeteer-core'
 import { Screening } from 'types'
-
-import getTmdbClient from './clients/tmdb'
-import getOmdbClient from './clients/omdb'
-import getDuckDuckGoClient from './clients/duckduckgo'
-import getGoogleCustomSearchClient from './clients/google-customsearch'
+import { inspect } from 'util'
 
 import { getBrowser } from './browser'
-import { logger as parentLogger } from 'powertools'
-
+import getDuckDuckGoClient from './clients/duckduckgo'
+import getGoogleCustomSearchClient from './clients/google-customsearch'
+import getOmdbClient from './clients/omdb'
+import getTmdbClient from './clients/tmdb'
 import getMetadata from './metadata'
-import middy from '@middy/core'
-import { injectLambdaContext } from '@aws-lambda-powertools/logger'
+import ketelhuis from './scrapers/ketelhuis'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

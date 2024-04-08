@@ -1,10 +1,10 @@
 // like Kino
-import { DateTime } from 'luxon'
 import got from 'got'
 import { decode } from 'html-entities'
+import { DateTime } from 'luxon'
 
-import { Screening } from '../types'
 import { logger as parentLogger } from '../powertools'
+import { Screening } from '../types'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

@@ -1,18 +1,19 @@
-import { Context, APIGatewayEvent } from 'aws-lambda'
-
-import { DateTime, Settings } from 'luxon'
-import * as R from 'ramda'
-import AWS from 'aws-sdk'
-import { writeFile, mkdir } from 'fs/promises'
-import { dirname } from 'path'
-import diacritics from 'diacritics'
-import pMap from 'p-map'
 import { injectLambdaContext } from '@aws-lambda-powertools/logger'
 import middy from '@middy/core'
+import { APIGatewayEvent, Context } from 'aws-lambda'
+import AWS from 'aws-sdk'
+import diacritics from 'diacritics'
+import { mkdir, writeFile } from 'fs/promises'
+import { DateTime, Settings } from 'luxon'
+import pMap from 'p-map'
+import { dirname } from 'path'
+import * as R from 'ramda'
+import { Screening } from 'types'
 
+import { closeBrowser } from '../browser'
 import documentClient from '../documentClient'
 import getMetadata from '../metadata'
-
+import { logger as parentLogger } from '../powertools'
 // TODO: esbuild doesn't support dynamic import, hence all the imports below
 // SCRAPERS.map(async (name) => {
 //   const fn = await import(`./${name}`)
@@ -79,10 +80,6 @@ const SCRAPERS = {
   studiok,
   themovies,
 }
-
-import { logger as parentLogger } from '../powertools'
-import { Screening } from 'types'
-import { closeBrowser } from '../browser'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

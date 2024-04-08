@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react'
 import { css } from '@emotion/react'
 import Link from 'next/link'
-
-import SearchIcon from './icons/search.svg'
-import CrossIcon from './icons/cross.svg'
-
-import { headerFont } from '../utils/theme'
-import { TextFilter } from './TextFilter'
-import { Menu } from './Menu'
+import React, { useEffect, useState } from 'react'
 
 import { useKeypress, useSearch } from '../utils/hooks'
+import { headerFont } from '../utils/theme'
+import { Menu } from './Menu'
+import { TextFilter } from './TextFilter'
+import CrossIcon from './icons/cross.svg'
+import SearchIcon from './icons/search.svg'
 
 const Title = (props) => (
   <h1

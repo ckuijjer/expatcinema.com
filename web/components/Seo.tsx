@@ -1,5 +1,5 @@
-import React from 'react'
 import Head from 'next/head'
+import React from 'react'
 
 const DESCRIPTION = 'Foreign movies with English subtitles'
 const AUTHOR = 'Expat Cinema'

@@ -1,9 +1,9 @@
 import * as React from 'react'
 
 import { App } from '../../components/App'
-import { getScreenings } from '../../utils/getScreenings'
-import cities from '../../data/city.json'
 import { SEO } from '../../components/Seo'
+import cities from '../../data/city.json'
+import { getScreenings } from '../../utils/getScreenings'
 
 export const getStaticPaths = () => {
   const paths = cities.map((city) => `/city/${city.name.toLowerCase()}`)

@@ -1,13 +1,13 @@
-import React, { useReducer } from 'react'
+import { css } from '@emotion/react'
 import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
+import React, { useReducer } from 'react'
 import removeAccents from 'remove-accents'
 
+import { isEnabled } from '../../utils/featureFlags'
 import { Screening } from '../../utils/getScreenings'
 import { groupAndSortScreenings } from '../../utils/groupAndSortScreenings'
-import { isEnabled } from '../../utils/featureFlags'
 import { useSearch } from '../../utils/hooks'
-import { css } from '@emotion/react'
 
 const CalendarComponent = isEnabled('virtualized-table')
   ? dynamic(() =>

@@ -1,11 +1,11 @@
-import leven from 'leven'
 import diacritics from 'diacritics'
-import { logger } from '../powertools'
+import leven from 'leven'
 
-import getTmdbClient from '../clients/tmdb'
-import getOmdbClient from '../clients/omdb'
 import getDuckDuckGoClient from '../clients/duckduckgo'
 import getGoogleCustomSearchClient from '../clients/google-customsearch'
+import getOmdbClient from '../clients/omdb'
+import getTmdbClient from '../clients/tmdb'
+import { logger } from '../powertools'
 
 const getFirstTmdbSearchResult = async (title: string) => {
   const apiKey = process.env.TMDB_API_KEY

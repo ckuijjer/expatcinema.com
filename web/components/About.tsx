@@ -1,11 +1,12 @@
-import React from 'react'
-import { NavigationBar } from './NavigationBar'
 import { css } from '@emotion/react'
 import Link from 'next/link'
-import { Layout } from './Layout'
-import { headerFont, palette } from '../utils/theme'
-import { PageTitle } from './PageTitle'
+import React from 'react'
+
 import cinemas from '../data/cinema.json'
+import { headerFont, palette } from '../utils/theme'
+import { Layout } from './Layout'
+import { NavigationBar } from './NavigationBar'
+import { PageTitle } from './PageTitle'
 
 const Container = (props) => (
   <div
