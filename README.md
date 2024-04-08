@@ -51,10 +51,6 @@ if (require.main === module) {
 
 with the LOG_LEVEL=debug used to have debug output from the scrapers show up in the console
 
-### Installing Chromium for use by puppeteer-core locally
-
-See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how
-
 ## CI/CD
 
 GitHub actions is used, `web/` uses JamesIves/github-pages-deploy-action to deploy to the _gh-pages_ branch, and the GitHub settings has Pages take the source branch _gh-pages_ which triggers the GitHub built in _pages-build-deployment_
@@ -74,6 +70,26 @@ aws dynamodb scan --table-name expatcinema-scrapers-analytics --profile casper >
 - Use https://favicongrabber.com/ to grab a favicon for the cinema.json file
 - Use https://www.google.com/s2/favicons?domain=www.natlab.nl to get the favicon for the cinema.json file
 
+## Chromium
+
+Some scrapers need to run in a real browser, for which we use puppeteer and a lambda layer with Chromium.
+
+### Upgrading puppeteer and chromium
+
+- Find the preferred version of Chromium for the latest version of puppeteer at https://pptr.dev/supported-browsers, e.g. _Chrome for Testing 123.0.6312.105 - Puppeteer v22.6.3_
+- Check if this version of Chromium is available (for running locally) at https://github.com/Sparticuz/chromium, check the package.json
+- Check if this version of Chromium is available (as a lambda layer) at https://github.com/shelfio/chrome-aws-lambda-layer, e.g. _Has Chromium v123.0.1_ and _arn:aws:lambda:us-east-1:764866452798:layer:chrome-aws-lambda:45_
+
+```sh
+yarn add puppeteer@22.6.3 @sparticuz/chromium@^123.0.1
+```
+
+After installing the new version of puppeteer and chromium update the lambda layer in serverless.yml, by doing a search and replace on `arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:` and change e.g. `44` to `45`
+
+### Installing Chromium for use by puppeteer-core locally
+
+See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how
+
 ## Troubleshooting
 
 When running a puppeteer based scraper locally, e.g. `yarn tsx scrapers/ketelhuis.ts` and getting an error like
@@ -82,4 +98,4 @@ When running a puppeteer based scraper locally, e.g. `yarn tsx scrapers/ketelhui
 Error: Failed to launch the browser process! spawn /tmp/localChromium/chromium/mac_arm-1205129/chrome-mac/Chromium.app/Contents/MacOS/Chromium ENOENT
 ```
 
-you need to install Chromium locally, run `yarn install-chromium` to do so and update `LOCAL_CHROMIUM_EXECUTABLE_PATH` in `browser.ts` to point to the Chromium executable
+you need to install Chromium locally, run `yarn install-chromium` to do so and update `LOCAL_CHROMIUM_EXECUTABLE_PATH` in `browser.ts` to point to the Chromium executable. See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how
