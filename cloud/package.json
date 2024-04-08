@@ -32,7 +32,7 @@
     "@aws-lambda-powertools/logger": "^1.2.1",
     "@middy/core": "^3.6.2",
     "@sparticuz/chromium": "^117.0.0",
-    "axios": "^0.27.2",
+    "axios": "^0.28.0",
     "camelcase-keys": "^8.0.1",
     "cross-fetch": "^3.1.5",
     "diacritics": "^1.3.0",
