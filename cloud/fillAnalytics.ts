@@ -1,28 +1,29 @@
 // Used for the initial filling of the analytics DynamoDB table based on the contents of the scrapers S3 bucket
-import AWS from 'aws-sdk'
+// TODO: untested after migrating from v2 to v3 of the AWS SDK
+import {
+  GetObjectCommand,
+  S3Client,
+  paginateListObjectsV2,
+} from '@aws-sdk/client-s3'
+import { PutCommand } from '@aws-sdk/lib-dynamodb'
 import pMap from 'p-map'
 import { inspect } from 'util'
 
 import documentClient from './documentClient'
 
-const s3 = new AWS.S3()
+const s3Client = new S3Client({})
 
 const PRIVATE_BUCKET = process.env.PRIVATE_BUCKET
 
-// https://stackoverflow.com/a/57540786/65971
-async function* listAllKeys(opts) {
-  opts = { ...opts }
-  do {
-    const data = await s3.listObjectsV2(opts).promise()
-    opts.ContinuationToken = data.NextContinuationToken
-    yield data
-  } while (opts.ContinuationToken)
-}
-
 const getAllKeysFromS3 = async () => {
   const keys = []
-  for await (const data of listAllKeys({ Bucket: PRIVATE_BUCKET })) {
-    keys.push(...data.Contents.map((x) => x.Key))
+  for await (const data of paginateListObjectsV2(
+    { client: s3Client },
+    {
+      Bucket: PRIVATE_BUCKET,
+    },
+  )) {
+    keys.push(...(data.Contents || []).map((x) => x.Key))
   }
   return keys
 }
@@ -35,14 +36,14 @@ const addScraperAndCreatedAt = (keys) => {
 }
 
 const writeToAnalytics = async (data) => {
-  const params = {
+  const putCommand = new PutCommand({
     TableName: process.env.DYNAMODB_ANALYTICS,
     Item: {
       type: 'count',
       ...data,
     },
-  }
-  return await documentClient.put(params).promise()
+  })
+  return await documentClient.send(putCommand)
 }
 
 const fillAnalytics = async ({ event, context } = {}) => {
@@ -81,12 +82,12 @@ const fillAnalytics = async ({ event, context } = {}) => {
 }
 
 const getObjectFromS3 = async (key) => {
-  const params = {
+  const command = new GetObjectCommand({
     Bucket: PRIVATE_BUCKET,
     Key: key,
-  }
+  })
 
-  const data = await s3.getObject(params).promise()
+  const data = await s3Client.send(command)
   const body = data.Body.toString()
   const json = JSON.parse(body)
 

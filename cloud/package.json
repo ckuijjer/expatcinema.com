@@ -30,6 +30,9 @@
   "dependencies": {
     "@apollo/client": "^3.9.10",
     "@aws-lambda-powertools/logger": "^2.0.3",
+    "@aws-sdk/client-dynamodb": "^3.549.0",
+    "@aws-sdk/client-s3": "^3.550.0",
+    "@aws-sdk/lib-dynamodb": "^3.549.0",
     "@middy/core": "^5.3.2",
     "@sparticuz/chromium": "^123.0.1",
     "axios": "^1.6.8",
@@ -60,7 +63,6 @@
     "@types/luxon": "^3.4.2",
     "@types/ramda": "^0.29.12",
     "@types/x-ray": "^2.3.6",
-    "aws-sdk": "^2.1594.0",
     "esbuild": "^0.20.2",
     "lumigo-cli": "^0.48.4",
     "prettier": "^3.2.5",

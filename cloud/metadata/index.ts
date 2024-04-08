@@ -1,3 +1,5 @@
+import { PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb'
+
 import documentClient from '../documentClient'
 import { logger } from '../powertools'
 import searchMetadata from './searchMetadata'
@@ -10,24 +12,25 @@ type Metadata = {
   tmdb?: any
 }
 
-const getMetadata = async (title: string): Promise<Metadata> => {
+const getMetadata = async (title: string): Promise<Metadata | undefined> => {
   // find the metadata in dynamoDB
   // TODO: should be a .get
-  const data = await documentClient
-    .query({
-      TableName: process.env.DYNAMODB_MOVIE_METADATA,
-      KeyConditionExpression: '#query = :query',
-      ExpressionAttributeNames: {
-        '#query': 'query',
-      },
-      ExpressionAttributeValues: {
-        ':query': title,
-      },
-    })
-    .promise()
+
+  const queryCommand = new QueryCommand({
+    TableName: process.env.DYNAMODB_MOVIE_METADATA,
+    KeyConditionExpression: '#query = :query',
+    ExpressionAttributeNames: {
+      '#query': 'query',
+    },
+    ExpressionAttributeValues: {
+      ':query': title,
+    },
+  })
+
+  const data = await documentClient.send(queryCommand)
 
   // if there is no metadata, search for it, create it in DynamoDB, and return it
-  if (data.Items.length === 0) {
+  if (data.Items?.length === 0) {
     logger.info(`❌ couldn't get metadata for ${title}, searching for it`)
     const metadata = await searchMetadata(title)
     const item = {
@@ -36,20 +39,21 @@ const getMetadata = async (title: string): Promise<Metadata> => {
       ...(metadata ?? {}),
     }
 
-    await documentClient
-      .put({
-        TableName: process.env.DYNAMODB_MOVIE_METADATA,
-        Item: item,
-      })
-      .promise()
+    const putCommand = new PutCommand({
+      TableName: process.env.DYNAMODB_MOVIE_METADATA,
+      Item: item,
+    })
+
+    await documentClient.send(putCommand)
 
     return item
   } else {
     logger.info(`✅ found the get metadata for ${title}`, {
       title,
-      item: data.Items[0],
+      item: data.Items?.[0],
     })
-    return data.Items[0]
+
+    return data.Items?.[0]
   }
 }
 

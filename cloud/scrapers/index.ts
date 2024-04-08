@@ -1,7 +1,8 @@
 import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware'
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { PutCommand } from '@aws-sdk/lib-dynamodb'
 import middy from '@middy/core'
 import { APIGatewayEvent, Context } from 'aws-lambda'
-import AWS from 'aws-sdk'
 import diacritics from 'diacritics'
 import { mkdir, writeFile } from 'fs/promises'
 import { DateTime, Settings } from 'luxon'
@@ -91,7 +92,7 @@ const logger = parentLogger.createChild({
 // as Europe/Amsterdam
 Settings.defaultZone = 'Europe/Amsterdam'
 
-const s3 = new AWS.S3()
+const s3Client = new S3Client({})
 
 const PRIVATE_BUCKET = process.env.PRIVATE_BUCKET
 const PUBLIC_BUCKET = process.env.PUBLIC_BUCKET
@@ -120,7 +121,7 @@ const writeToFileInBucket =
         Key: filename,
         Body: dataJson,
       }
-      return s3.putObject(params).promise()
+      return s3Client.send(new PutObjectCommand(params))
     }
   }
 
@@ -134,15 +135,16 @@ const writeToAnalytics = (type) => async (fields) => {
     await mkdir(dirname(path), { recursive: true })
     return writeFile(path, JSON.stringify(fields, null, 2))
   } else {
-    const params = {
+    const putCommand = new PutCommand({
       TableName: process.env.DYNAMODB_ANALYTICS,
       Item: {
         type,
         createdAt: now,
         ...fields,
       },
-    }
-    return await documentClient.put(params).promise()
+    })
+
+    return await documentClient.send(putCommand)
   }
 }
 

@@ -227,7 +227,6 @@ custom:
     packager: yarn
     exclude:
       - '@sparticuz/chromium' # as we're using the lambda layer, no need to bundle it
-      # - aws-sdk # Currently not excluded, as we depend on v2 and node 20 is using v3
     external:
       - emitter # as batch dynamically imports from emitter
 
