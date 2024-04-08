@@ -81,7 +81,7 @@ Some scrapers need to run in a real browser, for which we use puppeteer and a la
 - Check if this version of Chromium is available (as a lambda layer) at https://github.com/shelfio/chrome-aws-lambda-layer, e.g. _Has Chromium v123.0.1_ and _arn:aws:lambda:us-east-1:764866452798:layer:chrome-aws-lambda:45_
 
 ```sh
-yarn add puppeteer@22.6.3 @sparticuz/chromium@^123.0.1
+yarn add puppeteer-core@22.6.3 @sparticuz/chromium@^123.0.1
 ```
 
 After installing the new version of puppeteer and chromium update the lambda layer in serverless.yml, by doing a search and replace on `arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:` and change e.g. `44` to `45`
