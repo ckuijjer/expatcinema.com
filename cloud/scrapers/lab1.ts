@@ -19,7 +19,6 @@ const xray = Xray({
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
-  //   .driver(xRayPuppeteer({ logger }))
   .concurrency(10)
   .throttle(10, 300)
 

@@ -35,7 +35,7 @@ const xray = Xray({
     trim,
   },
 })
-  .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 60000 } }))
+  .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 60_000 } }))
   .concurrency(10)
   .throttle(10, 300)
 

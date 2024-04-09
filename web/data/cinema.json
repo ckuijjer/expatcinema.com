@@ -184,5 +184,11 @@
     "city": "Eindhoven",
     "url": "https://www.natlab.nl/",
     "logo": "natlab.png"
+  },
+  {
+    "name": "Focus Arnhem",
+    "city": "Arnhem",
+    "url": "https://www.focusarnhem.nl/",
+    "logo": "focusarnhem.png"
   }
 ]
