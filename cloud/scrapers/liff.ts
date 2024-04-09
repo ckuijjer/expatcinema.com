@@ -1,11 +1,7 @@
 import { DateTime } from 'luxon'
-import * as R from 'ramda'
 import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
-import guessYear from './utils/guessYear'
-import { shortMonthToNumberDutch } from './utils/monthToNumber'
-import splitTime from './utils/splitTime'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

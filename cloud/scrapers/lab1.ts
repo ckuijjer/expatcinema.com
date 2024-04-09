@@ -3,7 +3,6 @@ import { Screening } from 'types'
 import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
-import xRayPuppeteer from '../xRayPuppeteer'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

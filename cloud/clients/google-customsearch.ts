@@ -1,4 +1,3 @@
-import camelcaseKeys from 'camelcase-keys'
 import got from 'got'
 
 import { camelcaseKeysHook, logErrorHook } from './gotHooks'

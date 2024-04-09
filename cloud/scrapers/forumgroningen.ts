@@ -5,7 +5,6 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import guessYear from './utils/guessYear'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
-import splitTime from './utils/splitTime'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

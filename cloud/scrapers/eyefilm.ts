@@ -1,5 +1,4 @@
 import { ApolloClient, HttpLink, InMemoryCache, gql } from '@apollo/client'
-import fetch from 'cross-fetch'
 import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
@@ -71,7 +70,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
   const hasEnglishSubtitles = (show) =>
     show.singleSubtitles === '42c27a5b-2d4e-4195-b547-cb6fbe9fcd49'
 
-  console.log(results.data.shows.length)
+  logger.info('number of shows', results.data.shows.length)
 
   const screenings = results.data.shows
     .filter(hasEnglishSubtitles)

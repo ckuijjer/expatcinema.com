@@ -7,7 +7,6 @@ import {
 } from '@aws-sdk/client-s3'
 import { PutCommand } from '@aws-sdk/lib-dynamodb'
 import pMap from 'p-map'
-import { inspect } from 'util'
 
 import documentClient from './documentClient'
 
