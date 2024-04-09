@@ -106,7 +106,6 @@ const writeToFileInBucket =
     const dataJson = JSON.stringify(data, null, 2)
 
     if (process.env.IS_LOCAL) {
-      // serverless invoke local // TODO: currently stores in .esbuild/output instead of output/, fix this
       const path = `../../output/${bucket}/${filename}`
       await mkdir(dirname(path), { recursive: true })
       return writeFile(path, dataJson)
@@ -125,7 +124,6 @@ const writeToPublicFile = writeToFileInBucket(PUBLIC_BUCKET)
 
 const writeToAnalytics = (type) => async (fields) => {
   if (process.env.IS_LOCAL) {
-    // serverless invoke local // TODO: currently stores in .esbuild/.build/output instead of output/, fix this
     const path = `../../output/analytics/${type}.json`
     await mkdir(dirname(path), { recursive: true })
     return writeFile(path, JSON.stringify(fields, null, 2))
