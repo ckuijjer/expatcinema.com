@@ -4,7 +4,7 @@ import { Screening } from 'types'
 import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
-import guessYear from './utils/guessYear'
+import { guessYear } from './utils/guessYear'
 import { monthToNumber } from './utils/monthToNumber'
 
 const logger = parentLogger.createChild({

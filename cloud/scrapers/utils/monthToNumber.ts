@@ -90,6 +90,7 @@ const monthToNumberWithWarning = (
 
   return monthNumber
 }
+
 export function fullMonthToNumberDutch(month: string) {
   return monthToNumberWithWarning(
     'fullMonthToNumberDutch',
@@ -105,6 +106,7 @@ export function shortMonthToNumberDutch(month: string) {
     month,
   )
 }
+
 export function fullMonthToNumberEnglish(month: string) {
   return monthToNumberWithWarning(
     'fullMonthToNumberEnglish',
@@ -112,6 +114,7 @@ export function fullMonthToNumberEnglish(month: string) {
     month,
   )
 }
+
 export function shortMonthToNumberEnglish(month: string) {
   return monthToNumberWithWarning(
     'shortMonthToNumberEnglish',

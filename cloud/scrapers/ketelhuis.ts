@@ -9,7 +9,7 @@ import {
   fullMonthToNumberDutch,
   shortMonthToNumberDutch,
 } from './utils/monthToNumber'
-import splitTime from './utils/splitTime'
+import { splitTime } from './utils/splitTime'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

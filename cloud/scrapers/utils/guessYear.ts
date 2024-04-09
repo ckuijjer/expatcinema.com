@@ -1,7 +1,7 @@
 import { DateObjectUnits, DateTime } from 'luxon'
 
 // if the date is over half a year in the past, it's likely one belonging to next year
-const guessYear = (dateObjects: DateObjectUnits) => {
+export const guessYear = (dateObjects: DateObjectUnits) => {
   const now = DateTime.local()
 
   let date = DateTime.fromObject(dateObjects)
@@ -17,5 +17,3 @@ const guessYear = (dateObjects: DateObjectUnits) => {
     return date.year
   }
 }
-
-export default guessYear

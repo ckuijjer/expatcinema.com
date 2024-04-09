@@ -3,9 +3,9 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import xRayPuppeteer from '../xRayPuppeteer'
-import guessYear from './utils/guessYear'
+import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
-import splitTime from './utils/splitTime'
+import { splitTime } from './utils/splitTime'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
