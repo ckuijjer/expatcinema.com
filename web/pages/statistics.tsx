@@ -1,4 +1,3 @@
-import fetch from 'cross-fetch'
 import dynamic from 'next/dynamic'
 import * as React from 'react'
 
