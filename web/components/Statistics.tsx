@@ -11,6 +11,7 @@ const Grid = ({ children }) => (
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       grid-gap: 12px;
+      margin-bottom: 32px;
     `}
   >
     {children}
