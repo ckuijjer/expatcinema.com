@@ -8,13 +8,12 @@ import { mkdir, writeFile } from 'fs/promises'
 import { DateTime, Settings } from 'luxon'
 import pMap from 'p-map'
 import { dirname } from 'path'
-import * as R from 'ramda'
-import { Screening } from 'types'
 
 import { closeBrowser } from '../browser'
 import documentClient from '../documentClient'
 import getMetadata from '../metadata'
 import { logger as parentLogger } from '../powertools'
+import { Screening } from '../types'
 // TODO: esbuild doesn't support dynamic import, hence all the imports below
 // SCRAPERS.map(async (name) => {
 //   const fn = await import(`./${name}`)
@@ -49,6 +48,7 @@ import slachtstraat from './slachtstraat'
 import springhaver from './springhaver'
 import studiok from './studiok'
 import themovies from './themovies'
+import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 
 const SCRAPERS = {
   bioscopenleiden,
@@ -97,13 +97,6 @@ const s3Client = new S3Client({})
 const PRIVATE_BUCKET = process.env.PRIVATE_BUCKET
 const PUBLIC_BUCKET = process.env.PUBLIC_BUCKET
 
-const sort = R.sortWith([
-  R.ascend(R.prop('date')),
-  R.ascend(R.prop('cinema')),
-  R.ascend(R.prop('title')),
-  R.ascend(R.prop('url')),
-])
-
 const now = DateTime.fromObject({}).toUTC().toISO()
 
 const writeToFileInBucket =
@@ -112,7 +105,7 @@ const writeToFileInBucket =
 
     if (process.env.IS_LOCAL) {
       // serverless invoke local // TODO: currently stores in .esbuild/output instead of output/, fix this
-      const path = `./output/${bucket}/${filename}`
+      const path = `../../output/${bucket}/${filename}`
       await mkdir(dirname(path), { recursive: true })
       return writeFile(path, dataJson)
     } else {
@@ -130,8 +123,8 @@ const writeToPublicFile = writeToFileInBucket(PUBLIC_BUCKET)
 
 const writeToAnalytics = (type) => async (fields) => {
   if (process.env.IS_LOCAL) {
-    // serverless invoke local // TODO: currently stores in .esbuild/output instead of output/, fix this
-    const path = `./output/analytics/${type}.json`
+    // serverless invoke local // TODO: currently stores in .esbuild/.build/output instead of output/, fix this
+    const path = `../../output/analytics/${type}.json`
     await mkdir(dirname(path), { recursive: true })
     return writeFile(path, JSON.stringify(fields, null, 2))
   } else {
@@ -194,7 +187,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
             numberOfResults: result?.length,
           })
 
-          return [name, sort(result)]
+          return [name, makeScreeningsUniqueAndSorted(result)]
         }),
       ),
     )
@@ -208,7 +201,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
 
     logger.info('done scraping for all scrapers')
 
-    results.all = sort(Object.values(results).flat())
+    results.all = makeScreeningsUniqueAndSorted(Object.values(results).flat())
 
     // get metadata for all movies
     const normalizeTitle = (title) => diacritics.remove(title.toLowerCase())
@@ -221,7 +214,7 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
       concurrency: 5,
     })
 
-    results.allWithMetadata = sort(
+    results.allWithMetadata = makeScreeningsUniqueAndSorted(
       results.all.map((movie) => {
         const metadata = uniqueTitlesAndMetadata.find(
           (metadata) => metadata.query === normalizeTitle(movie.title),

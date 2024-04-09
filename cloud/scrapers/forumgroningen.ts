@@ -4,6 +4,7 @@ import Xray from 'x-ray'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
+import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 
 const logger = parentLogger.createChild({
@@ -93,8 +94,9 @@ const extractFromMoviePage = async ({
     },
   )
 
-  logger.info('screenings', { screenings })
-  return screenings
+  const uniqueSortedScreenings = makeScreeningsUniqueAndSorted(screenings)
+  logger.info('screenings', { screenings: uniqueSortedScreenings })
+  return uniqueSortedScreenings
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {

@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { splitTime } from './utils/splitTime'
 
 const logger = parentLogger.createChild({
@@ -108,8 +109,10 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       }
     })
 
-  logger.info('extracted screenings', { screenings })
-  return screenings
+  const uniqueSortedScreenings = makeScreeningsUniqueAndSorted(screenings)
+
+  logger.info('extracted screenings', { screenings: uniqueSortedScreenings })
+  return uniqueSortedScreenings
 }
 
 if (require.main === module) {

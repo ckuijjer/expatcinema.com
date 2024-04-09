@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon'
 import pRetry from 'p-retry'
-import * as R from 'ramda'
 import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
@@ -10,6 +9,7 @@ import {
   shortMonthToNumberDutch,
 } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { uniq } from './utils/uniq'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -100,7 +100,7 @@ const extractFromMainPage = async () => {
     ...deutschesKinoResults,
     ...italianCineclubResults,
   ]
-  const uniqueResults = R.uniq(results)
+  const uniqueResults = uniq(results)
 
   logger.info('results', { results })
   logger.info('uniqueResults', { uniqueResults })
