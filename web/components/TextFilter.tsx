@@ -50,7 +50,11 @@ const DebouncedInput = ({
     }, delay)
 
     return () => clearTimeout(timeoutId)
-  }, [value, delay, onDebounce])
+  }, [
+    value,
+    delay,
+    // onDebounce // TODO: Understand why `onDebounce` needs to be kept out of the dependencies (if it's in scrolling with a search set is not working properly)
+  ])
 
   useKeypress('Escape', () => setValue(''))
 
