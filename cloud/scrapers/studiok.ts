@@ -5,6 +5,7 @@ import Xray from 'x-ray'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
+import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
 
@@ -15,7 +16,11 @@ const logger = parentLogger.createChild({
 })
 
 const cleanTitle = (title: string) =>
-  title.replace('(ENG SUBS)', '').replace(/^.*│/, '').trim()
+  title
+    .replace('(ENG SUBS)', '') // Melk -> Melk
+    .replace(/^.*│/, '')
+    .replace(/ • .*$/, '') // SWEPT AWAY (1974) • I’LL HAVE WHAT SHE’S HAVING -> SWEPT AWAY (1974)
+    .trim()
 
 const xray = Xray({
   filters: {
@@ -108,12 +113,14 @@ type XRayFromMainPage = {
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
+  // Note that in the browser .slick-slide instead of .slider is used, due to JavaScript being enabled
   const scrapeResult: XRayFromMainPage[] = await xray(
-    'https://studio-k.nu/films/',
-    '.poster-lijst a',
+    'https://studio-k.nu/',
+    '.poster-categories .slider a',
     [
       {
         url: '@href',
+        title: '.txt | normalizeWhitespace | trim',
       },
     ],
   )
@@ -147,7 +154,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     .filter((x) => x)
     .flat()
 
-  return screenings
+  const uniqueAndSortedScreenings = makeScreeningsUniqueAndSorted(screenings)
+  return uniqueAndSortedScreenings
 }
 
 if (require.main === module) {
@@ -156,10 +164,8 @@ if (require.main === module) {
     .then(console.log)
 
   // extractFromMoviePage(
-  //   // 'https://studio-k.nu/film/cinema-kulinair-%e2%94%82-a-simple-life-2011/',
-  //   // 'https://studio-k.nu/film/cinema-kulinair-%e2%94%82-eat-drink-man-woman-1994/',
-  //   // 'https://studio-k.nu/film/boiling-point/',
-  //   'https://studio-k.nu/film/cinema-kulinair-%e2%94%82io-sono-lamore-2009/',
+  //   'https://studio-k.nu/film/melk-eng-subs/',
+  //   // 'https://studio-k.nu/film/melk/',
   // ).then(console.log)
 }
 
