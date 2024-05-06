@@ -7,11 +7,11 @@
   "license": "ISC",
   "dependencies": {
     "luxon": "^3.4.4",
-    "ramda": "^0.29.1"
+    "ramda": "^0.30.0"
   },
   "devDependencies": {
     "@types/luxon": "^3.4.2",
-    "@types/ramda": "^0.29.12",
+    "@types/ramda": "^0.30.0",
     "prettier": "^3.2.5",
     "tsx": "^4.7.2",
     "typescript": "^5.4.4"
