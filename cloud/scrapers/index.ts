@@ -245,6 +245,11 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     )
 
     logger.info('writing all, the combined json, to public S3 bucket')
+    await writeToPublicFile('screenings-without-metadata.json')(results.all) // for easy comparison not used by the frontend
+    await writeToPublicFile('screenings-with-metadata.json')(
+      results.allWithMetadata,
+    ) // for easy comparison, not used by the frontend
+
     await writeToPublicFile('screenings.json')(results.allWithMetadata)
     await writeToPublicFile('movies.json')(movies)
 
