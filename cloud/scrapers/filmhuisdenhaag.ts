@@ -88,7 +88,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     })
 
   const screenings: Screening[] = programs
-    .filter((item) => item.subtitle === 'Engels' || item.subtitle === 'English')
+    // .filter((item) => item.subtitle === 'Engels' || item.subtitle === 'English') // removed as it seems to always show "Nederlands" now
+    .filter((item) => item.subs === 'EN subs')
     .map((item) => {
       const [year, month, day] = item.starts_at_date
         .split('-')
