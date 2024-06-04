@@ -47,6 +47,7 @@ const extractFromMoviePage = async ({
       key: ['dt | normalizeWhitespace | trim'],
       value: ['dd | normalizeWhitespace | trim'],
     }),
+    genres: ['.meta .genres li | normalizeWhitespace | trim'],
   })
 
   logger.info('movie page', { scrapeResult })
@@ -61,7 +62,12 @@ const extractFromMoviePage = async ({
   )
   logger.info('metadata', { metadata })
 
-  if (!metadata.Ondertiteling?.includes('Engels')) {
+  if (
+    !(
+      metadata.Ondertiteling?.includes('Engels') ||
+      scrapeResult.genres.includes('ENGELSE ONDERTITELING')
+    )
+  ) {
     logger.warn('no English subtitles', { url, title })
     return []
   }
