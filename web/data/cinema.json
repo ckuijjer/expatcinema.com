@@ -190,5 +190,11 @@
     "city": "Arnhem",
     "url": "https://www.focusarnhem.nl/",
     "logo": "focusarnhem.png"
+  },
+  {
+    "name": "Het Documentaire Paviljoen",
+    "city": "Amsterdam",
+    "url": "https://www.idfa.nl/en/vondelpark/",
+    "logo": "idfa.png"
   }
 ]

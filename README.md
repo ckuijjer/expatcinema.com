@@ -68,7 +68,7 @@ aws dynamodb scan --table-name expatcinema-scrapers-analytics --profile casper >
 ### Favicon
 
 - Use https://favicongrabber.com/ to grab a favicon for the cinema.json file
-- Use https://www.google.com/s2/favicons?domain=www.natlab.nl to get the favicon for the cinema.json file
+- Use https://www.google.com/s2/favicons?domain=www.idfa.nl to get the favicon for the cinema.json file
 
 ## Chromium
 

@@ -32,6 +32,7 @@ import filmkoepel from './filmkoepel'
 import focusarnhem from './focusarnhem'
 import forumgroningen from './forumgroningen'
 import hartlooper from './hartlooper'
+import hetdocumentairepaviljoen from './hetdocumentairepaviljoen'
 import ketelhuis from './ketelhuis'
 import kinorotterdam from './kinorotterdam'
 import kriterion from './kriterion'
@@ -65,6 +66,7 @@ const SCRAPERS = {
   focusarnhem,
   forumgroningen,
   hartlooper,
+  hetdocumentairepaviljoen,
   ketelhuis,
   kinorotterdam,
   kriterion,
@@ -250,8 +252,8 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
       results.allWithMetadata,
     ) // for easy comparison, not used by the frontend
 
-    await writeToPublicFile('screenings.json')(results.allWithMetadata)
-    await writeToPublicFile('movies.json')(movies)
+    await writeToPublicFile('screenings.json')(results.all) // take the screenings without the title cleaning using metadata
+    await writeToPublicFile('movies.json')(movies) // titles cleaned using metadata, currently not used by the frontend
 
     const countPerScraper = Object.fromEntries(
       Object.entries(results).map(([name, data]) => [name, data.length]),
