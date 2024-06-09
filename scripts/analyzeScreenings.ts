@@ -70,11 +70,11 @@ Object.entries(screeningsGroupedByTitle)
   .toSorted((a, b) => compareTitles(a[0], b[0]))
   .filter(([normalizedTitle]) => {
     return [
-      //       () => true,
+      () => true,
       //       containsDash,
       //       containsNonAlphanumeric,
       //       containsParentheses,
-      containsColon,
+      // containsColon,
       // containsYear,
     ].some((condition) => condition(normalizedTitle))
   })

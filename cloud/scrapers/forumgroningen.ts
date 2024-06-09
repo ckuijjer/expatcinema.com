@@ -50,7 +50,7 @@ const extractFromMoviePage = async ({
   url: string
 }): Promise<Screening[]> => {
   const scrapeResult: XRayFromMoviePage = await xray(url, {
-    title: 'h1.title',
+    title: 'h1.title | cleanTitle | trim',
     screenings: xray('.calendar-day', [
       {
         date: '.calendar-day-head | normalizeWhitespace | trim',
