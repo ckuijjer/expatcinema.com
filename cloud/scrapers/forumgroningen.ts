@@ -6,6 +6,7 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -18,7 +19,12 @@ const xray = Xray({
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
     cleanTitle: (value) =>
       typeof value === 'string'
-        ? value.replace('Movie: ', '').replace('Film: ', '')
+        ? titleCase(
+            value
+              .replace('Movie: ', '')
+              .replace('Film: ', '')
+              .replace('Classics: ', ''),
+          )
         : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,

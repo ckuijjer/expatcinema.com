@@ -7,7 +7,9 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import { removeYearSuffix } from './utils/removeYearSuffix'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -15,12 +17,17 @@ const logger = parentLogger.createChild({
   },
 })
 
-const cleanTitle = (title: string) =>
-  title
-    .replace('(ENG SUBS)', '') // Melk -> Melk
-    .replace(/^.*│/, '')
-    .replace(/ • .*$/, '') // SWEPT AWAY (1974) • I’LL HAVE WHAT SHE’S HAVING -> SWEPT AWAY (1974)
-    .trim()
+const cleanTitle = (title: string) => {
+  return titleCase(
+    removeYearSuffix(
+      title
+        .replace('(ENG SUBS)', '') // Melk -> Melk
+        .replace(/^.*│/, '')
+        .replace(/ • .*$/, '') // SWEPT AWAY (1974) • I’LL HAVE WHAT SHE’S HAVING -> SWEPT AWAY (1974)
+        .trim(),
+    ),
+  )
+}
 
 const xray = Xray({
   filters: {

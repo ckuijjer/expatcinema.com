@@ -7,6 +7,7 @@ import xRayPuppeteer from '../xRayPuppeteer'
 import { guessYear } from './utils/guessYear'
 import { monthToNumber } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -17,7 +18,9 @@ const logger = parentLogger.createChild({
 const trim = (value) => (typeof value === 'string' ? value.trim() : value)
 
 const cleanTitle = (value) =>
-  typeof value === 'string' ? value.replace(/^Expat Cinema: /gi, '') : value
+  typeof value === 'string'
+    ? titleCase(value.replace(/^Expat Cinema: /gi, ''))
+    : value
 
 const toLowerCase = (value) =>
   typeof value === 'string' ? value.toLowerCase() : value
@@ -120,7 +123,7 @@ const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
         const [hour, minute] = splitTime(time)
 
         return {
-          title: movie.title,
+          title: cleanTitle(movie.title),
           url,
           cinema: 'Focus Arnhem',
           date: DateTime.fromObject({

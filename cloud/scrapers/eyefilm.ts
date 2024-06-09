@@ -3,12 +3,15 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
     scraper: 'eyefilm',
   },
 })
+
+const cleanTitle = (title: string) => titleCase(title)
 
 const extractFromGraphQL = async (): Promise<Screening[]> => {
   const client = new ApolloClient({
@@ -76,7 +79,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
     .filter(hasEnglishSubtitles)
     .map((show) => {
       return {
-        title: show.production[0].title,
+        title: cleanTitle(show.production[0].title),
         url: show.url,
         cinema: 'Eye',
         date: new Date(show.startDateTime),

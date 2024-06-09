@@ -7,6 +7,7 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { fullMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -33,12 +34,14 @@ const metadataDescribedEnglishSubtitles = (metadata: {
 }
 
 const cleanTitle = (title: string) =>
-  title
-    .replace(/Language No Problem: /i, '')
-    .replace(/ \(English Subtitles\)/i, '')
-    .replace(/ \(with English subtitles\)/i, '')
-    .replace(/^.*?: /, '')
-    .replace(/ \(\d{4}\).*?$/, '')
+  titleCase(
+    title
+      .replace(/Language No Problem: /i, '')
+      .replace(/ \(English Subtitles\)/i, '')
+      .replace(/ \(with English subtitles\)/i, '')
+      .replace(/^.*?: /, '')
+      .replace(/ \(\d{4}\).*?$/, ''),
+  )
 
 type XRayFromMoviePage = {
   title: string

@@ -68,12 +68,13 @@ Object.entries(screeningsGroupedByTitle)
   .toSorted((a, b) => compareTitles(a[0], b[0]))
   .filter(([normalizedTitle]) => {
     return [
-      () => true,
-      containsDash,
-      //       containsColon,
-      containsYear,
+      //       () => true,
+      //       containsDash,
+      containsColon,
+      //       containsYear,
     ].some((condition) => condition(normalizedTitle))
   })
+  //   .filter(([_, screenings]) => screenings.some((s) => s.cinema === 'Kino'))
   .forEach(([normalizedTitle, screenings]) => {
     const uniqueCinemas = [...new Set(screenings.map((s) => s.cinema))]
 

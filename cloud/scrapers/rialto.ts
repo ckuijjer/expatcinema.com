@@ -7,6 +7,7 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -18,7 +19,9 @@ const xray = Xray({
   filters: {
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
     cleanTitle: (value) =>
-      typeof value === 'string' ? value.replace(' - Expat Cinema', '') : value,
+      typeof value === 'string'
+        ? titleCase(value.replace(' - Expat Cinema', ''))
+        : value,
   },
 })
   .concurrency(10)

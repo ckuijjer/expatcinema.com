@@ -3,6 +3,7 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -30,11 +31,13 @@ const extractDate = (time: string) =>
   DateTime.fromFormat(time, 'dd-MM-yy-HH:mm').toJSDate()
 
 const cleanTitle = (title: string) =>
-  title
-    .replace(/ \(.*?\)$/g, '')
-    .replace(/^110 Jaar De Uitkijk:/i, '')
-    .replace(/^Klassieker:/i, '')
-    .trim()
+  titleCase(
+    title
+      .replace(/ \(.*?\)$/g, '')
+      .replace(/^110 Jaar De Uitkijk:/i, '')
+      .replace(/^Klassieker:/i, '')
+      .trim(),
+  )
 
 type XRayFromMoviePage = {
   title: string

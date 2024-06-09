@@ -3,6 +3,8 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { removeYearSuffix } from './utils/removeYearSuffix'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -45,6 +47,10 @@ const extractFromMoviePage = async (screening: Screening) => {
   }
 }
 
+const cleanTitle = (title: string) => {
+  return titleCase(removeYearSuffix(title))
+}
+
 const extractFromMainPage = async () => {
   const url = 'https://www.melkweg.nl/en/agenda/'
 
@@ -56,7 +62,7 @@ const extractFromMainPage = async () => {
     .filter((event) => event.attributes.profile === 'Film') // only movies
     .map((event): Screening => {
       return {
-        title: event.attributes.name,
+        title: cleanTitle(event.attributes.name),
         url: `https://www.melkweg.nl${event.attributes.url}`,
         date: DateTime.fromISO(event.attributes.startDate).toJSDate(),
         cinema: 'Melkweg',

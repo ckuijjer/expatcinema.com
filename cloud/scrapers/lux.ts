@@ -7,6 +7,7 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -30,7 +31,8 @@ type XRayFromMoviePage = {
   }[]
 }
 
-const cleanTitle = (title: string) => title.replace(/^English Subs [–-] /i, '') // remove subs from the title using two different dashes
+const cleanTitle = (title: string) =>
+  titleCase(title.replace(/^English Subs [–-] /i, '')) // remove subs from the title using two different dashes
 
 const splitFirstDate = (date: string) => {
   if (date === 'Vandaag') {

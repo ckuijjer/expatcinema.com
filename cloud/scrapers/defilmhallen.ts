@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -38,6 +39,8 @@ const hasTimeWithEnglishSubtitlesTag = (time: FkFeedItem['times'][0]) => {
 const extractDate = (time: string) =>
   DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
 
+const cleanTitle = (title: string) => titleCase(title)
+
 const extractFromMainPage = async () => {
   const movies = Object.values<FkFeedItem>(
     await got('https://filmhallen.nl/en/fk-feed/agenda').json(),
@@ -52,7 +55,7 @@ const extractFromMainPage = async () => {
         .map((time) => {
           return {
             // title: decode(movie.title),
-            title: movie.title,
+            title: cleanTitle(movie.title),
             url: movie.permalink,
             cinema: 'De Filmhallen',
             date: extractDate(time.program_start),

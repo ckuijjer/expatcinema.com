@@ -3,6 +3,7 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -27,6 +28,8 @@ type CinemaFilmDetailShow = {
       }[]
     | null
 }
+
+const cleanTitle = (title: string) => titleCase(title)
 
 const hasEnglishSubtitles = (show: CinemaFilmDetailShow) => {
   if (!show.accessibility) return false
@@ -105,7 +108,7 @@ const extractFromMainPage = async () => {
 
       return {
         url: getFilmUrl(show.film.id),
-        title: show.film.fullPreferredTitle,
+        title: cleanTitle(show.film.fullPreferredTitle),
         filmId: show.film.id,
       }
     })

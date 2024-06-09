@@ -5,6 +5,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -64,9 +65,11 @@ type FilmhuisDenhaagAPIResponse = {
 }
 
 const cleanTitle = (title: string) =>
-  title
-    .replace(/ - EN subs$/i, '') // remove subs from the title
-    .replace(/ -(.*?)$/, '') // actually remove the last dash and everything after it (bit questionable)
+  titleCase(
+    title
+      .replace(/ - EN subs$/i, '') // remove subs from the title
+      .replace(/ -(.*?)$/, ''), // actually remove the last dash and everything after it (bit questionable)
+  )
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const apiResponse: FilmhuisDenhaagAPIResponse = await got(

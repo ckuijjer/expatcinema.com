@@ -6,6 +6,7 @@ import xRayPuppeteer from '../xRayPuppeteer'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -29,8 +30,14 @@ const xray = Xray({
 const hasEnglishSubtitles = (movie: XRayFromMainPage) =>
   movie.metadata.includes('Ondertiteling: Engels')
 
-const cleanTitle = (title: string) =>
-  title.replace(' (with English subtitles)', '')
+const cleanTitle = (title: string) => {
+  return titleCase(
+    title
+      .replace(' (with English subtitles)', '')
+      .replace(/^Club Imagine:\s+/i, '')
+      .replace(/^HoFF x IQMF:\s+/i, ''),
+  )
+}
 
 type XRayFromMainPage = {
   title: string

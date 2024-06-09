@@ -3,6 +3,7 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -90,9 +91,11 @@ type ScreeningEvent = {
 }
 
 const cleanTitle = (title: string) =>
-  title // e.g. Nordic Watching: Unruly (English subtitled)
-    .replace(/\s+\(.*?\)$/i, '') // e.g. (English subtitled)
-    .replace(/^.*?:\s+/, '') // e.g. Nordic Watching:
+  titleCase(
+    title // e.g. Nordic Watching: Unruly (English subtitled)
+      .replace(/\s+\(.*?\)$/i, '') // e.g. (English subtitled)
+      .replace(/^.*?:\s+/, ''), // e.g. Nordic Watching:
+  )
 
 // const hasEnglishSubtitles = (title: string) =>
 //   title.toLowerCase().includes('english subtitled')

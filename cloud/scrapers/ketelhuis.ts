@@ -9,6 +9,7 @@ import {
   shortMonthToNumberDutch,
 } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 import { uniq } from './utils/uniq'
 
 const logger = parentLogger.createChild({
@@ -22,7 +23,7 @@ const xray = Xray({
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
     cleanTitle: (value) =>
       typeof value === 'string'
-        ? value.replace(/ – English subtitles$/, '')
+        ? titleCase(value.replace(/ – English subtitles$/, ''))
         : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,

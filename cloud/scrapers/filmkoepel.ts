@@ -6,6 +6,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { monthToNumber } from './utils/monthToNumber'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -128,6 +129,8 @@ const hasTimeWithEnglishSubtitlesTag = (time: FkFeedItem['times'][0]) => {
 const extractDate = (time: string) =>
   DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
 
+const cleanTitle = (title: string) => titleCase(title)
+
 const extractFromMainPage = async () => {
   const specialExpatScreenings = await extractFromSpecialExpatCinemaPage()
 
@@ -143,7 +146,7 @@ const extractFromMainPage = async () => {
         ?.filter((time) => hasEnglishSubtitles(time, movie))
         .map((time) => {
           return {
-            title: movie.title,
+            title: cleanTitle(movie.title),
             url: movie.permalink,
             cinema: 'Filmkoepel',
             date: extractDate(time.program_start),

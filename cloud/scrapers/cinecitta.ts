@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -45,7 +46,7 @@ const hasEnglishSubtitles = (movie: WpJsonMovie) => {
 }
 
 const cleanTitle = (movie: WpJsonMovie) => {
-  return movie.title.rendered.replace(ENGLISH_SUBTITLES_REGEX, '')
+  return titleCase(movie.title.rendered.replace(ENGLISH_SUBTITLES_REGEX, ''))
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {

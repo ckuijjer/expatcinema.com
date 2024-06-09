@@ -6,6 +6,7 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -25,7 +26,7 @@ const hasEnglishSubtitles = ({ subtitles }: { subtitles: string }) =>
   subtitles === 'Engels ondertiteld'
 
 const cleanTitle = (title: string) =>
-  title.replace(/ - Expat Cinema Rotterdam$/i, '').trim()
+  titleCase(title.replace(/ - Expat Cinema Rotterdam$/i, '').trim())
 
 type XRayFromMoviePage = {
   title: string

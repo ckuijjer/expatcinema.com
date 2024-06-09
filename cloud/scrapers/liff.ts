@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -19,6 +20,8 @@ const xray = Xray({
 
 const hasEnglishSubtitles = (movie) =>
   movie.metadata.filter((x) => x === 'SubtitlesEnglish').length === (1).flat()
+
+const cleanTitle = (title: string) => titleCase(title)
 
 const extractFromMoviePage = ({ url }) => {
   logger.info('extracting', { url })
@@ -60,7 +63,7 @@ const extractFromMoviePage = ({ url }) => {
     ]
 
     return screenings.map((screening) => ({
-      title: movie.title,
+      title: cleanTitle(movie.title),
       url,
       date: screening,
       cinema: 'LIFF - Multiple locations',

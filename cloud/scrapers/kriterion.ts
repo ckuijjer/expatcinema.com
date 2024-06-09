@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -95,7 +96,8 @@ interface KriterionFilmsApiResponse {
   [key: string]: number
 }
 
-const cleanTitle = (title: string) => title.replace(/ \(ENG SUBS\)$/i, '')
+const cleanTitle = (title: string) =>
+  titleCase(title.replace(/ \(ENG SUBS\)$/i, ''))
 
 const extractFromMainPage = async () => {
   try {

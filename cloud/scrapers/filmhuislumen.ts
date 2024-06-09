@@ -5,6 +5,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -19,9 +20,13 @@ const xray = Xray({
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
     cleanTitle: (value) =>
       typeof value === 'string'
-        ? value
-            .replace(/\(.*\)$/, '') // e.g. (English subtitles)
-            .replace(/^.*:/, '') // e.g. Expat Cinema:
+        ? titleCase(
+            value
+              .replace(/\s+\(.*\)$/, '') // e.g. (English subtitles)
+              .replace(/\s+\[.*\]$/, '') // e.g. EL SUSPIRO DEL SILENCIO [THE WHISPER OF SILENCE] => EL SUSPIRO DEL SILENCIO
+              .replace(/\s+\|\|.*$/, '') // e.g. TAMPOPO || A TASTE OF ASIA || + ENGLISH SUBTITLES => TAMPOPO
+              .replace(/^.*:/, ''), // e.g. Expat Cinema:
+          )
         : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,

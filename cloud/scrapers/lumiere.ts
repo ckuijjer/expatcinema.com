@@ -7,6 +7,7 @@ import xRayPuppeteer from '../xRayPuppeteer'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -18,7 +19,7 @@ const trim = (value) => (typeof value === 'string' ? value.trim() : value)
 
 const cleanTitle = (value) =>
   typeof value === 'string'
-    ? value.replace(/ - Engels ondertiteld/g, '')
+    ? titleCase(value.replace(/ - Engels ondertiteld/g, ''))
     : value
 
 const toLowerCase = (value) =>

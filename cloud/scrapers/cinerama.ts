@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -38,6 +39,10 @@ type KinepolisMovie = {
 
 const hasEnglishSubtitles = (movie: KinepolisMovie) => {
   return movie.subtitles.some((subtitle) => subtitle.code === 'ENGSUBT')
+}
+
+const cleanTitle = (title: string) => {
+  return titleCase(title.replace(/^Special Event:\s+/i, ''))
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
@@ -78,7 +83,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       programmation.sessions
         .filter((session) => session.film.id === movie.id)
         .map((session) => ({
-          title: movie.title,
+          title: cleanTitle(movie.title),
           url: `https://cineramabios.nl/movies/detail/${movie.corporateId}/${movie.id}/`,
           cinema: 'Cinerama',
           date: DateTime.fromISO(session.showtime).toJSDate(),

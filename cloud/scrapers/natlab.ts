@@ -6,6 +6,7 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -29,7 +30,9 @@ type XRayFromMainPage = {
 }
 
 const cleanTitle = (title: string) =>
-  title.replace(/ \| Expat Cinema$/i, '').replace(/ \(English Subs\)$/i, '')
+  titleCase(
+    title.replace(/ \| Expat Cinema$/i, '').replace(/ \(English Subs\)$/i, ''),
+  )
 
 const extractFromMoviePage = async ({
   url,
