@@ -5,6 +5,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import { removeYearSuffix } from './utils/removeYearSuffix'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 
@@ -26,7 +27,9 @@ const hasEnglishSubtitles = ({ subtitles }: { subtitles: string }) =>
   subtitles === 'Engels ondertiteld'
 
 const cleanTitle = (title: string) =>
-  titleCase(title.replace(/ - Expat Cinema Rotterdam$/i, '').trim())
+  titleCase(
+    removeYearSuffix(title.replace(/ - Expat Cinema Rotterdam$/i, '').trim()),
+  )
 
 type XRayFromMoviePage = {
   title: string

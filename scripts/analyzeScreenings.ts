@@ -73,9 +73,9 @@ Object.entries(screeningsGroupedByTitle)
       //       () => true,
       //       containsDash,
       //       containsNonAlphanumeric,
-      containsParentheses,
+      //       containsParentheses,
       //       containsColon,
-      //       containsYear,
+      containsYear,
     ].some((condition) => condition(normalizedTitle))
   })
   //   .filter(([_, screenings]) => screenings.some((s) => s.cinema === 'Kino'))
