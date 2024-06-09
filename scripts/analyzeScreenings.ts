@@ -13,18 +13,19 @@ const readJson = async (file) => {
   return JSON.parse(json)
 }
 
-const normalizeTitle = (title: string) => titleCase(diacritics.remove(title))
+const normalizeTitle = (title: string) =>
+  titleCase(diacritics.remove(title), MINOR_WORDS)
 
 const capitalize = (word: string) =>
   word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 
-const titleCase = (input: string, exclusion = '') => {
-  const exclusions = exclusion.split(' ').map((w) => w.toLowerCase())
+const titleCase = (input: string, minorWords = '') => {
+  const listOfMinorWords = minorWords.split(' ').map((w) => w.toLowerCase())
 
   return input
-    .split(' ')
+    .split(/\s+/)
     .map((word, i) => {
-      if (i !== 0 && exclusions.includes(word.toLowerCase())) {
+      if (i !== 0 && listOfMinorWords.includes(word.toLowerCase())) {
         return word.toLowerCase()
       }
 
@@ -32,6 +33,8 @@ const titleCase = (input: string, exclusion = '') => {
     })
     .join(' ')
 }
+
+const MINOR_WORDS = 'a an and as at by for from in of on or the to with'
 
 const compareTitles = (a: string, b: string) =>
   normalizeTitle(a).localeCompare(normalizeTitle(b))
@@ -65,8 +68,8 @@ Object.entries(screeningsGroupedByTitle)
   .toSorted((a, b) => compareTitles(a[0], b[0]))
   .filter(([normalizedTitle]) => {
     return [
-      // () => true,
-      //       containsDash,
+      () => true,
+      containsDash,
       //       containsColon,
       containsYear,
     ].some((condition) => condition(normalizedTitle))
