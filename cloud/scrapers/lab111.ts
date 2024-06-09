@@ -33,6 +33,7 @@ const hasEnglishSubtitles = (movie: XRayFromMainPage) =>
 const cleanTitle = (title: string) => {
   return titleCase(
     title
+      .replace(' (4k Restoration)', '')
       .replace(' (with English subtitles)', '')
       .replace(/^Club Imagine:\s+/i, '')
       .replace(/^HoFF x IQMF:\s+/i, ''),

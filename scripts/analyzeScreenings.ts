@@ -54,6 +54,8 @@ const screeningsGroupedByTitle = Object.groupBy(
 const containsYear = (title: string) => /\(\d{4}\)/.test(title)
 const containsColon = (title: string) => /:/.test(title)
 const containsDash = (title: string) => /-/.test(title)
+const containsNonAlphanumeric = (title: string) => /[^\w\s]/.test(title)
+const containsParentheses = (title: string) => /\(/.test(title)
 
 const numberToEmoji = (number: number) => {
   const emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣']
@@ -70,7 +72,9 @@ Object.entries(screeningsGroupedByTitle)
     return [
       //       () => true,
       //       containsDash,
-      containsColon,
+      //       containsNonAlphanumeric,
+      containsParentheses,
+      //       containsColon,
       //       containsYear,
     ].some((condition) => condition(normalizedTitle))
   })
