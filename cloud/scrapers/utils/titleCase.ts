@@ -19,6 +19,7 @@ export const titleCase = (input: string) => {
   const listOfMinorWords = MINOR_WORDS.split(' ').map((w) => w.toLowerCase())
 
   return input
+    .trim() // remove leading and trailing spaces
     .split(UNICODE_BOUNDARY)
     .map((word, i) => {
       if (isAllSpaces(word)) {
