@@ -1,4 +1,5 @@
 import got from 'got'
+import { decode } from 'html-entities'
 import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
@@ -27,7 +28,8 @@ const hasEnglishSubtitles = (
 
 const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
   return (
-    movie.language.label === 'Subtitles' && movie.language.value === 'English'
+    movie.language.label === 'Ondertiteling' &&
+    (movie.language.value === 'Engels' || movie.language.value === 'English')
   )
 }
 
@@ -39,11 +41,11 @@ const hasTimeWithEnglishSubtitlesTag = (time: FkFeedItem['times'][0]) => {
 const extractDate = (time: string) =>
   DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
 
-const cleanTitle = (title: string) => titleCase(title)
+const cleanTitle = (title: string) => titleCase(decode(title))
 
 const extractFromMainPage = async () => {
   const movies = Object.values<FkFeedItem>(
-    await got('https://filmhallen.nl/en/fk-feed/agenda').json(),
+    await got('https://filmhallen.nl/fk-feed/agenda').json(),
   )
 
   logger.info('main page', { movies })
@@ -52,9 +54,8 @@ const extractFromMainPage = async () => {
     .map((movie) => {
       return movie.times
         ?.filter((time) => hasEnglishSubtitles(time, movie))
-        .map((time) => {
+        ?.map((time) => {
           return {
-            // title: decode(movie.title),
             title: cleanTitle(movie.title),
             url: movie.permalink,
             cinema: 'De Filmhallen',
