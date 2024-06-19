@@ -1,12 +1,9 @@
 import got from 'got'
+import { decode } from 'html-entities'
 import { DateTime } from 'luxon'
-import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import { guessYear } from './utils/guessYear'
-import { fullMonthToNumberDutch } from './utils/monthToNumber'
-import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -15,132 +12,52 @@ const logger = parentLogger.createChild({
   },
 })
 
-const xray = Xray({
-  filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
-    toLowerCase: (value) =>
-      typeof value === 'string' ? value.toLowerCase() : value,
-  },
-})
-  .concurrency(10)
-  .throttle(10, 300)
-
-const metadataDescribedEnglishSubtitles = (metadata: {
-  [key: string]: string
-}) => {
-  const subtitles = metadata['ondertitelde taal']
-
-  return subtitles === 'english' || subtitles === 'engels'
-}
-
-const cleanTitle = (title: string) =>
-  titleCase(
-    title
-      .replace(/Language No Problem: /i, '')
-      .replace(/ \(English Subtitles\)/i, '')
-      .replace(/ \(with English subtitles\)/i, '')
-      .replace(/^.*?: /, '')
-      .replace(/ \(\d{4}\).*?$/, ''),
-  )
-
-type XRayFromMoviePage = {
+type FkFeedItem = {
   title: string
-  screenings: {
-    date: {
-      day: string
-      month: string
-    }
-    times: string[]
-  }[]
-  metadata: {
-    key: string
-    value: string
+  language: { label: string; value: string }
+  permalink: string
+  times: {
+    program_start: string
+    program_end: string
+    tags: string[]
+    location: string
   }[]
 }
 
-const extractFromMoviePage = async ({ url }: { url: string }) => {
-  logger.info('extracting', { url })
+// e.g. 202210181005 -> 2022-10-18T10:05:00.000Z
+const extractDate = (time: string) =>
+  DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
 
-  const movie: XRayFromMoviePage = await xray(url, 'body', {
-    title: '.intro-content h1 | trim',
-    screenings: xray('.play-times td', [
-      {
-        date: xray('a', {
-          day: '.day | trim',
-          month: '.month | trim',
-        }),
-        times: ['.time span | trim'],
-      },
-    ]),
-    metadata: xray('.movie-info tr', [
-      {
-        key: 'td:nth-child(1) | toLowerCase | trim',
-        value: 'td:nth-child(2) | toLowerCase | trim',
-      },
-    ]),
-  })
+const cleanTitle = (title: string) => titleCase(title)
 
-  logger.info('extracted xray', { url, movie })
-
-  const metadata = movie.metadata.reduce(
-    (acc, { key, value }) => ({ ...acc, [key]: value }),
-    {} as { [key: string]: string },
+const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
+  return (
+    movie.language.label === 'Ondertitels' &&
+    (movie.language.value === 'Engels' || movie.language.value === 'English')
   )
-
-  logger.info('metadata', { metadata })
-
-  if (!metadataDescribedEnglishSubtitles(metadata)) return []
-
-  const screenings = movie.screenings
-    .map(({ date, times }) =>
-      times.map((time) => {
-        const day = +date.day
-        const month = fullMonthToNumberDutch(date.month)
-        const [hour, minute] = splitTime(time)
-
-        const year = guessYear({
-          day,
-          month,
-          hour,
-          minute,
-        })
-
-        return {
-          title: cleanTitle(movie.title),
-          url,
-          cinema: 'Springhaver',
-          date: DateTime.fromObject({
-            day,
-            month,
-            hour,
-            minute,
-            year,
-          }).toJSDate(),
-        }
-      }),
-    )
-    .flat()
-
-  logger.info('extracting done', { url, screenings })
-
-  return screenings
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const movies: { post_title: string; link: string }[] = await got(
-    'https://www.springhaver.nl/wp-admin/admin-ajax.php?action=get_movies&day=movies',
-  ).json()
+  const movies = Object.values<FkFeedItem>(
+    await got('https://springhaver.nl/fk-feed/agenda').json(),
+  )
 
-  const formattedMovies = movies.map(({ post_title, link }) => ({
-    title: post_title,
-    url: link,
-  }))
+  logger.info('main page', { movies })
 
-  logger.info('main page', { formattedMovies })
-
-  const screenings: Screening[] = (
-    await Promise.all(formattedMovies.map(extractFromMoviePage))
-  ).flat()
+  const screenings: Screening[][] = movies
+    .map((movie) => {
+      return movie.times
+        ?.filter(() => hasEnglishSubtitlesLabel(movie))
+        .map((time) => {
+          return {
+            title: cleanTitle(decode(movie.title)),
+            url: movie.permalink,
+            cinema: 'Springhaver',
+            date: extractDate(time.program_start),
+          }
+        })
+    })
+    .filter((x) => x)
 
   logger.info('before flatten', { screenings })
 
@@ -151,10 +68,6 @@ if (require.main === module) {
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
-
-  // extractFromMoviePage({
-  //   url: 'https://www.springhaver.nl/films/language-no-problem-roter-himmel-english-subtitles/',
-  // })
 }
 
 export default extractFromMainPage

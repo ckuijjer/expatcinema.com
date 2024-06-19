@@ -78,7 +78,7 @@ Object.entries(screeningsGroupedByTitle)
       // containsYear,
     ].some((condition) => condition(normalizedTitle))
   })
-  .filter(([_, screenings]) => screenings.some((s) => s.cinema === 'Lux'))
+  // .filter(([_, screenings]) => screenings.some((s) => s.cinema === 'Lux'))
   .forEach(([normalizedTitle, screenings]) => {
     const uniqueCinemas = [...new Set(screenings.map((s) => s.cinema))]
 
