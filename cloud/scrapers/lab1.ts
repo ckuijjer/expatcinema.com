@@ -154,7 +154,7 @@ const extractFromMainPage = async () => {
     logger.info('main page')
 
     const scrapeResult: XRayFromMainPage[] = await xray(
-      'https://www.lab-1.nl/bioscoopagenda/',
+      'https://www.lab-1.nl/expats/',
       '#content .zmoviecontainer', // for each movie there is a .zmoviecontainer
       [
         {
