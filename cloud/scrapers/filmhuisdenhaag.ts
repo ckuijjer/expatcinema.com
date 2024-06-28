@@ -71,6 +71,14 @@ const cleanTitle = (title: string) =>
       .replace(/ -(.*?)$/, ''), // actually remove the last dash and everything after it (bit questionable)
   )
 
+const hasEnglishSubtitles = (item) => {
+  return (
+    item.subtitle === 'Engels' ||
+    item.subtitle === 'English' ||
+    item.characteristics.includes('EN subs')
+  )
+}
+
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const apiResponse: FilmhuisDenhaagAPIResponse = await got(
     'https://filmhuisdenhaag.nl/api/program',
@@ -91,8 +99,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     })
 
   const screenings: Screening[] = programs
-    // .filter((item) => item.subtitle === 'Engels' || item.subtitle === 'English') // removed as it seems to always show "Nederlands" now
-    .filter((item) => item.subs === 'EN subs')
+    .filter(hasEnglishSubtitles)
     .map((item) => {
       const [year, month, day] = item.starts_at_date
         .split('-')
