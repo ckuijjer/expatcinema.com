@@ -9,7 +9,23 @@ type Metadata = {
   createdAt: string
   title?: string
   imdbId?: string
-  tmdb?: any
+  tmdb?: {
+    id: string
+    adult: boolean
+    backdropPath: string
+    genreIds: number[]
+    mediaType: string
+    originalLanguage: string
+    originalTitle: string
+    overview: string
+    popularity: number
+    posterPath: string
+    releaseDate: string
+    title: string
+    video: boolean
+    voteAverage: number
+    voteCount: number
+  }
 }
 
 const getMetadata = async (title: string): Promise<Metadata | undefined> => {
