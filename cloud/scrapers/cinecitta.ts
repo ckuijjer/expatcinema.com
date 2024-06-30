@@ -1,4 +1,5 @@
 import got from 'got'
+import { decode } from 'html-entities'
 import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
@@ -46,7 +47,9 @@ const hasEnglishSubtitles = (movie: WpJsonMovie) => {
 }
 
 const cleanTitle = (movie: WpJsonMovie) => {
-  return titleCase(movie.title.rendered.replace(ENGLISH_SUBTITLES_REGEX, ''))
+  return titleCase(
+    decode(movie.title.rendered.replace(ENGLISH_SUBTITLES_REGEX, '')),
+  )
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
