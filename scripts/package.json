@@ -16,7 +16,8 @@
     "@types/ramda": "^0.30.0",
     "prettier": "^3.2.5",
     "tsx": "^4.16.0",
-    "typescript": "5.5.2"
+    "typescript": "5.5.2",
+    "@tsconfig/node22": "^22.0.0"
   },
   "scripts": {
     "analyzeScreenings": "tsx analyzeScreenings.ts",

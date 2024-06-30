@@ -226,6 +226,10 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
           return {
             ...movie,
             title: metadata.title,
+            // imdbId: metadata.imdbId,
+            imdbUrl: `https://www.imdb.com/title/${metadata.imdbId}/`,
+            // tmdbId: metadata.tmdb,
+            tmdbUrl: `https://www.themoviedb.org/movie/${metadata.tmdb}`,
           }
         } else {
           return movie
