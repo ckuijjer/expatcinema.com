@@ -59,7 +59,7 @@
     "@types/ramda": "^0.30.0",
     "@types/request": "^2.48.12",
     "@types/x-ray": "^2.3.6",
-    "esbuild": "^0.21.5",
+    "esbuild": "^0.24.0",
     "lumigo-cli": "^0.48.4",
     "prettier": "^3.2.5",
     "puppeteer": "22.12.1",
@@ -68,6 +68,6 @@
     "serverless-offline": "^13.3.3",
     "serverless-plugin-monorepo": "^0.11.0",
     "tsx": "^4.16.0",
-    "typescript": "5.5.2"
+    "typescript": "5.6.2"
   }
 }
