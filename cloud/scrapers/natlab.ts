@@ -31,7 +31,10 @@ type XRayFromMainPage = {
 
 const cleanTitle = (title: string) =>
   titleCase(
-    title.replace(/ \| Expat Cinema$/i, '').replace(/ \(English Subs\)$/i, ''),
+    title
+      .replace(/ \| Expat Cinema$/i, '')
+      .replace(/ \(English Subs\)$/i, '')
+      .replace(/ \[Eng Subs\]$/i, ''),
   )
 
 const extractFromMoviePage = async ({
@@ -40,7 +43,7 @@ const extractFromMoviePage = async ({
 }: XRayFromMainPage): Promise<Screening[]> => {
   const scrapeResult = await xray(url, {
     title: 'h1 | normalizeWhitespace | trim',
-    screenings: xray('#subshowList .subshow', [
+    screenings: xray('.subshow', [
       {
         date: '.date | normalizeWhitespace | trim',
         times: ['.movie-time-start | normalizeWhitespace | trim'],
@@ -68,12 +71,15 @@ const extractFromMoviePage = async ({
   if (
     !(
       metadata.Ondertiteling?.includes('Engels') ||
-      scrapeResult.genres.includes('ENGELSE ONDERTITELING')
+      scrapeResult.genres.includes('ENGELSE ONDERTITELING') ||
+      scrapeResult.title.includes('[Eng Subs]')
     )
   ) {
     logger.warn('no English subtitles', { url, title })
     return []
   }
+
+  logger.info('screenings', { screenings: scrapeResult.screenings })
 
   const screenings: Screening[] = scrapeResult.screenings.flatMap(
     (screening) => {
@@ -139,12 +145,12 @@ const extractFromMainPage = async () => {
 }
 
 if (require.main === module) {
-  //   extractFromMoviePage({
-  //     url: 'https://www.natlab.nl/nl/programma/7001/jonathan-glazer/the-zone-of-interest-expat-cinema',
-  //     //     url: 'https://www.natlab.nl/nl/programma/6970/jelle-de-jonge/de-terugreis?part1_artist_or_title=jelle-de-jonge&part2_title=de-terugreis',
-  //   })
-  //     .then((x) => JSON.stringify(x, null, 2))
-  //     .then(console.log)
+  extractFromMoviePage({
+    url: 'https://www.natlab.nl/nl/programma/7263/zar-amir-ebrahimi-guy-nattiv/tatami-eng-subs',
+    title: '',
+  })
+    .then((x) => JSON.stringify(x, null, 2))
+    .then(console.log)
 
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
