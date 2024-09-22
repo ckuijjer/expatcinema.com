@@ -31,7 +31,7 @@ type ShowJson = {
 }
 
 const ENGLISH_SUBTITLES_REGEX =
-  /\s+\(English Subtitles\)$|^Eng\s+|^Expat Cinema:\s+| \(EN\)$/i
+  /\s+\(English Subtitles\)$|^Eng\s+|^Expat Cinema:\s+| \(EN\)$|\s+\(Engelse Subtitles\)$/i
 
 const hasEnglishSubtitles = (movie: WpJsonMovie) => {
   const titleDescribesEnglishSubtitles = ENGLISH_SUBTITLES_REGEX.test(
@@ -41,7 +41,8 @@ const hasEnglishSubtitles = (movie: WpJsonMovie) => {
   const metadataHasEnglishSubtitles =
     movie.language_subtitles?.toLowerCase() === 'engels' ||
     movie.language_subtitles?.toLowerCase() === 'english' ||
-    movie.status_other?.toLowerCase() === 'english subtitled'
+    movie.status_other?.toLowerCase() === 'english subtitled' ||
+    movie.status_other?.toLowerCase() === 'english subtitles'
 
   return titleDescribesEnglishSubtitles || metadataHasEnglishSubtitles
 }
