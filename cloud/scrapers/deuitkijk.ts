@@ -1,5 +1,8 @@
+import { Agent } from 'https'
 import { DateTime } from 'luxon'
+import request from 'request'
 import Xray from 'x-ray'
+import XRayCrawler from 'x-ray-crawler'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -10,6 +13,19 @@ const logger = parentLogger.createChild({
     scraper: 'deuitkijk',
   },
 })
+
+// De Uitkijk has a certificate for which the intermediate certificate is not included in the default Node.js certificate store.
+// Using a XRay driver with a custom agent that ignores certificate errors feels like a reasonable workaround, and definitely
+// better than setting NODE_TLS_REJECT_UNAUTHORIZED=0 for all scrapers.
+const agent = new Agent({ rejectUnauthorized: false })
+
+const driver: XRayCrawler.Driver = (context, callback) => {
+  const { url } = context
+
+  request({ url, agent }, (err, response, body) => {
+    return callback(err, body)
+  })
+}
 
 const xray = Xray({
   filters: {
@@ -22,6 +38,7 @@ const xray = Xray({
 })
   .concurrency(10)
   .throttle(10, 300)
+  .driver(driver)
 
 const hasEnglishSubtitles = ({ metadata }: { metadata: string[] }) =>
   metadata.some((x) => x.match(/ondertiteling:\s*engels/i))
@@ -107,11 +124,10 @@ const extractFromMainPage = async () => {
 export default extractFromMainPage
 
 if (require.main === module) {
-  //   const url = 'https://uitkijk.nl/film/the-stranger'
-  //   //   const url = 'https://uitkijk.nl/film/klassieker-spoorloos'
-  //   extractFromMoviePage(url).then((screenings) => {
-  //     console.log({ screenings })
-  //   })
+  // const url = 'https://uitkijk.nl/film/asian-movie-night-cat-got-your-tongue'
+  // extractFromMoviePage(url).then((screenings) => {
+  //   console.log({ screenings })
+  // })
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
