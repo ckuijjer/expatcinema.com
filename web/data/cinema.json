@@ -202,5 +202,11 @@
     "city": "Amsterdam",
     "url": "https://www.idfa.nl/en/vondelpark/",
     "logo": "idfa.png"
+  },
+  {
+    "name": "Concordia",
+    "city": "Enschede",
+    "url": "https://www.concordia.nl/",
+    "logo": "concordia.png"
   }
 ]
