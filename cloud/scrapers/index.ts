@@ -23,6 +23,7 @@ import bioscopenleiden from './bioscopenleiden'
 import cinecenter from './cinecenter'
 import cinecitta from './cinecitta'
 import cinerama from './cinerama'
+import concordia from './concordia'
 import defilmhallen from './defilmhallen'
 import deuitkijk from './deuitkijk'
 import eyefilm from './eyefilm'
@@ -57,6 +58,7 @@ const SCRAPERS = {
   cinecenter,
   cinecitta,
   cinerama,
+  concordia,
   defilmhallen,
   deuitkijk,
   eyefilm,
