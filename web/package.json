@@ -13,7 +13,7 @@
     "@emotion/react": "^11.11.4",
     "@observablehq/plot": "0.6.16",
     "luxon": "^3.4.4",
-    "next": "14.2.13",
+    "next": "14.2.15",
     "next-sitemap": "^4.2.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
