@@ -54,10 +54,10 @@ const extractFromMoviePage = async ({
     screenings: xray('.calendar-day', [
       {
         date: '.calendar-day-head | normalizeWhitespace | trim',
-        times: xray('.calendar-day-content .time', [
+        times: xray('.calendar-day-content .ticket-row', [
           {
-            time: 'div | normalizeWhitespace | trim',
-            tags: '.warning | cleanTitle | trim',
+            time: '.time | normalizeWhitespace | trim',
+            tags: '.tag | cleanTitle | trim',
           },
         ]),
       },
@@ -74,7 +74,7 @@ const extractFromMoviePage = async ({
           const [dayOfWeek, dayString, monthString] = date.split(/\s+/)
           const day = Number(dayString)
           const month = fullMonthToNumberEnglish(monthString)
-          const [startTime, endTime] = time.split(/ tot | till /)
+          const [startTime, endTime] = time.split(/ tot | till | - /)
           const { hour, minute } = DateTime.fromFormat(startTime, 'h:mm a')
 
           const year = guessYear({
@@ -113,8 +113,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const movies = (
     await xray(url, '.calendar-list .ticket-row', [
       {
-        title: '.content .main | cleanTitle | trim',
-        url: '@href',
+        title: '.content .title | cleanTitle | trim',
+        url: 'a@href',
       },
     ])
   ).filter(({ url }) => url !== undefined) // remove movies without url (e.g. in the past)
@@ -132,7 +132,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
 if (require.main === module) {
   // extractFromMoviePage({
-  //   url: 'https://forum.nl/en/whats-on/the-zone-of-interest',
+  //   url: 'https://forum.nl/en/whats-on/film/dead-talents-society',
   // })
 
   extractFromMainPage()
