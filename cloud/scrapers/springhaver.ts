@@ -30,13 +30,6 @@ const extractDate = (time: string) =>
 
 const cleanTitle = (title: string) => titleCase(title)
 
-const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
-  return (
-    movie.language.label === 'Ondertitels' &&
-    (movie.language.value === 'Engels' || movie.language.value === 'English')
-  )
-}
-
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const movies = Object.values<FkFeedItem>(
     await got('https://springhaver.nl/fk-feed/agenda').json(),
@@ -47,7 +40,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings: Screening[][] = movies
     .map((movie) => {
       return movie.times
-        ?.filter(() => hasEnglishSubtitlesLabel(movie))
+        ?.filter((time) => time.tags?.includes('EN Subs'))
         .map((time) => {
           return {
             title: cleanTitle(decode(movie.title)),
