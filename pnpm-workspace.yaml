@@ -1,0 +1,4 @@
+packages:
+  - 'packages/cloud'
+  - 'packages/web'
+  - 'packages/scripts'

@@ -2,9 +2,9 @@
 
 ../data/screenings-without-metadata.json and ../data/screenings-with-metadata.json contains information about todays screenings. The one without metadata comes from the scrapers, the one with metadata went through a step of normalization where each screening title has been mapped to a movie title from TMDB.
 
-- `yarn downloadScreenings` - downloads both files
-- `yarn analyzeScreenings` - playground like script to do one-off analysis on both files
-- `yarn compareScreenings` - compare both files
+- `pnpm downloadScreenings` - downloads both files
+- `pnpm analyzeScreenings` - playground like script to do one-off analysis on both files
+- `pnpm compareScreenings` - compare both files
 
 # Other
 

@@ -16,8 +16,8 @@ The scrapers run on a daily schedule defined in `cloud/serverless.yml`
 
 #### Manual
 
-- `cd cloud; yarn scrapers` to run the scrapers on the _dev_ stage
-- `cd cloud; yarn scrapers:prod` to run the scrapers on the _prod_ stage
+- `cd cloud; pnpm scrapers` to run the scrapers on the _dev_ stage
+- `cd cloud; pnpm scrapers:prod` to run the scrapers on the _prod_ stage
 
 ## Deploy Web
 
@@ -32,14 +32,14 @@ Easiest is to bump the version in `web/package.json` and push to master. This wi
 ## Running scrapers locally
 
 ```
-yarn scrapers:local
+pnpm scrapers:local
 ```
 
 Stores the output in _cloud/output_ instead of S3 buckets and DynamoDB
 
 Use SCRAPERS environment variable in _.env.local_ to define a comma separated list of scrapers to locally run and diverge from the default set of scrapers in _scrapers/index.js_
 
-And to call a single scraper, e.g. `LOG_LEVEL=debug yarn tsx scrapers/kinorotterdam.ts` and then have e.g.
+And to call a single scraper, e.g. `LOG_LEVEL=debug pnpm tsx scrapers/kinorotterdam.ts` and then have e.g.
 
 ```
 if (require.main === module) {
@@ -81,8 +81,8 @@ Some scrapers need to run in a real browser, for which we use puppeteer and a la
 - Check if this version of Chromium is available (as a lambda layer) at https://github.com/shelfio/chrome-aws-lambda-layer, e.g. _Has Chromium v123.0.1_ and _arn:aws:lambda:us-east-1:764866452798:layer:chrome-aws-lambda:45_
 
 ```sh
-yarn add puppeteer-core@22.6.3 @sparticuz/chromium@^123.0.1
-yarn add -D puppeteer@22.6.3
+pnpm add puppeteer-core@22.6.3 @sparticuz/chromium@^123.0.1
+pnpm add -D puppeteer@22.6.3
 ```
 
 After installing the new version of puppeteer and chromium update the lambda layer in serverless.yml, by doing a search and replace on `arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:` and change e.g. `44` to `45`
@@ -93,10 +93,10 @@ See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode 
 
 ## Troubleshooting
 
-When running a puppeteer based scraper locally, e.g. `yarn tsx scrapers/ketelhuis.ts` and getting an error like
+When running a puppeteer based scraper locally, e.g. `pnpm tsx scrapers/ketelhuis.ts` and getting an error like
 
 ```
 Error: Failed to launch the browser process! spawn /tmp/localChromium/chromium/mac_arm-1205129/chrome-mac/Chromium.app/Contents/MacOS/Chromium ENOENT
 ```
 
-you need to install Chromium locally, run `yarn install-chromium` to do so and update `LOCAL_CHROMIUM_EXECUTABLE_PATH` in `browser.ts` to point to the Chromium executable. See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how
+you need to install Chromium locally, run `pnpm install-chromium` to do so and update `LOCAL_CHROMIUM_EXECUTABLE_PATH` in `browser.ts` to point to the Chromium executable. See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how

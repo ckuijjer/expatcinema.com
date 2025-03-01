@@ -224,7 +224,7 @@ custom:
     watch:
       pattern: ['*.ts', '*.js']
       ignore: ['.serverless', '.build', '.esbuild']
-    packager: yarn
+    packager: pnpm
     exclude:
       - '@sparticuz/chromium' # as we're using the lambda layer, no need to bundle it
     external:
