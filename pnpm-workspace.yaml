@@ -2,3 +2,4 @@ packages:
   - 'cloud'
   - 'web'
   - 'scripts'
+  - 'backend'
