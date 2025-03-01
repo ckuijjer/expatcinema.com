@@ -3,7 +3,7 @@
   "version": "0.1.18",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build && pnpm next-sitemap",
     "start": "next start",
     "lint": "next lint",
@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
-    "@observablehq/plot": "0.6.16",
+    "@observablehq/plot": "0.6.17",
     "luxon": "^3.5.0",
-    "next": "14.2.13",
+    "next": "15.2.0",
     "next-sitemap": "^4.2.3",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-virtualized": "^9.22.6",
     "remove-accents": "^0.5.0"
   },
@@ -24,13 +24,19 @@
     "@emotion/babel-plugin": "^11.13.5",
     "@emotion/babel-preset-css-prop": "^11.12.0",
     "@svgr/webpack": "^8.1.0",
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "@types/node": "20.14.9",
-    "@types/react": "18.3.8",
-    "@types/react-dom": "18.3.0",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "22.13.8",
+    "@types/react": "19.0.10",
+    "@types/react-dom": "19.0.4",
     "eslint": "^9.21.0",
-    "eslint-config-next": "14.2.13",
+    "eslint-config-next": "15.2.0",
     "prettier": "^3.5.2",
-    "typescript": "5.6.2"
+    "typescript": "5.8.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.0.10",
+      "@types/react-dom": "19.0.4"
+    }
   }
 }
