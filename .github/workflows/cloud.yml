@@ -1,7 +1,7 @@
 name: Cloud
 
 on:
-  push: # Runs on pushes targeting the default branch
+  push: # Runs on pushes targeting the default branch.
     branches:
       - main
     paths:
