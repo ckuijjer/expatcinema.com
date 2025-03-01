@@ -59,6 +59,7 @@ jobs:
             echo "Unable to determine packager manager"
             exit 1
           fi
+      - uses: pnpm/action-setup@v4
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
