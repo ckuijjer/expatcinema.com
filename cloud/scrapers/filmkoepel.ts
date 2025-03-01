@@ -122,7 +122,7 @@ const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
 
 // didn't see an occurrence of this yet in filmkoepel, but let's support it anyway
 const hasTimeWithEnglishSubtitlesTag = (time: FkFeedItem['times'][0]) => {
-  return time.tags.includes('EN SUBS')
+  return time.tags.some((tag) => tag.toLowerCase() === 'en subs')
 }
 
 // e.g. 202210181005 -> 2022-10-18T10:05:00.000Z
