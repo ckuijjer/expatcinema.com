@@ -38,7 +38,9 @@ type KinepolisMovie = {
 }
 
 const hasEnglishSubtitles = (movie: KinepolisMovie) => {
-  return movie.subtitles.some((subtitle) => subtitle.code === 'ENGSUBT')
+  return movie.subtitles.some(
+    (subtitle) => subtitle.code.toLowerCase() === 'engsubt',
+  )
 }
 
 const cleanTitle = (title: string) => {

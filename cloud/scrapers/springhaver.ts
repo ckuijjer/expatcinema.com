@@ -40,7 +40,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings: Screening[][] = movies
     .map((movie) => {
       return movie.times
-        ?.filter((time) => time.tags?.includes('EN Subs'))
+        ?.filter((time) =>
+          time.tags?.some((tag) => tag.toLowerCase() === 'en subs'),
+        )
         .map((time) => {
           return {
             title: cleanTitle(decode(movie.title)),
