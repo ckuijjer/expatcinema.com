@@ -45,7 +45,7 @@ jobs:
             echo "package-manager-command=install" >> $GITHUB_ENV
             echo "package-manager-runner=yarn" >> $GITHUB_ENV
             exit 0
-          if [ -f "${{ github.workspace }}/pnpm-lock.yaml" ]; then
+          elif [ -f "${{ github.workspace }}/pnpm-lock.yaml" ]; then
             echo "package-manager=pnpm" >> $GITHUB_ENV
             echo "package-manager-command=install" >> $GITHUB_ENV
             echo "package-manager-runner=pnpm" >> $GITHUB_ENV
