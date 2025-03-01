@@ -30,6 +30,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: CDK Synth
+        env:
+          DYNAMODB_MOVIE_METADATA: ${{ secrets.DYNAMODB_MOVIE_METADATA }}
         run: |
           cd backend/
           pnpm cdk synth

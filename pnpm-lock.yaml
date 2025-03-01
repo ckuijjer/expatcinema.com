@@ -23,6 +23,12 @@ importers:
       constructs:
         specifier: ^10.0.0
         version: 10.4.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
+      source-map-support:
+        specifier: ^0.5.21
+        version: 0.5.21
     devDependencies:
       '@types/jest':
         specifier: ^29.5.14
