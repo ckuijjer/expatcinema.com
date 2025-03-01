@@ -52,7 +52,8 @@ const extractFromMainPage = async () => {
     logger.info('main page')
 
     const scrapeResult: XRayFromMainPage[] = await xray(
-      'http://webcache.googleusercontent.com/search?q=cache:https://www.lab111.nl/programma/',
+      // 'http://webcache.googleusercontent.com/search?q=cache:https://www.lab111.nl/programma/',
+      'https://www.lab111.nl/programma/',
       '#programmalist .filmdetails',
       [
         {
