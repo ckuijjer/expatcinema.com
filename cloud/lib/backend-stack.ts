@@ -47,7 +47,7 @@ export class BackendStack extends cdk.Stack {
       // publicReadAccess: true,
       blockPublicAccess: {
         blockPublicAcls: true,
-        blockPublicPolicy: true,
+        blockPublicPolicy: false,
         ignorePublicAcls: true,
         restrictPublicBuckets: true,
       },
