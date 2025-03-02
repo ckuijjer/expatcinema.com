@@ -9,11 +9,20 @@ import 'source-map-support/register'
 
 import { getConfig } from './config'
 
-type BackendStackProps = cdk.StackProps & { stage: 'prod' }
+type Stage = 'dev' | 'prod' | 'cdk'
+
+type BackendStackProps = cdk.StackProps & { stage: Stage }
 
 export class BackendStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: BackendStackProps) {
     super(scope, id, props)
+
+    const stage = props!.stage
+
+    const publicBucketName = `expatcinema-public-${stage}`
+    const scrapersOutputBucketName = `expatcinema-scrapers-output-${stage}`
+    const scrapersAnalyticsTableName = `expatcinema-scrapers-analytics-${stage}`
+    const scrapersMovieMetadataTableName = `expatcinema-scrapers-movie-metadata-${stage}`
 
     const config = getConfig()
 
