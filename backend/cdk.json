@@ -1,5 +1,5 @@
 {
-  "app": "tsx --env-file .env bin/backend.ts",
+  "app": "tsx .env bin/backend.ts",
   "watch": {
     "include": ["**"],
     "exclude": [
