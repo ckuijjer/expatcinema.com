@@ -9,9 +9,13 @@ on:
       - '.github/workflows/backend.yml'
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
+defaults:
+  run:
+    working-directory: backend/
+
 jobs:
-  synth:
-    name: Synth
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +26,7 @@ jobs:
           node-version: 22
           cache: 'pnpm'
       - name: Install Dependencies
+        working-directory: /
         run: pnpm install --frozen-lockfile
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -29,9 +34,9 @@ jobs:
           aws-region: eu-west-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Deploy
+      - name: CDK Bootstrap
+        run: pnpm cdk bootstrap
+      - name: CDK Deploy
         env:
           DYNAMODB_MOVIE_METADATA: ${{ secrets.DYNAMODB_MOVIE_METADATA }}
-        run: |
-          cd backend/
-          pnpm cdk deploy --require-approval never
+        run: pnpm cdk deploy --require-approval never
