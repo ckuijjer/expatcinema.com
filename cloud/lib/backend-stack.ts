@@ -40,18 +40,15 @@ export class BackendStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     })
 
-    // TODO: Fix the public bucket,
     // Public Bucket
     const publicBucket = new s3.Bucket(this, 'public-bucket', {
       bucketName: publicBucketName,
-      // publicReadAccess: true,
       blockPublicAccess: {
         blockPublicAcls: false,
         blockPublicPolicy: false,
         ignorePublicAcls: false,
         restrictPublicBuckets: false,
       },
-      // accessControl: s3.BucketAccessControl.PUBLIC_READ,
       cors: [
         {
           allowedOrigins: ['*'],
