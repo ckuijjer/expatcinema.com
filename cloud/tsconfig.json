@@ -1,14 +1,13 @@
 {
-  "extends": "@tsconfig/node20/tsconfig.json",
+  "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
     // improve debugging experience
     "sourceMap": true,
     // allow importing like import logger from 'src/logger'
     "baseUrl": "./",
-    // allow importing fs from 'fs' instead of * as fs from 'fs'
-    "esModuleInterop": true,
-    "module": "ES2022",
-    "moduleResolution": "Bundler"
+    "module": "preserve",
+    "moduleResolution": "bundler"
   },
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "cdk.out"]
 }

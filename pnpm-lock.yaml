@@ -15,7 +15,7 @@ importers:
         specifier: ^3.5.2
         version: 3.5.2
 
-  backend:
+  cloud:
     dependencies:
       '@apollo/client':
         specifier: ^3.13.1
@@ -156,130 +156,6 @@ importers:
       ts-jest:
         specifier: ^29.2.5
         version: 29.2.6(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(esbuild@0.25.0)(jest@29.7.0(@types/node@22.7.9)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.7.9)(typescript@5.8.2)))(typescript@5.8.2)
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.7.9)(typescript@5.8.2)
-      tsx:
-        specifier: ^4.19.3
-        version: 4.19.3
-      typescript:
-        specifier: 5.8.2
-        version: 5.8.2
-
-  cloud:
-    dependencies:
-      '@apollo/client':
-        specifier: ^3.13.1
-        version: 3.13.1(@types/react@19.0.10)(graphql@16.10.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@aws-lambda-powertools/logger':
-        specifier: ^2.15.0
-        version: 2.15.0(@middy/core@6.1.3)
-      '@aws-sdk/client-dynamodb':
-        specifier: ^3.758.0
-        version: 3.758.0
-      '@aws-sdk/client-s3':
-        specifier: ^3.758.0
-        version: 3.758.0
-      '@aws-sdk/lib-dynamodb':
-        specifier: ^3.758.0
-        version: 3.758.0(@aws-sdk/client-dynamodb@3.758.0)
-      '@middy/core':
-        specifier: ^6.1.3
-        version: 6.1.3
-      '@sparticuz/chromium':
-        specifier: ^123.0.1
-        version: 123.0.1
-      camelcase-keys:
-        specifier: ^9.1.3
-        version: 9.1.3
-      diacritics:
-        specifier: ^1.3.0
-        version: 1.3.0
-      got:
-        specifier: ^14.4.6
-        version: 14.4.6
-      graphql:
-        specifier: ^16.10.0
-        version: 16.10.0
-      html-entities:
-        specifier: ^2.5.2
-        version: 2.5.2
-      leven:
-        specifier: ^4.0.0
-        version: 4.0.0
-      luxon:
-        specifier: ^3.5.0
-        version: 3.5.0
-      p-map:
-        specifier: 7.0.3
-        version: 7.0.3
-      p-retry:
-        specifier: 6.2.1
-        version: 6.2.1
-      puppeteer-core:
-        specifier: 22.12.1
-        version: 22.12.1
-      react:
-        specifier: ^19.0.0
-        version: 19.0.0
-      request:
-        specifier: ^2.88.2
-        version: 2.88.2
-      x-ray:
-        specifier: ^2.3.4
-        version: 2.3.4
-      x-ray-crawler:
-        specifier: ^2.0.5
-        version: 2.0.5
-    devDependencies:
-      '@trivago/prettier-plugin-sort-imports':
-        specifier: ^5.2.2
-        version: 5.2.2(prettier@3.5.2)
-      '@tsconfig/node20':
-        specifier: ^20.1.4
-        version: 20.1.4
-      '@types/aws-lambda':
-        specifier: ^8.10.147
-        version: 8.10.147
-      '@types/diacritics':
-        specifier: ^1.3.3
-        version: 1.3.3
-      '@types/luxon':
-        specifier: ^3.4.2
-        version: 3.4.2
-      '@types/ramda':
-        specifier: ^0.30.2
-        version: 0.30.2
-      '@types/request':
-        specifier: ^2.48.12
-        version: 2.48.12
-      '@types/x-ray':
-        specifier: ^2.3.6
-        version: 2.3.6
-      esbuild:
-        specifier: ^0.25.0
-        version: 0.25.0
-      lumigo-cli:
-        specifier: ^0.48.4
-        version: 0.48.4(@octokit/core@6.1.4)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@19.0.10)(react@19.0.0))
-      prettier:
-        specifier: ^3.5.2
-        version: 3.5.2
-      puppeteer:
-        specifier: 22.12.1
-        version: 22.12.1(typescript@5.8.2)
-      serverless:
-        specifier: ^3.40.0
-        version: 3.40.0
-      serverless-esbuild:
-        specifier: ^1.55.0
-        version: 1.55.0(esbuild@0.25.0)
-      serverless-offline:
-        specifier: ^13.9.0
-        version: 13.9.0(serverless@3.40.0)
-      serverless-plugin-monorepo:
-        specifier: ^0.11.0
-        version: 0.11.0(serverless@3.40.0)
       tsx:
         specifier: ^4.19.3
         version: 4.19.3
@@ -10470,6 +10346,7 @@ snapshots:
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
+    optional: true
 
   '@effect/platform-node-shared@0.15.5(@effect/platform@0.65.5(@effect/schema@0.73.4(effect@3.13.4))(effect@3.13.4))(effect@3.13.4)':
     dependencies:
@@ -11169,6 +11046,7 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+    optional: true
 
   '@jsep-plugin/assignment@1.3.0(jsep@1.4.0)':
     dependencies:
@@ -12246,13 +12124,17 @@ snapshots:
 
   '@trysound/sax@0.2.0': {}
 
-  '@tsconfig/node10@1.0.11': {}
+  '@tsconfig/node10@1.0.11':
+    optional: true
 
-  '@tsconfig/node12@1.0.11': {}
+  '@tsconfig/node12@1.0.11':
+    optional: true
 
-  '@tsconfig/node14@1.0.3': {}
+  '@tsconfig/node14@1.0.3':
+    optional: true
 
-  '@tsconfig/node16@1.0.4': {}
+  '@tsconfig/node16@1.0.4':
+    optional: true
 
   '@tsconfig/node20@20.1.4': {}
 
@@ -12657,7 +12539,8 @@ snapshots:
       tar-stream: 2.2.0
       zip-stream: 4.1.1
 
-  arg@4.1.3: {}
+  arg@4.1.3:
+    optional: true
 
   argparse@1.0.10:
     dependencies:
@@ -13519,7 +13402,8 @@ snapshots:
       - supports-color
       - ts-node
 
-  create-require@1.1.1: {}
+  create-require@1.1.1:
+    optional: true
 
   cron-parser@4.9.0:
     dependencies:
@@ -13934,7 +13818,8 @@ snapshots:
 
   diff-sequences@29.6.3: {}
 
-  diff@4.0.2: {}
+  diff@4.0.2:
+    optional: true
 
   dir-glob@3.0.1:
     dependencies:
@@ -14283,8 +14168,8 @@ snapshots:
       '@typescript-eslint/parser': 8.25.0(eslint@9.21.0)(typescript@5.8.2)
       eslint: 9.21.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0)(eslint@9.21.0)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3)(eslint@9.21.0)
+      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint@9.21.0))(eslint@9.21.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint@9.21.0))(eslint@9.21.0))(eslint@9.21.0)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.21.0)
       eslint-plugin-react: 7.37.4(eslint@9.21.0)
       eslint-plugin-react-hooks: 5.2.0(eslint@9.21.0)
@@ -14303,7 +14188,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0)(eslint@9.21.0):
+  eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint@9.21.0))(eslint@9.21.0):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0(supports-color@8.1.1)
@@ -14314,22 +14199,22 @@ snapshots:
       stable-hash: 0.0.4
       tinyglobby: 0.2.12
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3)(eslint@9.21.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint@9.21.0))(eslint@9.21.0))(eslint@9.21.0)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3)(eslint@9.21.0):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint@9.21.0))(eslint@9.21.0))(eslint@9.21.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.25.0(eslint@9.21.0)(typescript@5.8.2)
       eslint: 9.21.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0)(eslint@9.21.0)
+      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint@9.21.0))(eslint@9.21.0)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3)(eslint@9.21.0):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint@9.21.0))(eslint@9.21.0))(eslint@9.21.0):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -14340,7 +14225,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.21.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3)(eslint@9.21.0)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.21.0)(typescript@5.8.2))(eslint@9.21.0))(eslint@9.21.0))(eslint@9.21.0)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -18445,6 +18330,7 @@ snapshots:
       typescript: 5.8.2
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
+    optional: true
 
   ts-toolbelt@9.6.0: {}
 
@@ -18651,7 +18537,8 @@ snapshots:
 
   uuid@9.0.1: {}
 
-  v8-compile-cache-lib@3.0.1: {}
+  v8-compile-cache-lib@3.0.1:
+    optional: true
 
   v8-to-istanbul@9.3.0:
     dependencies:
@@ -18916,7 +18803,8 @@ snapshots:
     dependencies:
       is-browser: 2.0.1
 
-  yn@3.1.1: {}
+  yn@3.1.1:
+    optional: true
 
   yocto-queue@0.1.0: {}
 

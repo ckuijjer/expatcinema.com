@@ -5,13 +5,13 @@ on:
     branches:
       - main
     paths:
-      - 'backend/**'
-      - '.github/workflows/backend.yml'
+      - 'cloud/**'
+      - '.github/workflows/cdk.yml'
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
 defaults:
   run:
-    working-directory: backend/
+    working-directory: cloud/
 
 jobs:
   deploy:

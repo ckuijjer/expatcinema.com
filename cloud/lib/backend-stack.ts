@@ -9,7 +9,9 @@ import 'source-map-support/register'
 
 import { getConfig } from './config'
 
-type Stage = 'dev' | 'prod' | 'cdk'
+// TODO: use the line below when everything works,
+// type Stage = 'dev' | 'prod'
+type Stage = 'cdk'
 
 type BackendStackProps = cdk.StackProps & { stage: Stage }
 
@@ -31,7 +33,7 @@ export class BackendStack extends cdk.Stack {
       'analytics-lambda',
       {
         description: 'Analytics Lambda',
-        entry: 'src/analytics.ts',
+        entry: 'analytics.ts',
         runtime: lambda.Runtime.NODEJS_22_X,
         timeout: cdk.Duration.minutes(1),
         architecture: lambda.Architecture.ARM_64,
