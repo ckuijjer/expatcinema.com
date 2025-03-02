@@ -38,5 +38,5 @@ jobs:
         run: pnpm cdk bootstrap
       - name: CDK Deploy
         env:
-          DYNAMODB_MOVIE_METADATA: ${{ secrets.DYNAMODB_MOVIE_METADATA }}
+          DYNAMODB_ANALYTICS: ${{ secrets.DYNAMODB_ANALYTICS }}
         run: pnpm cdk deploy --require-approval never
