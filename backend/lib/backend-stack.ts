@@ -9,8 +9,10 @@ import 'source-map-support/register'
 
 import { getConfig } from './config'
 
+type BackendStackProps = cdk.StackProps & { stage: 'prod' }
+
 export class BackendStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: BackendStackProps) {
     super(scope, id, props)
 
     const config = getConfig()
