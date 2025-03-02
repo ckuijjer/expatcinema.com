@@ -46,10 +46,10 @@ export class BackendStack extends cdk.Stack {
       bucketName: publicBucketName,
       // publicReadAccess: true,
       blockPublicAccess: {
-        blockPublicAcls: true,
+        blockPublicAcls: false,
         blockPublicPolicy: false,
-        ignorePublicAcls: true,
-        restrictPublicBuckets: true,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: false,
       },
       // accessControl: s3.BucketAccessControl.PUBLIC_READ,
       cors: [
