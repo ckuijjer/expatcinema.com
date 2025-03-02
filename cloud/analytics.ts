@@ -38,4 +38,4 @@ const analytics = async ({ event, context } = {}) => {
   }
 }
 
-export default analytics
+export const handler = analytics

@@ -272,8 +272,6 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
   }
 }
 
-const handler = middy(scrapers).use(
+export const handler = middy(scrapers).use(
   injectLambdaContext(logger, { clearState: true }),
 )
-
-export default handler

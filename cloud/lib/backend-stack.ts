@@ -1,6 +1,8 @@
 import * as cdk from 'aws-cdk-lib'
 import { HttpApi, HttpMethod } from 'aws-cdk-lib/aws-apigatewayv2'
 import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations'
+import * as events from 'aws-cdk-lib/aws-events'
+import * as targets from 'aws-cdk-lib/aws-events-targets'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs'
 import { RetentionDays } from 'aws-cdk-lib/aws-logs'
@@ -28,28 +30,29 @@ export class BackendStack extends cdk.Stack {
 
     const config = getConfig()
 
-    const analyticsLambda = new lambdaNodejs.NodejsFunction(
-      this,
-      'analytics-lambda',
-      {
-        description: 'Analytics Lambda',
-        entry: 'analytics.ts',
-        runtime: lambda.Runtime.NODEJS_22_X,
-        timeout: cdk.Duration.minutes(1),
-        architecture: lambda.Architecture.ARM_64,
-        bundling: {
-          keepNames: true,
-          sourceMap: true,
-          minify: true,
-          metafile: true,
-        },
-        environment: {
-          DYNAMODB_ANALYTICS: config.DYNAMODB_ANALYTICS,
-        },
-        logRetention: RetentionDays.TWO_MONTHS,
-      },
-    )
+    const DEFAULT_FUNCTION_ENVIRONMENT_PROPS = {
+      NODE_OPTIONS: '--enable-source-maps --trace-warnings',
+      POWERTOOLS_SERVICE_NAME: `${id}-${stage}`,
+    }
 
+    const DEFAULT_FUNCTION_PROPS: lambdaNodejs.NodejsFunctionProps = {
+      runtime: lambda.Runtime.NODEJS_22_X,
+      timeout: cdk.Duration.minutes(1),
+      architecture: lambda.Architecture.ARM_64,
+      memorySize: 1024,
+      bundling: {
+        keepNames: true,
+        sourceMap: true,
+        minify: true,
+        metafile: true,
+      },
+      environment: {
+        ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
+      },
+      logRetention: RetentionDays.TWO_MONTHS,
+    }
+
+    // API Gateway
     const httpApi = new HttpApi(this, 'api', {
       description: 'API Gateway for expatcinema.com',
     })
@@ -59,10 +62,131 @@ export class BackendStack extends cdk.Stack {
       description: 'The HTTP API endpoint for expatcinema.com',
     })
 
+    // Scrapers
+    const chromeAwsLambdaLayer = lambda.LayerVersion.fromLayerVersionArn(
+      this,
+      'scrapers-lambda-layer',
+      'arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:45',
+    )
+
+    const scrapersLambda = new lambdaNodejs.NodejsFunction(
+      this,
+      'scrapers-lambda',
+      {
+        ...DEFAULT_FUNCTION_PROPS,
+        description: 'Scrapers Lambda',
+        entry: 'scrapers.ts',
+        memorySize: 4096,
+        timeout: cdk.Duration.minutes(9),
+        environment: {
+          ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
+
+          PRIVATE_BUCKET: scrapersOutputBucketName,
+          PUBLIC_BUCKET: publicBucketName,
+          DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
+          DYNAMODB_MOVIE_METADATA: scrapersMovieMetadataTableName,
+
+          TMDB_API_KEY: config.TMDB_API_KEY,
+          OMDB_API_KEY: config.OMDB_API_KEY,
+          GOOGLE_CUSTOM_SEARCH_ID: config.GOOGLE_CUSTOM_SEARCH_ID,
+          GOOGLE_CUSTOM_SEARCH_API_KEY: config.GOOGLE_CUSTOM_SEARCH_API_KEY,
+          SCRAPERS: config.SCRAPERS,
+          SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
+        },
+        layers: [chromeAwsLambdaLayer],
+      },
+    )
+
+    // Schedule for Scrapers Lambda
+    // TODO: Turn on the schedule eventually
+    // new events.Rule(this, 'scrapers-schedule-rule', {
+    //   schedule: events.Schedule.cron({ minute: '0', hour: '3', day: '*', month: '*', year: '*' }),
+    //   targets: [new targets.LambdaFunction(scrapersLambda)],
+    // });
+
+    // Playground
+    const playgroundLambda = new lambdaNodejs.NodejsFunction(
+      this,
+      'playground-lambda',
+      {
+        ...DEFAULT_FUNCTION_PROPS,
+        description: 'Playground Lambda',
+        entry: 'playground.ts',
+        timeout: cdk.Duration.minutes(5),
+        environment: {
+          ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
+
+          PRIVATE_BUCKET: scrapersOutputBucketName,
+          PUBLIC_BUCKET: publicBucketName,
+          DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
+          DYNAMODB_MOVIE_METADATA: scrapersMovieMetadataTableName,
+
+          TMDB_API_KEY: config.TMDB_API_KEY,
+          OMDB_API_KEY: config.OMDB_API_KEY,
+          GOOGLE_CUSTOM_SEARCH_ID: config.GOOGLE_CUSTOM_SEARCH_ID,
+          GOOGLE_CUSTOM_SEARCH_API_KEY: config.GOOGLE_CUSTOM_SEARCH_API_KEY,
+          SCRAPERS: config.SCRAPERS,
+          SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
+        },
+        layers: [chromeAwsLambdaLayer],
+      },
+    )
+
+    // Notify Slack
+    const notifySlackLambda = new lambdaNodejs.NodejsFunction(
+      this,
+      'notify-slack-lambda',
+      {
+        ...DEFAULT_FUNCTION_PROPS,
+        description: 'Notify Slack Lambda',
+        entry: 'notifySlack.ts',
+        environment: {
+          ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
+
+          SLACK_WEBHOOK: config.SLACK_WEBHOOK,
+        },
+      },
+    )
+
+    // scrapersLambda.logGroup.addSubscriptionFilter('notify-slack-subscription', {
+    //   destination: new cdk.aws_logs_destinations.LambdaDestination(
+    //     notifySlackLambda,
+    //   ),
+    //   filterPattern: { logPatternString: '' }, // Match all logs
+    // })
+
+    // Analytics
+    const analyticsLambda = new lambdaNodejs.NodejsFunction(
+      this,
+      'analytics-lambda',
+      {
+        ...DEFAULT_FUNCTION_PROPS,
+        description: 'Analytics Lambda',
+        entry: 'analytics.ts',
+      },
+    )
+
     httpApi.addRoutes({
       path: '/analytics',
       methods: [HttpMethod.GET],
       integration: new HttpLambdaIntegration('analytics-get', analyticsLambda),
     })
+
+    // Fill Analytics TODO: Untested
+    const fillAnalyticsLambda = new lambdaNodejs.NodejsFunction(
+      this,
+      'fill-analytics-lambda',
+      {
+        ...DEFAULT_FUNCTION_PROPS,
+        description: 'Fill Analytics',
+        entry: 'fillAnalytics.ts',
+        environment: {
+          ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
+
+          PRIVATE_BUCKET: scrapersOutputBucketName,
+          DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
+        },
+      },
+    )
   }
 }

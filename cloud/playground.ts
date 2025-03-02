@@ -181,8 +181,7 @@ const playground = async ({ event, context } = {}) => {
 if (require.main === module) {
   playground()
 }
-const handler = middy(playground).use(
+
+export const handler = middy(playground).use(
   injectLambdaContext(logger, { clearState: true }),
 )
-
-export default handler

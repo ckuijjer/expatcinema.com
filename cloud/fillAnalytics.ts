@@ -93,4 +93,4 @@ const getObjectFromS3 = async (key) => {
   return json
 }
 
-export default fillAnalytics
+export const handler = fillAnalytics
