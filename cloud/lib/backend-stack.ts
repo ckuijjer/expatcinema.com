@@ -7,6 +7,7 @@ import * as targets from 'aws-cdk-lib/aws-events-targets'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs'
 import { RetentionDays } from 'aws-cdk-lib/aws-logs'
+import * as s3 from 'aws-cdk-lib/aws-s3'
 import { Construct } from 'constructs'
 import 'source-map-support/register'
 
@@ -40,28 +41,61 @@ export class BackendStack extends cdk.Stack {
     })
 
     // Public Bucket
-    const publicBucket = new s3.Bucket(this, 'public-bucket', {
-      bucketName: publicBucketName,
-      publicReadAccess: true,
-      cors: [
-        {
-          allowedOrigins: ['*'],
-          allowedHeaders: ['*'],
-          allowedMethods: [s3.HttpMethods.GET],
-          maxAge: 3000,
-        },
-      ],
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
-    })
+    // const publicBucket = new s3.Bucket(this, 'public-bucket', {
+    //   bucketName: publicBucketName,
+    //   publicReadAccess: true,
+    //   cors: [
+    //     {
+    //       allowedOrigins: ['*'],
+    //       allowedHeaders: ['*'],
+    //       allowedMethods: [s3.HttpMethods.GET],
+    //       maxAge: 3000,
+    //     },
+    //   ],
+    //   removalPolicy: cdk.RemovalPolicy.RETAIN,
+    // })
 
-    // Public Bucket Policy
-    publicBucket.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        actions: ['s3:GetObject'],
-        resources: [`${publicBucket.bucketArn}/*`],
-        principals: [new cdk.aws_iam.AnyPrincipal()],
-        effect: cdk.aws_iam.Effect.ALLOW,
-      }),
+    // // Public Bucket Policy
+    // publicBucket.addToResourcePolicy(
+    //   new cdk.aws_iam.PolicyStatement({
+    //     actions: ['s3:GetObject'],
+    //     resources: [`${publicBucket.bucketArn}/*`],
+    //     principals: [new cdk.aws_iam.AnyPrincipal()],
+    //     effect: cdk.aws_iam.Effect.ALLOW,
+    //   }),
+    // )
+
+    // Scrapers Analytics DynamoDB Table
+    const scrapersAnalyticsTable = new dynamodb.Table(
+      this,
+      'ScrapersAnalyticsDynamoDbTable',
+      {
+        tableName: scrapersAnalyticsTableName,
+        partitionKey: { name: 'type', type: dynamodb.AttributeType.STRING },
+        sortKey: { name: 'createdAt', type: dynamodb.AttributeType.STRING },
+        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+        pointInTimeRecoverySpecification: {
+          pointInTimeRecoveryEnabled: true,
+        },
+        stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
+        removalPolicy: cdk.RemovalPolicy.RETAIN,
+      },
+    )
+
+    // Scrapers Movie Metadata DynamoDB Table
+    const scrapersMovieMetadataTable = new dynamodb.Table(
+      this,
+      'ScrapersMovieMetadataDynamoDbTable',
+      {
+        tableName: scrapersMovieMetadataTableName,
+        partitionKey: { name: 'query', type: dynamodb.AttributeType.STRING },
+        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+        pointInTimeRecoverySpecification: {
+          pointInTimeRecoveryEnabled: true,
+        },
+        stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
+        removalPolicy: cdk.RemovalPolicy.RETAIN,
+      },
     )
 
     const DEFAULT_FUNCTION_ENVIRONMENT_PROPS = {
@@ -128,35 +162,6 @@ export class BackendStack extends cdk.Stack {
           SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
         },
         layers: [chromeAwsLambdaLayer],
-      },
-    )
-
-    // Scrapers Analytics DynamoDB Table
-    const scrapersAnalyticsTable = new dynamodb.Table(
-      this,
-      'ScrapersAnalyticsDynamoDbTable',
-      {
-        tableName: scrapersAnalyticsTableName,
-        partitionKey: { name: 'type', type: dynamodb.AttributeType.STRING },
-        sortKey: { name: 'createdAt', type: dynamodb.AttributeType.STRING },
-        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-        pointInTimeRecovery: true,
-        stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
-        removalPolicy: cdk.RemovalPolicy.RETAIN,
-      },
-    )
-
-    // Scrapers Movie Metadata DynamoDB Table
-    const scrapersMovieMetadataTable = new dynamodb.Table(
-      this,
-      'ScrapersMovieMetadataDynamoDbTable',
-      {
-        tableName: scrapersMovieMetadataTableName,
-        partitionKey: { name: 'query', type: dynamodb.AttributeType.STRING },
-        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-        pointInTimeRecovery: true,
-        stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
-        removalPolicy: cdk.RemovalPolicy.RETAIN,
       },
     )
 

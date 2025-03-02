@@ -1,6 +1,6 @@
 import { APIGatewayEvent, Context } from 'aws-lambda'
 
-import { handler as scrapers } from './scrapers'
+import { handler as scrapers } from './scrapers/index.ts'
 
 export const handler = async (event: APIGatewayEvent, context: Context) => {
   await scrapers(event, context)
