@@ -39,15 +39,15 @@ export class BackendStack extends cdk.Stack {
       description: 'API Gateway for expatcinema.com',
     })
 
+    new cdk.CfnOutput(this, 'api-endpoint', {
+      value: httpApi.apiEndpoint,
+      description: 'The HTTP API endpoint for expatcinema.com',
+    })
+
     httpApi.addRoutes({
       path: '/analytics',
       methods: [HttpMethod.GET],
       integration: new HttpLambdaIntegration('analytics-get', analyticsLambda),
-    })
-
-    new cdk.CfnOutput(this, 'api-endpoint', {
-      value: httpApi.apiEndpoint,
-      description: 'The HTTP API endpoint for expatcinema.com',
     })
   }
 }
