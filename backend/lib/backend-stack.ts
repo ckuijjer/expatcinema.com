@@ -3,6 +3,7 @@ import { HttpApi, HttpMethod } from 'aws-cdk-lib/aws-apigatewayv2'
 import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs'
+import { RetentionDays } from 'aws-cdk-lib/aws-logs'
 import { Construct } from 'constructs'
 import 'source-map-support/register'
 
@@ -32,6 +33,7 @@ export class BackendStack extends cdk.Stack {
         environment: {
           DYNAMODB_ANALYTICS: config.DYNAMODB_ANALYTICS,
         },
+        logRetention: RetentionDays.TWO_MONTHS,
       },
     )
 
