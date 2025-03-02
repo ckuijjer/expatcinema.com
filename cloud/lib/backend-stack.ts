@@ -40,30 +40,38 @@ export class BackendStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     })
 
+    // TODO: Fix the public bucket,
     // Public Bucket
-    // const publicBucket = new s3.Bucket(this, 'public-bucket', {
-    //   bucketName: publicBucketName,
-    //   publicReadAccess: true,
-    //   cors: [
-    //     {
-    //       allowedOrigins: ['*'],
-    //       allowedHeaders: ['*'],
-    //       allowedMethods: [s3.HttpMethods.GET],
-    //       maxAge: 3000,
-    //     },
-    //   ],
-    //   removalPolicy: cdk.RemovalPolicy.RETAIN,
-    // })
+    const publicBucket = new s3.Bucket(this, 'public-bucket', {
+      bucketName: publicBucketName,
+      publicReadAccess: true,
+      blockPublicAccess: {
+        blockPublicAcls: false,
+        blockPublicPolicy: false,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: false,
+      },
+      accessControl: s3.BucketAccessControl.PUBLIC_READ,
+      cors: [
+        {
+          allowedOrigins: ['*'],
+          allowedHeaders: ['*'],
+          allowedMethods: [s3.HttpMethods.GET],
+          maxAge: 3000,
+        },
+      ],
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    })
 
-    // // Public Bucket Policy
-    // publicBucket.addToResourcePolicy(
-    //   new cdk.aws_iam.PolicyStatement({
-    //     actions: ['s3:GetObject'],
-    //     resources: [`${publicBucket.bucketArn}/*`],
-    //     principals: [new cdk.aws_iam.AnyPrincipal()],
-    //     effect: cdk.aws_iam.Effect.ALLOW,
-    //   }),
-    // )
+    // Public Bucket Policy
+    publicBucket.addToResourcePolicy(
+      new cdk.aws_iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: [`${publicBucket.bucketArn}/*`],
+        principals: [new cdk.aws_iam.AnyPrincipal()],
+        effect: cdk.aws_iam.Effect.ALLOW,
+      }),
+    )
 
     // Scrapers Analytics DynamoDB Table
     const scrapersAnalyticsTable = new dynamodb.Table(
