@@ -16,7 +16,7 @@ export class BackendStack extends cdk.Stack {
 
     const analyticsLambda = new lambdaNodejs.NodejsFunction(
       this,
-      'analyticsLambda',
+      'analytics-lambda',
       {
         description: 'Analytics Lambda',
         entry: '../cloud/analytics.ts',
