@@ -34,4 +34,4 @@ jobs:
           DYNAMODB_MOVIE_METADATA: ${{ secrets.DYNAMODB_MOVIE_METADATA }}
         run: |
           cd backend/
-          pnpm cdk synth
+          pnpm cdk deploy
