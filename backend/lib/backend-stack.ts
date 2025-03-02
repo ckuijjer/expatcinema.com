@@ -19,7 +19,7 @@ export class BackendStack extends cdk.Stack {
       'analytics-lambda',
       {
         description: 'Analytics Lambda',
-        entry: '../cloud/analytics.ts',
+        entry: 'src/analytics.ts',
         runtime: lambda.Runtime.NODEJS_22_X,
         timeout: cdk.Duration.minutes(1),
         architecture: lambda.Architecture.ARM_64,
