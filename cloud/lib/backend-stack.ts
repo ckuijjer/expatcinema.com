@@ -137,33 +137,34 @@ export class BackendStack extends cdk.Stack {
       'arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:45',
     )
 
-    const scrapersLambda = new lambdaNodejs.NodejsFunction(
-      this,
-      'scrapers-lambda',
-      {
-        ...DEFAULT_FUNCTION_PROPS,
-        description: 'Scrapers Lambda',
-        entry: 'scrapers.ts',
-        memorySize: 4096,
-        timeout: cdk.Duration.minutes(9),
-        environment: {
-          ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
+    // TODO: Fix the issue with bundling (likely see scrapers.ts and scrapers/index.ts)
+    // const scrapersLambda = new lambdaNodejs.NodejsFunction(
+    //   this,
+    //   'scrapers-lambda',
+    //   {
+    //     ...DEFAULT_FUNCTION_PROPS,
+    //     description: 'Scrapers Lambda',
+    //     entry: 'scrapers.ts',
+    //     memorySize: 4096,
+    //     timeout: cdk.Duration.minutes(9),
+    //     environment: {
+    //       ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
 
-          PRIVATE_BUCKET: scrapersOutputBucketName,
-          PUBLIC_BUCKET: publicBucketName,
-          DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
-          DYNAMODB_MOVIE_METADATA: scrapersMovieMetadataTableName,
+    //       PRIVATE_BUCKET: scrapersOutputBucketName,
+    //       PUBLIC_BUCKET: publicBucketName,
+    //       DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
+    //       DYNAMODB_MOVIE_METADATA: scrapersMovieMetadataTableName,
 
-          TMDB_API_KEY: config.TMDB_API_KEY,
-          OMDB_API_KEY: config.OMDB_API_KEY,
-          GOOGLE_CUSTOM_SEARCH_ID: config.GOOGLE_CUSTOM_SEARCH_ID,
-          GOOGLE_CUSTOM_SEARCH_API_KEY: config.GOOGLE_CUSTOM_SEARCH_API_KEY,
-          SCRAPERS: config.SCRAPERS,
-          SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
-        },
-        layers: [chromeAwsLambdaLayer],
-      },
-    )
+    //       TMDB_API_KEY: config.TMDB_API_KEY,
+    //       OMDB_API_KEY: config.OMDB_API_KEY,
+    //       GOOGLE_CUSTOM_SEARCH_ID: config.GOOGLE_CUSTOM_SEARCH_ID,
+    //       GOOGLE_CUSTOM_SEARCH_API_KEY: config.GOOGLE_CUSTOM_SEARCH_API_KEY,
+    //       SCRAPERS: config.SCRAPERS,
+    //       SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
+    //     },
+    //     layers: [chromeAwsLambdaLayer],
+    //   },
+    // )
 
     // Schedule for Scrapers Lambda
     // TODO: Turn on the schedule eventually
