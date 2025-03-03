@@ -32,77 +32,6 @@ export class BackendStack extends cdk.Stack {
 
     const config = getConfig()
 
-    // Scrapers Output Bucket
-    const scrapersOutputBucket = new s3.Bucket(this, 'scrapers-output-bucket', {
-      bucketName: scrapersOutputBucketName,
-      publicReadAccess: false,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
-    })
-
-    // Public Bucket
-    const publicBucket = new s3.Bucket(this, 'public-bucket', {
-      bucketName: publicBucketName,
-      blockPublicAccess: {
-        blockPublicAcls: false,
-        blockPublicPolicy: false,
-        ignorePublicAcls: false,
-        restrictPublicBuckets: false,
-      },
-      cors: [
-        {
-          allowedOrigins: ['*'],
-          allowedHeaders: ['*'],
-          allowedMethods: [s3.HttpMethods.GET],
-          maxAge: 3000,
-        },
-      ],
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
-    })
-
-    // Public Bucket Policy
-    publicBucket.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        actions: ['s3:GetObject'],
-        resources: [`${publicBucket.bucketArn}/*`],
-        principals: [new cdk.aws_iam.AnyPrincipal()],
-        effect: cdk.aws_iam.Effect.ALLOW,
-      }),
-    )
-
-    // Scrapers Analytics DynamoDB Table
-    const scrapersAnalyticsTable = new dynamodb.Table(
-      this,
-      'ScrapersAnalyticsDynamoDbTable',
-      {
-        tableName: scrapersAnalyticsTableName,
-        partitionKey: { name: 'type', type: dynamodb.AttributeType.STRING },
-        sortKey: { name: 'createdAt', type: dynamodb.AttributeType.STRING },
-        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-        pointInTimeRecoverySpecification: {
-          pointInTimeRecoveryEnabled: true,
-        },
-        stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
-        removalPolicy: cdk.RemovalPolicy.RETAIN,
-      },
-    )
-
-    // Scrapers Movie Metadata DynamoDB Table
-    const scrapersMovieMetadataTable = new dynamodb.Table(
-      this,
-      'ScrapersMovieMetadataDynamoDbTable',
-      {
-        tableName: scrapersMovieMetadataTableName,
-        partitionKey: { name: 'query', type: dynamodb.AttributeType.STRING },
-        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-        pointInTimeRecoverySpecification: {
-          pointInTimeRecoveryEnabled: true,
-        },
-        stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
-        removalPolicy: cdk.RemovalPolicy.RETAIN,
-      },
-    )
-
     const DEFAULT_FUNCTION_ENVIRONMENT_PROPS = {
       NODE_OPTIONS: '--enable-source-maps --trace-warnings',
       POWERTOOLS_SERVICE_NAME: `${id}-${stage}`,
@@ -135,6 +64,22 @@ export class BackendStack extends cdk.Stack {
       description: 'The HTTP API endpoint for expatcinema.com',
     })
 
+    // Notify Slack
+    const notifySlackLambda = new lambdaNodejs.NodejsFunction(
+      this,
+      'notify-slack-lambda',
+      {
+        ...DEFAULT_FUNCTION_PROPS,
+        description: 'Notify Slack Lambda',
+        entry: 'notifySlack.ts',
+        environment: {
+          ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
+
+          SLACK_WEBHOOK: config.SLACK_WEBHOOK,
+        },
+      },
+    )
+
     // Scrapers
     const chromeAwsLambdaLayer = lambda.LayerVersion.fromLayerVersionArn(
       this,
@@ -143,33 +88,34 @@ export class BackendStack extends cdk.Stack {
     )
 
     // TODO: Fix the issue with bundling (likely see scrapers.ts and scrapers/index.ts)
-    // const scrapersLambda = new lambdaNodejs.NodejsFunction(
-    //   this,
-    //   'scrapers-lambda',
-    //   {
-    //     ...DEFAULT_FUNCTION_PROPS,
-    //     description: 'Scrapers Lambda',
-    //     entry: 'scrapers.ts',
-    //     memorySize: 4096,
-    //     timeout: cdk.Duration.minutes(9),
-    //     environment: {
-    //       ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
+    const scrapersLambda = new lambdaNodejs.NodejsFunction(
+      this,
+      'scrapers-lambda',
+      {
+        ...DEFAULT_FUNCTION_PROPS,
+        description: 'Scrapers Lambda',
+        entry: 'scrapers.ts', // TODO: Fix the issue with bundling (likely see scrapers.ts and scrapers/index.ts)
 
-    //       PRIVATE_BUCKET: scrapersOutputBucketName,
-    //       PUBLIC_BUCKET: publicBucketName,
-    //       DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
-    //       DYNAMODB_MOVIE_METADATA: scrapersMovieMetadataTableName,
+        memorySize: 4096,
+        timeout: cdk.Duration.minutes(9),
+        environment: {
+          ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
 
-    //       TMDB_API_KEY: config.TMDB_API_KEY,
-    //       OMDB_API_KEY: config.OMDB_API_KEY,
-    //       GOOGLE_CUSTOM_SEARCH_ID: config.GOOGLE_CUSTOM_SEARCH_ID,
-    //       GOOGLE_CUSTOM_SEARCH_API_KEY: config.GOOGLE_CUSTOM_SEARCH_API_KEY,
-    //       SCRAPERS: config.SCRAPERS,
-    //       SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
-    //     },
-    //     layers: [chromeAwsLambdaLayer],
-    //   },
-    // )
+          PRIVATE_BUCKET: scrapersOutputBucketName,
+          PUBLIC_BUCKET: publicBucketName,
+          DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
+          DYNAMODB_MOVIE_METADATA: scrapersMovieMetadataTableName,
+
+          TMDB_API_KEY: config.TMDB_API_KEY,
+          OMDB_API_KEY: config.OMDB_API_KEY,
+          GOOGLE_CUSTOM_SEARCH_ID: config.GOOGLE_CUSTOM_SEARCH_ID,
+          GOOGLE_CUSTOM_SEARCH_API_KEY: config.GOOGLE_CUSTOM_SEARCH_API_KEY,
+          SCRAPERS: config.SCRAPERS,
+          SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
+        },
+        layers: [chromeAwsLambdaLayer],
+      },
+    )
 
     // Schedule for Scrapers Lambda
     // TODO: Turn on the schedule eventually
@@ -177,6 +123,13 @@ export class BackendStack extends cdk.Stack {
     //   schedule: events.Schedule.cron({ minute: '0', hour: '3', day: '*', month: '*', year: '*' }),
     //   targets: [new targets.LambdaFunction(scrapersLambda)],
     // });
+
+    scrapersLambda.logGroup.addSubscriptionFilter('notify-slack-subscription', {
+      destination: new cdk.aws_logs_destinations.LambdaDestination(
+        notifySlackLambda,
+      ),
+      filterPattern: { logPatternString: '' }, // Match all logs
+    })
 
     // Playground
     const playgroundLambda = new lambdaNodejs.NodejsFunction(
@@ -206,29 +159,6 @@ export class BackendStack extends cdk.Stack {
       },
     )
 
-    // Notify Slack
-    const notifySlackLambda = new lambdaNodejs.NodejsFunction(
-      this,
-      'notify-slack-lambda',
-      {
-        ...DEFAULT_FUNCTION_PROPS,
-        description: 'Notify Slack Lambda',
-        entry: 'notifySlack.ts',
-        environment: {
-          ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
-
-          SLACK_WEBHOOK: config.SLACK_WEBHOOK,
-        },
-      },
-    )
-
-    // scrapersLambda.logGroup.addSubscriptionFilter('notify-slack-subscription', {
-    //   destination: new cdk.aws_logs_destinations.LambdaDestination(
-    //     notifySlackLambda,
-    //   ),
-    //   filterPattern: { logPatternString: '' }, // Match all logs
-    // })
-
     // Analytics
     const analyticsLambda = new lambdaNodejs.NodejsFunction(
       this,
@@ -237,6 +167,10 @@ export class BackendStack extends cdk.Stack {
         ...DEFAULT_FUNCTION_PROPS,
         description: 'Analytics Lambda',
         entry: 'analytics.ts',
+        environment: {
+          ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
+          DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
+        },
       },
     )
 
@@ -262,5 +196,89 @@ export class BackendStack extends cdk.Stack {
         },
       },
     )
+
+    // Scrapers Output Bucket
+    const scrapersOutputBucket = new s3.Bucket(this, 'scrapers-output-bucket', {
+      bucketName: scrapersOutputBucketName,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    })
+    scrapersOutputBucket.grantRead(playgroundLambda)
+    scrapersOutputBucket.grantRead(fillAnalyticsLambda)
+    scrapersOutputBucket.grantReadWrite(scrapersLambda)
+
+    // Public Bucket
+    const publicBucket = new s3.Bucket(this, 'public-bucket', {
+      bucketName: publicBucketName,
+      blockPublicAccess: {
+        blockPublicAcls: false,
+        blockPublicPolicy: false,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: false,
+      },
+      cors: [
+        {
+          allowedOrigins: ['*'],
+          allowedHeaders: ['*'],
+          allowedMethods: [s3.HttpMethods.GET],
+          maxAge: 3000,
+        },
+      ],
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    })
+
+    // Public Bucket Policy
+    publicBucket.addToResourcePolicy(
+      new cdk.aws_iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: [`${publicBucket.bucketArn}/*`],
+        principals: [new cdk.aws_iam.AnyPrincipal()],
+        effect: cdk.aws_iam.Effect.ALLOW,
+      }),
+    )
+
+    publicBucket.grantReadWrite(scrapersLambda)
+
+    // Scrapers Analytics DynamoDB Table
+    const scrapersAnalyticsTable = new dynamodb.Table(
+      this,
+      'ScrapersAnalyticsDynamoDbTable',
+      {
+        tableName: scrapersAnalyticsTableName,
+        partitionKey: { name: 'type', type: dynamodb.AttributeType.STRING },
+        sortKey: { name: 'createdAt', type: dynamodb.AttributeType.STRING },
+        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+        pointInTimeRecoverySpecification: {
+          pointInTimeRecoveryEnabled: true,
+        },
+        stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
+        removalPolicy: cdk.RemovalPolicy.RETAIN,
+      },
+    )
+
+    scrapersAnalyticsTable.grantReadData(analyticsLambda)
+    scrapersAnalyticsTable.grantReadWriteData(scrapersLambda)
+    scrapersAnalyticsTable.grantReadWriteData(fillAnalyticsLambda)
+    scrapersAnalyticsTable.grantReadData(playgroundLambda)
+
+    // Scrapers Movie Metadata DynamoDB Table
+    const scrapersMovieMetadataTable = new dynamodb.Table(
+      this,
+      'ScrapersMovieMetadataDynamoDbTable',
+      {
+        tableName: scrapersMovieMetadataTableName,
+        partitionKey: { name: 'query', type: dynamodb.AttributeType.STRING },
+        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+        pointInTimeRecoverySpecification: {
+          pointInTimeRecoveryEnabled: true,
+        },
+        stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
+        removalPolicy: cdk.RemovalPolicy.RETAIN,
+      },
+    )
+
+    scrapersMovieMetadataTable.grantReadWriteData(scrapersLambda)
+    scrapersMovieMetadataTable.grantReadData(playgroundLambda)
   }
 }
