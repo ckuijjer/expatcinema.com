@@ -85,7 +85,7 @@ export class BackendStack extends cdk.Stack {
     const chromeAwsLambdaLayer = lambda.LayerVersion.fromLayerVersionArn(
       this,
       'scrapers-lambda-layer',
-      'arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:45',
+      'arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:133',
     )
 
     // TODO: Fix the issue with bundling (likely see scrapers.ts and scrapers/index.ts)
