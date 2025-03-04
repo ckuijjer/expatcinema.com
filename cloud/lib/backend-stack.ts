@@ -47,6 +47,7 @@ export class BackendStack extends cdk.Stack {
         sourceMap: true,
         minify: true,
         metafile: true,
+        externalModules: ['emitter', '@sparticuz/chromium'],
       },
       environment: {
         ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
