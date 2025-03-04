@@ -79,13 +79,13 @@ functions:
       SCRAPERS: ${env:SCRAPERS, ''} # '' as default value, as SCRAPERS is the only optional env var
       SCRAPEOPS_API_KEY: ${env:SCRAPEOPS_API_KEY}
     layers:
-      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:133 # https://github.com/shelfio/chrome-aws-lambda-layer
+      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:50 # https://github.com/shelfio/chrome-aws-lambda-layer
 
   playground:
     handler: handler.playground
     timeout: 300
     layers:
-      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:133 # https://github.com/shelfio/chrome-aws-lambda-layer
+      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:50 # https://github.com/shelfio/chrome-aws-lambda-layer
     environment:
       DYNAMODB_MOVIE_METADATA: ${env:DYNAMODB_MOVIE_METADATA}
       TMDB_API_KEY: ${env:TMDB_API_KEY}
@@ -102,7 +102,7 @@ functions:
       - cloudwatchLog:
           logGroup: /aws/lambda/expatcinema-${self:provider.stage}-scrapers
     layers:
-      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:133 # https://github.com/shelfio/chrome-aws-lambda-layer
+      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:50 # https://github.com/shelfio/chrome-aws-lambda-layer
 
   analytics:
     handler: handler.analytics
@@ -113,7 +113,7 @@ functions:
     environment:
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
     layers:
-      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:133 # https://github.com/shelfio/chrome-aws-lambda-layer
+      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:50 # https://github.com/shelfio/chrome-aws-lambda-layer
 
   fillAnalytics:
     handler: handler.fillAnalytics
@@ -122,7 +122,7 @@ functions:
       PRIVATE_BUCKET: ${self:custom.scrapersOutputBucketName}
       DYNAMODB_ANALYTICS: ${self:custom.scrapersAnalyticsTableName}
     layers:
-      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:133 # https://github.com/shelfio/chrome-aws-lambda-layer
+      - arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:50 # https://github.com/shelfio/chrome-aws-lambda-layer
 
 resources:
   Description: expatcinema.com - ${self:provider.stage} stage
