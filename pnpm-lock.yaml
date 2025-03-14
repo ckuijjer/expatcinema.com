@@ -36,8 +36,8 @@ importers:
         specifier: ^6.1.3
         version: 6.1.3
       '@sparticuz/chromium':
-        specifier: ^131.0.1
-        version: 131.0.1
+        specifier: ^133.0.0
+        version: 133.0.0
       aws-cdk-lib:
         specifier: 2.180.0
         version: 2.180.0(constructs@10.4.2)
@@ -72,8 +72,8 @@ importers:
         specifier: 6.2.1
         version: 6.2.1
       puppeteer-core:
-        specifier: 24.0.0
-        version: 24.0.0
+        specifier: 24.3.1
+        version: 24.3.1
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -139,8 +139,8 @@ importers:
         specifier: ^3.5.2
         version: 3.5.2
       puppeteer:
-        specifier: 24.0.0
-        version: 24.0.0(typescript@5.8.2)
+        specifier: 24.3.1
+        version: 24.3.1(typescript@5.8.2)
       serverless:
         specifier: ^3.40.0
         version: 3.40.0
@@ -2293,8 +2293,8 @@ packages:
     resolution: {integrity: sha512-dfUnCxiN9H4ap84DvD2ubjw+3vUNpstxa0TneY/Paat8a3R4uQZDLSvWjmznAY/DoahqTHl9V46HF/Zs3F29pg==}
     engines: {node: '>= 10.0.0'}
 
-  '@puppeteer/browsers@2.7.0':
-    resolution: {integrity: sha512-bO61XnTuopsz9kvtfqhVbH6LTM1koxK0IlBR+yuVrM2LB7mk8+5o1w18l5zqd5cs8xlf+ntgambqRqGifMDjog==}
+  '@puppeteer/browsers@2.7.1':
+    resolution: {integrity: sha512-MK7rtm8JjaxPN7Mf1JdZIZKPD2Z+W7osvrC1vjpvfOX1K0awDIHYbNi89f7eotp7eMUn2shWnt03HwVbriXtKQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -2619,8 +2619,8 @@ packages:
     resolution: {integrity: sha512-piUTHyp2Axx3p/kc2CIJkYSv0BAaheBQmbACZgQSSfWUumWNW+R1lL+H9PDBxKJkvOeEX+hKYEFiwO8xagL8AQ==}
     engines: {node: '>=18.0.0'}
 
-  '@sparticuz/chromium@131.0.1':
-    resolution: {integrity: sha512-VfmHkQmb/Px0zjwdSQwjRMwFw63Qfj+g4Giumz4jiAGEpXHgIZk6xEwlUz6yiUHVDveK2TEgMR2MR6I3okOE7w==}
+  '@sparticuz/chromium@133.0.0':
+    resolution: {integrity: sha512-wioNxMtSxRI+Y6ymc/UFPX9lY7A1SDgBezjFITH6arwe5CONfWosNDGpgflUGYajxxGktb1k3kjJ83jWzbccBw==}
     engines: {node: '>= 16'}
 
   '@standard-schema/spec@1.0.0':
@@ -3572,13 +3572,8 @@ packages:
     engines: {node: '>=12.13.0'}
     hasBin: true
 
-  chromium-bidi@0.11.0:
-    resolution: {integrity: sha512-6CJWHkNRoyZyjV9Rwv2lYONZf1Xm0IuDyNq97nwSsxxP3wf5Bwy15K5rOvVKMtJ127jJBmxFUanSAOjgFRxgrA==}
-    peerDependencies:
-      devtools-protocol: '*'
-
-  chromium-bidi@0.12.0:
-    resolution: {integrity: sha512-xzXveJmX826GGq1MeE5okD8XxaDT8172CXByhFJ687eY65rbjOIebdbUuQh+jXKaNyGKI14Veb3KjLLmSueaxA==}
+  chromium-bidi@2.1.2:
+    resolution: {integrity: sha512-vtRWBK2uImo5/W2oG6/cDkkHSm+2t6VHgnj+Rcwhb0pP74OoUb4GipyRX/T/y39gYQPhioP0DPShn+A7P6CHNw==}
     peerDependencies:
       devtools-protocol: '*'
 
@@ -4189,8 +4184,8 @@ packages:
   detect-node@2.1.0:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==}
 
-  devtools-protocol@0.0.1367902:
-    resolution: {integrity: sha512-XxtPuC3PGakY6PD7dG66/o8KwJ/LkH2/EKe19Dcw58w53dv4/vSQEkn/SzuyhHE2q4zPgCkxQBxus3VV4ql+Pg==}
+  devtools-protocol@0.0.1402036:
+    resolution: {integrity: sha512-JwAYQgEvm3yD45CHB+RmF5kMbWtXBaOGwuxa87sZogHcLCv8c/IqnThaoQ1y60d7pXWjSKWQphPEc+1rAScVdg==}
 
   dezalgo@1.0.4:
     resolution: {integrity: sha512-rXSP0bf+5n0Qonsb+SVVfNfIsimO4HEtmnIpPHY8Q1UCzKlQrDMfdobr8nJOOsRgWCyMRqeSBQzmWUMq7zvVig==}
@@ -6809,12 +6804,12 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
-  puppeteer-core@24.0.0:
-    resolution: {integrity: sha512-bHVXmnkYnMVSbsD+pJGt8fmGZLaVYOAieVnJcDxtLIVTMq0s5RfYdzN4xVlFoBQ3T06/sPkXxca3VLVfaqLxzg==}
+  puppeteer-core@24.3.1:
+    resolution: {integrity: sha512-585ccfcTav4KmlSmYbwwOSeC8VdutQHn2Fuk0id/y/9OoeO7Gg5PK1aUGdZjEmos0TAq+pCpChqFurFbpNd3wA==}
     engines: {node: '>=18'}
 
-  puppeteer@24.0.0:
-    resolution: {integrity: sha512-KRF2iWdHGSZkQ8pqftR5XR1jqnTqKRVZghMGJfJ665zS8++0cErRG2tXWfp98YqvMzsVLHfzBtTQlk0MMhCxzg==}
+  puppeteer@24.3.1:
+    resolution: {integrity: sha512-k0OJ7itRwkr06owp0CP3f/PsRD7Pdw4DjoCUZvjGr+aNgS1z6n/61VajIp0uBjl+V5XAQO1v/3k9bzeZLWs9OQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -8186,9 +8181,6 @@ packages:
   zip-stream@4.1.1:
     resolution: {integrity: sha512-9qv4rlDiopXg4E69k+vMHjNN63YFMe9sZMrdlvKnCjlCRWeCBswPPMPUfx+ipsAWq1LXHe70RcbaHdJJpS6hyQ==}
     engines: {node: '>= 10'}
-
-  zod@3.23.8:
-    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
   zod@3.24.1:
     resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
@@ -11356,7 +11348,7 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.5.1
       '@parcel/watcher-win32-x64': 2.5.1
 
-  '@puppeteer/browsers@2.7.0':
+  '@puppeteer/browsers@2.7.1':
     dependencies:
       debug: 4.4.0(supports-color@8.1.1)
       extract-zip: 2.0.1
@@ -11364,7 +11356,6 @@ snapshots:
       proxy-agent: 6.5.0
       semver: 7.7.1
       tar-fs: 3.0.8
-      unbzip2-stream: 1.4.3
       yargs: 17.7.2
     transitivePeerDependencies:
       - bare-buffer
@@ -11964,7 +11955,7 @@ snapshots:
       '@smithy/types': 4.1.0
       tslib: 2.8.1
 
-  '@sparticuz/chromium@131.0.1':
+  '@sparticuz/chromium@133.0.0':
     dependencies:
       follow-redirects: 1.15.9
       tar-fs: 3.0.8
@@ -13114,15 +13105,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  chromium-bidi@0.11.0(devtools-protocol@0.0.1367902):
+  chromium-bidi@2.1.2(devtools-protocol@0.0.1402036):
     dependencies:
-      devtools-protocol: 0.0.1367902
-      mitt: 3.0.1
-      zod: 3.23.8
-
-  chromium-bidi@0.12.0(devtools-protocol@0.0.1367902):
-    dependencies:
-      devtools-protocol: 0.0.1367902
+      devtools-protocol: 0.0.1402036
       mitt: 3.0.1
       zod: 3.24.1
 
@@ -13766,7 +13751,7 @@ snapshots:
 
   detect-node@2.1.0: {}
 
-  devtools-protocol@0.0.1367902: {}
+  devtools-protocol@0.0.1402036: {}
 
   dezalgo@1.0.4:
     dependencies:
@@ -17000,12 +16985,12 @@ snapshots:
 
   punycode@2.3.1: {}
 
-  puppeteer-core@24.0.0:
+  puppeteer-core@24.3.1:
     dependencies:
-      '@puppeteer/browsers': 2.7.0
-      chromium-bidi: 0.11.0(devtools-protocol@0.0.1367902)
+      '@puppeteer/browsers': 2.7.1
+      chromium-bidi: 2.1.2(devtools-protocol@0.0.1402036)
       debug: 4.4.0(supports-color@8.1.1)
-      devtools-protocol: 0.0.1367902
+      devtools-protocol: 0.0.1402036
       typed-query-selector: 2.12.0
       ws: 8.18.1
     transitivePeerDependencies:
@@ -17014,13 +16999,13 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  puppeteer@24.0.0(typescript@5.8.2):
+  puppeteer@24.3.1(typescript@5.8.2):
     dependencies:
-      '@puppeteer/browsers': 2.7.0
-      chromium-bidi: 0.12.0(devtools-protocol@0.0.1367902)
+      '@puppeteer/browsers': 2.7.1
+      chromium-bidi: 2.1.2(devtools-protocol@0.0.1402036)
       cosmiconfig: 9.0.0(typescript@5.8.2)
-      devtools-protocol: 0.0.1367902
-      puppeteer-core: 24.0.0
+      devtools-protocol: 0.0.1402036
+      puppeteer-core: 24.3.1
       typed-query-selector: 2.12.0
     transitivePeerDependencies:
       - bare-buffer
@@ -18766,7 +18751,5 @@ snapshots:
       archiver-utils: 3.0.4
       compress-commons: 4.1.2
       readable-stream: 3.6.2
-
-  zod@3.23.8: {}
 
   zod@3.24.1: {}
