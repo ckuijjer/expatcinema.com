@@ -47,7 +47,9 @@ export class BackendStack extends cdk.Stack {
         sourceMap: true,
         minify: true,
         metafile: true,
-        externalModules: ['emitter', '@sparticuz/chromium'],
+        // externalModules: ['emitter', '@sparticuz/chromium'],
+        externalModules: ['emitter'],
+        nodeModules: ['@sparticuz/chromium'],
       },
       environment: {
         ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
@@ -114,7 +116,7 @@ export class BackendStack extends cdk.Stack {
           SCRAPERS: config.SCRAPERS,
           SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
         },
-        layers: [chromeAwsLambdaLayer],
+        // layers: [chromeAwsLambdaLayer],
       },
     )
 
@@ -156,7 +158,7 @@ export class BackendStack extends cdk.Stack {
           SCRAPERS: config.SCRAPERS,
           SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
         },
-        layers: [chromeAwsLambdaLayer],
+        // layers: [chromeAwsLambdaLayer],
       },
     )
 
