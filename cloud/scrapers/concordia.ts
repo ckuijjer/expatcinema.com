@@ -181,7 +181,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   return screenings.flat()
 }
 
-if (require.main === module) {
+if (import.meta.url === new URL(import.meta.url).href) {
   // extractFromMoviePage(
   //   'https://www.concordia.nl/film/the-substance',
   //   // 'https://www.concordia.nl/film/een-schitterend-gebrek',

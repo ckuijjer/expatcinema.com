@@ -130,7 +130,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   return screenings
 }
 
-if (require.main === module) {
+if (import.meta.url === new URL(import.meta.url).href) {
   // extractFromMoviePage({
   //   url: 'https://forum.nl/en/whats-on/film/dead-talents-society',
   // })

@@ -131,7 +131,7 @@ const extractFromMainPage = async () => {
   return screenings
 }
 
-if (require.main === module) {
+if (import.meta.url === new URL(import.meta.url).href) {
   //   extractFromMoviePage(
   // 	 //
   //   )

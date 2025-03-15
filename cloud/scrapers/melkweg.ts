@@ -80,7 +80,7 @@ const extractFromMainPage = async () => {
   return screenings
 }
 
-if (require.main === module) {
+if (import.meta.url === new URL(import.meta.url).href) {
   // extractFromMoviePage({
   //   permalink: 'https://www.lux-nijmegen.nl/programma/coup-de-chance/',
   //   // 'https://www.lux-nijmegen.nl/programma/english-subs-perfect-days/',

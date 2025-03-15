@@ -123,7 +123,7 @@ const extractFromMainPage = async () => {
 
 export default extractFromMainPage
 
-if (require.main === module) {
+if (import.meta.url === new URL(import.meta.url).href) {
   // const url = 'https://uitkijk.nl/film/asian-movie-night-cat-got-your-tongue'
   // extractFromMoviePage(url).then((screenings) => {
   //   console.log({ screenings })

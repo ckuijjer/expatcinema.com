@@ -30,6 +30,7 @@ import eyefilm from './eyefilm'
 import filmhuisdenhaag from './filmhuisdenhaag'
 import filmhuislumen from './filmhuislumen'
 import filmkoepel from './filmkoepel'
+import florafilmtheater from './florafilmtheater'
 import focusarnhem from './focusarnhem'
 import forumgroningen from './forumgroningen'
 import hartlooper from './hartlooper'
@@ -65,6 +66,7 @@ const SCRAPERS = {
   filmhuisdenhaag,
   filmhuislumen,
   filmkoepel,
+  florafilmtheater,
   focusarnhem,
   forumgroningen,
   hartlooper,
