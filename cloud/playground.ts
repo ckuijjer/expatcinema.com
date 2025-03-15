@@ -178,7 +178,7 @@ const playground = async ({ event, context } = {}) => {
   console.log(JSON.stringify(result, null, 2))
 }
 
-if (require.main === module) {
+if (import.meta.url === new URL(import.meta.url).href) {
   playground()
 }
 
