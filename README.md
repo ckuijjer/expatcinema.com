@@ -99,4 +99,4 @@ When running a puppeteer based scraper locally, e.g. `pnpm tsx scrapers/ketelhui
 Error: Failed to launch the browser process! spawn /tmp/localChromium/chromium/mac_arm-1205129/chrome-mac/Chromium.app/Contents/MacOS/Chromium ENOENT
 ```
 
-you need to install Chromium locally, run `pnpm install-chromium` to do so and update `LOCAL_CHROMIUM_EXECUTABLE_PATH` in `browser.ts` to point to the Chromium executable. See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how
+you need to install Chromium locally, run `pnpm install-chromium` which installs Chromium locally and then updates the `LOCAL_CHROMIUM_EXECUTABLE_PATH` in `browser-local-constants.ts` to point to the Chromium executable. See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for more information about how to install a locally running chromium.

@@ -1,15 +1,8 @@
 import { Logger } from '@aws-lambda-powertools/logger'
 import chromium from '@sparticuz/chromium'
-import puppeteer, {
-  Browser,
-  PuppeteerLaunchOptions,
-  defaultArgs,
-} from 'puppeteer-core'
+import puppeteer, { Browser, LaunchOptions, defaultArgs } from 'puppeteer-core'
 
-// see https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode
-// for how to install a locally running chromium
-const LOCAL_CHROMIUM_EXECUTABLE_PATH =
-  '/tmp/localChromium/chromium/mac_arm-1283827/chrome-mac/Chromium.app/Contents/MacOS/Chromium'
+import { LOCAL_CHROMIUM_EXECUTABLE_PATH } from './browser-local-constants.ts'
 
 const createBrowserSingleton = () => {
   let instance: Browser
@@ -20,14 +13,14 @@ const createBrowserSingleton = () => {
     try {
       logger?.info('running locally?', { isLocal: process.env.IS_LOCAL })
 
-      const options: PuppeteerLaunchOptions = {
+      const options: LaunchOptions = {
         args: process.env.IS_LOCAL ? defaultArgs() : chromium.args,
         defaultViewport: chromium.defaultViewport,
         executablePath: process.env.IS_LOCAL
           ? LOCAL_CHROMIUM_EXECUTABLE_PATH
           : await chromium.executablePath(),
         headless: process.env.IS_LOCAL ? false : chromium.headless,
-        ignoreHTTPSErrors: true,
+        acceptInsecureCerts: true,
       }
 
       logger?.info('launching browser', { options })
