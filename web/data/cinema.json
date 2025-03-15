@@ -208,5 +208,11 @@
     "city": "Enschede",
     "url": "https://www.concordia.nl/",
     "logo": "concordia.png"
+  },
+  {
+    "name": "Flora Filmtheater",
+    "city": "Den Haag",
+    "url": "https://https://florafilmtheater.nl/",
+    "logo": "florafilmtheater.png"
   }
 ]
