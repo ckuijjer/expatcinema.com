@@ -6,17 +6,18 @@
 
 ### Deploy
 
-A GitHub Action is used to deploy the Serverless application to AWS. The action is triggered by a push to the `main` branch.
+A GitHub Action is used to deploy to AWS. The action is triggered by a push to the `main` branch.
 
 ### Scrapers
 
 #### Scheduled
 
-The scrapers run on a daily schedule defined in `cloud/serverless.yml`
+The scrapers run on a daily schedule defined in the cdk stack in `cloud/lib/backend-stack.ts`.
 
 #### Manual
 
-- `cd cloud; pnpm scrapers` to run the scrapers on the _dev_ stage
+**Note: Currently broken**
+
 - `cd cloud; pnpm scrapers:prod` to run the scrapers on the _prod_ stage
 
 ## Deploy Web
@@ -30,6 +31,8 @@ The web is deployed on a daily schedule using GitHub Actions. The schedule is de
 Easiest is to bump the version in `web/package.json` and push to master. This will trigger a GitHub Action that will deploy the web app to GitHub Pages. Note there's only a _prod_ stage for the web app.
 
 ## Running scrapers locally
+
+**Note: Currently broken**
 
 ```
 pnpm scrapers:local
@@ -126,7 +129,7 @@ pnpm add puppeteer-core@22.6.3 @sparticuz/chromium@^123.0.1
 pnpm add -D puppeteer@22.6.3
 ```
 
-After installing the new version of puppeteer and chromium update the lambda layer in serverless.yml, by doing a search and replace on `arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:` and change e.g. `44` to `45`
+After installing the new version of puppeteer and chromium update the lambda layer in the cdk stack, by doing a search and replace on `arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:` and change e.g. `44` to `45`
 
 ### Installing Chromium for use by puppeteer-core locally
 

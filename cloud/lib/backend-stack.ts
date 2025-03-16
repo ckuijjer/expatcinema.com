@@ -32,7 +32,7 @@ export class BackendStack extends cdk.Stack {
 
     const DEFAULT_FUNCTION_ENVIRONMENT_PROPS = {
       NODE_OPTIONS: '--enable-source-maps --trace-warnings',
-      POWERTOOLS_SERVICE_NAME: `${id}-${stage}`,
+      POWERTOOLS_SERVICE_NAME: id,
     }
 
     const DEFAULT_FUNCTION_PROPS: lambdaNodejs.NodejsFunctionProps = {

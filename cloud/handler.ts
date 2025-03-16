@@ -15,7 +15,7 @@ const scrapersWrappedWithHTTP = async (
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
+      message: 'Running scrapers is done!',
       input: event,
     }),
   }

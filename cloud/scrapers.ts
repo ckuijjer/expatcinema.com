@@ -9,7 +9,7 @@ export const handler = async (event: APIGatewayEvent, context: Context) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
+      message: 'Running scrapers done',
       input: event,
     }),
   }

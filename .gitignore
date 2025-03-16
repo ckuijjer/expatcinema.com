@@ -19,9 +19,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-cloud/.serverless
 cloud/output
-cloud/.esbuild
 web/public/robots.txt
 web/public/sitemap*
 web/.next
