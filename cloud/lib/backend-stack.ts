@@ -13,9 +13,7 @@ import 'source-map-support/register'
 
 import { getConfig } from './config'
 
-// TODO: use the line below when everything works,
-// type Stage = 'dev' | 'prod'
-type Stage = 'cdk'
+type Stage = 'dev' | 'prod'
 
 type BackendStackProps = cdk.StackProps & { stage: Stage }
 
@@ -121,11 +119,16 @@ export class BackendStack extends cdk.Stack {
     )
 
     // Schedule for Scrapers Lambda
-    // TODO: Turn on the schedule eventually
-    // new events.Rule(this, 'scrapers-schedule-rule', {
-    //   schedule: events.Schedule.cron({ minute: '0', hour: '3', day: '*', month: '*', year: '*' }),
-    //   targets: [new targets.LambdaFunction(scrapersLambda)],
-    // });
+    new events.Rule(this, 'scrapers-schedule-rule', {
+      schedule: events.Schedule.cron({
+        minute: '0',
+        hour: '3',
+        day: '*',
+        month: '*',
+        year: '*',
+      }),
+      targets: [new targets.LambdaFunction(scrapersLambda)],
+    })
 
     scrapersLambda.logGroup.addSubscriptionFilter('notify-slack-subscription', {
       destination: new cdk.aws_logs_destinations.LambdaDestination(

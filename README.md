@@ -59,10 +59,67 @@ GitHub actions is used, `web/` uses JamesIves/github-pages-deploy-action to depl
 
 ## Quick local backup
 
+### Backup
+
+Creates a backup of the S3 buckets and DynamoDB tables
+
+```sh
+cd backup/
+export STAGE=prod
+aws s3 sync s3://expatcinema-scrapers-output-$STAGE expatcinema-scrapers-output-$STAGE --profile casper
+aws s3 sync s3://expatcinema-public-$STAGE expatcinema-public-$STAGE --profile casper
+aws dynamodb scan --table-name expatcinema-scrapers-analytics-$STAGE --profile casper > expatcinema-scrapers-analytics-$STAGE.json
+aws dynamodb scan --table-name expatcinema-scrapers-movie-metadata-$STAGE --profile casper > expatcinema-scrapers-movie-metadata-$STAGE.json
 ```
-aws s3 sync s3://expatcinema-scrapers-output expatcinema-scrapers-output --profile casper
-aws s3 sync s3://expatcinema-public expatcinema-public--profile casper
-aws dynamodb scan --table-name expatcinema-scrapers-analytics --profile casper > expatcinema-scrapers-analytics.json
+
+For the DynamoDB tables, it might be better to use the _Export to S3_ functionality in the AWS Console, as these can be imported using `aws dynamodb import-table`
+
+### Restore
+
+The S3 buckets can be restored by running the following commands
+
+```sh
+cd backup/
+export STAGE=prod
+aws s3 sync expatcinema-scrapers-output-$STAGE s3://expatcinema-scrapers-output-$STAGE --profile casper
+aws s3 sync expatcinema-public-$STAGE s3://expatcinema-public-$STAGE --profile casper
+```
+
+The DynamoDB tables can be restored by running the following commands. Note that this doesn't batch, it just puts the items back one by one, which might be slow for large tables.
+
+```sh
+cd backup/
+export STAGE=prod
+
+jq -c '.Items[]' expatcinema-scrapers-analytics-$STAGE.json | while read -r item; do
+  aws dynamodb put-item \
+    --table-name expatcinema-scrapers-analytics-$STAGE \
+    --item "$item" \
+    --profile casper
+done
+
+jq -c '.Items[]' expatcinema-scrapers-movie-metadata-$STAGE.json | while read -r item; do
+  aws dynamodb put-item \
+    --table-name expatcinema-scrapers-movie-metadata-$STAGE \
+    --item "$item" \
+    --profile casper
+done
+```
+
+```sh
+jq -c '.Items[]' expatcinema-scrapers-analytics-prod.json | while read -r item; do
+  aws dynamodb put-item \
+    --table-name expatcinema-scrapers-analytics-cdk \
+    --item "$item" \
+    --profile casper
+done
+
+jq -c '.Items[]' expatcinema-scrapers-movie-metadata-prod.json | while read -r item; do
+  aws dynamodb put-item \
+    --table-name expatcinema-scrapers-movie-metadata-cdk \
+    --item "$item" \
+    --profile casper
+done
 ```
 
 ### Favicon

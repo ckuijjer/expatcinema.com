@@ -1,7 +1,8 @@
 const MINOR_WORDS = 'a an and as at by for from in of on or the to with'
 
 // Basically \b with better unicode support, see https://stackoverflow.com/a/57290540/65971
-const UNICODE_BOUNDARY = /(?<=\p{L})(?=\P{L})|(?<=\P{L})(?=\p{L})/u
+// and extended it to not split on ' (e.g. I'm still here should not be split into I, ', and m)
+const UNICODE_BOUNDARY = /(?<=[\p{L}])(?=[^'\p{L}])|(?<=[^'\p{L}])(?=[\p{L}])/u
 
 const isRomanNumeral = (word: string) => {
   return /^[IVXLCDM]+$/.test(word) // FIXME: This is not correct, e.g. 'IXVI' is not a valid roman numeral
