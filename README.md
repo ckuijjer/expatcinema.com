@@ -106,22 +106,6 @@ jq -c '.Items[]' expatcinema-scrapers-movie-metadata-$STAGE.json | while read -r
 done
 ```
 
-```sh
-jq -c '.Items[]' expatcinema-scrapers-analytics-prod.json | while read -r item; do
-  aws dynamodb put-item \
-    --table-name expatcinema-scrapers-analytics-cdk \
-    --item "$item" \
-    --profile casper
-done
-
-jq -c '.Items[]' expatcinema-scrapers-movie-metadata-prod.json | while read -r item; do
-  aws dynamodb put-item \
-    --table-name expatcinema-scrapers-movie-metadata-cdk \
-    --item "$item" \
-    --profile casper
-done
-```
-
 ### Favicon
 
 - Use https://favicongrabber.com/ to grab a favicon for the cinema.json file
