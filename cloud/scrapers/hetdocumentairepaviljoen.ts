@@ -131,10 +131,7 @@ const extractFromMainPage = async () => {
   return screenings
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
+if (import.meta.url === new URL(import.meta.url).href) {
   //   extractFromMoviePage(
   // 	 //
   //   )
