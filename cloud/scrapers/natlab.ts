@@ -144,7 +144,10 @@ const extractFromMainPage = async () => {
   return screenings
 }
 
-if (import.meta.url === new URL(import.meta.url).href) {
+if (
+  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
+  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
+) {
   extractFromMoviePage({
     url: 'https://www.natlab.nl/nl/programma/7263/zar-amir-ebrahimi-guy-nattiv/tatami-eng-subs',
     title: '',

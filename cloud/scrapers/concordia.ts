@@ -181,7 +181,10 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   return screenings.flat()
 }
 
-if (import.meta.url === new URL(import.meta.url).href) {
+if (
+  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
+  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
+) {
   // extractFromMoviePage(
   //   'https://www.concordia.nl/film/the-substance',
   //   // 'https://www.concordia.nl/film/een-schitterend-gebrek',

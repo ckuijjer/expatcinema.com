@@ -178,7 +178,10 @@ const playground = async ({ event, context } = {}) => {
   console.log(JSON.stringify(result, null, 2))
 }
 
-if (import.meta.url === new URL(import.meta.url).href) {
+if (
+  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
+  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
+) {
   playground()
 }
 
