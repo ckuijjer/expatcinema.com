@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib'
+import dotenv from 'dotenv'
 
 import { BackendStack } from '../lib/backend-stack'
 
+dotenv.config()
+
 const app = new cdk.App()
-const stage = 'prod'
+const stage = process.env.STAGE || 'prod'
 
 new BackendStack(app, `expatcinema-${stage}`, {
   description: 'expatcinema.com',

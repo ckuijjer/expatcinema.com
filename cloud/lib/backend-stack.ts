@@ -46,8 +46,21 @@ export class BackendStack extends cdk.Stack {
         minify: true,
         metafile: true,
         // externalModules: ['emitter', '@sparticuz/chromium'],
-        externalModules: ['emitter'],
+        externalModules: [
+          'emitter',
+          '@aws-sdk/client-dynamodb',
+          '@aws-sdk/client-s3',
+          '@aws-sdk/lib-dynamodb',
+        ],
         nodeModules: ['@sparticuz/chromium'],
+        // format: lambdaNodejs.OutputFormat.ESM,
+        // Above unfortunately doesn't work yet, see error message below
+        // "Error: Dynamic require of \"http\" is not supported",
+        // "    at file:///var/task/index.mjs:1:436",
+        // "    at PacProxyAgent (/node_modules/.pnpm/proxy-agent@6.5.0/node_modules/proxy-agent/src/index.ts:1:1)",
+        // "    at file:///var/task/index.mjs:1:548",
+        // "    at <anonymous> (/node_modules/.pnpm/@puppeteer+browsers@2.7.1/node_modules/@puppeteer/browsers/src/httpUtil.ts:12:26)",
+        // "    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)",
       },
       environment: {
         ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
@@ -71,6 +84,7 @@ export class BackendStack extends cdk.Stack {
       'notify-slack-lambda',
       {
         ...DEFAULT_FUNCTION_PROPS,
+        functionName: `${id}-notify-slack`,
         description: 'Notify Slack Lambda',
         entry: 'notifySlack.ts',
         environment: {
@@ -94,6 +108,7 @@ export class BackendStack extends cdk.Stack {
       'scrapers-lambda',
       {
         ...DEFAULT_FUNCTION_PROPS,
+        functionName: `${id}-scrapers`,
         description: 'Scrapers Lambda',
         entry: 'scrapers.ts', // TODO: Fix the issue with bundling (likely see scrapers.ts and scrapers/index.ts)
 
@@ -143,6 +158,7 @@ export class BackendStack extends cdk.Stack {
       'playground-lambda',
       {
         ...DEFAULT_FUNCTION_PROPS,
+        functionName: `${id}-playground`,
         description: 'Playground Lambda',
         entry: 'playground.ts',
         timeout: cdk.Duration.minutes(5),
@@ -171,6 +187,7 @@ export class BackendStack extends cdk.Stack {
       'analytics-lambda',
       {
         ...DEFAULT_FUNCTION_PROPS,
+        functionName: `${id}-analytics`,
         description: 'Analytics Lambda',
         entry: 'analytics.ts',
         environment: {
@@ -192,6 +209,7 @@ export class BackendStack extends cdk.Stack {
       'fill-analytics-lambda',
       {
         ...DEFAULT_FUNCTION_PROPS,
+        functionName: `${id}-fill-analytics`,
         description: 'Fill Analytics',
         entry: 'fillAnalytics.ts',
         environment: {

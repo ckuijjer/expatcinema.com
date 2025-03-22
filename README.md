@@ -58,7 +58,7 @@ with the LOG_LEVEL=debug used to have debug output from the scrapers show up in 
 
 GitHub actions is used, `web/` uses JamesIves/github-pages-deploy-action to deploy to the _gh-pages_ branch, and the GitHub settings has Pages take the source branch _gh-pages_ which triggers the GitHub built in _pages-build-deployment_
 
-`.env.*` files are only used for the local stage, not for running other stages locally, and not for CI/CD, for that take a look at the GitHub secrets and variables (on repository and environment level)
+The `.env` file is only used when running it locally, when deploying using CI/CD the environment variables are set in the GitHub _Secrets and Variables > Actions > Repository Secrets_. The `.env` file is not checked into git, so it won't be available in the CI/CD environment.
 
 ## Quick local backup
 
