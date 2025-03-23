@@ -35,7 +35,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: CDK Bootstrap
-        run: pnpm cdk bootstrap
+        run: pnpm run bootstrap
       - name: CDK Deploy
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -45,4 +45,4 @@ jobs:
           GOOGLE_CUSTOM_SEARCH_API_KEY: ${{ secrets.GOOGLE_CUSTOM_SEARCH_API_KEY }}
           SCRAPERS: ${{ vars.SCRAPERS }}
           SCRAPEOPS_API_KEY: ${{ secrets.SCRAPEOPS_API_KEY }}
-        run: pnpm cdk deploy --require-approval never
+        run: pnpm run deploy:ci

@@ -17,6 +17,8 @@
     "install-chromium": "npx @puppeteer/browsers install chromium@latest --path /tmp/localChromium | awk '{print $2}' | xargs -I {} echo 'export const LOCAL_CHROMIUM_EXECUTABLE_PATH = `{}`;' > browser-local-constants.ts",
     "build": "tsc",
     "test": "jest",
+    "bootstrap": "cdk bootstrap",
+    "deploy:ci": "cdk deploy --require-approval never",
     "deploy": "AWS_PROFILE=casper STAGE=dev cdk deploy --hotswap-fallback",
     "synth": "AWS_PROFILE=casper STAGE=dev cdk synth",
     "watch": "AWS_PROFILE=casper STAGE=dev cdk watch --hotswap-fallback",
