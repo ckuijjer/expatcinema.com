@@ -1,7 +1,7 @@
 const MINOR_WORDS = 'a an and as at by for from in of on or the to with'
 
 // Basically \b with better unicode support, see https://stackoverflow.com/a/57290540/65971
-// and extended it to not split on ' (e.g. I'm still here should not be split into I, ', and m)
+// and extended it to not split on ' (e.g. I'm still here should not be split into I, '’, and m)
 const UNICODE_BOUNDARY = /(?<=[\p{L}])(?=[^'\p{L}])|(?<=[^'\p{L}])(?=[\p{L}])/u
 
 const isRomanNumeral = (word: string) => {
@@ -21,6 +21,7 @@ export const titleCase = (input: string) => {
 
   return input
     .trim() // remove leading and trailing spaces
+    .replace(/’/g, "'") // replace all fancy apostrophes with normal ones
     .split(UNICODE_BOUNDARY)
     .map((word, i) => {
       if (isAllSpaces(word)) {
