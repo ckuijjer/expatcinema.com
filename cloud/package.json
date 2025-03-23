@@ -17,9 +17,10 @@
     "install-chromium": "npx @puppeteer/browsers install chromium@latest --path /tmp/localChromium | awk '{print $2}' | xargs -I {} echo 'export const LOCAL_CHROMIUM_EXECUTABLE_PATH = `{}`;' > browser-local-constants.ts",
     "build": "tsc",
     "test": "jest",
-    "cdk": "AWS_PROFILE=casper STAGE=dev cdk",
-    "deploy": "pnpm cdk deploy --hotswap-fallback",
-    "watch": "pnpm cdk watch --hotswap-fallback"
+    "deploy": "AWS_PROFILE=casper STAGE=dev cdk deploy --hotswap-fallback",
+    "synth": "AWS_PROFILE=casper STAGE=dev cdk synth",
+    "watch": "AWS_PROFILE=casper STAGE=dev cdk watch --hotswap-fallback",
+    "scrapers": "AWS_PROFILE=casper aws lambda invoke expatcinema-dev-scrapers"
   },
   "author": "Casper Kuijjer",
   "license": "ISC",
