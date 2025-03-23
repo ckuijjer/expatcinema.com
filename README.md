@@ -4,27 +4,47 @@
 
 ## Deploy Cloud
 
-### Deploy
+### Deploy Prod
 
 A GitHub Action is used to deploy to AWS. The action is triggered by a push to the `main` branch.
 
+The `.env` file from `cloud/` is only used when running it locally, when deploying using CI/CD the environment variables are set in the GitHub _Secrets and Variables > Actions > Repository Secrets_. The `.env` file is not checked into git, so it won't be available in the CI/CD environment.
+
+### Deploy Dev
+
+It's possible to create a _dev_ stage, by locally running e.g.
+
+```sh
+pnpm run synth  # synthesize the cdk stack for dev
+pnpm run watch  # watch for changes, deploy to dev
+pnpm run deploy # deploy to dev
+```
+
 ### Scrapers
 
-#### Scheduled
+#### Scheduled Prod
 
 The scrapers run on a daily schedule defined in the cdk stack in `cloud/lib/backend-stack.ts`.
 
-#### Manual
+#### Manual Prod
 
-**Note: Currently broken**
+- `cd cloud; pnpm run scrapers:prod` to run the scrapers on the _prod_ stage, see _output/expatcinema-prod-scrapers.json_ for the output of the scrapers.
 
-- `cd cloud; pnpm scrapers:prod` to run the scrapers on the _prod_ stage
+#### Manual Dev
+
+- `cd cloud; pnpm run scrapers` to run the scrapers on the _dev_ stage, see _output/expatcinema-dev-scrapers.json_ for the output of the scrapers.
+
+If you want to run it on only a few scrapers, you can use the `SCRAPERS` environment variable in _.env_ to specify which scrapers to run. After making changes, `pnpm run deploy` and `pnpm run scrapers`.
+
+Or as `cdk watch` doesn't trigger on _.env_ file changes, when running `pnpm run watch` trigger a deploy by making a change in a _.ts_ file, and afterwards run `pnpm run scrapers`
 
 ## Deploy Web
 
-### Scheduled
+### Scheduled Prod
 
 The web is deployed on a daily schedule using GitHub Actions. The schedule is defined in `.github/workflows/web.yml`. The schedule is needed to have the SSG (static site generator) get the latest data from the scrapers.
+
+GitHub actions is used, `web/` uses JamesIves/github-pages-deploy-action to deploy to the _gh-pages_ branch, and the GitHub settings has Pages take the source branch _gh-pages_ which triggers the GitHub built in _pages-build-deployment_
 
 ### Manual
 
@@ -35,7 +55,7 @@ Easiest is to bump the version in `web/package.json` and push to master. This wi
 **Note: Currently broken**
 
 ```
-pnpm scrapers:local
+pnpm run scrapers:local
 ```
 
 Stores the output in _cloud/output_ instead of S3 buckets and DynamoDB
@@ -53,12 +73,6 @@ if (require.main === module) {
 ```
 
 with the LOG_LEVEL=debug used to have debug output from the scrapers show up in the console
-
-## CI/CD
-
-GitHub actions is used, `web/` uses JamesIves/github-pages-deploy-action to deploy to the _gh-pages_ branch, and the GitHub settings has Pages take the source branch _gh-pages_ which triggers the GitHub built in _pages-build-deployment_
-
-The `.env` file is only used when running it locally, when deploying using CI/CD the environment variables are set in the GitHub _Secrets and Variables > Actions > Repository Secrets_. The `.env` file is not checked into git, so it won't be available in the CI/CD environment.
 
 ## Quick local backup
 

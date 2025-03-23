@@ -1,16 +1,15 @@
-import { APIGatewayEvent, Context } from 'aws-lambda'
+import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware'
+import middy from '@middy/core'
 
-import { handler as scrapers } from './scrapers/index.ts'
+import { logger as parentLogger } from './powertools'
+import { scrapers } from './scrapers/index.ts'
 
-// NOTE: this one is only used by the CDK stack, not the Serverless Framework stack
-export const handler = async (event: APIGatewayEvent, context: Context) => {
-  await scrapers(event, context)
+const logger = parentLogger.createChild({
+  persistentLogAttributes: {
+    scraper: 'combined',
+  },
+})
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Running scrapers done',
-      input: event,
-    }),
-  }
-}
+export const handler = middy(scrapers).use(
+  injectLambdaContext(logger, { clearState: true }),
+)

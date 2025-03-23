@@ -1,8 +1,5 @@
-import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { PutCommand } from '@aws-sdk/lib-dynamodb'
-import middy from '@middy/core'
-import { APIGatewayEvent, Context } from 'aws-lambda'
 import diacritics from 'diacritics'
 import { mkdir, writeFile } from 'fs/promises'
 import { DateTime, Settings } from 'luxon'
@@ -12,7 +9,7 @@ import { dirname } from 'path'
 import { closeBrowser } from '../browser'
 import documentClient from '../documentClient'
 import getMetadata from '../metadata'
-import { logger as parentLogger } from '../powertools'
+import { logger } from '../powertools'
 import { Screening } from '../types'
 // TODO: esbuild doesn't support dynamic import, hence all the imports below
 // SCRAPERS.map(async (name) => {
@@ -90,12 +87,6 @@ const SCRAPERS = {
   themovies,
 }
 
-const logger = parentLogger.createChild({
-  persistentLogAttributes: {
-    scraper: 'combined',
-  },
-})
-
 // Set the default timezone to Europe/Amsterdam, otherwise AWS Lambda will scrape as UTC and running it locally
 // as Europe/Amsterdam
 Settings.defaultZone = 'Europe/Amsterdam'
@@ -159,7 +150,7 @@ const getEnabledScrapers = () => {
   return SCRAPERS
 }
 
-const scrapers = async (event: APIGatewayEvent, context: Context) => {
+export const scrapers = async () => {
   try {
     const ENABLED_SCRAPERS = getEnabledScrapers()
 
@@ -273,7 +264,3 @@ const scrapers = async (event: APIGatewayEvent, context: Context) => {
     logger.error('error scraping (main loop)', { error })
   }
 }
-
-export const handler = middy(scrapers).use(
-  injectLambdaContext(logger, { clearState: true }),
-)

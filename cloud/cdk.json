@@ -11,7 +11,8 @@
       "package*.json",
       "yarn.lock",
       "node_modules",
-      "test"
+      "test",
+      "output"
     ]
   },
   "context": {
