@@ -38,6 +38,8 @@ If you want to run it on only a few scrapers, you can use the `SCRAPERS` environ
 
 Or as `cdk watch` doesn't trigger on _.env_ file changes, when running `pnpm run watch` trigger a deploy by making a change in a _.ts_ file, and afterwards run `pnpm run scrapers`
 
+`pnpm run config:scraper` can be used to get the lambda function configuration for the scrapers.
+
 ## Deploy Web
 
 ### Scheduled Prod

@@ -22,6 +22,7 @@
     "deploy": "AWS_PROFILE=casper STAGE=dev cdk deploy --hotswap-fallback",
     "synth": "AWS_PROFILE=casper STAGE=dev cdk synth",
     "watch": "AWS_PROFILE=casper STAGE=dev cdk watch --hotswap-fallback",
+    "config:scrapers": "AWS_PROFILE=casper aws lambda get-function-configuration --function-name expatcinema-dev-scrapers",
     "scrapers": "AWS_PROFILE=casper aws lambda invoke --function-name expatcinema-dev-scrapers output/expatcinema-dev-scrapers.json",
     "scrapers:prod": "AWS_PROFILE=casper aws lambda invoke --function-name expatcinema-prod-scrapers output/expatcinema-prod-scrapers.json"
   },
