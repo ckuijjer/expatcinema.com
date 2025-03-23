@@ -1,4 +1,4 @@
-name: CDK
+name: Cloud
 
 on:
   push: # Runs on pushes targeting the default branch.
@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'cloud/**'
-      - '.github/workflows/cdk.yml'
+      - '.github/workflows/cloud.yml'
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
 defaults:
