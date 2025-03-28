@@ -1,13 +1,15 @@
+// should be your first import
 import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware'
 import middy from '@middy/core'
 import diacritics from 'diacritics'
 import got from 'got'
 import { DateTime, Settings } from 'luxon'
 import pMap from 'p-map'
-import { logger as parentLogger } from 'powertools'
+import whyIsNodeRunning from 'why-is-node-running'
 
-import { getBrowser } from './browser'
+import { closeBrowser, getBrowser } from './browser'
 import getMetadata from './metadata'
+import { logger as parentLogger } from './powertools'
 import { Screening } from './types'
 
 const logger = parentLogger.createChild({
@@ -15,8 +17,6 @@ const logger = parentLogger.createChild({
     scraper: 'playground',
   },
 })
-
-// const documentClient = require('./documentClient')
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
@@ -54,18 +54,19 @@ const getUsingChromium = async () => {
 
   let page = await browser.newPage()
 
-  page.waitForResponse((response) => {
-    logger.info('waitForResponse', { response })
-  })
+  // page.waitForResponse((response) => {
+  //   logger.info('waitForResponse', { response })
+  // })
 
-  await page.goto('https://cineramabios.nl/?main_section=films')
+  await page.goto('https://florafilmtheater.nl/')
 
   await page.waitForSelector('body')
   const textContent = await page.evaluate(
-    () => document.querySelector('body').textContent,
+    () => document.querySelector('a').textContent,
   )
 
-  logger.info('Page title' + textContent)
+  logger.info('First link' + textContent)
+  return textContent
 }
 
 const movieMetadataPlayground = async () => {
@@ -168,11 +169,11 @@ const getLux = async () => {
 }
 
 const playground = async ({ event, context } = {}) => {
-  // const results = await movieMetadataPlayground()
-  // const results = await findMetadata('chungking express')
-  // const results = await findMetadata('Caché')
-  // await getUsingChromium()
-  const result = await getUsingGot()
+  // const result = await movieMetadataPlayground()
+  // const result = await findMetadata('chungking express')
+  // const result = await findMetadata('Caché')
+  const result = await getUsingChromium()
+  // const result = await getUsingGot()
   // const result = await getLux()
 
   console.log(JSON.stringify(result, null, 2))
@@ -182,7 +183,12 @@ if (
   (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
   import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
 ) {
-  playground()
+  await playground()
+  logger.info('closing browser now 🌎🌍🌏')
+  await closeBrowser({ logger })
+  logger.info('done 🎉')
+
+  setImmediate(() => whyIsNodeRunning())
 }
 
 export const handler = middy(playground).use(

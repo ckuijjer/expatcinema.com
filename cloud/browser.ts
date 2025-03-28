@@ -1,6 +1,6 @@
 import { Logger } from '@aws-lambda-powertools/logger'
 import chromium from '@sparticuz/chromium'
-import puppeteer, { Browser, LaunchOptions, defaultArgs } from 'puppeteer-core'
+import puppeteer, { Browser, LaunchOptions } from 'puppeteer-core'
 
 import { LOCAL_CHROMIUM_EXECUTABLE_PATH } from './browser-local-constants.ts'
 
@@ -14,7 +14,7 @@ const createBrowserSingleton = () => {
       logger?.info('running locally?', { isLocal: process.env.IS_LOCAL })
 
       const options: LaunchOptions = {
-        args: process.env.IS_LOCAL ? defaultArgs() : chromium.args,
+        ...(process.env.IS_LOCAL ? {} : chromium.args),
         defaultViewport: chromium.defaultViewport,
         executablePath: process.env.IS_LOCAL
           ? LOCAL_CHROMIUM_EXECUTABLE_PATH
