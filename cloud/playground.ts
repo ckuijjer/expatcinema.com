@@ -183,9 +183,9 @@ if (
   (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
   import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
 ) {
-  await playground()
+  playground() // needs await, but the lamdba handler doesn't support top level async functions in commonjs
   logger.info('closing browser now 🌎🌍🌏')
-  await closeBrowser({ logger })
+  closeBrowser({ logger }) // needs await, but the lamdba handler doesn't support top level async functions in commonjs
   logger.info('done 🎉')
 
   setImmediate(() => whyIsNodeRunning())
