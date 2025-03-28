@@ -93,6 +93,44 @@ aws dynamodb scan --table-name expatcinema-scrapers-movie-metadata-$STAGE --prof
 
 For the DynamoDB tables, it might be better to use the _Export to S3_ functionality in the AWS Console, as these can be imported using `aws dynamodb import-table`
 
+To convert the DynamoDB JSON format to a more readable format, you can use the following command:
+
+```sh
+cd backup/
+export STAGE=prod
+jq -c '.Items[] |
+  def dynamodb_to_json:
+    if type == "object" then
+      if has("S") then .S
+      elif has("N") then (.N | tonumber)
+      elif has("BOOL") then .BOOL
+      elif has("NULL") then null
+      elif has("L") then [.L[] | dynamodb_to_json]
+      elif has("M") then .M | with_entries(.value |= dynamodb_to_json)
+      else .
+      end
+    else .
+    end;
+  with_entries(.value |= dynamodb_to_json)
+' expatcinema-scrapers-analytics-$STAGE.json > expatcinema-scrapers-analytics-$STAGE-converted.json
+
+jq -c '.Items[] |
+  def dynamodb_to_json:
+    if type == "object" then
+      if has("S") then .S
+      elif has("N") then (.N | tonumber)
+      elif has("BOOL") then .BOOL
+      elif has("NULL") then null
+      elif has("L") then [.L[] | dynamodb_to_json]
+      elif has("M") then .M | with_entries(.value |= dynamodb_to_json)
+      else .
+      end
+    else .
+    end;
+  with_entries(.value |= dynamodb_to_json)
+' expatcinema-scrapers-movie-metadata-$STAGE.json > expatcinema-scrapers-movie-metadata-$STAGE-converted.json
+```
+
 ### Restore
 
 The S3 buckets can be restored by running the following commands
