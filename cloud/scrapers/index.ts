@@ -63,24 +63,24 @@ const SCRAPERS = {
   filmhuisdenhaag,
   filmhuislumen,
   filmkoepel,
-  florafilmtheater,
-  focusarnhem,
+  florafilmtheater, // uses puppeteer
+  focusarnhem, // uses puppeteer
   forumgroningen,
   hartlooper,
   hetdocumentairepaviljoen,
-  ketelhuis,
+  ketelhuis, // uses puppeteer
   kinorotterdam,
   kriterion,
   lab1,
-  lab111,
+  lab111, // uses puppeteer
   lantarenvenster,
   // liff,
-  lumiere,
+  lumiere, // uses puppeteer
   lux,
   melkweg,
   natlab,
   rialto,
-  schuur,
+  schuur, // uses puppeteer
   slachtstraat,
   springhaver,
   studiok,
