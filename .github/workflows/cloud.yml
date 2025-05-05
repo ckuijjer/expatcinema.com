@@ -43,6 +43,6 @@ jobs:
           OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
           GOOGLE_CUSTOM_SEARCH_ID: ${{ secrets.GOOGLE_CUSTOM_SEARCH_ID }}
           GOOGLE_CUSTOM_SEARCH_API_KEY: ${{ secrets.GOOGLE_CUSTOM_SEARCH_API_KEY }}
-          SCRAPERS: ${{ vars.SCRAPERS }}
+          SCRAPERS: ${{ secrets.SCRAPERS }}
           SCRAPEOPS_API_KEY: ${{ secrets.SCRAPEOPS_API_KEY }}
         run: pnpm run deploy:ci
