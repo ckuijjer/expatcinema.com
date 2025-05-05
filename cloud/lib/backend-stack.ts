@@ -112,7 +112,7 @@ export class BackendStack extends cdk.Stack {
         description: 'Scrapers Lambda',
         entry: 'scrapers.ts', // TODO: Fix the issue with bundling (likely see scrapers.ts and scrapers/index.ts)
 
-        memorySize: 4096,
+        memorySize: 8192,
         timeout: cdk.Duration.minutes(9),
         environment: {
           ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,

@@ -31,6 +31,11 @@ const xRayPuppeteer = ({
         ctx.body = await page.content()
       }
       logger?.info('done retrieving content', { url: ctx.url })
+
+      logger?.info('closing page', { url: ctx.url })
+      await page.close()
+      logger?.info('closed page', { url: ctx.url })
+
       done(null, ctx)
     } catch (error) {
       logger?.warn('error retrieving', { url: ctx.url, error })

@@ -14,7 +14,7 @@ const createBrowserSingleton = () => {
       logger?.info('running locally?', { isLocal: process.env.IS_LOCAL })
 
       const options: LaunchOptions = {
-        ...(process.env.IS_LOCAL ? {} : chromium.args),
+        args: process.env.IS_LOCAL ? [] : chromium.args,
         defaultViewport: chromium.defaultViewport,
         executablePath: process.env.IS_LOCAL
           ? LOCAL_CHROMIUM_EXECUTABLE_PATH
@@ -50,7 +50,7 @@ const createBrowserSingleton = () => {
     if (!instance && !isInitializing) {
       logger?.info('initializing browser')
       isInitializing = true
-      initializeBrowser({ logger })
+      await initializeBrowser({ logger })
     }
 
     if (isInitializing) {

@@ -169,14 +169,18 @@ const getLux = async () => {
 }
 
 const playground = async ({ event, context } = {}) => {
-  // const result = await movieMetadataPlayground()
-  // const result = await findMetadata('chungking express')
-  // const result = await findMetadata('Caché')
-  const result = await getUsingChromium()
-  // const result = await getUsingGot()
-  // const result = await getLux()
+  try {
+    // const result = await movieMetadataPlayground()
+    // const result = await findMetadata('chungking express')
+    // const result = await findMetadata('Caché')
+    const result = await getUsingChromium()
+    // const result = await getUsingGot()
+    // const result = await getLux()
 
-  console.log(JSON.stringify(result, null, 2))
+    console.log(JSON.stringify(result, null, 2))
+  } catch (error) {
+    logger.error('error in playground', { error })
+  }
 }
 
 if (

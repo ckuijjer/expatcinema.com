@@ -46,7 +46,7 @@ const xray = Xray({
       waitForOptions: { timeout: 60_000, waitUntil: 'networkidle2' },
     }),
   )
-  .concurrency(10)
+  .concurrency(3)
   .throttle(10, 300)
 
 type XRayFromMoviePage = {

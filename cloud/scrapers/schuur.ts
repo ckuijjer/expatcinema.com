@@ -27,7 +27,7 @@ const xray = Xray({
   },
 })
   .driver(xRayPuppeteer({ logger }))
-  .concurrency(10)
+  .concurrency(3)
   .throttle(10, 300)
 
 type XRayFromMainPage = {
