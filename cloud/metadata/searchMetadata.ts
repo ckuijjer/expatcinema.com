@@ -100,14 +100,14 @@ const searchMetadata = async (title: string) => {
 
   const tmdb = await getFirstTmdbSearchResult(normalizedTitle)
   // const omdb = await getFirstOmdbSearchResult(normalizedTitle)  // OMDB throws 500 errors
-  const duckduckgo = await getFirstDuckDuckGoResult(normalizedTitle)
+  // const duckduckgo = await getFirstDuckDuckGoResult(normalizedTitle)
   const googleCustomSearch =
     await getFirstGoogleCustomSearchResult(normalizedTitle)
 
   const firstSearchResults = Object.entries({
     tmdb,
     // omdb, // OMDB throws 500 errors
-    duckduckgo,
+    // duckduckgo,
     googleCustomSearch,
   }).map(([name, value]) => ({ name, imdbId: value?.imdbId ?? null }))
 
