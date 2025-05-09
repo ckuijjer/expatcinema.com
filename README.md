@@ -54,6 +54,8 @@ Easiest is to bump the version in `web/package.json` and push to master. This wi
 
 ## Running scrapers locally
 
+### Multiple scrapers
+
 **Note: Currently broken**
 
 ```
@@ -63,6 +65,8 @@ pnpm run scrapers:local
 Stores the output in _cloud/output_ instead of S3 buckets and DynamoDB
 
 Use SCRAPERS environment variable in _.env.local_ to define a comma separated list of scrapers to locally run and diverge from the default set of scrapers in _scrapers/index.js_
+
+### Single scraper
 
 And to call a single scraper, e.g. `LOG_LEVEL=debug pnpm tsx scrapers/kinorotterdam.ts` and then have e.g.
 
@@ -187,7 +191,15 @@ After installing the new version of puppeteer and chromium update the lambda lay
 
 ### Installing Chromium for use by puppeteer-core locally
 
-See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how
+Run the following command to install Chromium locally:
+
+```sh
+pnpm run install-chromium
+```
+
+To see if it's correctly installed, open it with `pnpm run open-chromium`
+
+or see https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how
 
 ## Troubleshooting
 

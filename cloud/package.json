@@ -14,7 +14,7 @@
     "prettify-log": "awk -F'\\t' '{if ($5 && $5 ~ /^{/ && !system(\"echo \\x27\" $5 \"\\x27 | jq -e > /dev/null 2>&1\")) { print $1\"\\t\"$2\"\\t\"$3\"\\t\"$4 system(\"echo \\x27\" $5 \"\\x27 | jq\") } else { print $0 }}'",
     "prettify-log:test": "cat tail-cloudwatch-logs.example.log | pnpm prettify-log",
     "log": "pnpm tail-cloudwatch-logs|pnpm prettify-log",
-    "install-chromium": "npx @puppeteer/browsers install chromium@latest --path /Applications/Chromium | awk '{print $2}' | xargs -I {} echo 'export const LOCAL_CHROMIUM_EXECUTABLE_PATH = `{}`;' > browser-local-constants.ts",
+    "install-chromium": "pnpx @puppeteer/browsers install chromium@latest --path /Applications/Chromium | awk '{print $2}' | xargs -I {} echo 'export const LOCAL_CHROMIUM_EXECUTABLE_PATH = `{}`;' > browser-local-constants.ts",
     "open-chromium": "node -e 'const { LOCAL_CHROMIUM_EXECUTABLE_PATH } = require(\"./browser-local-constants.ts\");console.log(LOCAL_CHROMIUM_EXECUTABLE_PATH)'|sh",
     "build": "tsc",
     "test": "jest",
