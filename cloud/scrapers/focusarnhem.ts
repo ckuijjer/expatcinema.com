@@ -19,7 +19,9 @@ const trim = (value) => (typeof value === 'string' ? value.trim() : value)
 
 const cleanTitle = (value) =>
   typeof value === 'string'
-    ? titleCase(value.replace(/^Expat Cinema: /gi, ''))
+    ? titleCase(
+        value.replace(/^Expat Cinema: /gi, '').replace(/^English Subs: /gi, ''),
+      )
     : value
 
 const toLowerCase = (value) =>
