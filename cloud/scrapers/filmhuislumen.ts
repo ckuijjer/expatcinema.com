@@ -124,7 +124,7 @@ const extractFromMoviePage = async ({
 
 const extractFromMainPage = async () => {
   // look at the HTML for the page, not Chrome' DevTools, as there's JavaScript that changed the HTML.
-  const scrapeResult: XRayFromMainPage[] = await xray(
+  const englishScrapeResult: XRayFromMainPage[] = await xray(
     'https://filmhuis-lumen.nl/english/',
     '.movie-item',
     [
@@ -134,6 +134,21 @@ const extractFromMainPage = async () => {
       },
     ],
   )
+
+  const classicsScrapeResult: XRayFromMainPage[] = await xray(
+    'https://filmhuis-lumen.nl/specials/klassiekers/',
+    '.movie-item',
+    [
+      {
+        title: 'h4 | normalizeWhitespace | cleanTitle | trim',
+        url: 'a@href',
+      },
+    ],
+  )
+
+  const scrapeResult = [...englishScrapeResult, ...classicsScrapeResult].filter(
+    (item, index, self) => index === self.findIndex((t) => t.url === item.url),
+  ) // remove duplicates based on URL
 
   logger.info('scrape result', { scrapeResult })
 
@@ -156,7 +171,9 @@ if (
 
   // extractFromMoviePage({
   //   title: '',
-  //   url: 'https://filmhuis-lumen.nl/films/im-still-here-3887/',
+  //   url: 'https://filmhuis-lumen.nl/films/expat-cinema-ponyo-english-subtitles0-3522/',
+  // url: 'https://filmhuis-lumen.nl/films/shaun-het-schaap-elke-dag-feest-4-6089/',
+  // url: 'https://filmhuis-lumen.nl/films/the-phoenician-scheme-5994/',
   // })
   //   .then((x) => JSON.stringify(x, null, 2))
   //   .then(console.log)
