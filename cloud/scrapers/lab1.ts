@@ -104,11 +104,8 @@ const hasEnglishSubtitles = (subtitles: string) => {
   return /ENG\s+SUBS/i.test(subtitles) // \s+ to catch whatever the &nbsp; in ENG&nbsp;SUBS becomes
 }
 
-// Time in Amsterdam time, this is a bit of a hack to get the time in UTC
 const extractDate = (time: string) =>
-  DateTime.fromISO(time, { zone: 'utc' })
-    .setZone('Europe/Amsterdam', { keepLocalTime: true })
-    .toJSDate()
+  DateTime.fromISO(time, { zone: 'Europe/Amsterdam' }).toJSDate()
 
 const extractFromMoviePage = async ({
   url,
