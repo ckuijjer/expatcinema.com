@@ -32,7 +32,11 @@ type XRayFromMoviePage = {
 }
 
 const cleanTitle = (title: string) =>
-  titleCase(title.replace(/^English Subs [–-] /i, '')) // remove subs from the title using two different dashes
+  titleCase(
+    title
+      .replace(/^English Subs [–-] /i, '') // remove subs from the title using two different types of dashes
+      .replace(/^English Subs: /i, ''), // remove subs from the title using a colon
+  )
 
 const splitFirstDate = (date: string) => {
   if (date === 'Vandaag') {
