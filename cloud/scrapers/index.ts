@@ -60,7 +60,7 @@ const SCRAPERS = {
   concordia,
   defilmhallen,
   deuitkijk,
-  dokhuis,
+  // dokhuis, // temporarily disabled as it gives errors
   eyefilm,
   filmhuisdenhaag,
   filmhuislumen,

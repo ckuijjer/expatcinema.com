@@ -10,6 +10,7 @@ import whyIsNodeRunning from 'why-is-node-running'
 import { closeBrowser, getBrowser } from './browser'
 import getMetadata from './metadata'
 import { logger as parentLogger } from './powertools'
+import { useLLM } from './scrapers/utils/useLLM'
 import { Screening } from './types'
 
 const logger = parentLogger.createChild({
@@ -173,9 +174,12 @@ const playground = async ({ event, context } = {}) => {
     // const result = await movieMetadataPlayground()
     // const result = await findMetadata('chungking express')
     // const result = await findMetadata('Caché')
-    const result = await getUsingChromium()
+    // const result = await getUsingChromium()
     // const result = await getUsingGot()
     // const result = await getLux()
+
+    const reply = await useLLM(`Give me a random movie title`)
+    const result = { reply }
 
     console.log(JSON.stringify(result, null, 2))
   } catch (error) {
