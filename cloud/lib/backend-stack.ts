@@ -4,6 +4,7 @@ import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
 import * as events from 'aws-cdk-lib/aws-events'
 import * as targets from 'aws-cdk-lib/aws-events-targets'
+import * as iam from 'aws-cdk-lib/aws-iam'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs'
 import { RetentionDays } from 'aws-cdk-lib/aws-logs'
@@ -304,5 +305,13 @@ export class BackendStack extends cdk.Stack {
 
     scrapersMovieMetadataTable.grantReadWriteData(scrapersLambda)
     scrapersMovieMetadataTable.grantReadData(playgroundLambda)
+
+    scrapersLambda.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['bedrock:InvokeModel'],
+        resources: ['arn:aws:bedrock:eu-west-1:*:inference-profile/*'],
+      }),
+    )
   }
 }
