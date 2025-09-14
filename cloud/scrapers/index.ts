@@ -23,6 +23,7 @@ import cinerama from './cinerama'
 import concordia from './concordia'
 import defilmhallen from './defilmhallen'
 import deuitkijk from './deuitkijk'
+import dokhuis from './dokhuis'
 import eyefilm from './eyefilm'
 import filmhuisdenhaag from './filmhuisdenhaag'
 import filmhuislumen from './filmhuislumen'
@@ -59,6 +60,7 @@ const SCRAPERS = {
   concordia,
   defilmhallen,
   deuitkijk,
+  dokhuis,
   eyefilm,
   filmhuisdenhaag,
   filmhuislumen,

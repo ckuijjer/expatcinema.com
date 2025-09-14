@@ -214,5 +214,11 @@
     "city": "Den Haag",
     "url": "https://florafilmtheater.nl/",
     "logo": "florafilmtheater.png"
+  },
+  {
+    "name": "Dokhuis",
+    "city": "Rotterdam",
+    "url": "https://dokhuis.org/",
+    "logo": "dokhuis.png"
   }
 ]

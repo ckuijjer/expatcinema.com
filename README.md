@@ -169,8 +169,7 @@ done
 
 ### Favicon
 
-- Use https://favicongrabber.com/ to grab a favicon for the cinema.json file
-- Use https://www.google.com/s2/favicons?domain=www.idfa.nl to get the favicon for the cinema.json file
+- Use https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.dokhuis.org&size=128 to get the favicon for the cinema.json file
 
 ## Chromium
 
@@ -203,7 +202,7 @@ or see https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mo
 
 ## Troubleshooting
 
-When running a puppeteer based scraper locally, e.g. `pnpm tsx scrapers/ketelhuis.ts` and getting an error like
+When running a puppeteer based scraper locally, e.g. `AWS_PROFILE=casper pnpm tsx scrapers/ketelhuis.ts` and getting an error like
 
 ```
 Error: Failed to launch the browser process! spawn /tmp/localChromium/chromium/mac_arm-1205129/chrome-mac/Chromium.app/Contents/MacOS/Chromium ENOENT
