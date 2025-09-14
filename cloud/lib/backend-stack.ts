@@ -310,7 +310,9 @@ export class BackendStack extends cdk.Stack {
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ['bedrock:InvokeModel'],
-        resources: ['arn:aws:bedrock:*:*:model/*'],
+        resources: [
+          'arn:aws:bedrock:eu-west-1:434488156586:inference-profile/eu.amazon.nova-micro-v1:0',
+        ],
       }),
     )
   }
