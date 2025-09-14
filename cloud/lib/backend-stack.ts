@@ -306,11 +306,11 @@ export class BackendStack extends cdk.Stack {
     scrapersMovieMetadataTable.grantReadWriteData(scrapersLambda)
     scrapersMovieMetadataTable.grantReadData(playgroundLambda)
 
-    scrapersLambda.addToRolePolicy(
+    scrapersLambda.role?.addToPrincipalPolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ['bedrock:InvokeModel'],
-        resources: ['arn:aws:bedrock:eu-west-1:*:inference-profile/*'],
+        resources: ['arn:aws:bedrock:*:*:model/*'],
       }),
     )
   }
