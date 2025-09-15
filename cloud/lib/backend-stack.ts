@@ -309,9 +309,7 @@ export class BackendStack extends cdk.Stack {
     const bedrockPolicyStatement = new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ['bedrock:InvokeModel'],
-      resources: [
-        'arn:aws:bedrock:eu-west-1:434488156586:inference-profile/eu.amazon.nova-micro-v1:0',
-      ],
+      resources: ['*'],
     })
 
     scrapersLambda.role?.addToPrincipalPolicy(bedrockPolicyStatement)
