@@ -88,16 +88,16 @@ const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
     ]),
   })
 
-  if (
-    xrayResult.screenings.length === 0 ||
-    xrayResult.sidebarScreenings.length === 0 ||
-    xrayResult.metadata.length === 0
-  ) {
-    logger.error('No movies found on movie page, scraper is probably broken', {
-      url,
-      xrayResult,
-    })
-  }
+  // if (
+  //   xrayResult.screenings.length === 0 ||
+  //   xrayResult.sidebarScreenings.length === 0 ||
+  //   xrayResult.metadata.length === 0
+  // ) {
+  //   logger.error('No movies found on movie page, scraper is probably broken', {
+  //     url,
+  //     xrayResult,
+  //   })
+  // }
 
   //   fix metadata by taking of the key from the value
   const metadata = xrayResult.metadata.reduce((acc, { key, value }) => {
