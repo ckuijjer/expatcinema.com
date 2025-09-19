@@ -75,7 +75,7 @@ const extractFromMoviePage = async ({
       scrapeResult.title.includes('[Eng Subs]')
     )
   ) {
-    logger.warn('no English subtitles', { url, title })
+    logger.info('no English subtitles', { url, title })
     return []
   }
 
@@ -120,7 +120,7 @@ const extractFromMoviePage = async ({
 
 const extractFromMainPage = async () => {
   const url =
-    'https://www.natlab.nl/nl/programma/film?start=&end=&genres%5B%5D=194' // genre 194 = ENGELSE ONDERTITELING
+    'https://www.natlab.nl/nl/programma/film?start=&end=&genres%5B%5D=119' // genre 119 = FILM
 
   const scrapeResult: XRayFromMainPage[] = await xray(
     url,
