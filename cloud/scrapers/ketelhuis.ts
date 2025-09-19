@@ -23,7 +23,11 @@ const xray = Xray({
     trim: (value) => (typeof value === 'string' ? value.trim() : value),
     cleanTitle: (value) =>
       typeof value === 'string'
-        ? titleCase(value.replace(/ – English subtitles$/, ''))
+        ? titleCase(
+            value
+              .replace(/ – English subtitles$/i, '')
+              .replace(/ \(English subs\)$/i, ''),
+          )
         : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
@@ -37,8 +41,8 @@ const xray = Xray({
 const extractFromMainPage = async () => {
   const selector = [
     {
-      url: '@href',
-      title: '',
+      url: '@data-href',
+      title: '.header_title h2 | cleanTitle | trim',
     },
   ]
 
@@ -46,7 +50,7 @@ const extractFromMainPage = async () => {
     async () =>
       xray(
         'https://www.ketelhuis.nl/specials/expat-cinema/',
-        '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
+        '.c-movie-listing__item[data-href^="https://www.ketelhuis.nl/films/"]',
         selector,
       ),
     {
@@ -60,47 +64,7 @@ const extractFromMainPage = async () => {
   )
   logger.info('scraped /expat-cinema', { expatCinemaResults })
 
-  const deutschesKinoResults = await pRetry(
-    async () =>
-      xray(
-        'https://www.ketelhuis.nl/specials/deutsches-kino/',
-        '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
-        selector,
-      ),
-    {
-      onFailedAttempt: (error) => {
-        logger.warn(
-          `Scraping https://www.ketelhuis.nl/specials/deutsches-kino/, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
-        )
-      },
-      retries: 5,
-    },
-  )
-  logger.info('scraped /deutsches-kino', { deutschesKinoResults })
-
-  const italianCineclubResults = await pRetry(
-    async () =>
-      xray(
-        'https://www.ketelhuis.nl/specials/italian-cineclub/',
-        '.c-default-page-content a[href^="https://www.ketelhuis.nl/films/"]',
-        selector,
-      ),
-    {
-      onFailedAttempt: (error) => {
-        logger.warn(
-          `Scraping https://www.ketelhuis.nl/specials/italian-cineclub/, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
-        )
-      },
-      retries: 5,
-    },
-  )
-  logger.info('scraped /italian-cineclub', { italianCineclubResults })
-
-  const results = [
-    ...expatCinemaResults,
-    ...deutschesKinoResults,
-    ...italianCineclubResults,
-  ]
+  const results = [...expatCinemaResults]
   const uniqueResults = uniq(results)
 
   logger.info('results', { results })
@@ -155,7 +119,7 @@ const extractFromMoviePage = async ({ url, title }) => {
   logger.info('extracting', { url })
 
   const scrapeResult = await xray(url, {
-    title: '.c-filmheader__content h1 > span | cleanTitle | trim',
+    title: '.c-filmheader__content h1 > span', // not using cleanTitle because we want to keep the "English subs" part here
     metadata: '.c-detail-info__filminfo | normalizeWhitespace',
     mainContent: '.c-main-content | normalizeWhitespace',
     firstDate: '.c-detail-schedule__firstday div:first-of-type | trim',
@@ -231,8 +195,9 @@ if (
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
+
   // extractFromMoviePage({
-  //   url: 'https://www.ketelhuis.nl/films/toen-we-van-de-duitsers-verloren/',
+  //   url: 'https://www.ketelhuis.nl/films/heldin-english-subs/',
   // })
   //   .then((x) => JSON.stringify(x, null, 2))
   //   .then(console.log)
