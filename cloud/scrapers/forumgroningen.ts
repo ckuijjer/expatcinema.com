@@ -44,6 +44,11 @@ type XRayFromMoviePage = {
   }[]
 }
 
+type XRayFromMainPage = {
+  title: string
+  url: string
+}[]
+
 const extractFromMoviePage = async ({
   url,
 }: {
@@ -110,14 +115,24 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   // easy way to go through the entire agenda
   const url = 'https://forum.nl/en/whats-on/international-movie-night'
 
-  const movies = (
-    await xray(url, '.calendar-list .ticket-row', [
+  const scrapedMovies = (
+    (await xray(url, '.calendar-list .ticket-row', [
       {
         title: '.content .title | cleanTitle | trim',
         url: 'a@href',
       },
-    ])
-  ).filter(({ url }) => url !== undefined) // remove movies without url (e.g. in the past)
+    ])) as XRayFromMainPage
+  )
+    .filter(({ url }) => url !== undefined) // remove movies without url (e.g. in the past)
+    .map(({ title, url }) => ({
+      title,
+      url: url.split('?')[0], // remove e.g. ?date=21-09-2025
+    }))
+
+  // deduplicate movies based on url;
+  const movies = [
+    ...new Map(scrapedMovies.map((obj) => [obj.url, obj])).values(),
+  ]
 
   logger.info('extracted', { movies })
 
@@ -135,7 +150,7 @@ if (
   import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
 ) {
   // extractFromMoviePage({
-  //   url: 'https://forum.nl/en/whats-on/film/dead-talents-society',
+  //   url: 'https://forum.nl/en/whats-on/film/docs-miyazaki-spirit-of-nature',
   // })
 
   extractFromMainPage()
