@@ -57,6 +57,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   try {
     const movies: WpJsonMovie[] = await got(
       'https://cinecitta.nl/wp-json/wp/v2/movie?with_shows=true&type=&movie_post_id=&lang=en',
+      {
+        https: {
+          rejectUnauthorized: false, // cinecitta.nl has a misconfigured SSL certificate
+        },
+      },
     ).json()
 
     logger.info('movies found', { movies })
@@ -70,6 +75,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         moviesWithEnglishSubtitles.map(async (movie) => {
           const shows: ShowJson[] = await got(
             `https://cinecitta.nl/rest-api/v1/wordpress-integration/shows/?format=json&movie_sync_id=${movie.movie_sync_id}`,
+            {
+              https: {
+                rejectUnauthorized: false, // cinecitta.nl has a misconfigured SSL certificate
+              },
+            },
           ).json()
 
           return shows.map((show) => {
