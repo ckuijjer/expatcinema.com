@@ -35,7 +35,9 @@ const hasEnglishSubtitles = (show: CinemaFilmDetailShow) => {
   if (!show.accessibility) return false
 
   return show.accessibility.some(
-    ({ translation }) => translation === 'Subtitled in English',
+    ({ translation }) =>
+      translation === 'Subtitled in English' ||
+      translation === 'Engels ondertiteld',
   )
 }
 
@@ -55,6 +57,8 @@ const extractFromMoviePage = async (film: MainPageCinemaScheduleFilm) => {
     )
     return []
   }
+
+  // logger.info('data', { data }) // uncomment to debug structure of __NEXT_DATA__
 
   const filmDetail: CinemaFilmDetail =
     data.props.pageProps.dehydratedState.queries.find(({ queryKey }) =>
@@ -135,11 +139,13 @@ if (
   (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
   import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
 ) {
-  //   extractFromMoviePage(
-  // 	 //
-  //   )
-  //     .then((x) => JSON.stringify(x, null, 2))
-  //     .then(console.log)
+  // extractFromMoviePage({
+  //   url: 'https://www.idfa.nl/en/cinema/c3885fa5-917d-420a-b42d-a2a86dd02925',
+  //   title: 'My Stolen Planet',
+  //   filmId: 'c3885fa5-917d-420a-b42d-a2a86dd02925',
+  // })
+  //   .then((x) => JSON.stringify(x, null, 2))
+  //   .then(console.log)
 
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
