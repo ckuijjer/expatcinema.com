@@ -67,7 +67,8 @@ const parseDate = (date: string) => {
 }
 
 const hasEnglishSubtitles = (movie: XRayFromMoviePage) =>
-  movie.metadata.includes('Ondertiteling Engels')
+  movie.metadata.includes('Ondertiteling Engels') ||
+  movie.metadata.includes('Ondertiteling English')
 
 const extractFromMoviePage = async ({
   title,
@@ -146,7 +147,25 @@ const extractFromMainPage = async () => {
     ],
   )
 
-  const scrapeResult = [...englishScrapeResult, ...classicsScrapeResult].filter(
+  const festibericoScrapeResult: XRayFromMainPage[] = await xray(
+    'https://filmhuis-lumen.nl/festiberico/',
+    '.wp-block-list li',
+    [
+      {
+        title: 'a | normalizeWhitespace | cleanTitle | trim',
+        url: 'a@href',
+      },
+    ],
+  )
+
+  logger.info('festibericoScrapeResult', { festibericoScrapeResult })
+
+  // combine results and remove duplicates
+  const scrapeResult = [
+    ...englishScrapeResult,
+    ...classicsScrapeResult,
+    ...festibericoScrapeResult,
+  ].filter(
     (item, index, self) => index === self.findIndex((t) => t.url === item.url),
   ) // remove duplicates based on URL
 
@@ -171,9 +190,10 @@ if (
 
   // extractFromMoviePage({
   //   title: '',
-  //   url: 'https://filmhuis-lumen.nl/films/expat-cinema-ponyo-english-subtitles0-3522/',
-  // url: 'https://filmhuis-lumen.nl/films/shaun-het-schaap-elke-dag-feest-4-6089/',
-  // url: 'https://filmhuis-lumen.nl/films/the-phoenician-scheme-5994/',
+  //   //   url: 'https://filmhuis-lumen.nl/films/expat-cinema-ponyo-english-subtitles0-3522/',
+  //   // url: 'https://filmhuis-lumen.nl/films/shaun-het-schaap-elke-dag-feest-4-6089/',
+  //   // url: 'https://filmhuis-lumen.nl/films/the-phoenician-scheme-5994/',
+  //   url: 'https://filmhuis-lumen.nl/films/una-quinta-portuguesa-festiberico-english-subtitles-6210/',
   // })
   //   .then((x) => JSON.stringify(x, null, 2))
   //   .then(console.log)
