@@ -19,7 +19,8 @@ const extractDate = (time: string) =>
 
 // e.g. Kijkhuis 1 -> Kijkhuis
 const extractLocation = (room: string) => {
-  return room.replace(/\s+\d+$/, '')
+  const result = room.replace(/\s+.*$/, '')
+  return result
 }
 
 // e.g. kijkhuis -> Kijkhuis
