@@ -23,7 +23,8 @@ const xray = Xray({
               .replace(/\s+\(.*\)$/, '') // e.g. (English subtitles), (+English subtitles // Expat Cinema)
               .replace(/\s+\[.*\]$/, '') // e.g. EL SUSPIRO DEL SILENCIO [THE WHISPER OF SILENCE] => EL SUSPIRO DEL SILENCIO
               .replace(/\s+\|\|.*$/, '') // e.g. TAMPOPO || A TASTE OF ASIA || + ENGLISH SUBTITLES => TAMPOPO
-              .replace(/^.*:/, ''), // e.g. Expat Cinema:
+              .replace(/^.*:/, '') // e.g. Expat Cinema:
+              .replace(/ \+ English Subtitles/i, ''), // e.g.  + English Subtitles
           )
         : value,
     normalizeWhitespace: (value) =>
@@ -89,11 +90,6 @@ const extractFromMoviePage = async ({
   logger.info('extractFromMoviePage', { movie })
 
   if (!hasEnglishSubtitles(movie)) {
-    logger.info('extractFromMoviePage without english subtitles', {
-      url,
-      title: movie.title,
-    })
-
     return []
   }
 
@@ -126,11 +122,11 @@ const extractFromMoviePage = async ({
 const extractFromMainPage = async () => {
   // look at the HTML for the page, not Chrome' DevTools, as there's JavaScript that changed the HTML.
   const englishScrapeResult: XRayFromMainPage[] = await xray(
-    'https://filmhuis-lumen.nl/english/',
+    'https://filmhuis-lumen.nl/specials/english-expat/',
     '.movie-item',
     [
       {
-        title: 'h4 | normalizeWhitespace | cleanTitle | trim',
+        title: 'h2 | normalizeWhitespace | cleanTitle | trim',
         url: 'a@href',
       },
     ],
@@ -158,13 +154,23 @@ const extractFromMainPage = async () => {
     ],
   )
 
-  logger.info('festibericoScrapeResult', { festibericoScrapeResult })
+  const programmaScrapeResult: XRayFromMainPage[] = await xray(
+    'https://filmhuis-lumen.nl/programma/',
+    '.content',
+    [
+      {
+        title: 'h2 | normalizeWhitespace | cleanTitle | trim',
+        url: 'a@href',
+      },
+    ],
+  )
 
   // combine results and remove duplicates
   const scrapeResult = [
     ...englishScrapeResult,
     ...classicsScrapeResult,
     ...festibericoScrapeResult,
+    ...programmaScrapeResult,
   ].filter(
     (item, index, self) => index === self.findIndex((t) => t.url === item.url),
   ) // remove duplicates based on URL
@@ -188,15 +194,15 @@ if (
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
 
-  // extractFromMoviePage({
-  //   title: '',
-  //   //   url: 'https://filmhuis-lumen.nl/films/expat-cinema-ponyo-english-subtitles0-3522/',
-  //   // url: 'https://filmhuis-lumen.nl/films/shaun-het-schaap-elke-dag-feest-4-6089/',
-  //   // url: 'https://filmhuis-lumen.nl/films/the-phoenician-scheme-5994/',
-  //   url: 'https://filmhuis-lumen.nl/films/una-quinta-portuguesa-festiberico-english-subtitles-6210/',
-  // })
-  //   .then((x) => JSON.stringify(x, null, 2))
-  //   .then(console.log)
+  //   extractFromMoviePage({
+  //     title: '',
+  //     //   url: 'https://filmhuis-lumen.nl/films/expat-cinema-ponyo-english-subtitles0-3522/',
+  //     // url: 'https://filmhuis-lumen.nl/films/shaun-het-schaap-elke-dag-feest-4-6089/',
+  //     // url: 'https://filmhuis-lumen.nl/films/the-phoenician-scheme-5994/',
+  //     url: 'https://filmhuis-lumen.nl/films/sentimental-value-english-subtitles-expat-cinema-6353/',
+  //   })
+  //     .then((x) => JSON.stringify(x, null, 2))
+  //     .then(console.log)
 }
 
 export default extractFromMainPage
