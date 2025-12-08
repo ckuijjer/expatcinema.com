@@ -69,7 +69,9 @@ const parseDate = (date: string) => {
 
 const hasEnglishSubtitles = (movie: XRayFromMoviePage) =>
   movie.metadata.includes('Ondertiteling Engels') ||
-  movie.metadata.includes('Ondertiteling English')
+  movie.metadata.includes('Ondertiteling English') ||
+  movie.title?.toLowerCase().includes('engels ondertiteld') ||
+  movie.title?.toLowerCase().includes('english subtitles')
 
 const extractFromMoviePage = async ({
   title,
