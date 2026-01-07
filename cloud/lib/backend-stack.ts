@@ -13,6 +13,7 @@ import { Construct } from 'constructs'
 import 'source-map-support/register'
 
 import { getConfig } from './config'
+import { ScraperStateMachine } from './scraper-state-machine'
 
 type Stage = 'dev' | 'prod'
 
@@ -26,6 +27,7 @@ export class BackendStack extends cdk.Stack {
 
     const publicBucketName = `expatcinema-public-${stage}`
     const scrapersOutputBucketName = `expatcinema-scrapers-output-${stage}`
+    const scrapersPartialBucketName = `expatcinema-scrapers-partial-${stage}`
     const scrapersAnalyticsTableName = `expatcinema-scrapers-analytics-${stage}`
     const scrapersMovieMetadataTableName = `expatcinema-scrapers-movie-metadata-${stage}`
 
@@ -265,6 +267,25 @@ export class BackendStack extends cdk.Stack {
 
     publicBucket.grantReadWrite(scrapersLambda)
 
+    // Scrapers Partial Results Bucket (for Step Functions workflow)
+    const scrapersPartialBucket = new s3.Bucket(
+      this,
+      'scrapers-partial-bucket',
+      {
+        bucketName: scrapersPartialBucketName,
+        publicReadAccess: false,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        removalPolicy: cdk.RemovalPolicy.DESTROY, // Partial results can be recreated
+        autoDeleteObjects: true, // Clean up on stack deletion
+        lifecycleRules: [
+          {
+            // Auto-delete partial results after 7 days
+            expiration: cdk.Duration.days(7),
+          },
+        ],
+      },
+    )
+
     // Scrapers Analytics DynamoDB Table
     const scrapersAnalyticsTable = new dynamodb.Table(
       this,
@@ -314,5 +335,66 @@ export class BackendStack extends cdk.Stack {
 
     scrapersLambda.role?.addToPrincipalPolicy(bedrockPolicyStatement)
     playgroundLambda.role?.addToPrincipalPolicy(bedrockPolicyStatement)
+
+    // Step Functions Scraper Workflow
+    const scraperStateMachine = new ScraperStateMachine(
+      this,
+      'ScraperStateMachine',
+      {
+        stage,
+        partialBucket: scrapersPartialBucket,
+        publicBucket: publicBucket,
+        privateBucket: scrapersOutputBucket,
+        analyticsTable: scrapersAnalyticsTable,
+        metadataTable: scrapersMovieMetadataTable,
+        config: {
+          TMDB_API_KEY: config.TMDB_API_KEY,
+          OMDB_API_KEY: config.OMDB_API_KEY,
+          GOOGLE_CUSTOM_SEARCH_ID: config.GOOGLE_CUSTOM_SEARCH_ID,
+          GOOGLE_CUSTOM_SEARCH_API_KEY: config.GOOGLE_CUSTOM_SEARCH_API_KEY,
+          SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
+        },
+      },
+    )
+
+    // Schedule for Step Functions State Machine (runs at 3:30 UTC, 30 min after legacy)
+    // This allows both to run in parallel during migration
+    new events.Rule(this, 'scraper-state-machine-schedule-rule', {
+      schedule: events.Schedule.cron({
+        minute: '30',
+        hour: '3',
+        day: '*',
+        month: '*',
+        year: '*',
+      }),
+      targets: [new targets.SfnStateMachine(scraperStateMachine.stateMachine)],
+    })
+
+    // Add Slack notifications for Step Functions Lambdas
+    scraperStateMachine.httpScraperLambda.logGroup.addSubscriptionFilter(
+      'http-scraper-notify-slack',
+      {
+        destination: new cdk.aws_logs_destinations.LambdaDestination(
+          notifySlackLambda,
+        ),
+        filterPattern: { logPatternString: '"ERROR"' }, // Only notify on errors
+      },
+    )
+
+    scraperStateMachine.puppeteerScraperLambda.logGroup.addSubscriptionFilter(
+      'puppeteer-scraper-notify-slack',
+      {
+        destination: new cdk.aws_logs_destinations.LambdaDestination(
+          notifySlackLambda,
+        ),
+        filterPattern: { logPatternString: '"ERROR"' }, // Only notify on errors
+      },
+    )
+
+    // Output the state machine ARN
+    new cdk.CfnOutput(this, 'scraper-state-machine-arn', {
+      value: scraperStateMachine.stateMachine.stateMachineArn,
+      description: 'The ARN of the Scraper State Machine',
+    })
   }
 }

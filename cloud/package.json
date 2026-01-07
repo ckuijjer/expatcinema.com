@@ -26,7 +26,10 @@
     "config:scrapers": "AWS_PROFILE=casper aws lambda get-function-configuration --function-name expatcinema-dev-scrapers",
     "scrapers": "AWS_PROFILE=casper aws lambda invoke --function-name expatcinema-dev-scrapers output/expatcinema-dev-scrapers.json",
     "scrapers:prod": "AWS_PROFILE=casper aws lambda invoke --function-name expatcinema-prod-scrapers output/expatcinema-prod-scrapers.json",
-    "playground": "AWS_PROFILE=casper aws lambda invoke --function-name expatcinema-dev-playground output/expatcinema-dev-playground.json"
+    "playground": "AWS_PROFILE=casper aws lambda invoke --function-name expatcinema-dev-playground output/expatcinema-dev-playground.json",
+    "workflow": "AWS_PROFILE=casper aws stepfunctions start-execution --state-machine-arn $(AWS_PROFILE=casper aws stepfunctions list-state-machines --query \"stateMachines[?name=='expatcinema-dev-scraper-workflow'].stateMachineArn\" --output text)",
+    "workflow:prod": "AWS_PROFILE=casper aws stepfunctions start-execution --state-machine-arn $(AWS_PROFILE=casper aws stepfunctions list-state-machines --query \"stateMachines[?name=='expatcinema-prod-scraper-workflow'].stateMachineArn\" --output text)",
+    "workflow:status": "AWS_PROFILE=casper aws stepfunctions list-executions --state-machine-arn $(AWS_PROFILE=casper aws stepfunctions list-state-machines --query \"stateMachines[?name=='expatcinema-dev-scraper-workflow'].stateMachineArn\" --output text) --max-results 5"
   },
   "author": "Casper Kuijjer",
   "license": "ISC",
