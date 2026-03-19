@@ -22,6 +22,7 @@ expatcinema.com/
 ### Technology Stack
 
 **Cloud (Backend)**
+
 - **Runtime:** Node.js 22 (AWS Lambda)
 - **Infrastructure:** AWS CDK (TypeScript)
 - **Storage:** S3 (data), DynamoDB (metadata cache, analytics)
@@ -31,6 +32,7 @@ expatcinema.com/
 - **Key Libraries:** luxon (dates), diacritics (text normalization), p-map (concurrency)
 
 **Web (Frontend)**
+
 - **Framework:** Next.js 15 with static export (`output: 'export'`)
 - **Styling:** Emotion (CSS-in-JS)
 - **UI:** React 19 with react-virtualized for performance
@@ -38,6 +40,7 @@ expatcinema.com/
 - **Deployment:** GitHub Pages (gh-pages branch)
 
 **Development Tools**
+
 - **Package Manager:** pnpm 9.15.4 (defined in packageManager field)
 - **Node Version:** 22 (see .nvmrc)
 - **TypeScript:** 5.8.2
@@ -50,10 +53,10 @@ expatcinema.com/
 
 ```typescript
 type Screening = {
-  title: string    // Movie title (cleaned, normalized)
-  url: string      // Link to cinema's screening page
-  cinema: string   // Cinema name
-  date: Date       // Screening datetime (Europe/Amsterdam timezone)
+  title: string // Movie title (cleaned, normalized)
+  url: string // Link to cinema's screening page
+  cinema: string // Cinema name
+  date: Date // Screening datetime (Europe/Amsterdam timezone)
 }
 ```
 
@@ -97,12 +100,13 @@ LOG_LEVEL=debug pnpm tsx scrapers/kinorotterdam.ts
 #### Adding a New Cinema Scraper
 
 1. **Create scraper file:** `cloud/scrapers/newcinema.ts`
+
    ```typescript
    import { logger as parentLogger } from '../powertools'
    import { Screening } from '../types'
 
    const logger = parentLogger.createChild({
-     persistentLogAttributes: { scraper: 'newcinema' }
+     persistentLogAttributes: { scraper: 'newcinema' },
    })
 
    const extractFromMainPage = async (): Promise<Screening[]> => {
@@ -114,6 +118,7 @@ LOG_LEVEL=debug pnpm tsx scrapers/kinorotterdam.ts
    ```
 
 2. **Import in index:** Add to `cloud/scrapers/index.ts`
+
    ```typescript
    import newcinema from './newcinema'
 
@@ -124,6 +129,7 @@ LOG_LEVEL=debug pnpm tsx scrapers/kinorotterdam.ts
    ```
 
 3. **Test locally:**
+
    ```bash
    LOG_LEVEL=debug pnpm tsx scrapers/newcinema.ts
    ```
@@ -136,8 +142,10 @@ LOG_LEVEL=debug pnpm tsx scrapers/kinorotterdam.ts
 #### Scraper Patterns
 
 **HTTP-based scraper (most common):**
+
 ```typescript
 import got from 'got'
+
 import { Screening } from '../types'
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
@@ -150,6 +158,7 @@ export default extractFromMainPage
 ```
 
 **Puppeteer-based scraper (for JavaScript-heavy sites):**
+
 ```typescript
 import { getBrowser } from '../browser'
 import { Screening } from '../types'
@@ -190,6 +199,7 @@ pnpm run config:scrapers
 #### Environment Variables
 
 **Local development:** Use `.env` file in `cloud/` (not committed):
+
 ```bash
 TMDB_API_KEY=xxx
 OMDB_API_KEY=xxx
@@ -249,12 +259,14 @@ pnpm run playground
 ### Code Style
 
 **Prettier configuration:**
+
 - No semicolons
 - Single quotes
 - Import sorting (third-party first, then relative)
 - Automatic import grouping with blank lines
 
 **Run formatter:**
+
 ```bash
 pnpm format  # From root, formats entire repo
 ```
@@ -283,7 +295,7 @@ Located in `cloud/scrapers/utils/`:
 import { logger as parentLogger } from '../powertools'
 
 const logger = parentLogger.createChild({
-  persistentLogAttributes: { scraper: 'cinemaname' }
+  persistentLogAttributes: { scraper: 'cinemaname' },
 })
 
 // Info logging
@@ -299,6 +311,7 @@ logger.error('Failed to fetch', { error })
 ### Date Handling
 
 **Always use luxon with Europe/Amsterdam timezone:**
+
 ```typescript
 import { DateTime, Settings } from 'luxon'
 
@@ -311,7 +324,7 @@ const date = DateTime.fromFormat('2024-01-15 20:00', 'yyyy-MM-dd HH:mm')
 // Convert to JS Date for Screening type
 const screening: Screening = {
   // ...
-  date: date.toJSDate()
+  date: date.toJSDate(),
 }
 ```
 
@@ -334,10 +347,12 @@ const screening: Screening = {
 ### Cloud Deployment (`.github/workflows/cloud.yml`)
 
 **Triggers:**
+
 - Push to `main` branch (paths: `cloud/**`, `.github/workflows/cloud.yml`)
 - Manual dispatch
 
 **Actions:**
+
 1. Install dependencies
 2. Configure AWS credentials
 3. CDK bootstrap
@@ -346,11 +361,13 @@ const screening: Screening = {
 ### Web Deployment (`.github/workflows/web.yml`)
 
 **Triggers:**
+
 - Push to `main` branch (paths: `web/**`, `.github/workflows/web.yml`)
 - Daily schedule at 3:30 UTC
 - Manual dispatch
 
 **Actions:**
+
 1. Install dependencies
 2. Build Next.js static site
 3. Generate sitemap
@@ -361,6 +378,7 @@ const screening: Screening = {
 ### Lambda Functions
 
 **Scrapers Lambda:**
+
 - **Name:** `expatcinema-{stage}-scrapers`
 - **Runtime:** Node.js 22, x86_64
 - **Memory:** 1024 MB
@@ -370,6 +388,7 @@ const screening: Screening = {
 - **Environment:** All API keys and configuration
 
 **Playground Lambda:**
+
 - **Name:** `expatcinema-{stage}-playground`
 - **Purpose:** Testing and experimentation
 - **Config:** Similar to scrapers
@@ -399,20 +418,23 @@ pnpm test
 ### Manual Testing Checklist
 
 When adding/modifying scrapers:
+
 1. ✅ Test scraper locally with debug logging
 2. ✅ Verify screenings have English subtitles
 3. ✅ Check title normalization (no years, proper case)
 4. ✅ Validate dates are in Europe/Amsterdam timezone
 5. ✅ Ensure URLs are absolute and valid
-6. ✅ Deploy to dev stage and run integration test
-7. ✅ Check CloudWatch logs for errors
-8. ✅ Verify output in S3 bucket
+6. ✅ **Find a film with multiple screenings on different dates — verify each screening has a distinct, correct date** (not all the same date)
+7. ✅ Deploy to dev stage and run integration test
+8. ✅ Check CloudWatch logs for errors
+9. ✅ Verify output in S3 bucket: check total screening count and spot-check a few films with multiple dates
 
 ## Common Tasks
 
 ### Backup and Restore Data
 
 **Backup S3 and DynamoDB:**
+
 ```bash
 cd backup/
 export STAGE=prod
@@ -423,6 +445,7 @@ aws dynamodb scan --table-name expatcinema-scrapers-movie-metadata-$STAGE --prof
 ```
 
 **Restore:**
+
 ```bash
 aws s3 sync expatcinema-scrapers-output-$STAGE s3://expatcinema-scrapers-output-$STAGE --profile casper
 aws s3 sync expatcinema-public-$STAGE s3://expatcinema-public-$STAGE --profile casper
@@ -465,6 +488,7 @@ pnpm compareScreenings
 **Problem:** Local Chromium not found
 
 **Solution:**
+
 ```bash
 cd cloud
 pnpm run install-chromium
@@ -477,6 +501,7 @@ This installs Chromium and updates `browser-local-constants.ts` with the correct
 **Problem:** Scraper exceeds 1-minute timeout
 
 **Solutions:**
+
 1. Increase timeout in `cloud/lib/backend-stack.ts`
 2. Optimize scraper (reduce navigation, use waitForSelector efficiently)
 3. Ensure browser is properly closed with `closeBrowser()`
@@ -486,6 +511,7 @@ This installs Chromium and updates `browser-local-constants.ts` with the correct
 **Problem:** API keys not set
 
 **Solution:**
+
 - Local: Add to `cloud/.env`
 - Prod: Add to GitHub Secrets (must trigger new deployment)
 
@@ -494,6 +520,7 @@ This installs Chromium and updates `browser-local-constants.ts` with the correct
 **Problem:** Next.js build errors
 
 **Common causes:**
+
 1. Can't fetch screenings.json from S3 (check public bucket permissions)
 2. TypeScript errors (run `pnpm type-check` in web/)
 3. Out of memory (increase GitHub Actions runner memory)
@@ -503,9 +530,42 @@ This installs Chromium and updates `browser-local-constants.ts` with the correct
 **Problem:** Non-English screenings included
 
 **Solution:**
+
 - Add filtering logic: `filter((screening) => hasEnglishSubtitles(screening))`
 - Check cinema's API/HTML for subtitle indicators
 - Look for tags like "EN subs", "OV", "Engels ondertiteld"
+
+### Silent Data Corruption: Wrong Dates on Multi-Date Films
+
+**Problem:** Scraper returns screenings with no errors, but multiple screenings for the same film all have the same (wrong) date.
+
+**Cause:** A CSS selector matches an outer wrapper element instead of individual row elements. For example, `#voorstellingen > .wp-block-group` may match the single wrapper div that contains all rows, causing all time elements inside to be collected under only the first date found.
+
+**Solution:** Use `:has(> .child)` to target only elements that directly contain the expected child — this skips outer wrappers:
+
+```typescript
+// Wrong: may match outer wrapper containing all rows
+$('#voorstellingen > .wp-block-group')
+
+// Correct: matches only row-level elements that directly contain .datum-tekst
+$('#voorstellingen .wp-block-group:has(> .datum-tekst)')
+```
+
+**How to catch this:** After running a scraper locally, find a film with multiple screenings on different dates and verify each screening has a distinct, correct date. A count check alone will not catch this bug.
+
+### `hasEnglishSubtitles`: Filter on Subtitles, Not Language
+
+**Problem:** Films where the spoken language is English (but subtitles are Dutch or absent) are incorrectly included.
+
+**Rule:** Always filter on the `subtitles` field containing `"engels"`, never on `language` containing `"engels"`. A film spoken in English does not automatically have English subtitles.
+
+```typescript
+// Wrong: includes English-language films without subtitles
+hasEnglishSubtitles({ language: 'Engels', subtitles: '' }) // → should be false
+
+// Correct: only include when subtitles field says Engels
+hasEnglishSubtitles({ language: 'Japans', subtitles: 'Engels' }) // → true
+```
 
 ## Important Notes for AI Assistants
 
@@ -533,6 +593,7 @@ This installs Chromium and updates `browser-local-constants.ts` with the correct
 ### Code Review Checklist
 
 Before committing:
+
 - [ ] Code follows Prettier formatting (run `pnpm format`)
 - [ ] TypeScript compiles without errors (`pnpm type-check`)
 - [ ] Tests pass (if applicable)
@@ -594,6 +655,7 @@ Before committing:
 ### Commit Messages
 
 Follow existing patterns:
+
 - `deploy web` - Trigger web deployment
 - `bump to force web deploy` - Force rebuild
 - `Add new cinema scraper: {name}`
@@ -607,6 +669,6 @@ Follow existing patterns:
 
 ---
 
-**Last Updated:** 2026-01-07
+**Last Updated:** 2026-03-19
 **Project Version:** See individual package.json files
 **Maintainer:** Casper Kuijjer (casper@kuijjer.com)
