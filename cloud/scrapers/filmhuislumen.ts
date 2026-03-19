@@ -3,8 +3,8 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import { monthToNumber } from './utils/monthToNumber'
-import { splitTime } from './utils/splitTime'
+import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { fullMonthToNumberDutch } from './utils/monthToNumber'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -41,50 +41,62 @@ type XRayFromMainPage = {
 
 type XRayFromMoviePage = {
   title: string
-  metadata: string[]
+  language: string
+  subtitles: string
   screenings: {
     date: string
     times: string[]
   }[]
 }
 
+// Parses dates like "Vandaag", "Morgen", "21 maart 2026"
 const parseDate = (date: string) => {
-  if (date === 'Vandaag') {
+  const trimmed = date.trim()
+  if (trimmed === 'Vandaag') {
     const { day, month, year } = DateTime.now()
     return { day, month, year }
-  } else if (date === 'Morgen') {
+  } else if (trimmed === 'Morgen') {
     const { day, month, year } = DateTime.now().plus({ days: 1 })
     return { day, month, year }
   } else {
-    // b.v. ma 11.12
-    const [dayString, monthString, yearString] = date.split(/\s+/)
-
-    const day = Number(dayString)
-    const month = monthToNumber(monthString)
-    const year = Number(yearString)
-
+    // e.g. "21 maart 2026"
+    const parts = trimmed.split(/\s+/)
+    const day = Number(parts[0])
+    const month = fullMonthToNumberDutch(parts[1])
+    const year = Number(parts[2])
     return { day, month, year }
   }
 }
 
-const hasEnglishSubtitles = (movie: XRayFromMoviePage) =>
-  movie.metadata.includes('Ondertiteling Engels') ||
-  movie.metadata.includes('Ondertiteling English') ||
-  movie.title?.toLowerCase().includes('engels ondertiteld') ||
-  movie.title?.toLowerCase().includes('english subtitles')
+const hasEnglishSubtitles = (movie: XRayFromMoviePage) => {
+  const subtitles = movie.subtitles?.toLowerCase() ?? ''
+  const title = movie.title?.toLowerCase() ?? ''
+
+  // Film with English subtitles
+  if (subtitles.includes('engels')) return true
+
+  // Title-based fallback
+  if (
+    title.includes('engels ondertiteld') ||
+    title.includes('english subtitles')
+  )
+    return true
+
+  return false
+}
 
 const extractFromMoviePage = async ({
   title,
   url,
 }: XRayFromMainPage): Promise<Screening[]> => {
   const movie: XRayFromMoviePage = await xray(url, {
-    title: '.movie-calendar h2 | cleanTitle | trim',
-    metadata: ['.metadata li | normalizeWhitespace | trim'],
-    screenings: xray('.moviecontentcontainer .shows-listing .day-shows', [
-      // .moviecontentcontainer otherwise 2x the results
+    title: 'h1.wp-block-post-title | cleanTitle | trim',
+    language: 'p.field-language .value | normalizeWhitespace | trim',
+    subtitles: 'p.field-subtitles .value | normalizeWhitespace | trim',
+    screenings: xray('#voorstellingen > .wp-block-group', [
       {
-        date: '.date | trim',
-        times: ['a.button | trim'],
+        date: '.datum-tekst | normalizeWhitespace | trim',
+        times: ['a.voorstelling-tijd time@datetime'],
       },
     ]),
   })
@@ -95,12 +107,15 @@ const extractFromMoviePage = async ({
     return []
   }
 
-  const screenings: Screening[] = movie.screenings.flatMap(
-    ({ date, times }) => {
+  const screenings: Screening[] = movie.screenings
+    .filter(({ date }) => date) // skip rows without a date (e.g. separator divs)
+    .flatMap(({ date, times }) => {
       const { day, month, year } = parseDate(date)
 
-      return times.map((time) => {
-        const [hour, minute] = splitTime(time)
+      return (times ?? []).map((time) => {
+        const [hourStr, minuteStr] = time.split(':')
+        const hour = Number(hourStr)
+        const minute = Number(minuteStr)
 
         return {
           title: movie.title,
@@ -115,67 +130,45 @@ const extractFromMoviePage = async ({
           }).toJSDate(),
         }
       })
-    },
-  )
+    })
 
   return screenings
 }
 
 const extractFromMainPage = async () => {
-  // look at the HTML for the page, not Chrome' DevTools, as there's JavaScript that changed the HTML.
+  // The english-expat page lists films tagged with reeksen-english / reeksen-expat-cinema
   const englishScrapeResult: XRayFromMainPage[] = await xray(
     'https://filmhuis-lumen.nl/specials/english-expat/',
-    '.movie-item',
+    'li.wp-block-post',
     [
       {
-        title: 'h2 | normalizeWhitespace | cleanTitle | trim',
-        url: 'a@href',
-      },
-    ],
-  )
-
-  const classicsScrapeResult: XRayFromMainPage[] = await xray(
-    'https://filmhuis-lumen.nl/specials/klassiekers/',
-    '.movie-item',
-    [
-      {
-        title: 'h4 | normalizeWhitespace | cleanTitle | trim',
-        url: 'a@href',
-      },
-    ],
-  )
-
-  const festibericoScrapeResult: XRayFromMainPage[] = await xray(
-    'https://filmhuis-lumen.nl/festiberico/',
-    '.wp-block-list li',
-    [
-      {
-        title: 'a | normalizeWhitespace | cleanTitle | trim',
-        url: 'a@href',
+        title:
+          '.wp-block-post-title a | normalizeWhitespace | cleanTitle | trim',
+        url: '.wp-block-post-title a@href',
       },
     ],
   )
 
   const programmaScrapeResult: XRayFromMainPage[] = await xray(
     'https://filmhuis-lumen.nl/programma/',
-    '.content',
+    'li.wp-block-post',
     [
       {
-        title: 'h2 | normalizeWhitespace | cleanTitle | trim',
-        url: 'a@href',
+        title:
+          '.wp-block-post-title a | normalizeWhitespace | cleanTitle | trim',
+        url: '.wp-block-post-title a@href',
       },
     ],
   )
 
-  // combine results and remove duplicates
+  // combine results and remove duplicates by URL
   const scrapeResult = [
     ...englishScrapeResult,
-    ...classicsScrapeResult,
-    ...festibericoScrapeResult,
     ...programmaScrapeResult,
   ].filter(
-    (item, index, self) => index === self.findIndex((t) => t.url === item.url),
-  ) // remove duplicates based on URL
+    (item, index, self) =>
+      item.url && index === self.findIndex((t) => t.url === item.url),
+  )
 
   logger.info('scrape result', { scrapeResult })
 
@@ -185,7 +178,7 @@ const extractFromMainPage = async () => {
 
   logger.info('screenings found', { screenings })
 
-  return screenings
+  return makeScreeningsUniqueAndSorted(screenings)
 }
 
 if (
@@ -198,10 +191,7 @@ if (
 
   //   extractFromMoviePage({
   //     title: '',
-  //     //   url: 'https://filmhuis-lumen.nl/films/expat-cinema-ponyo-english-subtitles0-3522/',
-  //     // url: 'https://filmhuis-lumen.nl/films/shaun-het-schaap-elke-dag-feest-4-6089/',
-  //     // url: 'https://filmhuis-lumen.nl/films/the-phoenician-scheme-5994/',
-  //     url: 'https://filmhuis-lumen.nl/films/sentimental-value-english-subtitles-expat-cinema-6353/',
+  //     url: 'https://filmhuis-lumen.nl/films/hamnet-6270/',
   //   })
   //     .then((x) => JSON.stringify(x, null, 2))
   //     .then(console.log)
