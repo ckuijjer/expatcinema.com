@@ -93,7 +93,7 @@ const extractFromMoviePage = async ({
     title: 'h1.wp-block-post-title | cleanTitle | trim',
     language: 'p.field-language .value | normalizeWhitespace | trim',
     subtitles: 'p.field-subtitles .value | normalizeWhitespace | trim',
-    screenings: xray('#voorstellingen > .wp-block-group', [
+    screenings: xray('#voorstellingen .wp-block-group:has(> .datum-tekst)', [
       {
         date: '.datum-tekst | normalizeWhitespace | trim',
         times: ['a.voorstelling-tijd time@datetime'],
