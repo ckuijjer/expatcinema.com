@@ -2,12 +2,14 @@ import { css } from '@emotion/react'
 import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
 import React, { useReducer } from 'react'
-import removeAccents from 'remove-accents'
 
 import { isEnabled } from '../../utils/featureFlags'
 import { Screening } from '../../utils/getScreenings'
 import { groupAndSortScreenings } from '../../utils/groupAndSortScreenings'
 import { useSearch } from '../../utils/hooks'
+
+const removeDiacritics = (str: string) =>
+  str.normalize('NFD').replace(/\p{Diacritic}/gu, '')
 
 const CalendarComponent = isEnabled('virtualized-table')
   ? dynamic(() =>
@@ -29,9 +31,9 @@ const screeningMatchesSearch = (
   screening: Screening,
   searchComponents: string[],
 ) => {
-  const title = removeAccents(screening.title.toLowerCase())
-  const cinema = removeAccents(screening.cinema.name.toLowerCase())
-  const city = removeAccents(screening.cinema.city.name.toLowerCase())
+  const title = removeDiacritics(screening.title.toLowerCase())
+  const cinema = removeDiacritics(screening.cinema.name.toLowerCase())
+  const city = removeDiacritics(screening.cinema.city.name.toLowerCase())
 
   return (
     searchComponents.length === 0 ||

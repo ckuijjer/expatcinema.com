@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import removeAccents from 'remove-accents'
+
+const removeDiacritics = (str: string) =>
+  str.normalize('NFD').replace(/\p{Diacritic}/gu, '')
 
 type UseSearch = {
   search: string
@@ -16,7 +18,7 @@ export const useSearch = (): UseSearch => {
   const search = (Array.isArray(rawSearch) ? rawSearch[0] : rawSearch) ?? ''
 
   const searchComponents =
-    search === '' ? [] : removeAccents(search.toLowerCase()).split(/\s+/)
+    search === '' ? [] : removeDiacritics(search.toLowerCase()).split(/\s+/)
 
   const searchQuery = search ? `?search=${search}` : ''
 

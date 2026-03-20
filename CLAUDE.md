@@ -569,6 +569,10 @@ hasEnglishSubtitles({ language: 'Japans', subtitles: 'Engels' }) // → true
 
 ## Important Notes for AI Assistants
 
+### Git and Version Control
+
+- **Never commit or push without explicit user approval.** Always show the proposed changes and ask before running `git commit` or `git push`.
+
 ### When Adding New Features
 
 1. **Don't over-engineer:** Keep solutions simple and focused

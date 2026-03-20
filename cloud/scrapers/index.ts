@@ -1,6 +1,5 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { PutCommand } from '@aws-sdk/lib-dynamodb'
-import diacritics from 'diacritics'
 import { mkdir, writeFile } from 'fs/promises'
 import { DateTime, Settings } from 'luxon'
 import pMap from 'p-map'
@@ -51,6 +50,7 @@ import springhaver from './springhaver'
 import studiok from './studiok'
 import themovies from './themovies'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { removeDiacritics } from './utils/removeDiacritics'
 
 const SCRAPERS = {
   bioscopenleiden,
@@ -203,7 +203,7 @@ export const scrapers = async () => {
     results.all = makeScreeningsUniqueAndSorted(Object.values(results).flat())
 
     // get metadata for all movies
-    const normalizeTitle = (title) => diacritics.remove(title.toLowerCase())
+    const normalizeTitle = (title) => removeDiacritics(title.toLowerCase())
 
     const uniqueTitles = Array.from(
       new Set(results.all.map(({ title }) => normalizeTitle(title))),

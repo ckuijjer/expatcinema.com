@@ -1,4 +1,3 @@
-import diacritics from 'diacritics'
 import leven from 'leven'
 
 import getDuckDuckGoClient from '../clients/duckduckgo'
@@ -6,6 +5,7 @@ import getGoogleCustomSearchClient from '../clients/google-customsearch'
 import getOmdbClient from '../clients/omdb'
 import getTmdbClient from '../clients/tmdb'
 import { logger } from '../powertools'
+import { removeDiacritics } from '../scrapers/utils/removeDiacritics'
 
 const getFirstTmdbSearchResult = async (title: string) => {
   const apiKey = process.env.TMDB_API_KEY
@@ -96,7 +96,7 @@ const getFirstGoogleCustomSearchResult = async (title: string) => {
 }
 
 const searchMetadata = async (title: string) => {
-  const normalizedTitle = diacritics.remove(title.toLowerCase())
+  const normalizedTitle = removeDiacritics(title.toLowerCase())
 
   const tmdb = await getFirstTmdbSearchResult(normalizedTitle)
   // const omdb = await getFirstOmdbSearchResult(normalizedTitle)  // OMDB throws 500 errors

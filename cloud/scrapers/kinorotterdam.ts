@@ -1,5 +1,4 @@
 // like Bioscopenleiden
-import { remove } from 'diacritics'
 import got from 'got'
 import { decode } from 'html-entities'
 import { DateTime } from 'luxon'

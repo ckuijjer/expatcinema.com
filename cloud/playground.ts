@@ -1,7 +1,6 @@
 // should be your first import
 import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware'
 import middy from '@middy/core'
-import diacritics from 'diacritics'
 import got from 'got'
 import { DateTime, Settings } from 'luxon'
 import pMap from 'p-map'
@@ -10,6 +9,7 @@ import whyIsNodeRunning from 'why-is-node-running'
 import { closeBrowser, getBrowser } from './browser'
 import getMetadata from './metadata'
 import { logger as parentLogger } from './powertools'
+import { removeDiacritics } from './scrapers/utils/removeDiacritics'
 import { useLLM } from './scrapers/utils/useLLM'
 import { Screening } from './types'
 
@@ -80,7 +80,7 @@ const movieMetadataPlayground = async () => {
 
     const uniqueTitles = Array.from(
       new Set(
-        screenings.map(({ title }) => diacritics.remove(title.toLowerCase())),
+        screenings.map(({ title }) => removeDiacritics(title.toLowerCase())),
       ),
     ).sort()
 
@@ -91,7 +91,7 @@ const movieMetadataPlayground = async () => {
     const allWithMetadata = screenings.map((screening) => {
       const metadata = uniqueTitlesAndMetadata.find(
         ({ query }) =>
-          query === diacritics.remove(screening.title.toLowerCase()),
+          query === removeDiacritics(screening.title.toLowerCase()),
       )
 
       if (metadata && metadata.title) {
