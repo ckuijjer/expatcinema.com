@@ -1,6 +1,5 @@
-import { Agent } from 'https'
+import got from 'got'
 import { DateTime } from 'luxon'
-import request from 'request'
 import Xray from 'x-ray'
 import XRayCrawler from 'x-ray-crawler'
 
@@ -15,16 +14,14 @@ const logger = parentLogger.createChild({
 })
 
 // De Uitkijk has a certificate for which the intermediate certificate is not included in the default Node.js certificate store.
-// Using a XRay driver with a custom agent that ignores certificate errors feels like a reasonable workaround, and definitely
+// Using a custom got driver that ignores certificate errors feels like a reasonable workaround, and definitely
 // better than setting NODE_TLS_REJECT_UNAUTHORIZED=0 for all scrapers.
-const agent = new Agent({ rejectUnauthorized: false })
-
 const driver: XRayCrawler.Driver = (context, callback) => {
   const { url } = context
 
-  request({ url, agent }, (err, response, body) => {
-    return callback(err, body)
-  })
+  got(url, { https: { rejectUnauthorized: false } })
+    .then((response) => callback(null, response.body))
+    .catch((err) => callback(err, null))
 }
 
 const xray = Xray({

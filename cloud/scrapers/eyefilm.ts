@@ -61,7 +61,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
     .endOf('day')
     .toFormat('yyyy-MM-dd HH:mm')
 
-  const results = await client.query({
+  const results = await client.query<{ shows: any[] }>({
     query,
     variables: {
       siteId: 'eyeEnglish',
@@ -73,7 +73,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
   const hasEnglishSubtitles = (show) =>
     show.singleSubtitles === '42c27a5b-2d4e-4195-b547-cb6fbe9fcd49'
 
-  logger.info('number of shows', results.data.shows.length)
+  logger.info('number of shows', { count: results.data.shows.length })
 
   const screenings = results.data.shows
     .filter(hasEnglishSubtitles)

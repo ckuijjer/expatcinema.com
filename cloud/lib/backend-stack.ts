@@ -10,7 +10,6 @@ import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs'
 import { RetentionDays } from 'aws-cdk-lib/aws-logs'
 import * as s3 from 'aws-cdk-lib/aws-s3'
 import { Construct } from 'constructs'
-import 'source-map-support/register'
 
 import { getConfig } from './config'
 
