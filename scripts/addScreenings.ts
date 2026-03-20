@@ -2,7 +2,6 @@
 import { spawnSync } from 'child_process'
 import fs from 'fs'
 import { DateTime } from 'luxon'
-import * as R from 'ramda'
 
 const currentFilename = '../screenings.json'
 const currentContents = fs.readFileSync(currentFilename, 'utf-8')
@@ -18,13 +17,30 @@ const latestJSON = JSON.parse(latestContents)
 
 const combined = [...currentJSON, ...latestJSON]
 
-const sort = R.sortWith([
-  (a, b) => DateTime.fromISO(a.date) - DateTime.fromISO(b.date),
-  R.ascend(R.prop('cinema')),
-  R.ascend(R.prop('title')),
-  R.ascend(R.prop('url')),
-])
+const sort = (arr: any[]) =>
+  [...arr].sort((a, b) => {
+    const dateDiff =
+      DateTime.fromISO(a.date).toMillis() - DateTime.fromISO(b.date).toMillis()
+    if (dateDiff !== 0) return dateDiff
+    if (a.cinema < b.cinema) return -1
+    if (a.cinema > b.cinema) return 1
+    if (a.title < b.title) return -1
+    if (a.title > b.title) return 1
+    if (a.url < b.url) return -1
+    if (a.url > b.url) return 1
+    return 0
+  })
 
-const output = sort(R.uniq(combined))
+const uniq = (arr: any[]) => {
+  const seen = new Set<string>()
+  return arr.filter((item) => {
+    const key = JSON.stringify(item)
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+}
+
+const output = sort(uniq(combined))
 
 fs.writeFileSync(currentFilename, JSON.stringify(output, null, 2))
