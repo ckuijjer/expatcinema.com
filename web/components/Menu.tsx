@@ -5,8 +5,8 @@ import React, { useState } from 'react'
 import { useKeypress } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
 import { Layout } from './Layout'
-import CrossIcon from './icons/cross.svg'
-import MenuIcon from './icons/menu.svg'
+import CrossIcon from './icons/CrossIcon'
+import MenuIcon from './icons/MenuIcon'
 
 export const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)

@@ -6,8 +6,8 @@ import { useKeypress, useSearch } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
 import { Menu } from './Menu'
 import { TextFilter } from './TextFilter'
-import CrossIcon from './icons/cross.svg'
-import SearchIcon from './icons/search.svg'
+import CrossIcon from './icons/CrossIcon'
+import SearchIcon from './icons/SearchIcon'
 
 const Title = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
   <h1
