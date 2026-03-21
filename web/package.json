@@ -3,17 +3,17 @@
   "version": "0.1.27",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build && pnpm next-sitemap",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "clean": "rm -rf .next out"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@observablehq/plot": "0.6.17",
     "luxon": "^3.7.2",
-    "next": "15.2.0",
+    "next": "16.2.1",
     "next-sitemap": "^4.2.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -22,15 +22,14 @@
   "devDependencies": {
     "@emotion/babel-plugin": "^11.13.5",
     "@emotion/babel-preset-css-prop": "^11.12.0",
-    "@svgr/webpack": "^8.1.0",
     "@types/luxon": "^3.7.1",
     "@types/node": "22.13.8",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "eslint": "^9.21.0",
-    "eslint-config-next": "15.2.0",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "16.2.1",
     "prettier": "^3.8.1",
-    "typescript": "5.8.2"
+    "typescript": "5.9.3"
   },
   "pnpm": {
     "overrides": {

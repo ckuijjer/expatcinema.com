@@ -230,8 +230,8 @@ SCRAPERS=kinorotterdam,eyefilm  # Optional: limit scrapers
 ```bash
 cd web
 
-# Development server with Turbopack
-pnpm dev --turbopack
+# Development server (Turbopack by default in Next.js 16)
+pnpm dev
 
 # Build static site
 pnpm build
@@ -423,7 +423,17 @@ pnpm test
 **Test location:** `cloud/test/*.test.ts`
 **Configuration:** `cloud/jest.config.cjs` (must be `.cjs`, not `.js`, because `cloud/package.json` has `"type": "module"`)
 
-### Manual Testing Checklist
+### Web Testing Checklist
+
+Before committing or creating a PR for `web/` changes:
+
+1. ✅ Run `pnpm dev` and verify the page renders correctly in the browser
+2. ✅ Run `pnpm build` to verify the static export compiles without errors
+3. ✅ Run `pnpm lint` (`eslint .`) and fix any lint errors
+4. ✅ Run `pnpm format` from the repo root and confirm no files changed (or commit formatting fixes)
+5. ✅ Run `npx tsc --noEmit` in `web/` to check for TypeScript errors
+
+### Scraper Testing Checklist
 
 When adding/modifying scrapers:
 
@@ -561,27 +571,9 @@ $('#voorstellingen .wp-block-group:has(> .datum-tekst)')
 
 **How to catch this:** After running a scraper locally, find a film with multiple screenings on different dates and verify each screening has a distinct, correct date. A count check alone will not catch this bug.
 
-### Turbopack: SVG Imports Return Raw Objects
+### SVG Icons
 
-**Problem:** SVG files imported as React components render as `[object Object]` or throw "Element type is invalid" when running `pnpm dev --turbopack`.
-
-**Cause:** The webpack SVGR rule in `next.config.js` does not apply to Turbopack. Turbopack needs its own separate rule.
-
-**Solution:** Both must be configured in `next.config.js`:
-
-```js
-// webpack (existing)
-webpack: (config) => {
-  config.module.rules.push({ test: /\.svg$/i, use: ['@svgr/webpack'] })
-  return config
-},
-// Turbopack (separate config)
-experimental: {
-  turbo: {
-    rules: { '*.svg': { loaders: ['@svgr/webpack'], as: '*.js' } },
-  },
-},
-```
+SVG icons in `web/components/icons/` are plain TSX components (e.g. `SearchIcon.tsx`, `CrossIcon.tsx`, `MenuIcon.tsx`). They accept `React.SVGProps<SVGSVGElement>` props. Do not use `.svg` file imports — there is no SVGR loader configured.
 
 ### Turbopack: `Object.groupBy` Not Available in SSR Sandbox
 

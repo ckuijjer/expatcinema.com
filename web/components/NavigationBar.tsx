@@ -6,8 +6,8 @@ import { useKeypress, useSearch } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
 import { Menu } from './Menu'
 import { TextFilter } from './TextFilter'
-import CrossIcon from './icons/cross.svg'
-import SearchIcon from './icons/search.svg'
+import CrossIcon from './icons/CrossIcon'
+import SearchIcon from './icons/SearchIcon'
 
 const Title = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
   <h1
@@ -107,11 +107,9 @@ const NavigationItems = (props: React.HTMLAttributes<HTMLDivElement>) => (
 export const NavigationBar = ({ showSearch = true }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { search, setSearch } = useSearch()
-  useKeypress('/', () => toggleSearch())
 
   useEffect(() => {
-    const isOpen = search !== ''
-    setIsSearchOpen(isOpen)
+    setIsSearchOpen(search !== '')
   }, [search])
 
   const openSearch = () => {
@@ -130,6 +128,8 @@ export const NavigationBar = ({ showSearch = true }) => {
       openSearch()
     }
   }
+
+  useKeypress('/', () => toggleSearch())
 
   return (
     <>
