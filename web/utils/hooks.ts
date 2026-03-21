@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 
 const removeDiacritics = (str: string) =>
   str.normalize('NFD').replace(/\p{Diacritic}/gu, '')
@@ -42,14 +42,19 @@ export const useSearch = (): UseSearch => {
 }
 
 export const useKeypress = (key: string, action: () => void) => {
+  const actionRef = useRef(action)
+  useLayoutEffect(() => {
+    actionRef.current = action
+  })
+
   useEffect(() => {
     const onKeyup = (e: KeyboardEvent) => {
       if (e.key === key) {
-        action()
+        actionRef.current()
       }
     }
 
     window.addEventListener('keyup', onKeyup)
     return () => window.removeEventListener('keyup', onKeyup)
-  }, [])
+  }, [key])
 }

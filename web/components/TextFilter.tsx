@@ -1,5 +1,11 @@
 import { css } from '@emotion/react'
-import React, { ComponentProps, useEffect, useRef, useState } from 'react'
+import React, {
+  ComponentProps,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import { useKeypress, useSearch } from '../utils/hooks'
 
@@ -44,7 +50,9 @@ const DebouncedInput = ({
 }: DebouncedInputProps) => {
   const [value, setValue] = useState((rest.value as string) || '')
   const onDebounceRef = useRef(onDebounce)
-  onDebounceRef.current = onDebounce
+  useLayoutEffect(() => {
+    onDebounceRef.current = onDebounce
+  })
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {

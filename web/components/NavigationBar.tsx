@@ -107,11 +107,9 @@ const NavigationItems = (props: React.HTMLAttributes<HTMLDivElement>) => (
 export const NavigationBar = ({ showSearch = true }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { search, setSearch } = useSearch()
-  useKeypress('/', () => toggleSearch())
 
   useEffect(() => {
-    const isOpen = search !== ''
-    setIsSearchOpen(isOpen)
+    setIsSearchOpen(search !== '')
   }, [search])
 
   const openSearch = () => {
@@ -130,6 +128,8 @@ export const NavigationBar = ({ showSearch = true }) => {
       openSearch()
     }
   }
+
+  useKeypress('/', () => toggleSearch())
 
   return (
     <>
