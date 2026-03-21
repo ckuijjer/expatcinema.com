@@ -2,7 +2,7 @@
 
 ## Session Setup
 
-**Always run `nvm use` at the start of every session** to activate Node 22 (as specified in `.nvmrc`). This ensures the correct Node version is used for all commands.
+**Always run `nvm use` at the start of every session** to activate Node 24 (as specified in `.nvmrc`). This ensures the correct Node version is used for all commands.
 
 ```bash
 nvm use
@@ -31,7 +31,7 @@ expatcinema.com/
 
 **Cloud (Backend)**
 
-- **Runtime:** Node.js 22 (AWS Lambda)
+- **Runtime:** Node.js 24 (AWS Lambda)
 - **Infrastructure:** AWS CDK (TypeScript)
 - **Storage:** S3 (data), DynamoDB (metadata cache, analytics)
 - **Web Scraping:** Puppeteer (headless Chrome), got (HTTP), x-ray (HTML parsing)
@@ -41,7 +41,7 @@ expatcinema.com/
 
 **Web (Frontend)**
 
-- **Framework:** Next.js 15 with static export (`output: 'export'`)
+- **Framework:** Next.js 16 with static export (`output: 'export'`)
 - **Styling:** Emotion (CSS-in-JS)
 - **UI:** React 19 with react-virtualized for performance
 - **Visualization:** Observable Plot
@@ -50,9 +50,9 @@ expatcinema.com/
 **Development Tools**
 
 - **Package Manager:** pnpm 9.15.4 (defined in packageManager field)
-- **Node Version:** 22 (see .nvmrc)
-- **TypeScript:** 5.8.2
-- **Code Formatting:** Prettier with import sorting plugin
+- **Node Version:** 24 (see .nvmrc)
+- **TypeScript:** 5.9.3
+- **Code Formatting:** Prettier
 - **CI/CD:** GitHub Actions
 
 ## Core Data Model
@@ -388,7 +388,7 @@ const screening: Screening = {
 **Scrapers Lambda:**
 
 - **Name:** `expatcinema-{stage}-scrapers`
-- **Runtime:** Node.js 22, x86_64
+- **Runtime:** Node.js 24, x86_64
 - **Memory:** 1024 MB
 - **Timeout:** 1 minute (configurable per function)
 - **Layers:** Chrome AWS Lambda layer (for Puppeteer)
@@ -575,13 +575,9 @@ $('#voorstellingen .wp-block-group:has(> .datum-tekst)')
 
 SVG icons in `web/components/icons/` are plain TSX components (e.g. `SearchIcon.tsx`, `CrossIcon.tsx`, `MenuIcon.tsx`). They accept `React.SVGProps<SVGSVGElement>` props. Do not use `.svg` file imports — there is no SVGR loader configured.
 
-### Turbopack: `Object.groupBy` Not Available in SSR Sandbox
+### Node 24 Built-ins Available in SSR
 
-**Problem:** `TypeError: Object.groupBy is not a function` at runtime even when running Node 22 locally.
-
-**Cause:** Turbopack's SSR sandbox runs in an environment where `Object.groupBy` (Node 21+) is not available.
-
-**Solution:** Use `reduce` or `flatMap` instead of `Object.groupBy` in any code that runs during SSR.
+`Object.groupBy` and other Node 21+ built-ins are available in Turbopack's SSR sandbox as of Next.js 16 + Node 24. Use them freely — no need to fall back to `reduce` or `flatMap`.
 
 ### Monorepo: Don't Rely on Transitive `@types/*` Packages
 
