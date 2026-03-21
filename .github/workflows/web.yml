@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -59,9 +59,9 @@ jobs:
             echo "Unable to determine packager manager"
             exit 1
           fi
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: ${{ env.package-manager }}
@@ -74,7 +74,7 @@ jobs:
           # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: next
       - name: Restore cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             .next/cache
@@ -90,7 +90,7 @@ jobs:
       - name: Generate a sitemap
         run: ${{ env.package-manager-runner }} next-sitemap
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./web/out
 
