@@ -95,6 +95,7 @@ type ScreeningEvent = {
 const cleanTitle = (title: string) =>
   titleCase(
     title // e.g. Nordic Watching: Unruly (English subtitled)
+      .replace(/\s*Laatste kans!/i, '') // e.g. <sup>Laatste kans!</sup> badge
       .replace(/\s+\(.*?\)$/i, '') // e.g. (English subtitled)
       .replace(/^.*?:\s+/, ''), // e.g. Nordic Watching:
   )
