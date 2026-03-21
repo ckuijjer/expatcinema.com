@@ -421,7 +421,7 @@ pnpm test
 ```
 
 **Test location:** `cloud/test/*.test.ts`
-**Configuration:** `cloud/jest.config.js`
+**Configuration:** `cloud/jest.config.cjs` (must be `.cjs`, not `.js`, because `cloud/package.json` has `"type": "module"`)
 
 ### Manual Testing Checklist
 
@@ -561,6 +561,60 @@ $('#voorstellingen .wp-block-group:has(> .datum-tekst)')
 
 **How to catch this:** After running a scraper locally, find a film with multiple screenings on different dates and verify each screening has a distinct, correct date. A count check alone will not catch this bug.
 
+### Turbopack: SVG Imports Return Raw Objects
+
+**Problem:** SVG files imported as React components render as `[object Object]` or throw "Element type is invalid" when running `pnpm dev --turbopack`.
+
+**Cause:** The webpack SVGR rule in `next.config.js` does not apply to Turbopack. Turbopack needs its own separate rule.
+
+**Solution:** Both must be configured in `next.config.js`:
+
+```js
+// webpack (existing)
+webpack: (config) => {
+  config.module.rules.push({ test: /\.svg$/i, use: ['@svgr/webpack'] })
+  return config
+},
+// Turbopack (separate config)
+experimental: {
+  turbo: {
+    rules: { '*.svg': { loaders: ['@svgr/webpack'], as: '*.js' } },
+  },
+},
+```
+
+### Turbopack: `Object.groupBy` Not Available in SSR Sandbox
+
+**Problem:** `TypeError: Object.groupBy is not a function` at runtime even when running Node 22 locally.
+
+**Cause:** Turbopack's SSR sandbox runs in an environment where `Object.groupBy` (Node 21+) is not available.
+
+**Solution:** Use `reduce` or `flatMap` instead of `Object.groupBy` in any code that runs during SSR.
+
+### Monorepo: Don't Rely on Transitive `@types/*` Packages
+
+**Problem:** A `@types/*` package works locally but causes "Could not find a declaration file" in CI.
+
+**Cause:** In the pnpm monorepo, a `@types/*` devDependency from one package (e.g. `cloud`) can be hoisted and picked up by another (e.g. `web`) locally — but CI only installs what's explicitly declared.
+
+**Rule:** Each package must declare its own `@types/*` devDependencies. For example, `web/` uses luxon and must have `@types/luxon` in its own `devDependencies`, even though `cloud/` also has it.
+
+### Circular Imports: Use `import type` for Type-Only Cross-Component Imports
+
+**Problem:** Two component files that import from each other cause a runtime "Element type is invalid: expected a string or a class/function but got: object" error, even though TypeScript compiles fine.
+
+**Cause:** Circular runtime imports resolve to `undefined` at the point of use. TypeScript erases type-only imports at compile time, so the cycle only becomes a problem at runtime.
+
+**Solution:** When a child component only needs a type from a parent (e.g. `Row` from `Calendar/index.tsx`), use `import type` which is erased at runtime and breaks the cycle:
+
+```typescript
+// Causes runtime circular dependency
+import { Row } from '.'
+
+// Safe — erased at compile time
+import type { Row } from '.'
+```
+
 ### `hasEnglishSubtitles`: Filter on Subtitles, Not Language
 
 **Problem:** Films where the spoken language is English (but subtitles are Dutch or absent) are incorrectly included.
@@ -681,6 +735,6 @@ Follow existing patterns:
 
 ---
 
-**Last Updated:** 2026-03-19
+**Last Updated:** 2026-03-21
 **Project Version:** See individual package.json files
 **Maintainer:** Casper Kuijjer (casper@kuijjer.com)
