@@ -22,7 +22,7 @@ const xray = Xray({
     trim,
     cleanTitle: (value) =>
       typeof value === 'string'
-        ? titleCase(value.replace(/^Expat Cinema:\s+/i, ''))
+        ? titleCase(value.replace(/^Expat Cinema:\s+/i, '').replace(/ - English subs$/i, ''))
         : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
