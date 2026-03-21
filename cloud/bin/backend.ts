@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 
 import { BackendStack } from '../lib/backend-stack'
 
-dotenv.config()
+dotenv.config({ quiet: true })
 
 const app = new cdk.App()
 const stage = process.env.STAGE || 'prod'

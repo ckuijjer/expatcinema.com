@@ -149,9 +149,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
             return result
           },
           {
-            onFailedAttempt: (error) => {
+            onFailedAttempt: ({ attemptNumber, retriesLeft }) => {
               logger.warn(
-                `Scraping ${i} ${url}, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
+                `Scraping ${i} ${url}, attempt ${attemptNumber} failed. There are ${retriesLeft} retries left.`,
               )
             },
             retries: 5,
