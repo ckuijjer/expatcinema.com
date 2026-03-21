@@ -97,8 +97,14 @@ interface KriterionFilmsApiResponse {
   [key: string]: number
 }
 
+const hasEnglishSubtitles = (name: string) => /\([^)]*eng subs[^)]*\)/i.test(name)
+
+// Matches the entire parenthetical containing "eng subs", plus any leading whitespace.
+// e.g. " (ENG subs)", " (1987, ENG subs)", " (ENG subs, 4K Restoration)"
+const ENG_SUBS_PARENTHETICAL = /\s*\([^)]*eng subs[^)]*\)/i
+
 const cleanTitle = (title: string) =>
-  titleCase(title.replace(/ \(ENG SUBS\)$/i, ''))
+  titleCase(title.trim().replace(ENG_SUBS_PARENTHETICAL, ''))
 
 const extractFromMainPage = async () => {
   try {
@@ -124,7 +130,7 @@ const extractFromMainPage = async () => {
     )
 
     const screenings: Screening[] = showsApiResponse.shows
-      .filter((item) => /\(eng subs\)/i.test(item.name))
+      .filter((item) => hasEnglishSubtitles(item.name))
       .map((item) => {
         const slug = productionIdToSlug[item.production_id]
         const url = `https://kriterion.nl/films/${slug}`
