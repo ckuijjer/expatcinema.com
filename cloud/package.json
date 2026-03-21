@@ -2,9 +2,6 @@
   "name": "expatcinema.com-cloud",
   "version": "1.0.1",
   "description": "",
-  "bin": {
-    "backend": "bin/backend.js"
-  },
   "type": "module",
   "main": "index.ts",
   "scripts": {
