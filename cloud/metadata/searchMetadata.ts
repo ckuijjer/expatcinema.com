@@ -5,10 +5,18 @@ import getTmdbClient from '../clients/tmdb'
 import { logger } from '../powertools'
 import { removeDiacritics } from '../scrapers/utils/removeDiacritics'
 
-type TmdbMovieResult = { id: number; title?: string; originalTitle?: string; [key: string]: unknown }
+type TmdbMovieResult = {
+  id: number
+  title?: string
+  originalTitle?: string
+  [key: string]: unknown
+}
 type TmdbSearchResponse = { results: TmdbMovieResult[] }
 type TmdbFindResponse = { movieResults: TmdbMovieResult[] }
-type GoogleSearchItem = { title: string; pagemap: { metatags: Array<Record<string, string>> } }
+type GoogleSearchItem = {
+  title: string
+  pagemap: { metatags: Array<Record<string, string>> }
+}
 type GoogleSearchResponse = { items?: GoogleSearchItem[] }
 
 const getFirstTmdbSearchResult = async (title: string) => {

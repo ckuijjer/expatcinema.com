@@ -27,14 +27,14 @@ const getAllKeysFromS3 = async () => {
   return keys
 }
 
-const addScraperAndCreatedAt = (keys) => {
+const addScraperAndCreatedAt = (keys: (string | undefined)[]) => {
   return keys.map((key) => {
     const matches = /(?<scraper>.*)\/(?<createdAt>.*Z).*\.json/.exec(key)
     return { key, ...(matches?.groups ?? {}) }
   })
 }
 
-const writeToAnalytics = async (data) => {
+const writeToAnalytics = async (data: Record<string, unknown>) => {
   const putCommand = new PutCommand({
     TableName: process.env.DYNAMODB_ANALYTICS,
     Item: {

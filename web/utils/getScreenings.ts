@@ -39,7 +39,7 @@ export const getScreenings = async () => {
 
     const cinema = {
       ...cinemaData,
-      city: cities.find((city) => city.name === cinemaData?.city)!,
+      city: cities.find((city) => city.name === cinemaData?.city),
     } as Cinema
 
     return {

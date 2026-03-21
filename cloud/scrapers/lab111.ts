@@ -5,8 +5,10 @@ import { logger as parentLogger } from '../powertools'
 import xRayPuppeteer from '../xRayPuppeteer'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -16,7 +18,7 @@ const logger = parentLogger.createChild({
 
 const xray = Xray({
   filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    trim,
     cleanTitle: (value) =>
       typeof value === 'string' ? value.replace(/\(.*\)\s+$/, '') : value,
     normalizeWhitespace: (value) =>
@@ -117,17 +119,6 @@ const extractFromMainPage = async () => {
   }
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-
-  // extractFromMoviePage({
-  //   url: 'https://www.lab111.nl/movie/tampopo/',
-  // }).then(console.log)
-}
+runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

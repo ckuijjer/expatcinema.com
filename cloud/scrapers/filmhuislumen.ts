@@ -5,7 +5,9 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberDutch } from './utils/monthToNumber'
+import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -15,7 +17,7 @@ const logger = parentLogger.createChild({
 
 const xray = Xray({
   filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    trim,
     cleanTitle: (value) =>
       typeof value === 'string'
         ? titleCase(
@@ -181,20 +183,6 @@ const extractFromMainPage = async () => {
   return makeScreeningsUniqueAndSorted(screenings)
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-
-  //   extractFromMoviePage({
-  //     title: '',
-  //     url: 'https://filmhuis-lumen.nl/films/hamnet-6270/',
-  //   })
-  //     .then((x) => JSON.stringify(x, null, 2))
-  //     .then(console.log)
-}
+runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

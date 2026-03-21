@@ -4,6 +4,7 @@ import Xray from 'x-ray'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { removeYearSuffix } from './utils/removeYearSuffix'
+import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -80,20 +81,6 @@ const extractFromMainPage = async () => {
   return screenings
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  // extractFromMoviePage({
-  //   permalink: 'https://www.lux-nijmegen.nl/programma/coup-de-chance/',
-  //   // 'https://www.lux-nijmegen.nl/programma/english-subs-perfect-days/',
-  // })
-  //   .then((x) => JSON.stringify(x, null, 2))
-  //   .then(console.log)
-
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-}
+runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

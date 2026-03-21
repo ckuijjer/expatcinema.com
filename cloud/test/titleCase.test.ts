@@ -39,7 +39,7 @@ describe('titleCase', () => {
   })
 
   test('replaces fancy apostrophes with normal ones', () => {
-    expect(titleCase("i\u2019m still here")).toBe("I'm Still Here")
+    expect(titleCase('i\u2019m still here')).toBe("I'm Still Here")
   })
 })
 

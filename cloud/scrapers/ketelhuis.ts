@@ -8,9 +8,11 @@ import {
   fullMonthToNumberDutch,
   shortMonthToNumberDutch,
 } from './utils/monthToNumber'
+import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 import { uniq } from './utils/uniq'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -20,7 +22,7 @@ const logger = parentLogger.createChild({
 
 const xray = Xray({
   filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    trim,
     cleanTitle: (value) =>
       typeof value === 'string'
         ? titleCase(
@@ -188,19 +190,6 @@ const extractFromMoviePage = async ({ url, title }) => {
   return screenings
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-
-  // extractFromMoviePage({
-  //   url: 'https://www.ketelhuis.nl/films/heldin-english-subs/',
-  // })
-  //   .then((x) => JSON.stringify(x, null, 2))
-  //   .then(console.log)
-}
+runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

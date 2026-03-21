@@ -5,6 +5,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { useLLM } from './utils/useLLM'
 
@@ -101,17 +102,6 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   return screenings
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  //   extractFromMoviePage({
-  //     url: 'https://dokhuis.org/programma/movie-night-acts-of-care-film-incl-maaltijd/',
-  //   })
-
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-}
+runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

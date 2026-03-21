@@ -6,8 +6,10 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
+import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -17,7 +19,7 @@ const logger = parentLogger.createChild({
 
 const xray = Xray({
   filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    trim,
   },
 })
   .concurrency(10)
@@ -129,34 +131,6 @@ const extractFromMainPage = async () => {
   return screenings.flat()
 }
 
+runIfMain(extractFromMainPage, import.meta.url)
+
 export default extractFromMainPage
-
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-}
-
-// Promise.resolve([
-//   {
-//     url: 'https://www.lantarenvenster.nl/programma/rivers-edge/',
-//   },
-//   { url: 'https://www.lantarenvenster.nl/programma/la-priere/' },
-//   { url: 'https://www.lantarenvenster.nl/programma/think-again-junpei/' },
-// ])
-//   .then(R.uniq) // as the agenda has lots of duplicate movie urls, make it unique
-//   .then(log('main page'))
-//   .then(results => Promise.all(results.map(extractFromMoviePage)))
-//   // .then(results => results.filter(x => x))
-//   .then(results => results.flat())
-//   .then(log('done'))
-
-// extractFromMoviePage({
-//   url: 'https://www.lantarenvenster.nl/programma/think-again-junpei/',
-// })
-// extractFromMoviePage({
-//   url: 'https://www.lantarenvenster.nl/programma/kanazawa-shutter-girl/',
-// })

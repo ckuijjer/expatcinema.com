@@ -92,13 +92,10 @@ export const Statistics = ({ points }: { points: AnalyticsPoint[] }) => {
     .map((scraper) => {
       const latest = points
         .filter((x) => x.scraper === scraper)
-        .reduce(
-          (acc: Partial<AnalyticsPoint>, x) => {
-            if (x.createdAt > (acc.createdAt ?? '') || !acc.createdAt) return x
-            return acc
-          },
-          {},
-        )
+        .reduce((acc: Partial<AnalyticsPoint>, x) => {
+          if (x.createdAt > (acc.createdAt ?? '') || !acc.createdAt) return x
+          return acc
+        }, {})
       return { scraper, value: latest.value ?? 0 }
     })
     .sort((a, b) => b.value - a.value)
