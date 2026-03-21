@@ -5,8 +5,6 @@ import { getToday } from './getToday'
 
 export type ScreeningWithLuxonDate = Omit<Screening, 'date'> & { date: DateTime }
 
-// TODO: The grouping should be based on the Europe/Amsterdam timezone
-
 // sort the screenings by date and time
 // group by date
 // inject some dates? e.g. the coming week? by doing an intersection with a static list of coming days?
@@ -22,7 +20,7 @@ export const groupAndSortScreenings = (
   // Group by ISO date string (Object.groupBy requires Node 21+)
   return sorted.reduce<Partial<Record<string, ScreeningWithLuxonDate[]>>>(
     (acc, x) => {
-      const key = x.date.toISODate() ?? ''
+      const key = x.date.setZone('Europe/Amsterdam').toISODate() ?? ''
       acc[key] = [...(acc[key] ?? []), x]
       return acc
     },

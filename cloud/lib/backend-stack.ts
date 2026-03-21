@@ -45,7 +45,6 @@ export class BackendStack extends cdk.Stack {
         sourceMap: true,
         minify: true,
         metafile: true,
-        // externalModules: ['emitter', '@sparticuz/chromium'],
         externalModules: [
           'emitter',
           '@aws-sdk/client-dynamodb',
@@ -53,14 +52,6 @@ export class BackendStack extends cdk.Stack {
           '@aws-sdk/lib-dynamodb',
         ],
         nodeModules: ['@sparticuz/chromium'],
-        // format: lambdaNodejs.OutputFormat.ESM,
-        // Above unfortunately doesn't work yet, see error message below
-        // "Error: Dynamic require of \"http\" is not supported",
-        // "    at file:///var/task/index.mjs:1:436",
-        // "    at PacProxyAgent (/node_modules/.pnpm/proxy-agent@6.5.0/node_modules/proxy-agent/src/index.ts:1:1)",
-        // "    at file:///var/task/index.mjs:1:548",
-        // "    at <anonymous> (/node_modules/.pnpm/@puppeteer+browsers@2.7.1/node_modules/@puppeteer/browsers/src/httpUtil.ts:12:26)",
-        // "    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)",
       },
       environment: {
         ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
@@ -95,13 +86,6 @@ export class BackendStack extends cdk.Stack {
       },
     )
 
-    // Scrapers
-    const chromeAwsLambdaLayer = lambda.LayerVersion.fromLayerVersionArn(
-      this,
-      'scrapers-lambda-layer',
-      'arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:50',
-    )
-
     // TODO: Fix the issue with bundling (likely see scrapers.ts and scrapers/index.ts)
     const scrapersLambda = new lambdaNodejs.NodejsFunction(
       this,
@@ -129,7 +113,6 @@ export class BackendStack extends cdk.Stack {
           SCRAPERS: config.SCRAPERS,
           SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
         },
-        // layers: [chromeAwsLambdaLayer],
       },
     )
 
@@ -177,7 +160,6 @@ export class BackendStack extends cdk.Stack {
           SCRAPERS: config.SCRAPERS,
           SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
         },
-        // layers: [chromeAwsLambdaLayer],
       },
     )
 

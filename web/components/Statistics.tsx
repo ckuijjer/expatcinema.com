@@ -77,8 +77,6 @@ const Tile = ({
 }
 
 export const Statistics = ({ points }: { points: AnalyticsPoint[] }) => {
-  console.log({ points })
-
   const [highlight, setHighlight] = React.useState<string | null>(null)
 
   const sortedPoints = [...points].sort((a, b) => {

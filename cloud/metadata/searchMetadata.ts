@@ -1,22 +1,26 @@
 import leven from 'leven'
 
-import getDuckDuckGoClient from '../clients/duckduckgo'
 import getGoogleCustomSearchClient from '../clients/google-customsearch'
-import getOmdbClient from '../clients/omdb'
 import getTmdbClient from '../clients/tmdb'
 import { logger } from '../powertools'
 import { removeDiacritics } from '../scrapers/utils/removeDiacritics'
+
+type TmdbMovieResult = { id: number; title?: string; originalTitle?: string; [key: string]: unknown }
+type TmdbSearchResponse = { results: TmdbMovieResult[] }
+type TmdbFindResponse = { movieResults: TmdbMovieResult[] }
+type GoogleSearchItem = { title: string; pagemap: { metatags: Array<Record<string, string>> } }
+type GoogleSearchResponse = { items?: GoogleSearchItem[] }
 
 const getFirstTmdbSearchResult = async (title: string) => {
   const apiKey = process.env.TMDB_API_KEY
 
   const tmdb = getTmdbClient(apiKey)
 
-  const { results }: any = await tmdb.get('search/movie', {
+  const { results } = (await tmdb.get('search/movie', {
     searchParams: {
       query: title,
     },
-  })
+  })) as TmdbSearchResponse
 
   if (results?.length > 0) {
     return {
@@ -31,45 +35,14 @@ const getTmdbUsingImdbId = async (imdbId: string) => {
 
   const tmdb = getTmdbClient(apiKey)
 
-  const { movieResults }: any = await tmdb.get(`find/${imdbId}`, {
+  const { movieResults } = (await tmdb.get(`find/${imdbId}`, {
     searchParams: {
       external_source: 'imdb_id',
     },
-  })
+  })) as TmdbFindResponse
 
   const movie = movieResults?.[0]
   return movie
-}
-
-const getFirstOmdbSearchResult = async (title: string) => {
-  const apiKey = process.env.OMDB_API_KEY
-
-  const omdb = getOmdbClient(apiKey)
-
-  const result = await omdb.get({
-    searchParams: { t: title, type: 'movie' },
-  })
-
-  return result
-}
-
-const getFirstDuckDuckGoResult = async (title: string) => {
-  const duckDuckGo = getDuckDuckGoClient()
-
-  const result: any = await duckDuckGo.get({
-    searchParams: {
-      q: title,
-    },
-  })
-
-  if (result.entity === 'film') {
-    return {
-      title: result.heading,
-      imdbId: result.infobox.content.find(
-        ({ dataType }) => dataType === 'imdb_id',
-      )?.value,
-    }
-  }
 }
 
 const getFirstGoogleCustomSearchResult = async (title: string) => {
@@ -81,11 +54,11 @@ const getFirstGoogleCustomSearchResult = async (title: string) => {
     apiKey,
   })
 
-  const result: any = await googleCustomSearch.get({
+  const result = (await googleCustomSearch.get({
     searchParams: {
       q: title,
     },
-  })
+  })) as GoogleSearchResponse
 
   if (result.items?.length > 0) {
     return {
@@ -99,15 +72,11 @@ const searchMetadata = async (title: string) => {
   const normalizedTitle = removeDiacritics(title.toLowerCase())
 
   const tmdb = await getFirstTmdbSearchResult(normalizedTitle)
-  // const omdb = await getFirstOmdbSearchResult(normalizedTitle)  // OMDB throws 500 errors
-  // const duckduckgo = await getFirstDuckDuckGoResult(normalizedTitle)
   const googleCustomSearch =
     await getFirstGoogleCustomSearchResult(normalizedTitle)
 
   const firstSearchResults = Object.entries({
     tmdb,
-    // omdb, // OMDB throws 500 errors
-    // duckduckgo,
     googleCustomSearch,
   }).map(([name, value]) => ({ name, imdbId: value?.imdbId ?? null }))
 

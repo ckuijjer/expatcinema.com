@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web (Next.js)",
+      "runtimeExecutable": "/Users/ckuijjer/.nvm/versions/node/v22.22.1/bin/pnpm",
+      "runtimeArgs": ["--filter", "web-nextjs", "dev", "--turbopack"],
+      "port": 3000
+    }
+  ]
+}
