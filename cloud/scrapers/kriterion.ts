@@ -126,10 +126,6 @@ const extractFromMainPage = async () => {
       .filter((item) => /\(eng subs\)/i.test(item.name))
       .map((item) => {
         const slug = productionIdToSlug[item.production_id]
-        // .replace(
-        //   /-eng-subs/,
-        //   '',
-        // )
         const url = `https://kriterion.nl/films/${slug}`
 
         const screening: Screening = {
@@ -165,10 +161,6 @@ if (
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
-
-  // extractFromMoviePage({
-  //   url: 'https://kriterion.nl/films/dogman',
-  // }).then(console.log)
 }
 
 export default extractFromMainPage

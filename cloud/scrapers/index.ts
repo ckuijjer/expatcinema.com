@@ -10,11 +10,6 @@ import documentClient from '../documentClient'
 import getMetadata from '../metadata'
 import { logger } from '../powertools'
 import { Screening } from '../types'
-// TODO: esbuild doesn't support dynamic import, hence all the imports below
-// SCRAPERS.map(async (name) => {
-//   const fn = await import(`./${name}`)
-//   return [name, sort(await fn())]
-// }),
 import bioscopenleiden from './bioscopenleiden'
 import cinecenter from './cinecenter'
 import cinecitta from './cinecitta'
@@ -38,7 +33,6 @@ import kriterion from './kriterion'
 import lab1 from './lab1'
 import lab111 from './lab111'
 import lantarenvenster from './lantarenvenster'
-import liff from './liff'
 import lumiere from './lumiere'
 import lux from './lux'
 import melkweg from './melkweg'
@@ -76,7 +70,6 @@ const SCRAPERS = {
   lab1,
   lab111, // uses puppeteer
   lantarenvenster,
-  // liff,
   lumiere, // uses puppeteer
   lux,
   melkweg,

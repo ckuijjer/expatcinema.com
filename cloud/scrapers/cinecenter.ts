@@ -83,10 +83,6 @@ if (
   extractFromMainPage()
     .then((x) => JSON.stringify(x, null, 2))
     .then(console.log)
-  //   extractFromMoviePage({
-  // url: 'https://cinecenter.nl/film/cine-expat-woman/?special=expat',
-  // url: 'https://cinecenter.nl/film/cine-expat-system-crasher/?special=expat',
-  //   })
 }
 
 export default extractFromMainPage
