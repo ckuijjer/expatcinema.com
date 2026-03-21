@@ -39,7 +39,7 @@ type KinepolisMovie = {
 }
 
 const hasEnglishSubtitles = (movie: KinepolisMovie) => {
-  return movie.subtitles.some(
+  return movie.subtitles?.some(
     (subtitle) => subtitle.code.toLowerCase() === 'engsubt',
   )
 }
@@ -69,9 +69,6 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36',
       },
     }).json()
-
-    logger.info('first film', { film: programmation.films?.[0] })
-    logger.info('first session', { session: programmation.sessions?.[0] })
 
     const moviesWithEnglishSubtitles =
       programmation.films.filter(hasEnglishSubtitles)
