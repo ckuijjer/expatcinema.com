@@ -36,7 +36,7 @@ export class BackendStack extends cdk.Stack {
     }
 
     const DEFAULT_FUNCTION_PROPS: lambdaNodejs.NodejsFunctionProps = {
-      runtime: lambda.Runtime.NODEJS_22_X,
+      runtime: lambda.Runtime.NODEJS_24_X,
       timeout: cdk.Duration.minutes(1),
       architecture: lambda.Architecture.X86_64,
       memorySize: 1024,
