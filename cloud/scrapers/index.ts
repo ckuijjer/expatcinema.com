@@ -114,24 +114,25 @@ const writeToFileInBucket =
 const writeToFile = writeToFileInBucket(PRIVATE_BUCKET)
 const writeToPublicFile = writeToFileInBucket(PUBLIC_BUCKET)
 
-const writeToAnalytics = (type) => async (fields) => {
-  if (process.env.IS_LOCAL) {
-    const path = `../../output/analytics/${type}.json`
-    await mkdir(dirname(path), { recursive: true })
-    return writeFile(path, JSON.stringify(fields, null, 2))
-  } else {
-    const putCommand = new PutCommand({
-      TableName: process.env.DYNAMODB_ANALYTICS,
-      Item: {
-        type,
-        createdAt: now,
-        ...fields,
-      },
-    })
+const writeToAnalytics =
+  (type: string) => async (fields: Record<string, unknown>) => {
+    if (process.env.IS_LOCAL) {
+      const path = `../../output/analytics/${type}.json`
+      await mkdir(dirname(path), { recursive: true })
+      return writeFile(path, JSON.stringify(fields, null, 2))
+    } else {
+      const putCommand = new PutCommand({
+        TableName: process.env.DYNAMODB_ANALYTICS,
+        Item: {
+          type,
+          createdAt: now,
+          ...fields,
+        },
+      })
 
-    return await documentClient.send(putCommand)
+      return await documentClient.send(putCommand)
+    }
   }
-}
 
 const getEnabledScrapers = () => {
   if (process.env.SCRAPERS) {

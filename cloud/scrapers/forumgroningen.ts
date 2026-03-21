@@ -6,7 +6,9 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
+import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -16,7 +18,7 @@ const logger = parentLogger.createChild({
 
 const xray = Xray({
   filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    trim,
     cleanTitle: (value) =>
       typeof value === 'string'
         ? titleCase(
@@ -145,17 +147,6 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   return screenings
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  // extractFromMoviePage({
-  //   url: 'https://forum.nl/en/whats-on/film/docs-miyazaki-spirit-of-nature',
-  // })
-
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-}
+runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

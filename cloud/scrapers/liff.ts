@@ -2,7 +2,9 @@ import { DateTime } from 'luxon'
 import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
+import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -12,7 +14,7 @@ const logger = parentLogger.createChild({
 
 const xray = Xray({
   filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    trim,
   },
 })
   .concurrency(10)
@@ -82,17 +84,6 @@ const extractFromMainPage = () => {
     .then((results) => results.flat())
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-
-  // extractFromMoviePage({
-  //   url: 'https://www.liff.nl/en/Program/Movie/and-breathe-normally/750',
-  // })
-}
+runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

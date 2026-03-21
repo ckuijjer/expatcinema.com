@@ -3,6 +3,8 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { runIfMain } from './utils/runIfMain'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -12,7 +14,7 @@ const logger = parentLogger.createChild({
 
 const xray = Xray({
   filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    trim,
   },
 })
   .concurrency(10)
@@ -76,13 +78,6 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   return (await Promise.all(movies.map(extractFromMoviePage))).flat()
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-}
+runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

@@ -6,6 +6,7 @@ import { Screening } from '../types'
 import xRayPuppeteer from '../xRayPuppeteer'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 
@@ -182,17 +183,6 @@ const extractFromMainPage = async () => {
   return screenings
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-
-  // extractFromMoviePage('https://lumiere.nl/films/barbie')
-  //   .then((x) => JSON.stringify(x, null, 2))
-  //   .then(console.log)
-}
+runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

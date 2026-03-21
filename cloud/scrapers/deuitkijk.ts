@@ -5,7 +5,9 @@ import XRayCrawler from 'x-ray-crawler'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -26,7 +28,7 @@ const driver: XRayCrawler.Driver = (context, callback) => {
 
 const xray = Xray({
   filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    trim,
     cleanTitle: (value) =>
       typeof value === 'string' ? value.replace(/\(.*\)$/, '') : value,
     normalizeWhitespace: (value) =>
@@ -118,17 +120,6 @@ const extractFromMainPage = async () => {
   return screenings.flat()
 }
 
-export default extractFromMainPage
+runIfMain(extractFromMainPage, import.meta.url)
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  // const url = 'https://uitkijk.nl/film/asian-movie-night-cat-got-your-tongue'
-  // extractFromMoviePage(url).then((screenings) => {
-  //   console.log({ screenings })
-  // })
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-}
+export default extractFromMainPage

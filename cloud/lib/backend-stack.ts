@@ -18,10 +18,10 @@ type Stage = 'dev' | 'prod'
 type BackendStackProps = cdk.StackProps & { stage: Stage }
 
 export class BackendStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: BackendStackProps) {
+  constructor(scope: Construct, id: string, props: BackendStackProps) {
     super(scope, id, props)
 
-    const stage = props!.stage
+    const stage = props.stage
 
     const publicBucketName = `expatcinema-public-${stage}`
     const scrapersOutputBucketName = `expatcinema-scrapers-output-${stage}`

@@ -6,7 +6,9 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { monthToNumber } from './utils/monthToNumber'
+import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -16,7 +18,7 @@ const logger = parentLogger.createChild({
 
 const xray = Xray({
   filters: {
-    trim: (value) => (typeof value === 'string' ? value.trim() : value),
+    trim,
   },
 })
 
@@ -175,13 +177,6 @@ const extractFromMainPage = async () => {
   return Object.values(uniqueScreenings)
 }
 
-if (
-  (typeof module === 'undefined' || module.exports === undefined) && // running in ESM
-  import.meta.url === new URL(import.meta.url).href // running as main module, not importing from another module
-) {
-  extractFromMainPage()
-    .then((x) => JSON.stringify(x, null, 2))
-    .then(console.log)
-}
+runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

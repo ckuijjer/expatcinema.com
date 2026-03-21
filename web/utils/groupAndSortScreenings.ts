@@ -3,7 +3,9 @@ import { DateTime } from 'luxon'
 import { Screening } from './getScreenings'
 import { getToday } from './getToday'
 
-export type ScreeningWithLuxonDate = Omit<Screening, 'date'> & { date: DateTime }
+export type ScreeningWithLuxonDate = Omit<Screening, 'date'> & {
+  date: DateTime
+}
 
 // sort the screenings by date and time
 // group by date
