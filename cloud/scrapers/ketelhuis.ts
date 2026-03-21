@@ -56,9 +56,9 @@ const extractFromMainPage = async () => {
         selector,
       ),
     {
-      onFailedAttempt: (error) => {
+      onFailedAttempt: ({ attemptNumber, retriesLeft }) => {
         logger.warn(
-          `Scraping https://www.ketelhuis.nl/specials/expat-cinema/, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
+          `Scraping https://www.ketelhuis.nl/specials/expat-cinema/, attempt ${attemptNumber} failed. There are ${retriesLeft} retries left.`,
         )
       },
       retries: 5,
@@ -81,9 +81,9 @@ const extractFromMainPage = async () => {
             return result
           },
           {
-            onFailedAttempt: (error) => {
+            onFailedAttempt: ({ attemptNumber, retriesLeft }) => {
               logger.warn(
-                `Scraping ${i} ${url}, attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
+                `Scraping ${i} ${url}, attempt ${attemptNumber} failed. There are ${retriesLeft} retries left.`,
               )
             },
             retries: 5,
