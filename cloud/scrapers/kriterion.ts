@@ -97,7 +97,8 @@ interface KriterionFilmsApiResponse {
   [key: string]: number
 }
 
-const hasEnglishSubtitles = (name: string) => /\([^)]*eng subs[^)]*\)/i.test(name)
+const hasEnglishSubtitles = (name: string) =>
+  /\([^)]*eng subs[^)]*\)/i.test(name)
 
 // Matches the entire parenthetical containing "eng subs", plus any leading whitespace.
 // e.g. " (ENG subs)", " (1987, ENG subs)", " (ENG subs, 4K Restoration)"

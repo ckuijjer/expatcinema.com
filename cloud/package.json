@@ -55,11 +55,11 @@
     "x-ray-crawler": "^2.0.5"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.5",
+    "@tsconfig/node24": "^24.0.4",
     "@types/aws-lambda": "^8.10.161",
     "@types/jest": "^30.0.0",
     "@types/luxon": "^3.7.1",
-    "@types/node": "22.7.9",
+    "@types/node": "24.0.0",
     "@types/x-ray": "^2.3.6",
     "aws-cdk": "2.1112.0",
     "dotenv": "^17.3.1",
