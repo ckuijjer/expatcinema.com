@@ -19,13 +19,8 @@ export const groupAndSortScreenings = (
     .filter((x) => x.date >= getToday())
     .sort((a, b) => a.date.toMillis() - b.date.toMillis())
 
-  // Group by ISO date string (Object.groupBy requires Node 21+)
-  return sorted.reduce<Partial<Record<string, ScreeningWithLuxonDate[]>>>(
-    (acc, x) => {
-      const key = x.date.setZone('Europe/Amsterdam').toISODate() ?? ''
-      acc[key] = [...(acc[key] ?? []), x]
-      return acc
-    },
-    {},
+  return Object.groupBy(
+    sorted,
+    (x) => x.date.setZone('Europe/Amsterdam').toISODate() ?? '',
   )
 }
