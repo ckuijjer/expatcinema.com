@@ -35,6 +35,12 @@ export class BackendStack extends cdk.Stack {
       POWERTOOLS_SERVICE_NAME: id,
     }
 
+    const chromeLayer = lambda.LayerVersion.fromLayerVersionArn(
+      this,
+      'chrome-layer',
+      'arn:aws:lambda:eu-west-1:764866452798:layer:chrome-aws-lambda:110',
+    )
+
     const DEFAULT_FUNCTION_PROPS: lambdaNodejs.NodejsFunctionProps = {
       runtime: lambda.Runtime.NODEJS_24_X,
       timeout: cdk.Duration.minutes(1),
@@ -50,8 +56,8 @@ export class BackendStack extends cdk.Stack {
           '@aws-sdk/client-dynamodb',
           '@aws-sdk/client-s3',
           '@aws-sdk/lib-dynamodb',
+          '@sparticuz/chromium',
         ],
-        nodeModules: ['@sparticuz/chromium'],
       },
       environment: {
         ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
@@ -95,7 +101,7 @@ export class BackendStack extends cdk.Stack {
         functionName: `${id}-scrapers`,
         description: 'Scrapers Lambda',
         entry: 'scrapers.ts', // TODO: Fix the issue with bundling (likely see scrapers.ts and scrapers/index.ts)
-
+        layers: [chromeLayer],
         memorySize: 8192,
         timeout: cdk.Duration.minutes(9),
         environment: {
@@ -144,6 +150,7 @@ export class BackendStack extends cdk.Stack {
         functionName: `${id}-playground`,
         description: 'Playground Lambda',
         entry: 'playground.ts',
+        layers: [chromeLayer],
         timeout: cdk.Duration.minutes(5),
         environment: {
           ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
