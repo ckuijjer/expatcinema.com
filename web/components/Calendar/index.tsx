@@ -1,12 +1,19 @@
 import { css } from '@emotion/react'
 import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
-import React, { useReducer } from 'react'
+import React from 'react'
 
 import { isEnabled } from '../../utils/featureFlags'
 import { Screening } from '../../utils/getScreenings'
-import { groupAndSortScreenings } from '../../utils/groupAndSortScreenings'
+import {
+  ScreeningWithLuxonDate,
+  groupAndSortScreenings,
+} from '../../utils/groupAndSortScreenings'
 import { useSearch } from '../../utils/hooks'
+
+export type Row =
+  | { component: 'RelativeDate'; props: { children: string } }
+  | { component: 'ScreeningRow'; props: ScreeningWithLuxonDate }
 
 const removeDiacritics = (str: string) =>
   str.normalize('NFD').replace(/\p{Diacritic}/gu, '')
@@ -17,7 +24,7 @@ const CalendarComponent = isEnabled('virtualized-table')
     )
   : dynamic(() => import('./DirectCalendar').then((m) => m.DirectCalendar))
 
-const Container = (props) => (
+const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       margin-top: 24px;
@@ -28,7 +35,7 @@ const Container = (props) => (
 )
 
 const screeningMatchesSearch = (
-  screening: Screening,
+  screening: ScreeningWithLuxonDate,
   searchComponents: string[],
 ) => {
   const title = removeDiacritics(screening.title.toLowerCase())
@@ -61,29 +68,21 @@ export const Calendar = ({
     return +DateTime.fromISO(a) - +DateTime.fromISO(b)
   })
 
-  const rows = screeningsByDate
-    .map(([date, screenings]) => {
-      // filter on text
-      const filteredScreenings = screenings?.filter((screening: Screening) =>
-        screeningMatchesSearch(screening, searchComponents),
-      )
+  const rows = screeningsByDate.flatMap(([date, screenings]) => {
+    const filteredScreenings = screenings?.filter((screening) =>
+      screeningMatchesSearch(screening, searchComponents),
+    )
 
-      if (filteredScreenings?.length) {
-        return [date, filteredScreenings]
-      }
-      return null
-    })
-    .filter((x) => x)
-    .map(([date, screenings]) => {
-      return [
-        { component: 'RelativeDate', props: { children: date } },
-        ...screenings.map((screening) => ({
-          component: 'Screening',
-          props: screening,
-        })),
-      ]
-    })
-    .flat()
+    if (!filteredScreenings?.length) return []
+
+    return [
+      { component: 'RelativeDate' as const, props: { children: date } },
+      ...filteredScreenings.map((screening) => ({
+        component: 'ScreeningRow' as const,
+        props: screening,
+      })),
+    ]
+  })
 
   return (
     <Container>

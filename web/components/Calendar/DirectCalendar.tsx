@@ -1,15 +1,22 @@
 import React from 'react'
 
+import type { Row } from '.'
 import { RelativeDate } from '../RelativeDate'
-import { Screening } from '../Screening'
+import { ScreeningRow } from '../Screening'
 
-export const DirectCalendar = ({ rows, showCity }) => (
+export const DirectCalendar = ({
+  rows,
+  showCity,
+}: {
+  rows: Row[]
+  showCity: boolean
+}) => (
   <>
     {rows.map((row, i) =>
       row.component === 'RelativeDate' ? (
         <RelativeDate key={i} {...row.props} />
       ) : (
-        <Screening key={i} {...row.props} showCity={showCity} />
+        <ScreeningRow key={i} {...row.props} showCity={showCity} />
       ),
     )}
   </>

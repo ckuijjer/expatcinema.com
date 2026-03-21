@@ -1,5 +1,13 @@
 # Expat Cinema - AI Assistant Guide
 
+## Session Setup
+
+**Always run `nvm use` at the start of every session** to activate Node 22 (as specified in `.nvmrc`). This ensures the correct Node version is used for all commands.
+
+```bash
+nvm use
+```
+
 ## Project Overview
 
 Expat Cinema is a movie screening aggregator for foreign films with English subtitles in Dutch cinemas. The system scrapes cinema websites, enriches movie metadata, and presents the data through a Next.js static website.

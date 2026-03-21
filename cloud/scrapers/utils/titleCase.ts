@@ -5,7 +5,11 @@ const MINOR_WORDS = 'a an and as at by for from in of on or the to with'
 const UNICODE_BOUNDARY = /(?<=[\p{L}])(?=[^'\p{L}])|(?<=[^'\p{L}])(?=[\p{L}])/u
 
 const isRomanNumeral = (word: string) => {
-  return /^[IVXLCDM]+$/.test(word) // FIXME: This is not correct, e.g. 'IXVI' is not a valid roman numeral
+  // Matches valid Roman numerals 1–3999 (I through MMMCMXCIX)
+  return (
+    word.length > 0 &&
+    /^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/.test(word)
+  )
 }
 
 const isAllSpaces = (word: string) => {

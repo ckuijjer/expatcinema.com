@@ -1,11 +1,12 @@
 import { css } from '@emotion/react'
+import { DateTime } from 'luxon'
 import Image from 'next/image'
 import React from 'react'
 
-import { Cinema as CinemaType } from '../utils/getScreenings'
+import { Cinema } from '../utils/getScreenings'
 import { Time } from './Time'
 
-const A = ({ href, children }) => {
+const A = ({ href, children }: { href: string; children: React.ReactNode }) => {
   return (
     <a
       href={href}
@@ -27,7 +28,7 @@ const A = ({ href, children }) => {
   )
 }
 
-const Container = (props) => (
+const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       display: grid;
@@ -40,7 +41,7 @@ const Container = (props) => (
   />
 )
 
-const Title = (props) => (
+const Title = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       font-size: 18px;
@@ -52,7 +53,7 @@ const Title = (props) => (
   />
 )
 
-const Cinema = (props) => (
+const CinemaInfo = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       font-size: 14px;
@@ -66,7 +67,7 @@ const Cinema = (props) => (
 )
 
 type CinemaIconProps = {
-  cinema: CinemaType
+  cinema: Cinema
 }
 
 const CinemaIcon = ({ cinema }: CinemaIconProps) => {
@@ -89,18 +90,30 @@ const CinemaIcon = ({ cinema }: CinemaIconProps) => {
   )
 }
 
-export const Screening = ({ url, date, title, cinema, showCity = true }) => {
+export const ScreeningRow = ({
+  url,
+  date,
+  title,
+  cinema,
+  showCity = true,
+}: {
+  url: string
+  date: DateTime
+  title: string
+  cinema: Cinema
+  showCity?: boolean
+}) => {
   return (
     <A href={url}>
       <Container>
         <Time>{date}</Time>
         <Title>{title}</Title>
-        {/* {showCity ? <Cinema>{cinema.city.name}</Cinema> : null} */}
-        <Cinema>
+        {/* {showCity ? <CinemaInfo>{cinema.city.name}</CinemaInfo> : null} */}
+        <CinemaInfo>
           <CinemaIcon cinema={cinema} />
           {cinema.name}
           {showCity ? <> | {cinema.city.name}</> : null}
-        </Cinema>
+        </CinemaInfo>
       </Container>
     </A>
   )

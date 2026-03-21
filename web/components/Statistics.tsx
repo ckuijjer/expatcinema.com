@@ -4,8 +4,14 @@ import React from 'react'
 
 import { Layout } from './Layout'
 
+type AnalyticsPoint = {
+  scraper: string
+  value: number
+  createdAt: string
+}
+
 // Grid component that has cells with a width of 200px and using css grid layout
-const Grid = ({ children }) => (
+const Grid = ({ children }: { children: React.ReactNode }) => (
   <div
     css={css`
       display: grid;
@@ -18,7 +24,17 @@ const Grid = ({ children }) => (
   </div>
 )
 
-const Tile = ({ title, value, onClick = () => {}, isHighlighted = false }) => {
+const Tile = ({
+  title,
+  value,
+  onClick = () => {},
+  isHighlighted = false,
+}: {
+  title: string
+  value: number
+  onClick?: () => void
+  isHighlighted?: boolean
+}) => {
   const color = isHighlighted
     ? 'var(--secondary-color)'
     : 'var(--text-muted-color)'
@@ -60,10 +76,10 @@ const Tile = ({ title, value, onClick = () => {}, isHighlighted = false }) => {
   )
 }
 
-export const Statistics = ({ points }) => {
+export const Statistics = ({ points }: { points: AnalyticsPoint[] }) => {
   console.log({ points })
 
-  const [highlight, setHighlight] = React.useState(null)
+  const [highlight, setHighlight] = React.useState<string | null>(null)
 
   const sortedPoints = [...points].sort((a, b) => {
     if (a.scraper === highlight) return 1
@@ -78,11 +94,14 @@ export const Statistics = ({ points }) => {
     .map((scraper) => {
       const latest = points
         .filter((x) => x.scraper === scraper)
-        .reduce((acc, x) => {
-          if (x.createdAt > acc.createdAt || !acc.createdAt) return x
-          return acc
-        }, {})
-      return { scraper, value: latest.value }
+        .reduce(
+          (acc: Partial<AnalyticsPoint>, x) => {
+            if (x.createdAt > (acc.createdAt ?? '') || !acc.createdAt) return x
+            return acc
+          },
+          {},
+        )
+      return { scraper, value: latest.value ?? 0 }
     })
     .sort((a, b) => b.value - a.value)
 
@@ -102,8 +121,8 @@ export const Statistics = ({ points }) => {
     },
     x: {
       label: '',
-      transform: (d) => new Date(d),
-      tickFormat: (d) => d.toLocaleDateString(),
+      transform: (d: string) => new Date(d),
+      tickFormat: (d: Date) => d.toLocaleDateString(),
     },
     color: {
       domain: highlight ? [true, false] : [false],
@@ -121,9 +140,9 @@ export const Statistics = ({ points }) => {
     },
   })
 
-  const isHighlighted = (scraper) => scraper === highlight
+  const isHighlighted = (scraper: string) => scraper === highlight
 
-  const handleTileClick = (scraper) => () => {
+  const handleTileClick = (scraper: string) => () => {
     if (isHighlighted(scraper)) {
       setHighlight(null)
     } else {
@@ -147,7 +166,7 @@ export const Statistics = ({ points }) => {
           <Tile
             value={value}
             title={scraper}
-            key={scraper as string} // TODO: fix
+            key={scraper}
             onClick={handleTileClick(scraper)}
             isHighlighted={isHighlighted(scraper)}
           />

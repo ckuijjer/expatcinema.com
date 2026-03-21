@@ -1,11 +1,26 @@
 import React from 'react'
 import { AutoSizer, List, WindowScroller } from 'react-virtualized'
 
+import type { Row } from '.'
 import { RelativeDate } from '../RelativeDate'
-import { Screening } from '../Screening'
+import { ScreeningRow } from '../Screening'
 
-export const VirtualizedCalendar = ({ rows, showCity }) => {
-  const renderRow = ({ index, key, style }) => {
+export const VirtualizedCalendar = ({
+  rows,
+  showCity,
+}: {
+  rows: Row[]
+  showCity: boolean
+}) => {
+  const renderRow = ({
+    index,
+    key,
+    style,
+  }: {
+    index: number
+    key: string
+    style: React.CSSProperties
+  }) => {
     const row = rows[index]
 
     if (row.component === 'RelativeDate') {
@@ -17,20 +32,30 @@ export const VirtualizedCalendar = ({ rows, showCity }) => {
     } else {
       return (
         <div key={key} style={style}>
-          <Screening {...row.props} showCity={showCity} />
+          <ScreeningRow {...row.props} showCity={showCity} />
         </div>
       )
     }
   }
 
-  const getRowHeight = ({ index }) =>
+  const getRowHeight = ({ index }: { index: number }) =>
     rows[index].component === 'RelativeDate' ? 60 : showCity ? 100 : 78
 
   return (
     <WindowScroller serverHeight={1280}>
-      {({ height, isScrolling, onChildScroll, scrollTop }) => (
+      {({
+        height,
+        isScrolling,
+        onChildScroll,
+        scrollTop,
+      }: {
+        height: number
+        isScrolling: boolean
+        onChildScroll: (params: { scrollTop: number }) => void
+        scrollTop: number
+      }) => (
         <AutoSizer style={{ height }} defaultWidth={343}>
-          {({ width }) => (
+          {({ width }: { width: number }) => (
             <List
               autoHeight
               height={height}

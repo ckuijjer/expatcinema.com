@@ -1,4 +1,3 @@
-import diacritics from 'diacritics'
 import { readFile } from 'fs/promises'
 
 export type Screening = {
@@ -13,8 +12,11 @@ const readJson = async (file) => {
   return JSON.parse(json)
 }
 
+const removeDiacritics = (str: string) =>
+  str.normalize('NFD').replace(/\p{Diacritic}/gu, '')
+
 const normalizeTitle = (title: string) =>
-  titleCase(diacritics.remove(title), MINOR_WORDS)
+  titleCase(removeDiacritics(title), MINOR_WORDS)
 
 const capitalize = (word: string) =>
   word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()

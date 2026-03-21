@@ -29,7 +29,13 @@ export const Menu = () => {
   )
 }
 
-const MenuItem = ({ href, children }) => (
+const MenuItem = ({
+  href,
+  children,
+}: {
+  href: string
+  children: React.ReactNode
+}) => (
   <Link
     href={href}
     css={css`
@@ -46,7 +52,13 @@ const MenuItem = ({ href, children }) => (
   </Link>
 )
 
-const MenuTextItem = ({ href, children }) => (
+const MenuTextItem = ({
+  href,
+  children,
+}: {
+  href: string
+  children: React.ReactNode
+}) => (
   <Link
     href={href}
     css={css`
@@ -65,7 +77,7 @@ const MenuTextItem = ({ href, children }) => (
   </Link>
 )
 
-const MenuButton = ({ onClick }) => (
+const MenuButton = ({ onClick }: { onClick: () => void }) => (
   <div
     css={css`
       width: 32px;
@@ -86,7 +98,7 @@ const MenuButton = ({ onClick }) => (
   </div>
 )
 
-const MenuModal = ({ onClose }) => {
+const MenuModal = ({ onClose }: { onClose: () => void }) => {
   useKeypress('Escape', onClose)
 
   return (
@@ -121,7 +133,7 @@ const MenuModal = ({ onClose }) => {
   )
 }
 
-const MenuCloseButton = ({ onClick }) => (
+const MenuCloseButton = ({ onClick }: { onClick: () => void }) => (
   <div
     css={css`
       position: absolute;

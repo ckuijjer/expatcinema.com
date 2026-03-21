@@ -14,7 +14,7 @@ const LoadableStatistics = dynamic(
   },
 )
 
-const StatisticsPage = ({ data }) => {
+const StatisticsPage = ({ data }: { data: any[] }) => {
   return (
     <>
       <SEO title="Statistics" />

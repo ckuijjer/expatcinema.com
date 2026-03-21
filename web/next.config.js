@@ -13,8 +13,15 @@ const nextConfig = {
 
     return config
   },
-  typescript: {
-    ignoreBuildErrors: true, // TODO: Remove this when you fix all the errors.
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
   output: 'export',
 }

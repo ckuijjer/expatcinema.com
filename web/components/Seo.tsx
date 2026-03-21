@@ -4,7 +4,7 @@ import React from 'react'
 const DESCRIPTION = 'Foreign movies with English subtitles'
 const AUTHOR = 'Expat Cinema'
 
-export const SEO = ({ title }) => {
+export const SEO = ({ title }: { title: string }) => {
   const fullTitle = title ? `${title} | Expat Cinema` : 'Expat Cinema'
 
   return (

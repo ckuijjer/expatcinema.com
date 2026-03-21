@@ -21,7 +21,7 @@ export type Cinema = {
 
 export type Screening = {
   cinema: Cinema
-  date: Date
+  date: string
   title: string
   url: string
 }
@@ -37,10 +37,10 @@ export const getScreenings = async () => {
       (cinema) => cinema.name === screening.cinema,
     )
 
-    const cinema: Cinema = {
+    const cinema = {
       ...cinemaData,
-      city: cities.find((city) => city.name === cinemaData.city),
-    }
+      city: cities.find((city) => city.name === cinemaData?.city)!,
+    } as Cinema
 
     return {
       ...screening,

@@ -24,7 +24,7 @@ const Container = ({
   </div>
 )
 
-const Content = (props) => (
+const Content = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       margin: 0 auto;

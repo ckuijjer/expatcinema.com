@@ -9,7 +9,7 @@ import { TextFilter } from './TextFilter'
 import CrossIcon from './icons/cross.svg'
 import SearchIcon from './icons/search.svg'
 
-const Title = (props) => (
+const Title = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
   <h1
     css={css`
       font-size: 24px;
@@ -24,7 +24,7 @@ const Title = (props) => (
   />
 )
 
-const SubTitle = (props) => (
+const SubTitle = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
   <h2
     css={css`
       font-size: 14px;
@@ -37,7 +37,15 @@ const SubTitle = (props) => (
   />
 )
 
-const SearchButton = ({ hidden, onClick, isSearchOpen }) => {
+const SearchButton = ({
+  hidden,
+  onClick,
+  isSearchOpen,
+}: {
+  hidden: boolean
+  onClick: () => void
+  isSearchOpen: boolean
+}) => {
   if (hidden) return null
 
   return (
@@ -58,7 +66,7 @@ const SearchButton = ({ hidden, onClick, isSearchOpen }) => {
   )
 }
 
-const Container = (props) => (
+const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       display: flex;
@@ -71,7 +79,7 @@ const Container = (props) => (
   />
 )
 
-const TitleContainer = (props) => (
+const TitleContainer = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       flex: 1;
@@ -84,7 +92,7 @@ const TitleContainer = (props) => (
   />
 )
 
-const NavigationItems = (props) => (
+const NavigationItems = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       flex: 0;

@@ -1,9 +1,9 @@
 import { css } from '@emotion/react'
-import React, { ComponentProps, useEffect, useState } from 'react'
+import React, { ComponentProps, useEffect, useRef, useState } from 'react'
 
 import { useKeypress, useSearch } from '../utils/hooks'
 
-const Container = (props) => (
+const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       position: 'relative';
@@ -42,19 +42,17 @@ const DebouncedInput = ({
   delay = 200,
   ...rest
 }: DebouncedInputProps) => {
-  const [value, setValue] = useState(rest.value || '')
+  const [value, setValue] = useState((rest.value as string) || '')
+  const onDebounceRef = useRef(onDebounce)
+  onDebounceRef.current = onDebounce
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      onDebounce(value)
+      onDebounceRef.current(value)
     }, delay)
 
     return () => clearTimeout(timeoutId)
-  }, [
-    value,
-    delay,
-    // onDebounce // TODO: Understand why `onDebounce` needs to be kept out of the dependencies (if it's in scrolling with a search set is not working properly)
-  ])
+  }, [value, delay])
 
   useKeypress('Escape', () => setValue(''))
 

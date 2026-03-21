@@ -41,9 +41,9 @@ export const useSearch = (): UseSearch => {
   }
 }
 
-export const useKeypress = (key, action) => {
+export const useKeypress = (key: string, action: () => void) => {
   useEffect(() => {
-    const onKeyup = (e) => {
+    const onKeyup = (e: KeyboardEvent) => {
       if (e.key === key) {
         action()
       }

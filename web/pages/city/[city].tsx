@@ -3,7 +3,7 @@ import * as React from 'react'
 import { App } from '../../components/App'
 import { SEO } from '../../components/Seo'
 import cities from '../../data/city.json'
-import { getScreenings } from '../../utils/getScreenings'
+import { Screening, getScreenings } from '../../utils/getScreenings'
 
 export const getStaticPaths = () => {
   const paths = cities.map((city) => `/city/${city.name.toLowerCase()}`)
@@ -14,7 +14,11 @@ export const getStaticPaths = () => {
   }
 }
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps = async ({
+  params,
+}: {
+  params: { city: string }
+}) => {
   const { city } = params
   const screenings = (await getScreenings()).filter(
     (screening) => screening.cinema.city.name.toLowerCase() === city,
@@ -27,7 +31,7 @@ export const getStaticProps = async ({ params }) => {
   }
 }
 
-const CityPage = ({ data }) => {
+const CityPage = ({ data }: { data: Screening[] }) => {
   return (
     <>
       <SEO title="Home" />

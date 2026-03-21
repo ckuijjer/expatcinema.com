@@ -7,7 +7,7 @@ import cities from '../data/city.json'
 import { useSearch } from '../utils/hooks'
 import { palette } from '../utils/theme'
 
-export const Container = (props) => (
+export const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       margin-left: -16px;
@@ -20,7 +20,17 @@ export const Container = (props) => (
   />
 )
 
-const ActiveLink = ({ children, href, as, ...rest }) => {
+const ActiveLink = ({
+  children,
+  href,
+  as,
+  ...rest
+}: {
+  children: React.ReactNode
+  href: string
+  as?: string
+  [key: string]: unknown
+}) => {
   const { asPath, isReady } = useRouter()
   const [isCurrent, setIsCurrent] = useState(false)
 
@@ -39,7 +49,6 @@ const ActiveLink = ({ children, href, as, ...rest }) => {
   return (
     <Link
       href={href}
-      key={children}
       css={css`
         display: inline-block;
         font-size: 18px;

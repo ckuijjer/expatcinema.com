@@ -5,7 +5,7 @@ import React from 'react'
 import { getToday } from '../utils/getToday'
 import { headerFont } from '../utils/theme'
 
-export class RelativeDate extends React.PureComponent {
+export class RelativeDate extends React.PureComponent<{ children: string }> {
   render() {
     const date = DateTime.fromISO(this.props.children)
     const today = getToday()

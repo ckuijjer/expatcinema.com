@@ -8,7 +8,7 @@ import { Layout } from './Layout'
 import { NavigationBar } from './NavigationBar'
 import { PageTitle } from './PageTitle'
 
-const Container = (props) => (
+const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     css={css`
       padding-bottom: 16px;
