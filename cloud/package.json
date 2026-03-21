@@ -55,7 +55,6 @@
     "x-ray-crawler": "^2.0.5"
   },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@tsconfig/node22": "^22.0.5",
     "@types/aws-lambda": "^8.10.161",
     "@types/jest": "^29.5.14",

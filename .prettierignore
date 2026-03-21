@@ -3,3 +3,4 @@ spa/public
 web/.cache
 web/public
 pnpm-lock.yaml
+.claude/
