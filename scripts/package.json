@@ -7,14 +7,14 @@
   "type": "module",
   "license": "ISC",
   "dependencies": {
-    "luxon": "^3.5.0"
+    "luxon": "^3.7.2"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.0",
-    "@types/luxon": "^3.4.2",
-    "prettier": "^3.5.2",
-    "tsx": "^4.19.3",
-    "typescript": "5.8.2"
+    "@tsconfig/node22": "^22.0.5",
+    "@types/luxon": "^3.7.1",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "5.9.3"
   },
   "scripts": {
     "analyzeScreenings": "tsx analyzeScreenings.ts",
