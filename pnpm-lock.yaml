@@ -19,7 +19,7 @@ importers:
         version: 4.1.6(graphql@16.13.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(rxjs@7.8.2)
       '@aws-lambda-powertools/logger':
         specifier: ^2.32.0
-        version: 2.32.0(@middy/core@6.1.3)
+        version: 2.32.0(@middy/core@7.2.1)
       '@aws-sdk/client-bedrock-runtime':
         specifier: ^3.1014.0
         version: 3.1014.0
@@ -33,8 +33,8 @@ importers:
         specifier: ^3.1014.0
         version: 3.1014.0(@aws-sdk/client-dynamodb@3.1014.0)
       '@middy/core':
-        specifier: ^6.1.3
-        version: 6.1.3
+        specifier: ^7.2.1
+        version: 7.2.1
       '@sparticuz/chromium':
         specifier: ^133.0.0
         version: 133.0.0
@@ -1239,9 +1239,18 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@middy/core@6.1.3':
-    resolution: {integrity: sha512-77K0VlG7K9ZvIssjIztfOsH0IQsmp7xpNfwMIpj98x2vkSIlo7weruDEdiCUAmji2xuN60HNyjHSIAKVqI73WQ==}
-    engines: {node: '>=20'}
+  '@middy/core@7.2.1':
+    resolution: {integrity: sha512-KFtxLUhHQcBezrusBt5F2VKYY/p3Po2rM2OByyeZsqpzSY9D8iapsmJGaiHFgXbfuEUS5B0BxTXixFcxjChLUg==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      '@aws/durable-execution-sdk-js': ^1.0.0
+    peerDependenciesMeta:
+      '@aws/durable-execution-sdk-js':
+        optional: true
+
+  '@middy/util@7.2.1':
+    resolution: {integrity: sha512-vwtRPxQ5stQFR8Ulfsuqt8GgPJX6iXrF/9SiOTsJzw2nliNu/aPcZ8DR6sPj+gFar/QdUJuym6iyjevfeMNiFA==}
+    engines: {node: '>=22'}
 
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
@@ -4825,12 +4834,12 @@ snapshots:
     dependencies:
       '@aws/lambda-invoke-store': 0.2.4
 
-  '@aws-lambda-powertools/logger@2.32.0(@middy/core@6.1.3)':
+  '@aws-lambda-powertools/logger@2.32.0(@middy/core@7.2.1)':
     dependencies:
       '@aws-lambda-powertools/commons': 2.32.0
       '@aws/lambda-invoke-store': 0.2.4
     optionalDependencies:
-      '@middy/core': 6.1.3
+      '@middy/core': 7.2.1
 
   '@aws-sdk/client-bedrock-runtime@3.1014.0':
     dependencies:
@@ -6256,7 +6265,11 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@middy/core@6.1.3': {}
+  '@middy/core@7.2.1':
+    dependencies:
+      '@middy/util': 7.2.1
+
+  '@middy/util@7.2.1': {}
 
   '@napi-rs/wasm-runtime@0.2.12':
     dependencies:
@@ -8018,7 +8031,7 @@ snapshots:
       eslint: 9.39.4
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4))(eslint@9.39.4)
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4))(eslint@9.39.4))(eslint@9.39.4)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@3.8.3)(eslint@9.39.4)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.4)
       eslint-plugin-react: 7.37.4(eslint@9.39.4)
       eslint-plugin-react-hooks: 7.0.1(eslint@9.39.4)
@@ -8051,7 +8064,7 @@ snapshots:
       stable-hash: 0.0.4
       tinyglobby: 0.2.12
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4))(eslint@9.39.4))(eslint@9.39.4)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@3.8.3)(eslint@9.39.4)
     transitivePeerDependencies:
       - supports-color
 
@@ -8066,7 +8079,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4))(eslint@9.39.4))(eslint@9.39.4):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@3.8.3)(eslint@9.39.4):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
