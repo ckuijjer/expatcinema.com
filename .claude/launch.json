@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "web (Next.js)",
-      "runtimeExecutable": "/Users/ckuijjer/.nvm/versions/node/v22.22.1/bin/pnpm",
-      "runtimeArgs": ["--filter", "web-nextjs", "dev", "--turbopack"],
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": ["-c", "PATH=/Users/ckuijjer/.nvm/versions/node/v22.22.1/bin:$PATH pnpm --filter web-nextjs dev"],
       "port": 3000
     }
   ]
