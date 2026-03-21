@@ -30,3 +30,5 @@ backup/
 .env.*
 
 data
+.claude/settings.local.json
+.claude/worktrees/
