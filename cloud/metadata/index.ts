@@ -1,4 +1,4 @@
-import { PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb'
+import { GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb'
 
 import documentClient from '../documentClient'
 import { logger } from '../powertools'
@@ -29,24 +29,15 @@ type Metadata = {
 }
 
 const getMetadata = async (title: string): Promise<Metadata | undefined> => {
-  // find the metadata in dynamoDB
-  // TODO: should be a .get
-
-  const queryCommand = new QueryCommand({
+  const getCommand = new GetCommand({
     TableName: process.env.DYNAMODB_MOVIE_METADATA,
-    KeyConditionExpression: '#query = :query',
-    ExpressionAttributeNames: {
-      '#query': 'query',
-    },
-    ExpressionAttributeValues: {
-      ':query': title,
-    },
+    Key: { query: title },
   })
 
-  const data = await documentClient.send(queryCommand)
+  const data = await documentClient.send(getCommand)
 
   // if there is no metadata, search for it, create it in DynamoDB, and return it
-  if (data.Items?.length === 0) {
+  if (!data.Item) {
     logger.info(`❌ couldn't get metadata for ${title}, searching for it`)
     const metadata = await searchMetadata(title)
     const item = {
@@ -66,10 +57,10 @@ const getMetadata = async (title: string): Promise<Metadata | undefined> => {
   } else {
     logger.info(`✅ found the get metadata for ${title}`, {
       title,
-      item: data.Items?.[0],
+      item: data.Item,
     })
 
-    return data.Items?.[0]
+    return data.Item
   }
 }
 
