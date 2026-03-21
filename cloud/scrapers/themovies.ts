@@ -29,7 +29,7 @@ const hasEnglishSubtitles = (
 
 const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
   return (
-    movie.language.label === 'Ondertiteling' &&
+    movie.language.label === 'Ondertitels' &&
     (movie.language.value === 'Engels' || movie.language.value === 'English')
   )
 }
