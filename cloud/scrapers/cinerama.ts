@@ -70,6 +70,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       },
     }).json()
 
+    logger.info('first film', { film: programmation.films?.[0] })
+    logger.info('first session', { session: programmation.sessions?.[0] })
+
     const moviesWithEnglishSubtitles =
       programmation.films.filter(hasEnglishSubtitles)
 
