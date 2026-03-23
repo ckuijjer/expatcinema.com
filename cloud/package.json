@@ -46,7 +46,7 @@
     "luxon": "^3.7.2",
     "p-map": "7.0.4",
     "p-retry": "^7.1.1",
-    "puppeteer-core": "24.35.0",
+    "puppeteer-core": "24.40.0",
     "react": "^19.2.4",
     "x-ray": "^2.3.4",
     "x-ray-crawler": "^2.0.5"
