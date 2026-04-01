@@ -3,52 +3,28 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
-import cities from '../data/city.json'
+import cinemas from '../data/cinema.json'
 import { useSearch } from '../utils/hooks'
 import { palette } from '../utils/theme'
-
-export const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      margin-left: -16px;
-      margin-right: -16px;
-      padding-left: 10px;
-      white-space: nowrap;
-      overflow-x: auto;
-    `}
-    {...props}
-  />
-)
+import { Container } from './CityFilter'
 
 const ActiveLink = ({
   children,
   href,
-  as,
-  ...rest
 }: {
   children: React.ReactNode
   href: string
-  as?: string
-  [key: string]: unknown
 }) => {
   const { asPath, isReady } = useRouter()
   const [isCurrent, setIsCurrent] = useState(false)
 
   useEffect(() => {
     if (isReady) {
-      // Using URL().pathname to get rid of query and hash
-      const linkPathname = new URL((as || href) as string, location.href)
-        .pathname
-
+      const linkPathname = new URL(href, location.href).pathname
       const activePathname = new URL(asPath, location.href).pathname
-
-      setIsCurrent(
-        linkPathname === activePathname ||
-          (linkPathname !== '/' &&
-            activePathname.startsWith(linkPathname + '/')),
-      )
+      setIsCurrent(linkPathname === activePathname)
     }
-  }, [asPath, isReady, children, as, href, rest])
+  }, [asPath, isReady, href])
 
   return (
     <Link
@@ -56,8 +32,8 @@ const ActiveLink = ({
       css={css`
         display: inline-block;
         font-size: 18px;
-        color: ${isCurrent ? palette.purple500 : 'var(--text-inverse-color)'};
-        background-color: ${isCurrent ? 'var(--primary-color)' : 'transparent'};
+        color: ${isCurrent ? palette.purple100 : palette.purple500};
+        background-color: ${isCurrent ? palette.purple400 : 'transparent'};
         padding: 10px;
         margin-top: 8px;
         margin-bottom: 8px;
@@ -71,14 +47,19 @@ const ActiveLink = ({
   )
 }
 
-export const CityFilter = () => {
+export const CinemaFilter = ({ currentCity }: { currentCity: string }) => {
   const { searchQuery } = useSearch()
 
+  const cityLowerCase = currentCity.toLowerCase()
+  const cinemasInCity = cinemas.filter(
+    (cinema) => cinema.city.toLowerCase() === cityLowerCase,
+  )
+
   const links = [
-    { text: 'All', href: `/${searchQuery}` },
-    ...cities.map(({ name }) => ({
-      text: name,
-      href: `/city/${name.toLowerCase()}${searchQuery}`,
+    { text: 'All', href: `/city/${cityLowerCase}${searchQuery}` },
+    ...cinemasInCity.map((cinema) => ({
+      text: cinema.name,
+      href: `/city/${cityLowerCase}/cinema/${cinema.slug}${searchQuery}`,
     })),
   ]
 
@@ -86,7 +67,7 @@ export const CityFilter = () => {
     <Container
       css={css`
         display: flex;
-        background-color: var(--secondary-color);
+        background-color: ${palette.purple300};
         gap: 12px;
       `}
     >

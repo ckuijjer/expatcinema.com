@@ -1,9 +1,9 @@
 import * as React from 'react'
 
-import { App } from '../../components/App'
-import { SEO } from '../../components/Seo'
-import cities from '../../data/city.json'
-import { Screening, getScreenings } from '../../utils/getScreenings'
+import { App } from '../../../components/App'
+import { SEO } from '../../../components/Seo'
+import cities from '../../../data/city.json'
+import { Screening, getScreenings } from '../../../utils/getScreenings'
 
 export const getStaticPaths = () => {
   const paths = cities.map((city) => `/city/${city.name.toLowerCase()}`)
@@ -27,15 +27,16 @@ export const getStaticProps = async ({
   return {
     props: {
       data: screenings,
+      city,
     },
   }
 }
 
-const CityPage = ({ data }: { data: Screening[] }) => {
+const CityPage = ({ data, city }: { data: Screening[]; city: string }) => {
   return (
     <>
       <SEO title="Home" />
-      <App screenings={data} />
+      <App screenings={data} currentCity={city} />
     </>
   )
 }
