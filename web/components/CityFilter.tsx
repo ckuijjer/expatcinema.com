@@ -1,11 +1,9 @@
 import { css } from '@emotion/react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import cities from '../data/city.json'
 import { useSearch } from '../utils/hooks'
-import { palette } from '../utils/theme'
+import { ActiveLink } from './ActiveLink'
 
 export const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
   <div
@@ -19,57 +17,6 @@ export const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
     {...props}
   />
 )
-
-const ActiveLink = ({
-  children,
-  href,
-  as,
-  ...rest
-}: {
-  children: React.ReactNode
-  href: string
-  as?: string
-  [key: string]: unknown
-}) => {
-  const { asPath, isReady } = useRouter()
-  const [isCurrent, setIsCurrent] = useState(false)
-
-  useEffect(() => {
-    if (isReady) {
-      // Using URL().pathname to get rid of query and hash
-      const linkPathname = new URL((as || href) as string, location.href)
-        .pathname
-
-      const activePathname = new URL(asPath, location.href).pathname
-
-      setIsCurrent(
-        linkPathname === activePathname ||
-          (linkPathname !== '/' &&
-            activePathname.startsWith(linkPathname + '/')),
-      )
-    }
-  }, [asPath, isReady, children, as, href, rest])
-
-  return (
-    <Link
-      href={href}
-      css={css`
-        display: inline-block;
-        font-size: 18px;
-        color: ${isCurrent ? palette.purple500 : 'var(--text-inverse-color)'};
-        background-color: ${isCurrent ? 'var(--primary-color)' : 'transparent'};
-        padding: 10px;
-        margin-top: 8px;
-        margin-bottom: 8px;
-        cursor: pointer;
-        text-decoration: none;
-        border-radius: 4px;
-      `}
-    >
-      {children}
-    </Link>
-  )
-}
 
 export const CityFilter = () => {
   const { searchQuery } = useSearch()
@@ -91,7 +38,7 @@ export const CityFilter = () => {
       `}
     >
       {links.map(({ text, href }) => (
-        <ActiveLink href={href} key={text}>
+        <ActiveLink href={href} key={text} matchPrefix>
           {text}
         </ActiveLink>
       ))}

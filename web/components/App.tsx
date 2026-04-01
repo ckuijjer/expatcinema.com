@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { SHOW_CINEMA_FILTER_ON_ALL_CITIES } from '../utils/featureFlags'
 import { Screening } from '../utils/getScreenings'
 import { palette } from '../utils/theme'
 import { Calendar } from './Calendar'
@@ -20,11 +19,6 @@ export const App = ({
   currentCity?: string
   currentCinema?: string
 }) => {
-  // To try the "always show cinema filter" behaviour, set SHOW_CINEMA_FILTER_ON_ALL_CITIES
-  // to true in featureFlags.ts and pass currentCity from pages/index.tsx as well.
-  const showCinemaFilter =
-    SHOW_CINEMA_FILTER_ON_ALL_CITIES || currentCity !== undefined
-
   return (
     <>
       <Layout backgroundColor={palette.purple600}>
@@ -33,7 +27,7 @@ export const App = ({
       <Layout backgroundColor={palette.purple400}>
         <CityFilter />
       </Layout>
-      {showCinemaFilter && currentCity !== undefined && (
+      {currentCity !== undefined && (
         <Layout backgroundColor={palette.purple300}>
           <CinemaFilter currentCity={currentCity} />
         </Layout>
