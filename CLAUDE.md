@@ -617,6 +617,21 @@ hasEnglishSubtitles({ language: 'Engels', subtitles: '' }) // → should be fals
 hasEnglishSubtitles({ language: 'Japans', subtitles: 'Engels' }) // → true
 ```
 
+### OV ≠ English Subtitles
+
+**"OV" (originele versie)** at mainstream chains (Pathé, Vue, Kinepolis) means the film is shown in its **original language (usually English) with Dutch subtitles**. This is the opposite of what expatcinema.com is for.
+
+expatcinema.com targets: **non-English foreign films shown with English subtitles** — for expats who don't speak Dutch.
+
+| Label                      | Audio                   | Subtitles | Relevant for expatcinema.com? |
+| -------------------------- | ----------------------- | --------- | ----------------------------- |
+| OV / Originele versie      | English (original)      | Dutch     | No                            |
+| Engels ondertiteld         | Any                     | English   | Yes                           |
+| EN subs                    | Any                     | English   | Yes                           |
+| Expat Night / Expat Cinema | Any (original language) | English   | Yes                           |
+
+When researching a new cinema, confirm it shows **non-English films with English subtitles** — not just that it shows OV screenings.
+
 ## Important Notes for AI Assistants
 
 ### Git and Version Control
@@ -682,6 +697,10 @@ Before committing:
 - `cloud/metadata/` - TMDB/OMDB metadata fetching
 - `cloud/powertools.ts` - AWS Lambda Powertools logger setup
 - `web/utils/getScreenings.ts` - Fetch screenings from S3
+
+### Documentation
+
+- `docs/cinema-research.md` - Research log of all Dutch cinemas checked for English-subtitled screenings, with outcomes, GitHub issue numbers, and cinemas confirmed not to have English subtitles (to avoid re-researching)
 
 ## External Dependencies
 
