@@ -1,28 +1,68 @@
-import { css } from '@emotion/react'
+'use client'
+
 import { line, plot } from '@observablehq/plot'
 import React from 'react'
 
+import { css, cva } from 'styled-system/css'
+
 import { Layout } from './Layout'
 
-type AnalyticsPoint = {
+export type AnalyticsPoint = {
   scraper: string
   value: number
   createdAt: string
 }
 
-// Grid component that has cells with a width of 200px and using css grid layout
-const Grid = ({ children }: { children: React.ReactNode }) => (
-  <div
-    css={css`
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      grid-gap: 12px;
-      margin-bottom: 32px;
-    `}
-  >
-    {children}
-  </div>
-)
+const gridStyle = css({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+  gridGap: '12px',
+  marginBottom: '32px',
+})
+
+const tileVariants = cva({
+  base: {
+    padding: '16px',
+    borderStyle: 'solid',
+    borderRadius: '4px',
+    borderWidth: '1px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+  },
+  variants: {
+    highlighted: {
+      true: {
+        borderColor: 'var(--secondary-color)',
+        color: 'var(--secondary-color)',
+      },
+      false: {
+        borderColor: 'var(--text-muted-color)',
+        color: 'var(--text-muted-color)',
+      },
+    },
+  },
+  defaultVariants: {
+    highlighted: false,
+  },
+})
+
+const tileValueStyle = css({
+  fontSize: '48px',
+  marginBottom: '8px',
+  fontWeight: 'bold',
+})
+
+const tileLabelStyle = css({
+  fontSize: '18px',
+})
+
+const svgContainerStyle = css({
+  marginTop: '32px',
+  marginBottom: '32px',
+})
 
 const Tile = ({
   title,
@@ -35,43 +75,13 @@ const Tile = ({
   onClick?: () => void
   isHighlighted?: boolean
 }) => {
-  const color = isHighlighted
-    ? 'var(--secondary-color)'
-    : 'var(--text-muted-color)'
-
   return (
     <div
-      css={css`
-        padding: 16px;
-        border-style: solid;
-        border-radius: 4px;
-        border-width: 1px;
-        border-color: ${color};
-        color: ${color};
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      `}
+      className={tileVariants({ highlighted: isHighlighted })}
       onClick={onClick}
     >
-      <div
-        css={css`
-          font-size: 48px;
-          margin-bottom: 8px;
-          font-weight: bold;
-        `}
-      >
-        {value}
-      </div>
-      <div
-        css={css`
-          font-size: 18px;
-        `}
-      >
-        {title}
-      </div>
+      <div className={tileValueStyle}>{value}</div>
+      <div className={tileLabelStyle}>{title}</div>
     </div>
   )
 }
@@ -87,7 +97,6 @@ export const Statistics = ({ points }: { points: AnalyticsPoint[] }) => {
 
   const scrapers = [...new Set(points.map((x) => x.scraper))]
 
-  // in points get latest value per scraper
   const latestValuePerScraper = scrapers
     .map((scraper) => {
       const latest = points
@@ -148,15 +157,10 @@ export const Statistics = ({ points }: { points: AnalyticsPoint[] }) => {
   return (
     <Layout>
       <div
-        dangerouslySetInnerHTML={{
-          __html: svg.outerHTML,
-        }}
-        css={css`
-          margin-top: 32px;
-          margin-bottom: 32px;
-        `}
-      ></div>
-      <Grid>
+        dangerouslySetInnerHTML={{ __html: svg.outerHTML }}
+        className={svgContainerStyle}
+      />
+      <div className={gridStyle}>
         {latestValuePerScraper.map(({ scraper, value }) => (
           <Tile
             value={value}
@@ -166,7 +170,7 @@ export const Statistics = ({ points }: { points: AnalyticsPoint[] }) => {
             isHighlighted={isHighlighted(scraper)}
           />
         ))}
-      </Grid>
+      </div>
     </Layout>
   )
 }

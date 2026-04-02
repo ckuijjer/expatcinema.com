@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && pnpm next-sitemap",
+    "build": "panda codegen && next build && pnpm next-sitemap",
+    "prepare": "panda codegen",
     "start": "next start",
     "lint": "eslint .",
     "clean": "rm -rf .next out"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
     "@observablehq/plot": "0.6.17",
     "luxon": "^3.7.2",
     "next": "16.2.1",
@@ -20,6 +20,7 @@
     "react-virtualized": "^9.22.6"
   },
   "devDependencies": {
+    "@pandacss/dev": "^1.9.1",
     "@types/luxon": "^3.7.1",
     "@types/node": "24.0.0",
     "@types/react": "19.2.14",

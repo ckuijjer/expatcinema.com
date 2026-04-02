@@ -1,0 +1,28 @@
+@layer reset, base, tokens, recipes, utilities;
+
+body {
+  margin: 0;
+  padding: 0;
+
+  --text-color: rgba(0, 0, 0, 0.9);
+  --text-muted-color: rgba(0, 0, 0, 0.7);
+  --text-inverse-color: rgba(255, 255, 255, 0.9);
+  --text-inverse-muted-color: rgba(255, 255, 255, 0.7);
+
+  --background-color: #fff5f0;
+  --background-inverse-color: #310d23;
+  --background-highlight-color: #ffe5e0;
+
+  --primary-color: #ffafb0;
+  --secondary-color: #8c3547;
+
+  @media (prefers-color-scheme: dark) {
+    --text-color: rgba(255, 255, 255, 0.9);
+    --text-muted-color: rgba(255, 255, 255, 0.7);
+    --background-color: #310d23;
+    --background-highlight-color: #411d33;
+  }
+
+  background-color: var(--background-color);
+  color: var(--text-color);
+}

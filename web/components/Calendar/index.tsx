@@ -1,7 +1,10 @@
-import { css } from '@emotion/react'
+'use client'
+
 import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
 import React from 'react'
+
+import { css } from 'styled-system/css'
 
 import { isEnabled } from '../../utils/featureFlags'
 import { Screening } from '../../utils/getScreenings'
@@ -24,15 +27,10 @@ const CalendarComponent = isEnabled('virtualized-table')
     )
   : dynamic(() => import('./DirectCalendar').then((m) => m.DirectCalendar))
 
-const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      margin-top: 24px;
-      margin-bottom: 24px;
-    `}
-    {...props}
-  />
-)
+const containerStyle = css({
+  marginTop: '24px',
+  marginBottom: '24px',
+})
 
 const screeningMatchesSearch = (
   screening: ScreeningWithLuxonDate,
@@ -85,8 +83,8 @@ export const Calendar = ({
   })
 
   return (
-    <Container>
+    <div className={containerStyle}>
       <CalendarComponent rows={rows} showCity={showCity} />
-    </Container>
+    </div>
   )
 }

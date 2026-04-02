@@ -1,21 +1,26 @@
-import { css } from '@emotion/react'
+'use client'
+
 import React from 'react'
+
+import { css, cx } from 'styled-system/css'
 
 import cities from '../data/city.json'
 import { useSearch } from '../utils/hooks'
 import { ActiveLink } from './ActiveLink'
 
-export const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      margin-left: -16px;
-      margin-right: -16px;
-      padding-left: 10px;
-      white-space: nowrap;
-      overflow-x: auto;
-    `}
-    {...props}
-  />
+const scrollerStyle = css({
+  marginLeft: '-16px',
+  marginRight: '-16px',
+  paddingLeft: '10px',
+  whiteSpace: 'nowrap',
+  overflowX: 'auto',
+})
+
+export const Container = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cx(scrollerStyle, className)} {...props} />
 )
 
 export const CityFilter = () => {
@@ -31,11 +36,11 @@ export const CityFilter = () => {
 
   return (
     <Container
-      css={css`
-        display: flex;
-        background-color: var(--secondary-color);
-        gap: 12px;
-      `}
+      className={css({
+        display: 'flex',
+        backgroundColor: 'var(--secondary-color)',
+        gap: '12px',
+      })}
     >
       {links.map(({ text, href }) => (
         <ActiveLink href={href} key={text} matchPrefix>

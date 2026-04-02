@@ -14,8 +14,21 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "jsxImportSource": "@emotion/react"
+    "paths": {
+      "styled-system/*": ["./styled-system/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

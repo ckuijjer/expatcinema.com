@@ -1,9 +1,23 @@
-import { css } from '@emotion/react'
+'use client'
+
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
+import { css } from 'styled-system/css'
+
 import { palette } from '../utils/theme'
+
+const baseLinkStyle = css({
+  display: 'inline-block',
+  fontSize: '18px',
+  padding: '10px',
+  marginTop: '8px',
+  marginBottom: '8px',
+  cursor: 'pointer',
+  textDecoration: 'none',
+  borderRadius: '4px',
+})
 
 export const ActiveLink = ({
   children,
@@ -20,39 +34,27 @@ export const ActiveLink = ({
   inactiveColor?: string
   matchPrefix?: boolean
 }) => {
-  const { asPath, isReady } = useRouter()
+  const pathname = usePathname()
   const [isCurrent, setIsCurrent] = useState(false)
 
   useEffect(() => {
-    if (isReady) {
-      // Using URL().pathname to get rid of query and hash
-      const linkPathname = new URL(href, location.href).pathname
-      const activePathname = new URL(asPath, location.href).pathname
-
-      setIsCurrent(
-        linkPathname === activePathname ||
-          (matchPrefix &&
-            linkPathname !== '/' &&
-            activePathname.startsWith(linkPathname + '/')),
-      )
-    }
-  }, [asPath, isReady, href, matchPrefix])
+    const linkPathname = new URL(href, location.href).pathname
+    setIsCurrent(
+      linkPathname === pathname ||
+        (matchPrefix &&
+          linkPathname !== '/' &&
+          pathname.startsWith(linkPathname + '/')),
+    )
+  }, [pathname, href, matchPrefix])
 
   return (
     <Link
       href={href}
-      css={css`
-        display: inline-block;
-        font-size: 18px;
-        color: ${isCurrent ? activeColor : inactiveColor};
-        background-color: ${isCurrent ? activeBackgroundColor : 'transparent'};
-        padding: 10px;
-        margin-top: 8px;
-        margin-bottom: 8px;
-        cursor: pointer;
-        text-decoration: none;
-        border-radius: 4px;
-      `}
+      className={baseLinkStyle}
+      style={{
+        color: isCurrent ? activeColor : inactiveColor,
+        backgroundColor: isCurrent ? activeBackgroundColor : 'transparent',
+      }}
     >
       {children}
     </Link>

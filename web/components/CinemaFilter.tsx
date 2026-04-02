@@ -1,11 +1,19 @@
-import { css } from '@emotion/react'
+'use client'
+
 import React from 'react'
+
+import { css } from 'styled-system/css'
 
 import cinemas from '../data/cinema.json'
 import { useSearch } from '../utils/hooks'
 import { palette } from '../utils/theme'
 import { ActiveLink } from './ActiveLink'
 import { Container } from './CityFilter'
+
+const containerOverrideStyle = css({
+  display: 'flex',
+  gap: '12px',
+})
 
 export const CinemaFilter = ({ currentCity }: { currentCity: string }) => {
   const { searchQuery } = useSearch()
@@ -25,11 +33,8 @@ export const CinemaFilter = ({ currentCity }: { currentCity: string }) => {
 
   return (
     <Container
-      css={css`
-        display: flex;
-        background-color: ${palette.purple300};
-        gap: 12px;
-      `}
+      className={containerOverrideStyle}
+      style={{ backgroundColor: palette.purple300 }}
     >
       {links.map(({ text, href }) => (
         <ActiveLink

@@ -1,12 +1,77 @@
-import { css } from '@emotion/react'
+'use client'
+
 import Link from 'next/link'
 import React, { useState } from 'react'
+
+import { css, cx } from 'styled-system/css'
 
 import { useKeypress } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
 import { Layout } from './Layout'
 import CrossIcon from './icons/CrossIcon'
 import MenuIcon from './icons/MenuIcon'
+
+const menuItemStyle = css({
+  fontSize: '24px',
+  fontWeight: '700',
+  color: 'var(--text-inverse-color)',
+  padding: '12px 24px',
+  textDecoration: 'none',
+  textAlign: 'center',
+})
+
+const menuTextItemStyle = css({
+  fontSize: '18px',
+  fontWeight: '700',
+  color: 'var(--text-inverse-color)',
+  textDecoration: 'none',
+  '@media (max-width: 600px)': {
+    display: 'none',
+  },
+})
+
+const menuButtonStyle = css({
+  width: '32px',
+  height: '32px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxSizing: 'border-box',
+  cursor: 'pointer',
+  '@media (min-width: 600px)': {
+    display: 'none',
+  },
+})
+
+const menuModalStyle = css({
+  top: '0',
+  left: '0',
+  bottom: '0',
+  right: '0',
+  position: 'fixed',
+  backgroundColor: 'var(--background-inverse-color)',
+  zIndex: '1',
+})
+
+const menuModalContentStyle = css({
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  paddingTop: '64px',
+})
+
+const menuCloseButtonStyle = css({
+  position: 'absolute',
+  top: '28px',
+  right: '0',
+  width: '32px',
+  height: '32px',
+  boxSizing: 'border-box',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+})
 
 export const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -21,135 +86,50 @@ export const Menu = () => {
 
   return (
     <>
-      <MenuTextItem href="/about">About</MenuTextItem>
-      <MenuTextItem href="/statistics">Statistics</MenuTextItem>
-      <MenuButton onClick={openMenu} />
-      {isMenuOpen && <MenuModal onClose={closeMenu} />}
+      <Link
+        href="/about"
+        className={cx(menuTextItemStyle, headerFont.className)}
+      >
+        About
+      </Link>
+      <Link
+        href="/statistics"
+        className={cx(menuTextItemStyle, headerFont.className)}
+      >
+        Statistics
+      </Link>
+      <div className={menuButtonStyle} onClick={openMenu}>
+        <MenuIcon />
+      </div>
+      {isMenuOpen && (
+        <div className={menuModalStyle} onClick={closeMenu}>
+          <Layout>
+            <div className={menuModalContentStyle}>
+              <div className={menuCloseButtonStyle} onClick={closeMenu}>
+                <CrossIcon color="var(--text-inverse-color)" />
+              </div>
+              <Link
+                href="/"
+                className={cx(menuItemStyle, headerFont.className)}
+              >
+                Home
+              </Link>
+              <Link
+                href="/about"
+                className={cx(menuItemStyle, headerFont.className)}
+              >
+                About
+              </Link>
+              <Link
+                href="/statistics"
+                className={cx(menuItemStyle, headerFont.className)}
+              >
+                Statistics
+              </Link>
+            </div>
+          </Layout>
+        </div>
+      )}
     </>
   )
 }
-
-const MenuItem = ({
-  href,
-  children,
-}: {
-  href: string
-  children: React.ReactNode
-}) => (
-  <Link
-    href={href}
-    css={css`
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-inverse-color);
-      padding: 12px 24px;
-      text-decoration: none;
-      text-align: center;
-    `}
-    className={headerFont.className}
-  >
-    {children}
-  </Link>
-)
-
-const MenuTextItem = ({
-  href,
-  children,
-}: {
-  href: string
-  children: React.ReactNode
-}) => (
-  <Link
-    href={href}
-    css={css`
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-inverse-color);
-      text-decoration: none;
-
-      @media (max-width: 600px) {
-        display: none;
-      }
-    `}
-    className={headerFont.className}
-  >
-    {children}
-  </Link>
-)
-
-const MenuButton = ({ onClick }: { onClick: () => void }) => (
-  <div
-    css={css`
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-      cursor: pointer;
-
-      @media (min-width: 600px) {
-        display: none;
-      }
-    `}
-    onClick={onClick}
-  >
-    <MenuIcon />
-  </div>
-)
-
-const MenuModal = ({ onClose }: { onClose: () => void }) => {
-  useKeypress('Escape', onClose)
-
-  return (
-    <div
-      css={css`
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        position: fixed;
-        background-color: var(--background-inverse-color);
-        z-index: 1;
-      `}
-      onClick={onClose}
-    >
-      <Layout>
-        <div
-          css={css`
-            position: relative; /* so the MenuCloseButton can position itself */
-            display: flex;
-            flex-direction: column;
-            padding-top: 64px;
-          `}
-        >
-          <MenuCloseButton onClick={onClose} />
-          <MenuItem href="/">Home</MenuItem>
-          <MenuItem href="/about">About</MenuItem>
-          <MenuItem href="/statistics">Statistics</MenuItem>
-        </div>
-      </Layout>
-    </div>
-  )
-}
-
-const MenuCloseButton = ({ onClick }: { onClick: () => void }) => (
-  <div
-    css={css`
-      position: absolute;
-      top: 28px;
-      right: 0;
-      width: 32px;
-      height: 32px;
-      box-sizing: border-box;
-      cursor: pointer;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    `}
-    onClick={onClick}
-  >
-    <CrossIcon color="var(--text-inverse-color)" />
-  </div>
-)

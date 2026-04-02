@@ -1,40 +1,18 @@
-import { css } from '@emotion/react'
 import React from 'react'
+
+import { css } from 'styled-system/css'
 
 import { palette } from '../utils/theme'
 
-type Color = keyof typeof palette // e.g. purple100
-type ColorValue = (typeof palette)[Color] // e.g. #f2ebfe
+type Color = keyof typeof palette
+type ColorValue = (typeof palette)[Color]
 
-type ContainerProps = {
-  backgroundColor?: ColorValue | 'transparent'
-  children: React.ReactNode
-}
-
-const Container = ({
-  backgroundColor = 'transparent',
-  children,
-}: ContainerProps) => (
-  <div
-    css={css`
-      background-color: ${backgroundColor};
-    `}
-  >
-    {children}
-  </div>
-)
-
-const Content = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      margin: 0 auto;
-      padding-left: 16px;
-      padding-right: 16px;
-      max-width: 960px;
-    `}
-    {...props}
-  />
-)
+const contentStyle = css({
+  margin: '0 auto',
+  paddingLeft: '16px',
+  paddingRight: '16px',
+  maxWidth: '960px',
+})
 
 type LayoutProps = {
   backgroundColor?: ColorValue
@@ -43,8 +21,8 @@ type LayoutProps = {
 
 export const Layout = ({ backgroundColor, children }: LayoutProps) => {
   return (
-    <Container backgroundColor={backgroundColor}>
-      <Content>{children}</Content>
-    </Container>
+    <div style={{ backgroundColor }}>
+      <div className={contentStyle}>{children}</div>
+    </div>
   )
 }
