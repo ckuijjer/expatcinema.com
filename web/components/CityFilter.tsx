@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react'
 
-import { usePathname } from 'next/navigation'
+import { useParams } from 'next/navigation'
 
 import { css, cx } from 'styled-system/css'
 
@@ -28,42 +28,42 @@ Container.displayName = 'Container'
 
 export const CityFilter = () => {
   const { searchQuery } = useSearch()
-  const pathname = usePathname()
-  const containerRef = useRef<HTMLDivElement>(null)
+  const { city } = useParams<{ city?: string }>()
+  const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
 
   const links = [
-    { text: 'All', href: `/${searchQuery}` },
+    { text: 'All', slug: null, href: `/${searchQuery}` },
     ...cities.map(({ name, slug }) => ({
       text: name,
+      slug,
       href: `/city/${slug}${searchQuery}`,
     })),
   ]
 
   useEffect(() => {
-    if (!containerRef.current) return
-    for (const a of containerRef.current.querySelectorAll<HTMLAnchorElement>('a')) {
-      const linkPathname = new URL(a.href).pathname
-      if (
-        linkPathname === pathname ||
-        (linkPathname !== '/' && pathname.startsWith(linkPathname + '/'))
-      ) {
-        a.scrollIntoView({ inline: 'nearest', block: 'nearest' })
-        break
-      }
-    }
-  }, [pathname])
+    if (!city) return
+    linkRefs.current.get(city)?.scrollIntoView({ inline: 'nearest', block: 'nearest' })
+  }, [city])
 
   return (
     <Container
-      ref={containerRef}
       className={css({
         display: 'flex',
         backgroundColor: 'var(--secondary-color)',
         gap: '12px',
       })}
     >
-      {links.map(({ text, href }) => (
-        <ActiveLink href={href} key={text} matchPrefix>
+      {links.map(({ text, slug, href }) => (
+        <ActiveLink
+          ref={(el) => {
+            if (slug === null) return
+            if (el) linkRefs.current.set(slug, el)
+            else linkRefs.current.delete(slug)
+          }}
+          href={href}
+          key={text}
+          matchPrefix
+        >
           {text}
         </ActiveLink>
       ))}
