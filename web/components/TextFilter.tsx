@@ -1,4 +1,3 @@
-import { css } from '@emotion/react'
 import React, {
   ComponentProps,
   useEffect,
@@ -7,36 +6,27 @@ import React, {
   useState,
 } from 'react'
 
+import { css } from 'styled-system/css'
+
 import { useKeypress, useSearch } from '../utils/hooks'
 
-const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      position: 'relative';
-    `}
-    {...props}
-  />
-)
+const containerStyle = css({
+  position: 'relative',
+})
 
-const Input = (props: ComponentProps<'input'>) => (
-  <input
-    name="search"
-    css={css`
-      padding: 12px;
-      padding-right: 48px;
-      box-sizing: border-box;
-      width: 100%;
-      font-size: 18px;
-      border-radius: 4px;
-      border: 2px solid var(--primary-color);
-      margin: 0;
-      background-color: var(--background-inverse-color);
-      color: var(--text-inverse-color);
-      outline-color: var(--primary-color);
-    `}
-    {...props}
-  />
-)
+const inputStyle = css({
+  padding: '12px',
+  paddingRight: '48px',
+  boxSizing: 'border-box',
+  width: '100%',
+  fontSize: '18px',
+  borderRadius: '4px',
+  border: '2px solid var(--primary-color)',
+  margin: '0',
+  backgroundColor: 'var(--background-inverse-color)',
+  color: 'var(--text-inverse-color)',
+  outlineColor: 'var(--primary-color)',
+})
 
 type DebouncedInputProps = {
   onDebounce: (value: string) => void
@@ -65,7 +55,13 @@ const DebouncedInput = ({
   useKeypress('Escape', () => setValue(''))
 
   return (
-    <Input {...rest} value={value} onChange={(e) => setValue(e.target.value)} />
+    <input
+      name="search"
+      className={inputStyle}
+      {...rest}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+    />
   )
 }
 
@@ -73,7 +69,7 @@ export const TextFilter = () => {
   const { search, setSearch } = useSearch()
 
   return (
-    <Container>
+    <div className={containerStyle}>
       <DebouncedInput
         placeholder="Search for movies, cinema's or cities"
         autoFocus
@@ -81,6 +77,6 @@ export const TextFilter = () => {
         onDebounce={setSearch}
         aria-label="Search for movies, cinema's or cities"
       />
-    </Container>
+    </div>
   )
 }

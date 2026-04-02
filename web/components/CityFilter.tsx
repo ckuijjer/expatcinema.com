@@ -1,24 +1,51 @@
-import { css } from '@emotion/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+
+import { css, cva } from 'styled-system/css'
 
 import cities from '../data/city.json'
 import { useSearch } from '../utils/hooks'
 import { palette } from '../utils/theme'
 
-export const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      margin-left: -16px;
-      margin-right: -16px;
-      padding-left: 10px;
-      white-space: nowrap;
-      overflow-x: auto;
-    `}
-    {...props}
-  />
-)
+const containerStyle = css({
+  marginLeft: '-16px',
+  marginRight: '-16px',
+  paddingLeft: '10px',
+  whiteSpace: 'nowrap',
+  overflowX: 'auto',
+  display: 'flex',
+  backgroundColor: 'var(--secondary-color)',
+  gap: '12px',
+})
+
+const activeLinkVariants = cva({
+  base: {
+    display: 'inline-block',
+    fontSize: '18px',
+    padding: '10px',
+    marginTop: '8px',
+    marginBottom: '8px',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    borderRadius: '4px',
+  },
+  variants: {
+    active: {
+      true: {
+        color: palette.purple500,
+        backgroundColor: 'var(--primary-color)',
+      },
+      false: {
+        color: 'var(--text-inverse-color)',
+        backgroundColor: 'transparent',
+      },
+    },
+  },
+  defaultVariants: {
+    active: false,
+  },
+})
 
 const ActiveLink = ({
   children,
@@ -36,32 +63,15 @@ const ActiveLink = ({
 
   useEffect(() => {
     if (isReady) {
-      // Using URL().pathname to get rid of query and hash
       const linkPathname = new URL((as || href) as string, location.href)
         .pathname
-
       const activePathname = new URL(asPath, location.href).pathname
-
       setIsCurrent(linkPathname === activePathname)
     }
   }, [asPath, isReady, children, as, href, rest])
 
   return (
-    <Link
-      href={href}
-      css={css`
-        display: inline-block;
-        font-size: 18px;
-        color: ${isCurrent ? palette.purple500 : 'var(--text-inverse-color)'};
-        background-color: ${isCurrent ? 'var(--primary-color)' : 'transparent'};
-        padding: 10px;
-        margin-top: 8px;
-        margin-bottom: 8px;
-        cursor: pointer;
-        text-decoration: none;
-        border-radius: 4px;
-      `}
-    >
+    <Link href={href} className={activeLinkVariants({ active: isCurrent })}>
       {children}
     </Link>
   )
@@ -79,18 +89,12 @@ export const CityFilter = () => {
   ]
 
   return (
-    <Container
-      css={css`
-        display: flex;
-        background-color: var(--secondary-color);
-        gap: 12px;
-      `}
-    >
+    <div className={containerStyle}>
       {links.map(({ text, href }) => (
         <ActiveLink href={href} key={text}>
           {text}
         </ActiveLink>
       ))}
-    </Container>
+    </div>
   )
 }

@@ -1,70 +1,52 @@
-import { css } from '@emotion/react'
 import { DateTime } from 'luxon'
 import Image from 'next/image'
 import React from 'react'
 
+import { css } from 'styled-system/css'
+
 import { Cinema } from '../utils/getScreenings'
 import { Time } from './Time'
 
-const A = ({ href, children }: { href: string; children: React.ReactNode }) => {
-  return (
-    <a
-      href={href}
-      css={css`
-        display: block;
-        text-decoration: none;
-        color: var(--text-color);
-        margin-left: -12px;
-        margin-right: -12px;
+const aStyle = css({
+  display: 'block',
+  textDecoration: 'none',
+  color: 'var(--text-color)',
+  marginLeft: '-12px',
+  marginRight: '-12px',
+  _hover: {
+    backgroundColor: 'var(--background-highlight-color)',
+    borderRadius: '10px',
+  },
+})
 
-        &:hover {
-          background-color: var(--background-highlight-color);
-          border-radius: 10px;
-        }
-      `}
-    >
-      {children}
-    </a>
-  )
-}
+const containerStyle = css({
+  display: 'grid',
+  gridTemplateColumns: '[time] 60px [rest] auto',
+  gridColumnGap: '12px',
+  lineHeight: '1.5',
+  padding: '12px',
+})
 
-const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      display: grid;
-      grid-template-columns: [time] 60px [rest] auto;
-      grid-column-gap: 12px;
-      line-height: 1.5;
-      padding: 12px;
-    `}
-    {...props}
-  />
-)
+const titleStyle = css({
+  fontSize: '18px',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+})
 
-const Title = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      font-size: 18px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    `}
-    {...props}
-  />
-)
+const cinemaInfoStyle = css({
+  fontSize: '14px',
+  gridColumnStart: 'rest',
+  color: 'var(--text-muted-color)',
+  display: 'flex',
+  alignItems: 'center',
+})
 
-const CinemaInfo = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      font-size: 14px;
-      grid-column-start: rest;
-      color: var(--text-muted-color);
-      display: flex;
-      align-items: center;
-    `}
-    {...props}
-  />
-)
+const cinemaIconStyle = css({
+  filter: 'grayscale(100%) opacity(0.5)',
+  marginRight: '4px',
+  display: 'inline',
+})
 
 type CinemaIconProps = {
   cinema: Cinema
@@ -81,11 +63,7 @@ const CinemaIcon = ({ cinema }: CinemaIconProps) => {
       width={16}
       height={16}
       alt={`Logo for ${cinema.name}`}
-      css={css`
-        filter: grayscale(100%) opacity(0.5);
-        margin-right: 4px;
-        display: inline;
-      `}
+      className={cinemaIconStyle}
     />
   )
 }
@@ -104,17 +82,16 @@ export const ScreeningRow = ({
   showCity?: boolean
 }) => {
   return (
-    <A href={url}>
-      <Container>
+    <a href={url} className={aStyle}>
+      <div className={containerStyle}>
         <Time>{date}</Time>
-        <Title>{title}</Title>
-        {/* {showCity ? <CinemaInfo>{cinema.city.name}</CinemaInfo> : null} */}
-        <CinemaInfo>
+        <div className={titleStyle}>{title}</div>
+        <div className={cinemaInfoStyle}>
           <CinemaIcon cinema={cinema} />
           {cinema.name}
           {showCity ? <> | {cinema.city.name}</> : null}
-        </CinemaInfo>
-      </Container>
-    </A>
+        </div>
+      </div>
+    </a>
   )
 }

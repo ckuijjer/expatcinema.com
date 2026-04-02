@@ -1,17 +1,15 @@
-import Document, { Head, Html, Main, NextScript } from 'next/document'
+import { Head, Html, Main, NextScript } from 'next/document'
 
-class MyDocument extends Document {
-  render() {
-    return (
-      <Html lang="en">
-        <Head />
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    )
-  }
+import { bodyFont } from '../utils/theme'
+
+export default function Document() {
+  return (
+    <Html lang="en">
+      <Head />
+      <body className={bodyFont.className}>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  )
 }
-
-export default MyDocument

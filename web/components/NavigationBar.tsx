@@ -1,6 +1,7 @@
-import { css } from '@emotion/react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+
+import { css, cx } from 'styled-system/css'
 
 import { useKeypress, useSearch } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
@@ -9,100 +10,60 @@ import { TextFilter } from './TextFilter'
 import CrossIcon from './icons/CrossIcon'
 import SearchIcon from './icons/SearchIcon'
 
-const Title = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-  <h1
-    css={css`
-      font-size: 24px;
-      margin-top: 0;
-      margin-bottom: 4px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: normal;
-    `}
-    className={headerFont.className}
-    {...props}
-  />
-)
+const containerStyle = css({
+  display: 'flex',
+  alignItems: 'center',
+  color: 'var(--text-inverse-color)',
+  backgroundColor: 'var(--background-inverse-color)',
+  height: '88px',
+})
 
-const SubTitle = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-  <h2
-    css={css`
-      font-size: 14px;
-      font-weight: 400;
-      margin-top: 0;
-      margin-bottom: 0;
-      color: var(--text-inverse-muted-color);
-    `}
-    {...props}
-  />
-)
+const titleContainerStyle = css({
+  flex: '1',
+  marginRight: '8px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+})
 
-const SearchButton = ({
-  hidden,
-  onClick,
-  isSearchOpen,
-}: {
-  hidden: boolean
-  onClick: () => void
-  isSearchOpen: boolean
-}) => {
-  if (hidden) return null
+const titleLinkStyle = css({
+  color: 'inherit',
+  textDecoration: 'none',
+})
 
-  return (
-    <div
-      css={css`
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-        cursor: pointer;
-      `}
-      onClick={onClick}
-    >
-      {isSearchOpen ? <CrossIcon /> : <SearchIcon />}
-    </div>
-  )
-}
+const titleStyle = css({
+  fontSize: '24px',
+  marginTop: '0',
+  marginBottom: '4px',
+  fontStyle: 'normal',
+  fontWeight: '700',
+  lineHeight: 'normal',
+})
 
-const Container = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      display: flex;
-      align-items: center;
-      color: var(--text-inverse-color);
-      background-color: var(--background-inverse-color);
-      height: 88px;
-    `}
-    {...props}
-  />
-)
+const subtitleStyle = css({
+  fontSize: '14px',
+  fontWeight: '400',
+  marginTop: '0',
+  marginBottom: '0',
+  color: 'var(--text-inverse-muted-color)',
+})
 
-const TitleContainer = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      flex: 1;
-      margin-right: 8px; // 24px is better, but 8px makes the layout fit on a iPhone SE
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    `}
-    {...props}
-  />
-)
+const navigationItemsStyle = css({
+  flex: '0',
+  display: 'flex',
+  gap: '24px',
+  alignItems: 'center',
+})
 
-const NavigationItems = (props: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    css={css`
-      flex: 0;
-      display: flex;
-      gap: 24px;
-      align-items: center;
-    `}
-    {...props}
-  />
-)
+const searchButtonStyle = css({
+  width: '32px',
+  height: '32px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxSizing: 'border-box',
+  cursor: 'pointer',
+})
 
 export const NavigationBar = ({ showSearch = true }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -133,32 +94,30 @@ export const NavigationBar = ({ showSearch = true }) => {
 
   return (
     <>
-      <Container>
-        <TitleContainer>
+      <div className={containerStyle}>
+        <div className={titleContainerStyle}>
           {isSearchOpen ? (
             <TextFilter />
           ) : (
-            <Link
-              href="/"
-              css={css`
-                color: inherit;
-                text-decoration: none;
-              `}
-            >
-              <Title>Expat Cinema</Title>
-              <SubTitle>Foreign movies with English subtitles</SubTitle>
+            <Link href="/" className={titleLinkStyle}>
+              <h1 className={cx(titleStyle, headerFont.className)}>
+                Expat Cinema
+              </h1>
+              <h2 className={subtitleStyle}>
+                Foreign movies with English subtitles
+              </h2>
             </Link>
           )}
-        </TitleContainer>
-        <NavigationItems>
-          <SearchButton
-            hidden={!showSearch}
-            isSearchOpen={isSearchOpen}
-            onClick={toggleSearch}
-          />
+        </div>
+        <div className={navigationItemsStyle}>
+          {showSearch && (
+            <div className={searchButtonStyle} onClick={toggleSearch}>
+              {isSearchOpen ? <CrossIcon /> : <SearchIcon />}
+            </div>
+          )}
           <Menu />
-        </NavigationItems>
-      </Container>
+        </div>
+      </div>
     </>
   )
 }

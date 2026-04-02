@@ -1,16 +1,15 @@
-import { css } from '@emotion/react'
 import React from 'react'
+
+import { css, cx } from 'styled-system/css'
 
 import { headerFont } from '../utils/theme'
 
+const titleStyle = css({
+  marginTop: '16px',
+  marginBottom: '0',
+  lineHeight: '1.8',
+})
+
 export const PageTitle = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-  <h1
-    className={headerFont.className}
-    css={css`
-      margin-top: 16px;
-      margin-bottom: 0;
-      line-height: 1.8;
-    `}
-    {...props}
-  />
+  <h1 className={cx(titleStyle, headerFont.className)} {...props} />
 )

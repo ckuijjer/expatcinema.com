@@ -1,9 +1,8 @@
-import { Global } from '@emotion/react'
+import '../styles/globals.css'
+
 import { Settings } from 'luxon'
 import type { AppProps } from 'next/app'
 import Script from 'next/script'
-
-import { globalStyles } from '../utils/theme'
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
@@ -30,7 +29,6 @@ const GoogleAnalytics = () => (
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Global styles={globalStyles} />
       <GoogleAnalytics />
       <Component {...pageProps} />
     </>
