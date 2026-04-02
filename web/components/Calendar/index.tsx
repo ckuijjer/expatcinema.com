@@ -4,9 +4,12 @@ import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
 import React from 'react'
 
-import { css } from 'styled-system/css'
+import { css, cx } from 'styled-system/css'
 
 import { isEnabled } from '../../utils/featureFlags'
+import { headerFont } from '../../utils/theme'
+import { getCinema } from '../../utils/getCinema'
+import { getCity } from '../../utils/getCity'
 import { Screening } from '../../utils/getScreenings'
 import {
   ScreeningWithLuxonDate,
@@ -32,6 +35,12 @@ const containerStyle = css({
   marginBottom: '24px',
 })
 
+const emptyStateStyle = css({
+  fontSize: '16px',
+  fontWeight: '700',
+  margin: '12px 0',
+})
+
 const screeningMatchesSearch = (
   screening: ScreeningWithLuxonDate,
   searchComponents: string[],
@@ -54,11 +63,15 @@ const screeningMatchesSearch = (
 export const Calendar = ({
   screenings,
   showCity,
+  currentCity,
+  currentCinema,
 }: {
   screenings: Screening[]
   showCity: boolean
+  currentCity?: string
+  currentCinema?: string
 }) => {
-  const { searchComponents } = useSearch()
+  const { search, searchComponents } = useSearch()
 
   const screeningsByDate = Object.entries(
     groupAndSortScreenings(screenings),
@@ -82,9 +95,33 @@ export const Calendar = ({
     ]
   })
 
+  const locationLabel = (() => {
+    if (currentCinema) {
+      const cinemaData = getCinema(currentCinema)
+      if (cinemaData) return `in ${cinemaData.name}, ${cinemaData.city}`
+    }
+    if (currentCity) {
+      const cityData = getCity(currentCity)
+      if (cityData) return `in ${cityData.name}`
+    }
+    return null
+  })()
+
+  const emptyStateMessage = [
+    'No screenings found',
+    locationLabel,
+    search ? `for ${search}` : null,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
     <div className={containerStyle}>
-      <CalendarComponent rows={rows} showCity={showCity} />
+      {rows.length === 0 ? (
+        <h3 className={cx(emptyStateStyle, headerFont.className)}>{emptyStateMessage}</h3>
+      ) : (
+        <CalendarComponent rows={rows} showCity={showCity} />
+      )}
     </div>
   )
 }
