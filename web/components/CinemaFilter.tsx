@@ -18,16 +18,15 @@ const containerOverrideStyle = css({
 export const CinemaFilter = ({ currentCity }: { currentCity: string }) => {
   const { searchQuery } = useSearch()
 
-  const cityLowerCase = currentCity.toLowerCase()
   const cinemasInCity = cinemas.filter(
-    (cinema) => cinema.city.toLowerCase() === cityLowerCase,
+    (cinema) => cinema.city === currentCity,
   )
 
   const links = [
-    { text: 'All', href: `/city/${cityLowerCase}${searchQuery}` },
+    { text: 'All', href: `/city/${currentCity}${searchQuery}` },
     ...cinemasInCity.map((cinema) => ({
       text: cinema.name,
-      href: `/city/${cityLowerCase}/cinema/${cinema.slug}${searchQuery}`,
+      href: `/city/${currentCity}/cinema/${cinema.slug}${searchQuery}`,
     })),
   ]
 

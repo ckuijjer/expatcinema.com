@@ -10,6 +10,7 @@ type ScreeningData = {
 
 export type City = {
   name: string
+  slug: string
 }
 
 export type Cinema = {
@@ -40,7 +41,7 @@ export const getScreenings = async () => {
 
     const cinema = {
       ...cinemaData,
-      city: cities.find((city) => city.name === cinemaData?.city),
+      city: cities.find((city) => city.slug === cinemaData?.city),
     } as Cinema
 
     return {
