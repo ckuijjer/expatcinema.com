@@ -1,6 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+
+import { usePathname } from 'next/navigation'
 
 import { css, cx } from 'styled-system/css'
 
@@ -16,15 +18,18 @@ const scrollerStyle = css({
   overflowX: 'auto',
 })
 
-export const Container = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cx(scrollerStyle, className)} {...props} />
-)
+export const Container = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cx(scrollerStyle, className)} {...props} />
+))
+Container.displayName = 'Container'
 
 export const CityFilter = () => {
   const { searchQuery } = useSearch()
+  const pathname = usePathname()
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const links = [
     { text: 'All', href: `/${searchQuery}` },
@@ -34,8 +39,16 @@ export const CityFilter = () => {
     })),
   ]
 
+  useEffect(() => {
+    const activeLink = containerRef.current?.querySelector<HTMLElement>(
+      'a[data-active="true"]',
+    )
+    activeLink?.scrollIntoView({ inline: 'nearest', block: 'nearest' })
+  }, [pathname])
+
   return (
     <Container
+      ref={containerRef}
       className={css({
         display: 'flex',
         backgroundColor: 'var(--secondary-color)',

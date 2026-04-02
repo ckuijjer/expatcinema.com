@@ -51,6 +51,7 @@ export const ActiveLink = ({
     <Link
       href={href}
       className={baseLinkStyle}
+      data-active={isCurrent}
       style={{
         color: isCurrent ? activeColor : inactiveColor,
         backgroundColor: isCurrent ? activeBackgroundColor : 'transparent',
