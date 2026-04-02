@@ -4,8 +4,14 @@ import React from 'react'
 const DESCRIPTION = 'Foreign movies with English subtitles'
 const AUTHOR = 'Expat Cinema'
 
-export const SEO = ({ title }: { title: string }) => {
-  const fullTitle = title ? `${title} | Expat Cinema` : 'Expat Cinema'
+export const SEO = ({
+  title,
+  canonical = 'https://expatcinema.com',
+}: {
+  title?: string
+  canonical?: string
+}) => {
+  const fullTitle = title ? `${title} \u2013 Expat Cinema` : 'Expat Cinema'
 
   return (
     <Head>
@@ -31,7 +37,7 @@ export const SEO = ({ title }: { title: string }) => {
       />
       <link rel="preconnect" href="https://www.google-analytics.com" />
       <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-      <link rel="canonical" href="https://expatcinema.com" />
+      <link rel="canonical" href={canonical} />
       <link rel="icon" href="/favicon.ico" />
     </Head>
   )

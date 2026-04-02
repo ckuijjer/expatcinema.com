@@ -14,6 +14,7 @@ export type City = {
 
 export type Cinema = {
   name: string
+  slug: string
   url: string
   city: City
   logo?: string

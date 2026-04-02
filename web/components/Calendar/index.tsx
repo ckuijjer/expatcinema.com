@@ -1,3 +1,5 @@
+'use client'
+
 import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
 import React from 'react'

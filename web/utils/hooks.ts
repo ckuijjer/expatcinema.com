@@ -1,4 +1,6 @@
-import { useRouter } from 'next/router'
+'use client'
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 
 const removeDiacritics = (str: string) =>
@@ -12,10 +14,11 @@ type UseSearch = {
 }
 
 export const useSearch = (): UseSearch => {
+  const searchParams = useSearchParams()
   const router = useRouter()
-  const { search: rawSearch } = router.query
+  const pathname = usePathname()
 
-  const search = (Array.isArray(rawSearch) ? rawSearch[0] : rawSearch) ?? ''
+  const search = searchParams?.get('search') ?? ''
 
   const searchComponents =
     search === '' ? [] : removeDiacritics(search.toLowerCase()).split(/\s+/)
@@ -23,14 +26,14 @@ export const useSearch = (): UseSearch => {
   const searchQuery = search ? `?search=${search}` : ''
 
   const setSearch = (value?: string) => {
-    if (value == '') {
-      const { search, ...rest } = router.query
-      router.replace({ query: { ...rest } })
+    const params = new URLSearchParams(searchParams?.toString() ?? '')
+    if (!value) {
+      params.delete('search')
     } else {
-      router.replace({
-        query: { ...router.query, search: value },
-      })
+      params.set('search', value)
     }
+    const query = params.toString()
+    router.replace(`${pathname}${query ? `?${query}` : ''}`)
   }
 
   return {

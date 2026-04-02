@@ -1,14 +1,10 @@
-import '../styles/globals.css'
+'use client'
 
-import { Settings } from 'luxon'
-import type { AppProps } from 'next/app'
 import Script from 'next/script'
-
-Settings.defaultZone = 'Europe/Amsterdam'
 
 const GA_TRACKING_ID = 'G-W3YQQJKL1T'
 
-const GoogleAnalytics = () => (
+export const GoogleAnalytics = () => (
   <>
     <Script
       async
@@ -25,14 +21,3 @@ const GoogleAnalytics = () => (
     </Script>
   </>
 )
-
-function App({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <GoogleAnalytics />
-      <Component {...pageProps} />
-    </>
-  )
-}
-
-export default App

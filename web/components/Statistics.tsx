@@ -1,3 +1,5 @@
+'use client'
+
 import { line, plot } from '@observablehq/plot'
 import React from 'react'
 
@@ -5,7 +7,7 @@ import { css, cva } from 'styled-system/css'
 
 import { Layout } from './Layout'
 
-type AnalyticsPoint = {
+export type AnalyticsPoint = {
   scraper: string
   value: number
   createdAt: string

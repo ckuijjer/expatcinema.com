@@ -1,0 +1,41 @@
+import type { Metadata } from 'next'
+import { Suspense } from 'react'
+
+import { App } from '../../../components/App'
+import cities from '../../../data/city.json'
+import { getCity } from '../../../utils/getCity'
+import { getScreenings } from '../../../utils/getScreenings'
+
+export const generateStaticParams = () =>
+  cities.map((city) => ({ city: city.name.toLowerCase() }))
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ city: string }>
+}): Promise<Metadata> {
+  const { city } = await params
+  const cityName = getCity(city)?.name ?? city
+
+  return {
+    title: `${cityName} – Expat Cinema`,
+    alternates: { canonical: `https://expatcinema.com/city/${city}` },
+  }
+}
+
+export default async function CityPage({
+  params,
+}: {
+  params: Promise<{ city: string }>
+}) {
+  const { city } = await params
+  const screenings = (await getScreenings()).filter(
+    (screening) => screening.cinema.city.name.toLowerCase() === city,
+  )
+
+  return (
+    <Suspense>
+      <App screenings={screenings} currentCity={city} />
+    </Suspense>
+  )
+}
