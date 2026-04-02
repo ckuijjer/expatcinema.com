@@ -12,7 +12,7 @@ export const App = ({
   screenings,
   showCity = true,
   currentCity,
-  currentCinema: _currentCinema,
+  currentCinema,
 }: {
   screenings: Screening[]
   showCity?: boolean
@@ -33,7 +33,12 @@ export const App = ({
         </Layout>
       )}
       <Layout>
-        <Calendar screenings={screenings} showCity={showCity} />
+        <Calendar
+          screenings={screenings}
+          showCity={showCity}
+          currentCity={currentCity}
+          currentCinema={currentCinema}
+        />
       </Layout>
     </>
   )
