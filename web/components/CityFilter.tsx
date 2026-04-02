@@ -40,10 +40,17 @@ export const CityFilter = () => {
   ]
 
   useEffect(() => {
-    const activeLink = containerRef.current?.querySelector<HTMLElement>(
-      'a[data-active="true"]',
-    )
-    activeLink?.scrollIntoView({ inline: 'nearest', block: 'nearest' })
+    if (!containerRef.current) return
+    for (const a of containerRef.current.querySelectorAll<HTMLAnchorElement>('a')) {
+      const linkPathname = new URL(a.href).pathname
+      if (
+        linkPathname === pathname ||
+        (linkPathname !== '/' && pathname.startsWith(linkPathname + '/'))
+      ) {
+        a.scrollIntoView({ inline: 'nearest', block: 'nearest' })
+        break
+      }
+    }
   }, [pathname])
 
   return (
