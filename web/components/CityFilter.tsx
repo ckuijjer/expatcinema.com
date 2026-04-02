@@ -28,9 +28,9 @@ export const CityFilter = () => {
 
   const links = [
     { text: 'All', href: `/${searchQuery}` },
-    ...cities.map(({ name }) => ({
+    ...cities.map(({ name, slug }) => ({
       text: name,
-      href: `/city/${name.toLowerCase()}${searchQuery}`,
+      href: `/city/${slug}${searchQuery}`,
     })),
   ]
 

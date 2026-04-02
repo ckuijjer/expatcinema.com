@@ -7,7 +7,7 @@ import { getCity } from '../../../utils/getCity'
 import { getScreenings } from '../../../utils/getScreenings'
 
 export const generateStaticParams = () =>
-  cities.map((city) => ({ city: city.name.toLowerCase() }))
+  cities.map((city) => ({ city: city.slug }))
 
 export async function generateMetadata({
   params,
@@ -30,7 +30,7 @@ export default async function CityPage({
 }) {
   const { city } = await params
   const screenings = (await getScreenings()).filter(
-    (screening) => screening.cinema.city.name.toLowerCase() === city,
+    (screening) => screening.cinema.city.slug === city,
   )
 
   return (

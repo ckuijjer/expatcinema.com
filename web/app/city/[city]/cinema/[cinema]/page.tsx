@@ -8,7 +8,7 @@ import { getScreenings } from '../../../../../utils/getScreenings'
 
 export const generateStaticParams = () =>
   cinemas.map((cinema) => ({
-    city: cinema.city.toLowerCase(),
+    city: cinema.city,
     cinema: cinema.slug,
   }))
 
@@ -38,8 +38,7 @@ export default async function CinemaPage({
   const { city, cinema } = await params
   const screenings = (await getScreenings()).filter(
     (screening) =>
-      screening.cinema.city.name.toLowerCase() === city &&
-      screening.cinema.slug === cinema,
+      screening.cinema.city.slug === city && screening.cinema.slug === cinema,
   )
 
   return (
