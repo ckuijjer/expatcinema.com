@@ -1,5 +1,4 @@
 import { DateTime } from 'luxon'
-import React from 'react'
 import { css } from 'styled-system/css'
 
 const timeStyle = css({ fontSize: '18px' })
