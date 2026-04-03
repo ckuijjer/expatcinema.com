@@ -15,6 +15,7 @@ import {
   groupAndSortScreenings,
 } from '../../utils/groupAndSortScreenings'
 import { useSearch } from '../../utils/hooks'
+import { DirectCalendar } from './DirectCalendar'
 
 export type Row =
   | { component: 'RelativeDate'; props: { children: string } }
@@ -23,9 +24,6 @@ export type Row =
 const removeDiacritics = (str: string) =>
   str.normalize('NFD').replace(/\p{Diacritic}/gu, '')
 
-const CalendarComponent = dynamic(() =>
-  import('./DirectCalendar').then((m) => m.DirectCalendar),
-)
 
 const containerStyle = css({
   marginTop: '24px',
@@ -120,7 +118,7 @@ export const Calendar = ({
       {rows.length === 0 ? (
         <h3 className={cx(emptyStateStyle, headerFont.className)}>{emptyStateMessage}</h3>
       ) : (
-        <CalendarComponent rows={rows} showCity={showCity} />
+        <DirectCalendar rows={rows} showCity={showCity} />
       )}
     </div>
   )
