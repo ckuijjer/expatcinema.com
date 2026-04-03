@@ -4,6 +4,7 @@ import React from 'react'
 import { css } from 'styled-system/css'
 
 import cinemas from '../data/cinema.json'
+import { getCity } from '../utils/getCity'
 import { palette } from '../utils/theme'
 import { Layout } from './Layout'
 import { NavigationBar } from './NavigationBar'
@@ -26,7 +27,7 @@ const textLinkStyle = css({
   color: 'var(--secondary-color)',
 })
 
-const cities = [...new Set(cinemas.map((cinema) => cinema.city))].sort()
+const citySlugs = [...new Set(cinemas.map((cinema) => cinema.city))].sort()
 
 export const About = () => {
   return (
@@ -55,8 +56,8 @@ export const About = () => {
             </Link>
           </p>
           <br />
-          {cities.map((city) => {
-            const href = `/city/${city.toLowerCase()}`
+          {citySlugs.map((city) => {
+            const href = `/city/${city}`
             const cinemasInCity = cinemas
               .filter((cinema) => cinema.city === city)
               .sort((a, b) => a.name.localeCompare(b.name))
@@ -64,7 +65,7 @@ export const About = () => {
             return (
               <>
                 <Link href={href} className={cityLinkStyle}>
-                  {city}
+                  {getCity(city)?.name ?? city}
                 </Link>
                 :{' '}
                 {cinemasInCity.map((cinema, i, arr) => {
