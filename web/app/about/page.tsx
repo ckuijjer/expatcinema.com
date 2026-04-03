@@ -5,6 +5,7 @@ import { About } from '../../components/About'
 
 export const metadata: Metadata = {
   title: 'About – Expat Cinema',
+  description: 'Foreign movies with English subtitles',
   alternates: { canonical: 'https://expatcinema.com/about' },
 }
 
