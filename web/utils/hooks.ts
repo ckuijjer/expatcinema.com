@@ -3,8 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 
-const removeDiacritics = (str: string) =>
-  str.normalize('NFD').replace(/\p{Diacritic}/gu, '')
+import { removeDiacritics } from './removeDiacritics'
 
 type UseSearch = {
   search: string

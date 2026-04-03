@@ -16,13 +16,11 @@ import {
   groupAndSortScreenings,
 } from '../../utils/groupAndSortScreenings'
 import { useSearch } from '../../utils/hooks'
+import { removeDiacritics } from '../../utils/removeDiacritics'
 
 export type Row =
   | { component: 'RelativeDate'; props: { children: string } }
   | { component: 'ScreeningRow'; props: ScreeningWithLuxonDate }
-
-const removeDiacritics = (str: string) =>
-  str.normalize('NFD').replace(/\p{Diacritic}/gu, '')
 
 const CalendarComponent = isEnabled('virtualized-table')
   ? dynamic(() =>
@@ -121,7 +119,9 @@ export const Calendar = ({
   return (
     <div className={containerStyle}>
       {rows.length === 0 ? (
-        <h3 className={cx(emptyStateStyle, headerFont.className)}>{emptyStateMessage}</h3>
+        <h3 className={cx(emptyStateStyle, headerFont.className)}>
+          {emptyStateMessage}
+        </h3>
       ) : (
         <CalendarComponent rows={rows} showCity={showCity} />
       )}
