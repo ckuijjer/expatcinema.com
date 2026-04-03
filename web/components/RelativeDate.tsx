@@ -1,7 +1,6 @@
 'use client'
 
 import { DateTime } from 'luxon'
-import React from 'react'
 
 import { css, cx } from 'styled-system/css'
 
@@ -14,22 +13,18 @@ const dateStyle = css({
   margin: '12px 0',
 })
 
-export class RelativeDate extends React.PureComponent<{ children: string }> {
-  render() {
-    const date = DateTime.fromISO(this.props.children)
-    const today = getToday()
+export const RelativeDate = ({ children }: { children: string }) => {
+  const date = DateTime.fromISO(children)
+  const today = getToday()
 
-    const diff = date.diff(today, 'days').days
+  const diff = date.diff(today, 'days').days
 
-    let relativeDate = date.toFormat('EEEE d MMMM')
-    if (diff === 0) {
-      relativeDate = 'Today'
-    } else if (diff === 1) {
-      relativeDate = 'Tomorrow'
-    }
-
-    return (
-      <h3 className={cx(dateStyle, headerFont.className)}>{relativeDate}</h3>
-    )
+  let relativeDate = date.toFormat('EEEE d MMMM')
+  if (diff === 0) {
+    relativeDate = 'Today'
+  } else if (diff === 1) {
+    relativeDate = 'Tomorrow'
   }
+
+  return <h3 className={cx(dateStyle, headerFont.className)}>{relativeDate}</h3>
 }
