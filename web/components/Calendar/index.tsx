@@ -98,7 +98,10 @@ export const Calendar = ({
   const locationLabel = (() => {
     if (currentCinema) {
       const cinemaData = getCinema(currentCinema)
-      if (cinemaData) return `in ${cinemaData.name}, ${cinemaData.city}`
+      if (cinemaData) {
+        const cityName = getCity(currentCity ?? '')?.name ?? cinemaData.city
+        return `in ${cinemaData.name}, ${cityName}`
+      }
     }
     if (currentCity) {
       const cityData = getCity(currentCity)
