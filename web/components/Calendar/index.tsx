@@ -6,7 +6,6 @@ import React from 'react'
 
 import { css, cx } from 'styled-system/css'
 
-import { isEnabled } from '../../utils/featureFlags'
 import { headerFont } from '../../utils/theme'
 import { getCinema } from '../../utils/getCinema'
 import { getCity } from '../../utils/getCity'
@@ -24,11 +23,9 @@ export type Row =
 const removeDiacritics = (str: string) =>
   str.normalize('NFD').replace(/\p{Diacritic}/gu, '')
 
-const CalendarComponent = isEnabled('virtualized-table')
-  ? dynamic(() =>
-      import('./VirtualizedCalendar').then((m) => m.VirtualizedCalendar),
-    )
-  : dynamic(() => import('./DirectCalendar').then((m) => m.DirectCalendar))
+const CalendarComponent = dynamic(() =>
+  import('./DirectCalendar').then((m) => m.DirectCalendar),
+)
 
 const containerStyle = css({
   marginTop: '24px',
