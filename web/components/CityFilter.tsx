@@ -26,6 +26,8 @@ export const Container = React.forwardRef<
 ))
 Container.displayName = 'Container'
 
+let initialLoadDone = false
+
 export const CityFilter = () => {
   const { searchQuery } = useSearch()
   const { city } = useParams<{ city?: string }>()
@@ -41,9 +43,13 @@ export const CityFilter = () => {
   ]
 
   useEffect(() => {
-    if (!city) return
-    linkRefs.current.get(city)?.scrollIntoView({ inline: 'nearest', block: 'nearest' })
-  }, [city])
+    if (!initialLoadDone) {
+      initialLoadDone = true
+      if (city) {
+        linkRefs.current.get(city)?.scrollIntoView({ inline: 'nearest', block: 'nearest' })
+      }
+    }
+  }, [])
 
   return (
     <Container
