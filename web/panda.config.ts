@@ -4,7 +4,7 @@ export default defineConfig({
   preflight: false,
 
   include: [
-    './pages/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './utils/**/*.{ts,tsx}',
   ],
