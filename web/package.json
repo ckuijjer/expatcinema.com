@@ -8,7 +8,8 @@
     "prepare": "panda codegen",
     "start": "next start",
     "lint": "eslint .",
-    "clean": "rm -rf .next out"
+    "clean": "rm -rf .next out",
+    "serve": "pnpm build && serve out"
   },
   "dependencies": {
     "@observablehq/plot": "0.6.17",
@@ -28,6 +29,7 @@
     "eslint": "^9.39.4",
     "eslint-config-next": "16.2.1",
     "prettier": "^3.8.1",
+    "serve": "^14.2.6",
     "typescript": "5.9.3"
   }
 }
