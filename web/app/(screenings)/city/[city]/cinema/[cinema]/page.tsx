@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import { App } from '../../../../../components/App'
-import cinemas from '../../../../../data/cinema.json'
-import { getCinema } from '../../../../../utils/getCinema'
-import { getScreenings } from '../../../../../utils/getScreenings'
+import { App } from '../../../../../../components/App'
+import cinemas from '../../../../../../data/cinema.json'
+import { getCinema } from '../../../../../../utils/getCinema'
+import { getScreenings } from '../../../../../../utils/getScreenings'
 
 export const generateStaticParams = () =>
   cinemas.map((cinema) => ({
