@@ -49,7 +49,8 @@ const extractDate = (time: string) =>
 const cleanTitle = (title: string) =>
   titleCase(
     title
-      .replace(/ \(.*?\)$/g, '')
+      .replace(/\s*\|.*$/, '')
+      .replace(/ \(.*?\)/g, '')
       .replace(/^110 Jaar De Uitkijk:/i, '')
       .replace(/^Klassieker:/i, '')
       .trim(),
