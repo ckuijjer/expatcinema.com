@@ -32,26 +32,16 @@ export const CinemaFilter = () => {
     })),
   ]
 
-  const containerRef = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
-    const link = cinema ? linkRefs.current.get(cinema) : null
-    const container = containerRef.current
-    if (!link || !container) return
+    if (!cinema) return
+    const link = linkRefs.current.get(cinema)
+    if (!link) return
 
-    const linkRect = link.getBoundingClientRect()
-    const containerRect = container.getBoundingClientRect()
-
-    if (linkRect.left < containerRect.left) {
-      container.scrollLeft += linkRect.left - containerRect.left
-    } else if (linkRect.right > containerRect.right) {
-      container.scrollLeft += linkRect.right - containerRect.right
-    }
+    link.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'nearest' })
   }, [cinema])
 
   return (
     <Container
-      ref={containerRef}
       className={containerOverrideStyle}
       style={{ backgroundColor: palette.purple300 }}
     >

@@ -40,26 +40,16 @@ export const CityFilter = () => {
     })),
   ]
 
-  const containerRef = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
-    const link = city ? linkRefs.current.get(city) : null
-    const container = containerRef.current
-    if (!link || !container) return
+    if (!city) return
+    const link = linkRefs.current.get(city)
+    if (!link) return
 
-    const linkRect = link.getBoundingClientRect()
-    const containerRect = container.getBoundingClientRect()
-
-    if (linkRect.left < containerRect.left) {
-      container.scrollLeft += linkRect.left - containerRect.left
-    } else if (linkRect.right > containerRect.right) {
-      container.scrollLeft += linkRect.right - containerRect.right
-    }
+    link.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'nearest' })
   }, [city])
 
   return (
     <Container
-      ref={containerRef}
       className={css({
         display: 'flex',
         backgroundColor: 'var(--secondary-color)',
