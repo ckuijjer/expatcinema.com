@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import { App } from '../../../components/App'
-import cities from '../../../data/city.json'
-import { getCity } from '../../../utils/getCity'
-import { getScreenings } from '../../../utils/getScreenings'
+import { App } from '../../../../components/App'
+import cities from '../../../../data/city.json'
+import { getCity } from '../../../../utils/getCity'
+import { getScreenings } from '../../../../utils/getScreenings'
 
 export const generateStaticParams = () =>
   cities.map((city) => ({ city: city.slug }))

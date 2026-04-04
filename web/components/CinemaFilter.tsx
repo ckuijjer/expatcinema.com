@@ -16,32 +16,42 @@ const containerOverrideStyle = css({
   gap: '12px',
 })
 
-export const CinemaFilter = ({ currentCity }: { currentCity: string }) => {
+export const CinemaFilter = () => {
   const { searchQuery } = useSearch()
-  const { cinema } = useParams<{ cinema?: string }>()
+  const { city, cinema } = useParams<{ city: string; cinema?: string }>()
   const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
 
-  const cinemasInCity = cinemas.filter((c) => c.city === currentCity)
+  const cinemasInCity = cinemas.filter((c) => c.city === city)
 
   const links = [
-    { text: 'All', slug: null, href: `/city/${currentCity}${searchQuery}` },
+    { text: 'All', slug: null, href: `/city/${city}${searchQuery}` },
     ...cinemasInCity.map((c) => ({
       text: c.name,
       slug: c.slug,
-      href: `/city/${currentCity}/cinema/${c.slug}${searchQuery}`,
+      href: `/city/${city}/cinema/${c.slug}${searchQuery}`,
     })),
   ]
 
+  const containerRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    if (cinema) {
-      linkRefs.current
-        .get(cinema)
-        ?.scrollIntoView({ inline: 'nearest', block: 'nearest' })
+    const link = cinema ? linkRefs.current.get(cinema) : null
+    const container = containerRef.current
+    if (!link || !container) return
+
+    const linkRect = link.getBoundingClientRect()
+    const containerRect = container.getBoundingClientRect()
+
+    if (linkRect.left < containerRect.left) {
+      container.scrollLeft += linkRect.left - containerRect.left
+    } else if (linkRect.right > containerRect.right) {
+      container.scrollLeft += linkRect.right - containerRect.right
     }
   }, [cinema])
 
   return (
     <Container
+      ref={containerRef}
       className={containerOverrideStyle}
       style={{ backgroundColor: palette.purple300 }}
     >

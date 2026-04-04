@@ -6,7 +6,8 @@
       "name": "web (Next.js)",
       "runtimeExecutable": "/bin/bash",
       "runtimeArgs": ["-c", "PATH=/Users/ckuijjer/.nvm/versions/node/v24.14.1/bin:$PATH pnpm --filter web-nextjs dev"],
-      "port": 3000
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }
