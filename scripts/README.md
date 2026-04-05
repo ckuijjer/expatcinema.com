@@ -1,10 +1,10 @@
 # Analyze Screenings
 
-../data/screenings-without-metadata.json and ../data/screenings-with-metadata.json contains information about todays screenings. The one without metadata comes from the scrapers, the one with metadata went through a step of normalization where each screening title has been mapped to a movie title from TMDB.
+`../data/screenings/screenings.json` contains the enriched public screenings output.
+`../data/screenings/movies.json` contains the canonical movie index keyed by stable movie ids.
 
 - `pnpm downloadScreenings` - downloads both files
-- `pnpm analyzeScreenings` - playground like script to do one-off analysis on both files
-- `pnpm compareScreenings` - compare both files
+- `pnpm analyzeScreenings` - playground-like script to do one-off analysis on `screenings.json`
 
 # Other
 

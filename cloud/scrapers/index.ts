@@ -3,7 +3,7 @@ import { PutCommand } from '@aws-sdk/lib-dynamodb'
 import { mkdir, writeFile } from 'fs/promises'
 import { DateTime, Settings } from 'luxon'
 import pMap from 'p-map'
-import { dirname } from 'path'
+import { dirname, resolve } from 'path'
 
 import { closeBrowser } from '../browser'
 import documentClient from '../documentClient'
@@ -44,7 +44,7 @@ import springhaver from './springhaver'
 import studiok from './studiok'
 import themovies from './themovies'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
-import { removeDiacritics } from './utils/removeDiacritics'
+import { normalizeMovieTitleForLookup } from '../metadata/titleResolver'
 
 const SCRAPERS = {
   bioscopenleiden,
@@ -98,7 +98,12 @@ const writeToFileInBucket =
     const dataJson = JSON.stringify(data, null, 2)
 
     if (process.env.IS_LOCAL) {
-      const path = `../../output/${bucket}/${filename}`
+      const path = `./output/${bucket}/${filename}`
+      logger.info('writing local file', {
+        bucket,
+        filename,
+        path: resolve(path),
+      })
       await mkdir(dirname(path), { recursive: true })
       return writeFile(path, dataJson)
     } else {
@@ -117,7 +122,11 @@ const writeToPublicFile = writeToFileInBucket(PUBLIC_BUCKET)
 const writeToAnalytics =
   (type: string) => async (fields: Record<string, unknown>) => {
     if (process.env.IS_LOCAL) {
-      const path = `../../output/analytics/${type}.json`
+      const path = `./output/analytics/${type}.json`
+      logger.info('writing local analytics file', {
+        type,
+        path: resolve(path),
+      })
       await mkdir(dirname(path), { recursive: true })
       return writeFile(path, JSON.stringify(fields, null, 2))
     } else {
@@ -183,7 +192,7 @@ export const scrapers = async () => {
           return [name, makeScreeningsUniqueAndSorted(result)]
         }),
       ),
-    )
+    ) as Record<string, Screening[]>
 
     // close the browser
     try {
@@ -194,61 +203,130 @@ export const scrapers = async () => {
 
     logger.info('done scraping for all scrapers')
 
-    results.all = makeScreeningsUniqueAndSorted(Object.values(results).flat())
+    const allRawScreenings = makeScreeningsUniqueAndSorted(
+      Object.values(results).flat(),
+    )
 
-    // get metadata for all movies
-    const normalizeTitle = (title) => removeDiacritics(title.toLowerCase())
-
-    const uniqueTitles = Array.from(
-      new Set(results.all.map(({ title }) => normalizeTitle(title))),
-    ).sort()
-
-    const uniqueTitlesAndMetadata = await pMap(uniqueTitles, getMetadata, {
-      concurrency: 5,
+    const titleQueriesToRawTitles = new Map<string, string>()
+    allRawScreenings.forEach(({ title }) => {
+      const query = normalizeMovieTitleForLookup(title)
+      if (!titleQueriesToRawTitles.has(query)) {
+        titleQueriesToRawTitles.set(query, title)
+      }
     })
 
-    results.allWithMetadata = makeScreeningsUniqueAndSorted(
-      results.all.map((movie) => {
+    const uniqueTitlesAndMetadata = await pMap(
+      Array.from(titleQueriesToRawTitles.values()).sort(),
+      getMetadata,
+      {
+        concurrency: 5,
+      },
+    )
+
+    const allWithResolvedMovies = makeScreeningsUniqueAndSorted(
+      allRawScreenings.map((movie) => {
         const metadata = uniqueTitlesAndMetadata.find(
-          (metadata) => metadata.query === normalizeTitle(movie.title),
+          (entry) => entry.query === normalizeMovieTitleForLookup(movie.title),
         )
 
-        if (metadata?.title) {
-          return {
-            ...movie,
-            title: metadata.title,
-            // imdbId: metadata.imdbId,
-            imdbUrl: `https://www.imdb.com/title/${metadata.imdbId}/`,
-            // tmdbId: metadata.tmdb.id,
-            tmdbUrl: `https://www.themoviedb.org/movie/${metadata.tmdb.id}`,
-          }
-        } else {
-          return movie
+        const titleDisplay = metadata?.title ?? movie.title
+
+        return {
+          ...movie,
+          titleRaw: movie.title,
+          titleDisplay,
+          title: titleDisplay,
+          movieId: metadata?.movieId,
+          imdbUrl: metadata?.imdbId
+            ? `https://www.imdb.com/title/${metadata.imdbId}/`
+            : undefined,
+          tmdbUrl: metadata?.tmdb?.id
+            ? `https://www.themoviedb.org/movie/${metadata.tmdb.id}`
+            : undefined,
         }
       }),
     )
 
+    const movies = Array.from(
+      new Map(
+        uniqueTitlesAndMetadata
+          .filter((metadata) => metadata.movieId && metadata.tmdb?.id)
+          .map((metadata) => [
+            metadata.movieId,
+            {
+              movieId: metadata.movieId,
+              tmdbId: metadata.tmdb?.id,
+              imdbId: metadata.imdbId,
+              title: metadata.title,
+              originalTitle: metadata.originalTitle,
+              releaseDate: metadata.tmdb?.releaseDate,
+              posterPath: metadata.tmdb?.posterPath,
+              backdropPath: metadata.tmdb?.backdropPath,
+              overview: metadata.tmdb?.overview,
+              originalLanguage: metadata.tmdb?.originalLanguage,
+              voteAverage: metadata.tmdb?.voteAverage,
+              genreIds: metadata.tmdb?.genreIds ?? [],
+            },
+          ]),
+      ).values(),
+    )
+
+    const titleMatches = uniqueTitlesAndMetadata.map((metadata) => ({
+      query: metadata.query,
+      titleRaw: titleQueriesToRawTitles.get(metadata.query) ?? metadata.query,
+      movieId: metadata.movieId,
+      title: metadata.title,
+      originalTitle: metadata.originalTitle,
+      imdbId: metadata.imdbId,
+      tmdbId: metadata.tmdb?.id,
+      match: metadata.match,
+    }))
+
+    const ambiguousMovies = uniqueTitlesAndMetadata
+      .filter((metadata) => metadata.match.status === 'ambiguous')
+      .map((metadata) => ({
+        query: metadata.query,
+        titleRaw: titleQueriesToRawTitles.get(metadata.query) ?? metadata.query,
+        movieId: metadata.movieId,
+        title: metadata.title,
+        originalTitle: metadata.originalTitle,
+        imdbId: metadata.imdbId,
+        tmdbId: metadata.tmdb?.id,
+        match: metadata.match,
+      }))
+
+    const unmatchedMovies = uniqueTitlesAndMetadata
+      .filter((metadata) => metadata.match.status === 'unmatched')
+      .map((metadata) => ({
+        query: metadata.query,
+        titleRaw: titleQueriesToRawTitles.get(metadata.query) ?? metadata.query,
+        movieId: metadata.movieId,
+        title: metadata.title,
+        originalTitle: metadata.originalTitle,
+        imdbId: metadata.imdbId,
+        tmdbId: metadata.tmdb?.id,
+        match: metadata.match,
+      }))
+
+    const privateResults = {
+      ...results,
+      all: allWithResolvedMovies,
+    }
+
     logger.info('writing all to private S3 bucket')
     await Promise.all(
-      Object.entries(results).map(
+      Object.entries(privateResults).map(
         async ([name, data]) => await writeToFile(`${name}/${now}.json`)(data),
       ),
     )
 
-    const movies = uniqueTitlesAndMetadata.map(
-      ({ query, createdAt, ...rest }) => {
-        return { ...rest }
-      },
-    )
+    await writeToFile(`review/ambiguous-movies/${now}.json`)(ambiguousMovies)
+    await writeToFile(`review/unmatched-movies/${now}.json`)(unmatchedMovies)
 
     logger.info('writing all, the combined json, to public S3 bucket')
-    await writeToPublicFile('screenings-without-metadata.json')(results.all) // for easy comparison not used by the frontend
-    await writeToPublicFile('screenings-with-metadata.json')(
-      results.allWithMetadata,
-    ) // for easy comparison, not used by the frontend
-
-    await writeToPublicFile('screenings.json')(results.all) // take the screenings without the title cleaning using metadata
-    await writeToPublicFile('movies.json')(movies) // titles cleaned using metadata, currently not used by the frontend
+    await writeToPublicFile('screenings.json')(allWithResolvedMovies)
+    await writeToPublicFile('movies.json')(movies)
+    await writeToPublicFile('title-matches.json')(titleMatches)
 
     const countPerScraper = Object.fromEntries(
       Object.entries(results).map(([name, data]) => [name, data.length]),

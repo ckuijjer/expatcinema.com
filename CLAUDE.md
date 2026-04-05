@@ -206,7 +206,7 @@ pnpm run config:scrapers
 
 #### Environment Variables
 
-**Local development:** Use `.env` file in `cloud/` (not committed):
+**Local development:** Use `.env.local` file in `cloud/` (not committed):
 
 ```bash
 TMDB_API_KEY=xxx
@@ -345,7 +345,6 @@ const screening: Screening = {
 5. **Storage** →
    - Raw output: `s3://expatcinema-scrapers-output-{stage}/`
    - Public data: `s3://expatcinema-public-{stage}/screenings.json`
-   - Metadata cache: DynamoDB table `expatcinema-scrapers-movie-metadata-{stage}`
    - Analytics: DynamoDB table `expatcinema-scrapers-analytics-{stage}`
 6. **Web Build** → Next.js fetches public S3 data at build time
 7. **Deployment** → Static site deployed to GitHub Pages
@@ -409,7 +408,6 @@ const screening: Screening = {
 ### DynamoDB Tables
 
 - `expatcinema-scrapers-analytics-{stage}` - Scraper run analytics
-- `expatcinema-scrapers-movie-metadata-{stage}` - TMDB/OMDB metadata cache
 
 ## Testing
 
@@ -459,7 +457,6 @@ export STAGE=prod
 aws s3 sync s3://expatcinema-scrapers-output-$STAGE expatcinema-scrapers-output-$STAGE --profile casper
 aws s3 sync s3://expatcinema-public-$STAGE expatcinema-public-$STAGE --profile casper
 aws dynamodb scan --table-name expatcinema-scrapers-analytics-$STAGE --profile casper > analytics-$STAGE.json
-aws dynamodb scan --table-name expatcinema-scrapers-movie-metadata-$STAGE --profile casper > metadata-$STAGE.json
 ```
 
 **Restore:**
@@ -469,6 +466,8 @@ aws s3 sync expatcinema-scrapers-output-$STAGE s3://expatcinema-scrapers-output-
 aws s3 sync expatcinema-public-$STAGE s3://expatcinema-public-$STAGE --profile casper
 # DynamoDB restore: use put-item for each record (see README for full script)
 ```
+
+Note: the movie metadata DynamoDB table has been removed from the CDK stack. Because it was previously created with `RemovalPolicy.RETAIN`, deploying the stack change should leave the physical table behind for manual deletion if desired.
 
 ### Upgrading Puppeteer and Chromium
 
@@ -495,8 +494,6 @@ pnpm downloadScreenings
 # Run analysis scripts
 pnpm analyzeScreenings
 
-# Compare screening datasets
-pnpm compareScreenings
 ```
 
 ## Troubleshooting
@@ -530,7 +527,7 @@ This installs Chromium and updates `browser-local-constants.ts` with the correct
 
 **Solution:**
 
-- Local: Add to `cloud/.env`
+- Local: Add to `cloud/.env.local`
 - Prod: Add to GitHub Secrets (must trigger new deployment)
 
 ### Web Build Failing

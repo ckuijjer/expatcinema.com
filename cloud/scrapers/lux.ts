@@ -96,7 +96,7 @@ const extractFromMoviePage = async ({
     })
   })
 
-  logger.info({ screenings })
+  logger.info('extracted screenings', { screenings })
   return screenings
 }
 

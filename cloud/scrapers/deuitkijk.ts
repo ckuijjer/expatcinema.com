@@ -21,9 +21,9 @@ const logger = parentLogger.createChild({
 const driver: XRayCrawler.Driver = (context, callback) => {
   const { url } = context
 
-  got(url, { https: { rejectUnauthorized: false } })
-    .then((response) => callback(null, response.body))
-    .catch((err) => callback(err, null))
+  got(String(url), { https: { rejectUnauthorized: false } })
+    .then((response) => callback(null, response.body as never))
+    .catch((err) => callback(err, null as never))
 }
 
 const xray = Xray({
@@ -49,9 +49,16 @@ const extractDate = (time: string) =>
 const cleanTitle = (title: string) =>
   titleCase(
     title
-      .replace(/ \(.*?\)$/g, '')
-      .replace(/^110 Jaar De Uitkijk:/i, '')
-      .replace(/^Klassieker:/i, '')
+      .replace(/^110 Jaar De Uitkijk:/i, '') // Remove the anniversary programme prefix
+      .replace(/^Klassieker:/i, '') // Remove the classics programme prefix
+      .replace(/^Tapis Rouge Classiques X De Uitkijk:/i, '') // Remove the Tapis Rouge collaboration prefix
+      .replace(/^Deutsches Kino:/i, '') // Remove the Deutsches Kino programme prefix
+      .replace(/^Drift X De Uitkijk:/i, '') // Remove the Drift collaboration prefix
+      .replace(/^Film070 Presents:/i, '') // Remove the Film070 guest-programme prefix
+      .replace(/^Fight the Power:/i, '') // Remove the Fight the Power programme prefix
+      .replace(/\s+incl\.\s+introduction$/i, '') // Remove trailing introduction labels
+      .replace(/(?:\s*\([^)]*\))+$/g, '') // Remove one or more trailing parenthetical labels like years or subtitle markers
+      .replace(/\s*\|\s*Tapis Rouge Classiques X De Uitkijk$/i, '') // Remove the trailing Tapis Rouge collaboration suffix
       .trim(),
   )
 

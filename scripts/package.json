@@ -18,7 +18,6 @@
   },
   "scripts": {
     "analyzeScreenings": "tsx analyzeScreenings.ts",
-    "downloadScreenings": "tsx downloadScreenings.ts",
-    "compareScreenings": "code -d ../data/screenings/screenings-without-metadata.json ../data/screenings/screenings-with-metadata.json"
+    "downloadScreenings": "tsx downloadScreenings.ts"
   }
 }

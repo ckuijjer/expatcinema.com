@@ -26,8 +26,6 @@ export class BackendStack extends cdk.Stack {
     const publicBucketName = `expatcinema-public-${stage}`
     const scrapersOutputBucketName = `expatcinema-scrapers-output-${stage}`
     const scrapersAnalyticsTableName = `expatcinema-scrapers-analytics-${stage}`
-    const scrapersMovieMetadataTableName = `expatcinema-scrapers-movie-metadata-${stage}`
-
     const config = getConfig()
 
     const DEFAULT_FUNCTION_ENVIRONMENT_PROPS = {
@@ -110,8 +108,6 @@ export class BackendStack extends cdk.Stack {
           PRIVATE_BUCKET: scrapersOutputBucketName,
           PUBLIC_BUCKET: publicBucketName,
           DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
-          DYNAMODB_MOVIE_METADATA: scrapersMovieMetadataTableName,
-
           TMDB_API_KEY: config.TMDB_API_KEY,
           OMDB_API_KEY: config.OMDB_API_KEY,
           GOOGLE_CUSTOM_SEARCH_ID: config.GOOGLE_CUSTOM_SEARCH_ID,
@@ -158,8 +154,6 @@ export class BackendStack extends cdk.Stack {
           PRIVATE_BUCKET: scrapersOutputBucketName,
           PUBLIC_BUCKET: publicBucketName,
           DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
-          DYNAMODB_MOVIE_METADATA: scrapersMovieMetadataTableName,
-
           TMDB_API_KEY: config.TMDB_API_KEY,
           OMDB_API_KEY: config.OMDB_API_KEY,
           GOOGLE_CUSTOM_SEARCH_ID: config.GOOGLE_CUSTOM_SEARCH_ID,
@@ -274,25 +268,6 @@ export class BackendStack extends cdk.Stack {
     scrapersAnalyticsTable.grantReadWriteData(scrapersLambda)
     scrapersAnalyticsTable.grantReadWriteData(fillAnalyticsLambda)
     scrapersAnalyticsTable.grantReadData(playgroundLambda)
-
-    // Scrapers Movie Metadata DynamoDB Table
-    const scrapersMovieMetadataTable = new dynamodb.Table(
-      this,
-      'ScrapersMovieMetadataDynamoDbTable',
-      {
-        tableName: scrapersMovieMetadataTableName,
-        partitionKey: { name: 'query', type: dynamodb.AttributeType.STRING },
-        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-        pointInTimeRecoverySpecification: {
-          pointInTimeRecoveryEnabled: true,
-        },
-        stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
-        removalPolicy: cdk.RemovalPolicy.RETAIN,
-      },
-    )
-
-    scrapersMovieMetadataTable.grantReadWriteData(scrapersLambda)
-    scrapersMovieMetadataTable.grantReadData(playgroundLambda)
 
     const bedrockPolicyStatement = new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,

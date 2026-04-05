@@ -23,9 +23,11 @@ const cleanTitle = (title: string) => {
   return titleCase(
     removeYearSuffix(
       title
-        .replace('(ENG SUBS)', '') // Melk -> Melk
-        .replace(/^.*│/, '')
-        .replace(/ • .*$/, '') // SWEPT AWAY (1974) • I’LL HAVE WHAT SHE’S HAVING -> SWEPT AWAY (1974)
+        .replace('(ENG SUBS)', '') // Remove explicit English-subs suffix in the title
+        .replace(/^.*│/, '') // Drop any leading section label before the vertical bar
+        .replace(/\s*\+\s*q\s*&\s*a\b/gi, '') // Remove trailing "+ Q&A" event suffixes
+        .replace(/\s*\|\s*cinemasia\d+\b/gi, '') // Remove trailing festival suffixes like "| Cinemasia26"
+        .replace(/ • .*$/, '') // Drop extra programme labels after the bullet separator
         .trim(),
     ),
   )

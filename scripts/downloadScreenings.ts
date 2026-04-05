@@ -11,5 +11,5 @@ const downloadAndSaveJson = async (file) => {
   await writeFile(`../data/screenings/${file}`, JSON.stringify(json, null, 2))
 }
 
-await downloadAndSaveJson('screenings-with-metadata.json')
-await downloadAndSaveJson('screenings-without-metadata.json')
+await downloadAndSaveJson('screenings.json')
+await downloadAndSaveJson('movies.json')

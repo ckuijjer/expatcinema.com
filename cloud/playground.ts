@@ -9,7 +9,7 @@ import whyIsNodeRunning from 'why-is-node-running'
 import { closeBrowser, getBrowser } from './browser'
 import getMetadata from './metadata'
 import { logger as parentLogger } from './powertools'
-import { removeDiacritics } from './scrapers/utils/removeDiacritics'
+import { normalizeMovieTitleForLookup } from './metadata/titleResolver'
 import { useLLM } from './scrapers/utils/useLLM'
 import { Screening } from './types'
 
@@ -21,7 +21,9 @@ const logger = parentLogger.createChild({
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
-const timezonePlayground = async ({ event, context } = {}) => {
+const timezonePlayground = async (
+  _input: { event?: unknown; context?: unknown } = {},
+) => {
   const timestamp = '2019-01-09 11:23'
   const format = 'yyyy-MM-dd HH:mm'
 
@@ -79,9 +81,7 @@ const movieMetadataPlayground = async () => {
       .json()
 
     const uniqueTitles = Array.from(
-      new Set(
-        screenings.map(({ title }) => removeDiacritics(title.toLowerCase())),
-      ),
+      new Set(screenings.map(({ title }) => title)),
     ).sort()
 
     const uniqueTitlesAndMetadata = await pMap(uniqueTitles, getMetadata, {
@@ -90,8 +90,7 @@ const movieMetadataPlayground = async () => {
 
     const allWithMetadata = screenings.map((screening) => {
       const metadata = uniqueTitlesAndMetadata.find(
-        ({ query }) =>
-          query === removeDiacritics(screening.title.toLowerCase()),
+        ({ query }) => query === normalizeMovieTitleForLookup(screening.title),
       )
 
       if (metadata && metadata.title) {
@@ -169,7 +168,9 @@ const getLux = async () => {
   return response
 }
 
-const playground = async ({ event, context } = {}) => {
+const playground = async (
+  _input: { event?: unknown; context?: unknown } = {},
+) => {
   try {
     // const result = await movieMetadataPlayground()
     // const result = await findMetadata('chungking express')
