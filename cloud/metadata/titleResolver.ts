@@ -1,3 +1,5 @@
+import leven from 'leven'
+
 import { removeDiacritics } from '../scrapers/utils/removeDiacritics'
 
 const NOISE_PATTERNS = [
@@ -23,6 +25,12 @@ const NOISE_PATTERNS = [
 const cleanupWhitespace = (value: string) =>
   value.replace(/\s+/g, ' ').replace(/\s([:)\]])/g, '$1').trim()
 
+const matchesNoisePattern = (value: string) =>
+  NOISE_PATTERNS.some((pattern) => {
+    pattern.lastIndex = 0
+    return pattern.test(value)
+  })
+
 export const normalizeMovieTitleForLookup = (title: string) =>
   cleanupWhitespace(
     removeDiacritics(title)
@@ -40,14 +48,14 @@ export const stripTitleNoise = (title: string) => {
 
   cleaned = cleaned.replace(/\[(.*?)\]/g, ' ')
   cleaned = cleaned.replace(/\((.*?)\)/g, (fullMatch, inner) => {
-    return NOISE_PATTERNS.some((pattern) => pattern.test(inner)) ||
-      /^\d{4}$/.test(inner.trim())
+    return matchesNoisePattern(inner) || /^\d{4}$/.test(inner.trim())
       ? ' '
       : fullMatch
   })
 
   cleaned = cleaned.replace(/\s[-–,:]\s/g, ' ')
   NOISE_PATTERNS.forEach((pattern) => {
+    pattern.lastIndex = 0
     cleaned = cleaned.replace(pattern, ' ')
   })
 
@@ -78,36 +86,8 @@ const similarity = (left: string, right: string) => {
     return 1
   }
 
-  const distance = levenshtein(left, right)
+  const distance = leven(left, right)
   return Math.max(0, 1 - distance / Math.max(left.length, right.length))
-}
-
-const levenshtein = (left: string, right: string) => {
-  const matrix = Array.from({ length: left.length + 1 }, () =>
-    Array<number>(right.length + 1).fill(0),
-  )
-
-  for (let row = 0; row <= left.length; row += 1) {
-    matrix[row][0] = row
-  }
-
-  for (let column = 0; column <= right.length; column += 1) {
-    matrix[0][column] = column
-  }
-
-  for (let row = 1; row <= left.length; row += 1) {
-    for (let column = 1; column <= right.length; column += 1) {
-      const substitutionCost = left[row - 1] === right[column - 1] ? 0 : 1
-
-      matrix[row][column] = Math.min(
-        matrix[row - 1][column] + 1,
-        matrix[row][column - 1] + 1,
-        matrix[row - 1][column - 1] + substitutionCost,
-      )
-    }
-  }
-
-  return matrix[left.length][right.length]
 }
 
 export const getMovieId = (tmdbId: number) => `tmdb:${tmdbId}`

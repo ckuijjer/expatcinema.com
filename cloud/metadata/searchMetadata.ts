@@ -1,6 +1,5 @@
 import leven from 'leven'
 
-import getGoogleCustomSearchClient from '../clients/google-customsearch'
 import getTmdbClient from '../clients/tmdb'
 import { logger } from '../powertools'
 import { getManualTitleOverride } from './manualTitleOverrides'
@@ -21,11 +20,6 @@ type TmdbFindResponse = { movieResults: TmdbMovieResult[] }
 type TmdbAlternativeTitlesResponse = {
   titles?: Array<{ title?: string }>
 }
-type GoogleSearchItem = {
-  title: string
-  pagemap: { metatags: Array<Record<string, string>> }
-}
-type GoogleSearchResponse = { items?: GoogleSearchItem[] }
 
 const getTmdb = () => {
   const apiKey = process.env.TMDB_API_KEY
@@ -73,29 +67,6 @@ const getTmdbUsingImdbId = async (imdbId: string) => {
 
   const movie = movieResults?.[0]
   return movie
-}
-
-const getFirstGoogleCustomSearchResult = async (title: string) => {
-  const apiKey = process.env.GOOGLE_CUSTOM_SEARCH_API_KEY
-  const customSearchId = process.env.GOOGLE_CUSTOM_SEARCH_ID
-
-  const googleCustomSearch = getGoogleCustomSearchClient({
-    customSearchId,
-    apiKey,
-  })
-
-  const result = (await googleCustomSearch.get({
-    searchParams: {
-      q: title,
-    },
-  })) as GoogleSearchResponse
-
-  if (result.items?.length > 0) {
-    return {
-      title: result.items[0].title.replace(/ \(\d{4}\) - IMDb/, ''),
-      imdbId: result.items[0].pagemap.metatags[0]['imdb:pageconst'],
-    }
-  }
 }
 
 const buildResolvedMetadata = (
@@ -210,29 +181,6 @@ const searchMetadata = async (
       })),
     })
   }
-
-  // Disabled for now: running all title resolutions together triggers too many
-  // Google Custom Search 429s. Keep the fallback here for possible future use.
-  // const googleCustomSearch =
-  //   await getFirstGoogleCustomSearchResult(normalizedTitle)
-  // if (googleCustomSearch?.imdbId) {
-  //   const tmdbResult = await getTmdbUsingImdbId(googleCustomSearch.imdbId)
-  //   if (tmdbResult?.id) {
-  //     const tmdbMovie = await getTmdbMovie(tmdbResult.id)
-  //     const confidence = scoreCandidate(title, tmdbMovie)
-  //
-  //     if (confidence >= 0.88) {
-  //       return buildResolvedMetadata(title, tmdbMovie, {
-  //         status: 'matched',
-  //         method: 'google-imdb-fallback',
-  //         confidence,
-  //         matchedTitle: tmdbMovie.title,
-  //         matchedOriginalTitle: tmdbMovie.originalTitle,
-  //         matchedReleaseDate: tmdbMovie.releaseDate,
-  //       })
-  //     }
-  //   }
-  // }
 
   return {
     match: {

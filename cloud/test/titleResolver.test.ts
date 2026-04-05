@@ -18,6 +18,12 @@ describe('titleResolver', () => {
     )
   })
 
+  test('strips parenthetical noise consistently across repeated calls', () => {
+    expect(stripTitleNoise('Hard Boiled (4K Restoration)')).toBe('Hard Boiled')
+    expect(stripTitleNoise('A Family (En Subs)')).toBe('A Family')
+    expect(stripTitleNoise('Hard Boiled (4K Restoration)')).toBe('Hard Boiled')
+  })
+
   test('produces multiple search variants', () => {
     expect(getTitleSearchVariants('Amelie (2001) 4K Restoration')).toEqual([
       'Amelie (2001) 4K Restoration',

@@ -207,16 +207,18 @@ export const scrapers = async () => {
       Object.values(results).flat(),
     )
 
-    const titleQueriesToRawTitles = new Map<string, string>()
+    const titleQueriesToRawTitles = new Map<string, Set<string>>()
     allRawScreenings.forEach(({ title }) => {
       const query = normalizeMovieTitleForLookup(title)
-      if (!titleQueriesToRawTitles.has(query)) {
-        titleQueriesToRawTitles.set(query, title)
-      }
+      const rawTitles = titleQueriesToRawTitles.get(query) ?? new Set<string>()
+      rawTitles.add(title)
+      titleQueriesToRawTitles.set(query, rawTitles)
     })
 
     const uniqueTitlesAndMetadata = await pMap(
-      Array.from(titleQueriesToRawTitles.values()).sort(),
+      Array.from(titleQueriesToRawTitles.values(), (rawTitles) =>
+        Array.from(rawTitles)[0],
+      ).sort(),
       getMetadata,
       {
         concurrency: 5,
@@ -271,42 +273,29 @@ export const scrapers = async () => {
       ).values(),
     )
 
-    const titleMatches = uniqueTitlesAndMetadata.map((metadata) => ({
+    const toTitleMatchRecord = (metadata) => ({
       query: metadata.query,
-      titleRaw: titleQueriesToRawTitles.get(metadata.query) ?? metadata.query,
+      titleRaw: Array.from(titleQueriesToRawTitles.get(metadata.query) ?? [])[0],
+      titleRawVariants: Array.from(
+        titleQueriesToRawTitles.get(metadata.query) ?? [],
+      ),
       movieId: metadata.movieId,
       title: metadata.title,
       originalTitle: metadata.originalTitle,
       imdbId: metadata.imdbId,
       tmdbId: metadata.tmdb?.id,
       match: metadata.match,
-    }))
+    })
+
+    const titleMatches = uniqueTitlesAndMetadata.map(toTitleMatchRecord)
 
     const ambiguousMovies = uniqueTitlesAndMetadata
       .filter((metadata) => metadata.match.status === 'ambiguous')
-      .map((metadata) => ({
-        query: metadata.query,
-        titleRaw: titleQueriesToRawTitles.get(metadata.query) ?? metadata.query,
-        movieId: metadata.movieId,
-        title: metadata.title,
-        originalTitle: metadata.originalTitle,
-        imdbId: metadata.imdbId,
-        tmdbId: metadata.tmdb?.id,
-        match: metadata.match,
-      }))
+      .map(toTitleMatchRecord)
 
     const unmatchedMovies = uniqueTitlesAndMetadata
       .filter((metadata) => metadata.match.status === 'unmatched')
-      .map((metadata) => ({
-        query: metadata.query,
-        titleRaw: titleQueriesToRawTitles.get(metadata.query) ?? metadata.query,
-        movieId: metadata.movieId,
-        title: metadata.title,
-        originalTitle: metadata.originalTitle,
-        imdbId: metadata.imdbId,
-        tmdbId: metadata.tmdb?.id,
-        match: metadata.match,
-      }))
+      .map(toTitleMatchRecord)
 
     const privateResults = {
       ...results,

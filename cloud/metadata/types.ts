@@ -3,7 +3,6 @@ export type MatchStatus = 'matched' | 'manual' | 'ambiguous' | 'unmatched'
 export type MatchMethod =
   | 'manual-override'
   | 'tmdb-search'
-  | 'google-imdb-fallback'
   | 'unmatched'
 
 export type TmdbMovie = {

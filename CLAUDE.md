@@ -212,8 +212,6 @@ pnpm run config:scrapers
 TMDB_API_KEY=xxx
 OMDB_API_KEY=xxx
 SLACK_WEBHOOK=xxx
-GOOGLE_CUSTOM_SEARCH_ID=xxx
-GOOGLE_CUSTOM_SEARCH_API_KEY=xxx
 SCRAPEOPS_API_KEY=xxx
 SCRAPERS=kinorotterdam,eyefilm  # Optional: limit scrapers
 ```
@@ -705,7 +703,6 @@ Before committing:
 
 - **TMDB API** (The Movie Database) - Movie metadata
 - **OMDB API** (Open Movie Database) - Additional metadata
-- **Google Custom Search API** - Fallback for metadata search
 - **ScrapeOps API** - Proxy service for scrapers
 - **Slack Webhook** - Notifications
 
