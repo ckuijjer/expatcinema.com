@@ -247,6 +247,7 @@ export const scrapers = async () => {
             metadata.movieId,
             {
               movieId: metadata.movieId,
+              tmdbId: metadata.tmdb?.id,
               imdbId: metadata.imdbId,
               title: metadata.title,
               tmdb: {
