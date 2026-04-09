@@ -14,6 +14,16 @@ const logger = parentLogger.createChild({
 
 const cleanTitle = (title: string) => titleCase(title)
 
+type EyeShow = {
+  url: string
+  startDateTime: string
+  singleSubtitles: string
+  production: {
+    title: string
+    year?: number | null
+  }[]
+}
+
 const extractFromGraphQL = async (): Promise<Screening[]> => {
   const client = new ApolloClient({
     link: new HttpLink({ uri: 'https://www.eyefilm.nl/graphql', fetch }),
@@ -50,6 +60,9 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
           singleSubtitles
           production {
             title
+            ... on production_production_Entry {
+              year
+            }
           }
         }
       }
@@ -62,7 +75,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
     .endOf('day')
     .toFormat('yyyy-MM-dd HH:mm')
 
-  const results = await client.query<{ shows: any[] }>({
+  const results = await client.query<{ shows: EyeShow[] }>({
     query,
     variables: {
       siteId: 'eyeEnglish',
@@ -81,6 +94,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
     .map((show) => {
       return {
         title: cleanTitle(show.production[0].title),
+        year: show.production[0].year ?? undefined,
         url: show.url,
         cinema: 'Eye',
         date: new Date(show.startDateTime),
