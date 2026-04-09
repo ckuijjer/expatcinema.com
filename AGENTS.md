@@ -66,6 +66,7 @@ Scrapers return:
 ```ts
 type Screening = {
   title: string
+  year?: number
   url: string
   cinema: string
   date: Date
@@ -126,6 +127,24 @@ Local output is written to:
 - `cloud/output/<PUBLIC_BUCKET>/movies.json`
 - `cloud/output/<PUBLIC_BUCKET>/title-matches.json`
 - `cloud/output/<PRIVATE_BUCKET>/...`
+
+### Run one scraper locally
+
+For scraper-level validation, prefer a direct run under Node 24:
+
+```bash
+nvm use
+cd cloud
+pnpm tsx scrapers/<name>.ts
+```
+
+If needed, add `LOG_LEVEL=debug` to inspect the upstream payload and returned screenings.
+
+### FK-feed year notes
+
+- FK-feed scrapers can expose both `year` and `dates.release`.
+- Prefer `year` as the movie-year source.
+- Do not treat `dates.release` as a safe movie-year fallback by default; it appears to represent local release metadata, not necessarily the film's original release year.
 
 ### Run prod scrapers
 
@@ -189,6 +208,15 @@ Workflows:
 
 `web.yml` deploys on `main`.
 `web-build.yml` builds PRs without deploying.
+
+### Prod rollout sequence
+
+After merging cloud changes that affect scraper output:
+
+1. wait for the `Cloud` workflow on `main` to succeed
+2. run `cd cloud && pnpm run scrapers:prod`
+3. trigger `Web`
+4. validate production `screenings.json` in S3
 
 ## Testing and Validation
 
