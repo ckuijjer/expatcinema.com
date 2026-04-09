@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
@@ -138,6 +139,7 @@ const extractFromMainPage = async () => {
 
         const screening: Screening = {
           title: cleanTitle(item.name),
+          year: extractYearFromTitle(item.name),
           url,
           cinema: 'Kriterion',
           date: DateTime.fromISO(item.starts_at).toJSDate(),

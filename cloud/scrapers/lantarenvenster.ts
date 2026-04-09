@@ -3,6 +3,7 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
@@ -82,6 +83,7 @@ export const extractFromMoviePage = async (
 
           return {
             title: cleanTitle(movie.title),
+            year: extractYearFromTitle(movie.title),
             url,
             cinema: 'Lantarenvenster',
             date: DateTime.fromObject({

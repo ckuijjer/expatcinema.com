@@ -5,6 +5,7 @@ import XRayCrawler from 'x-ray-crawler'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { trim } from './utils/xrayFilters'
@@ -88,6 +89,7 @@ export const extractFromMoviePage = async (
   const screenings: Screening[] = movie.screenings.map((screening) => {
     return {
       title: cleanTitle(movie.title),
+      year: extractYearFromTitle(movie.title),
       url,
       cinema: 'De Uitkijk',
       date: extractDate(screening),
