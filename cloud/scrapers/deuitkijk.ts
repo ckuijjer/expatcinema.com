@@ -59,6 +59,8 @@ const cleanTitle = (title: string) =>
       .replace(/\s+incl\.\s+introduction$/i, '') // Remove trailing introduction labels
       .replace(/(?:\s*\([^)]*\))+$/g, '') // Remove one or more trailing parenthetical labels like years or subtitle markers
       .replace(/\s*\|\s*Tapis Rouge Classiques X De Uitkijk$/i, '') // Remove the trailing Tapis Rouge collaboration suffix
+      .replace(/\s*\|.*$/, '')
+      .replace(/ \(.*?\)/g, '')
       .trim(),
   )
 
