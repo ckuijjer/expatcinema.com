@@ -4,6 +4,7 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { guessYear } from './utils/guessYear'
 import { monthToNumber } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
@@ -30,6 +31,7 @@ type XRayFromMainPage = {
 
 type FkFeedItem = {
   title: string
+  year?: string
   language: { label: string; value: string }
   permalink: string
   times: { program_start: string; program_end: string; tags: string[] }[]
@@ -149,6 +151,7 @@ const extractFromMainPage = async () => {
         .map((time) => {
           return {
             title: cleanTitle(movie.title),
+            year: parseFkFeedYear(movie.year),
             url: movie.permalink,
             cinema: 'Filmkoepel',
             date: extractDate(time.program_start),

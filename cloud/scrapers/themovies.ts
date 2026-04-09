@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
@@ -15,6 +16,7 @@ const logger = parentLogger.createChild({
 
 type FkFeedItem = {
   title: string
+  year?: string
   language: { label: string; value: string }
   permalink: string
   times: { program_start: string; program_end: string; tags: string[] }[]
@@ -58,6 +60,7 @@ const extractFromMainPage = async () => {
         ?.map((time) => {
           return {
             title: cleanTitle(movie.title),
+            year: parseFkFeedYear(movie.year),
             url: movie.permalink,
             cinema: 'The Movies',
             date: extractDate(time.program_start),

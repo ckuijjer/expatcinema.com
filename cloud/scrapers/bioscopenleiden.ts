@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
@@ -29,6 +30,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 type FkFeedItem = {
   title: string
+  year?: string
   language: { label: string; value: string }
   permalink: string
   times: {
@@ -70,6 +72,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         .map((time) => {
           return {
             title: cleanTitle(decode(movie.title)),
+            year: parseFkFeedYear(movie.year),
             url: movie.permalink,
             cinema: capitalize(extractLocation(time.location)),
             date: extractDate(time.program_start),
