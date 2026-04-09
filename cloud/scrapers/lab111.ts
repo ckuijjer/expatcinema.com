@@ -3,6 +3,7 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import xRayPuppeteer from '../xRayPuppeteer'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
@@ -19,8 +20,6 @@ const logger = parentLogger.createChild({
 const xray = Xray({
   filters: {
     trim,
-    cleanTitle: (value) =>
-      typeof value === 'string' ? value.replace(/\(.*\)\s+$/, '') : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
@@ -59,7 +58,7 @@ const extractFromMainPage = async () => {
       '#programmalist .filmdetails',
       [
         {
-          title: 'h2.hidemobile a | trim | cleanTitle',
+          title: 'h2.hidemobile a | trim | normalizeWhitespace',
           url: 'h2.hidemobile a@href | trim',
           metadata: '.row.hidemobile | normalizeWhitespace',
           dates: ['.day td:first-child | trim'],
@@ -97,6 +96,7 @@ const extractFromMainPage = async () => {
 
           return {
             title: cleanTitle(movie.title),
+            year: extractYearFromTitle(movie.title),
             url: movie.url,
             cinema: 'Lab111',
             date: DateTime.fromObject({

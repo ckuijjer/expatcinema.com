@@ -4,6 +4,7 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { guessYear } from './utils/guessYear'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
@@ -100,6 +101,7 @@ const extractFromMoviePage = async (url: string) => {
 
           return {
             title: cleanTitle(title),
+            year: extractYearFromTitle(title),
             url,
             cinema: 'Studio/K',
             date: DateTime.fromObject({
