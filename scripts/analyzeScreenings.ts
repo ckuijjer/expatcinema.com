@@ -41,15 +41,10 @@ const MINOR_WORDS = 'a an and as at by for from in of on or the to with'
 const compareTitles = (a: string, b: string) =>
   normalizeTitle(a).localeCompare(normalizeTitle(b))
 
-const screeningsWithMetadata: Screening[] = await readJson(
-  'screenings-with-metadata.json',
-)
-const screeningsWithoutMetadata: Screening[] = await readJson(
-  'screenings-without-metadata.json',
-)
+const screenings: Screening[] = await readJson('screenings.json')
 
 const screeningsGroupedByTitle = Object.groupBy(
-  screeningsWithoutMetadata,
+  screenings,
   (screening: Screening) => normalizeTitle(screening.title),
 )
 

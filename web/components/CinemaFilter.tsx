@@ -37,7 +37,11 @@ export const CinemaFilter = () => {
     const link = linkRefs.current.get(cinema)
     if (!link) return
 
-    link.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'nearest' })
+    link.scrollIntoView({
+      behavior: 'instant',
+      block: 'nearest',
+      inline: 'nearest',
+    })
   }, [cinema])
 
   return (

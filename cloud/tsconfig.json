@@ -8,6 +8,6 @@
     "module": "preserve",
     "moduleResolution": "bundler"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "cdk.out"]
+  "include": ["./**/*.ts", "./**/*.tsx"],
+  "exclude": ["node_modules", "cdk.out", "output"]
 }

@@ -45,7 +45,11 @@ export const CityFilter = () => {
     const link = linkRefs.current.get(city)
     if (!link) return
 
-    link.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'nearest' })
+    link.scrollIntoView({
+      behavior: 'instant',
+      block: 'nearest',
+      inline: 'nearest',
+    })
   }, [city])
 
   return (

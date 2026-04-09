@@ -2,7 +2,7 @@ import { Logger } from '@aws-lambda-powertools/logger'
 import chromium from '@sparticuz/chromium'
 import puppeteer, { Browser, LaunchOptions } from 'puppeteer-core'
 
-import { LOCAL_CHROMIUM_EXECUTABLE_PATH } from './browser-local-constants.ts'
+import { LOCAL_CHROMIUM_EXECUTABLE_PATH } from './browser-local-constants'
 
 const createBrowserSingleton = () => {
   let instance: Browser
@@ -13,13 +13,18 @@ const createBrowserSingleton = () => {
     try {
       logger?.info('running locally?', { isLocal: process.env.IS_LOCAL })
 
+      const chromiumOptions = chromium as typeof chromium & {
+        defaultViewport?: LaunchOptions['defaultViewport']
+        headless?: LaunchOptions['headless']
+      }
+
       const options: LaunchOptions = {
-        args: process.env.IS_LOCAL ? [] : chromium.args,
-        defaultViewport: chromium.defaultViewport,
+        args: process.env.IS_LOCAL ? [] : chromiumOptions.args,
+        defaultViewport: chromiumOptions.defaultViewport,
         executablePath: process.env.IS_LOCAL
           ? LOCAL_CHROMIUM_EXECUTABLE_PATH
-          : await chromium.executablePath(),
-        headless: process.env.IS_LOCAL ? false : chromium.headless,
+          : await chromiumOptions.executablePath(),
+        headless: process.env.IS_LOCAL ? false : chromiumOptions.headless,
         acceptInsecureCerts: true,
       }
 

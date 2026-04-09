@@ -25,7 +25,8 @@ const xray = Xray({
             value
               .replace('Movie: ', '')
               .replace('Film: ', '')
-              .replace('Classics: ', ''),
+              .replace('Classics: ', '')
+              .replace('Cinematic Beauty: ', ''),
           )
         : value,
     normalizeWhitespace: (value) =>

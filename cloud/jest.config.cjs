@@ -3,6 +3,15 @@ module.exports = {
   roots: ['<rootDir>/test'],
   testMatch: ['**/*.test.ts'],
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.[tj]sx?$': [
+      'ts-jest',
+      {
+        useESM: true,
+        tsconfig: {
+          allowJs: true,
+        },
+      },
+    ],
   },
+  transformIgnorePatterns: ['/node_modules/(?!.*leven/)'],
 }

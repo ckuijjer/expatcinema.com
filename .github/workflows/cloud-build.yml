@@ -1,0 +1,53 @@
+name: Cloud Build
+
+on:
+  pull_request:
+    paths:
+      - 'cloud/**'
+      - '.github/workflows/cloud-build.yml'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: cloud/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'pnpm'
+      - name: Install Dependencies
+        working-directory: .
+        run: pnpm install --frozen-lockfile
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-region: eu-west-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Run Tests
+        run: pnpm test
+      - name: Type Check
+        id: typecheck
+        continue-on-error: true
+        run: pnpm type-check
+      - name: Warn on Type Check Failure
+        if: steps.typecheck.outcome == 'failure'
+        run: echo "::warning::cloud type-check failed; this is currently non-blocking"
+      - name: CDK Synth
+        env:
+          STAGE: dev
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
+          SCRAPERS: ${{ secrets.SCRAPERS }}
+          SCRAPEOPS_API_KEY: ${{ secrets.SCRAPEOPS_API_KEY }}
+        run: pnpm synth

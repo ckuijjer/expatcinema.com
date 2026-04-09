@@ -8,7 +8,7 @@
 
 A GitHub Action is used to deploy to AWS. The action is triggered by a push to the `main` branch.
 
-The `.env` file from `cloud/` is only used when running it locally, when deploying using CI/CD the environment variables are set in the GitHub _Secrets and Variables > Actions > Repository Secrets_. The `.env` file is not checked into git, so it won't be available in the CI/CD environment.
+The `.env.local` file from `cloud/` is only used when running it locally, when deploying using CI/CD the environment variables are set in the GitHub _Secrets and Variables > Actions > Repository Secrets_. The `.env.local` file is not checked into git, so it won't be available in the CI/CD environment.
 
 ### Deploy Dev
 
@@ -64,7 +64,7 @@ pnpm run scrapers:local
 
 Stores the output in _cloud/output_ instead of S3 buckets and DynamoDB
 
-Use SCRAPERS environment variable in _.env.local_ to define a comma separated list of scrapers to locally run and diverge from the default set of scrapers in _scrapers/index.js_
+Use the `SCRAPERS` environment variable in `.env.local` to define a comma separated list of scrapers to locally run and diverge from the default set of scrapers in `scrapers/index.ts`.
 
 ### Single scraper
 
@@ -92,7 +92,6 @@ export STAGE=prod
 aws s3 sync s3://expatcinema-scrapers-output-$STAGE expatcinema-scrapers-output-$STAGE --profile casper
 aws s3 sync s3://expatcinema-public-$STAGE expatcinema-public-$STAGE --profile casper
 aws dynamodb scan --table-name expatcinema-scrapers-analytics-$STAGE --profile casper > expatcinema-scrapers-analytics-$STAGE.json
-aws dynamodb scan --table-name expatcinema-scrapers-movie-metadata-$STAGE --profile casper > expatcinema-scrapers-movie-metadata-$STAGE.json
 ```
 
 For the DynamoDB tables, it might be better to use the _Export to S3_ functionality in the AWS Console, as these can be imported using `aws dynamodb import-table`
@@ -118,21 +117,6 @@ jq -c '.Items[] |
   with_entries(.value |= dynamodb_to_json)
 ' expatcinema-scrapers-analytics-$STAGE.json > expatcinema-scrapers-analytics-$STAGE-converted.json
 
-jq -c '.Items[] |
-  def dynamodb_to_json:
-    if type == "object" then
-      if has("S") then .S
-      elif has("N") then (.N | tonumber)
-      elif has("BOOL") then .BOOL
-      elif has("NULL") then null
-      elif has("L") then [.L[] | dynamodb_to_json]
-      elif has("M") then .M | with_entries(.value |= dynamodb_to_json)
-      else .
-      end
-    else .
-    end;
-  with_entries(.value |= dynamodb_to_json)
-' expatcinema-scrapers-movie-metadata-$STAGE.json > expatcinema-scrapers-movie-metadata-$STAGE-converted.json
 ```
 
 ### Restore
@@ -159,13 +143,9 @@ jq -c '.Items[]' expatcinema-scrapers-analytics-$STAGE.json | while read -r item
     --profile casper
 done
 
-jq -c '.Items[]' expatcinema-scrapers-movie-metadata-$STAGE.json | while read -r item; do
-  aws dynamodb put-item \
-    --table-name expatcinema-scrapers-movie-metadata-$STAGE \
-    --item "$item" \
-    --profile casper
-done
 ```
+
+Note: the old movie metadata DynamoDB table has been removed from the CDK stack. Because it previously used `RemovalPolicy.RETAIN`, deploying this change should leave the physical table in AWS for manual deletion if you no longer want to keep it.
 
 ### Favicon
 

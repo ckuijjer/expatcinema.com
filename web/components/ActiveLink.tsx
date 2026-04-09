@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { css } from 'styled-system/css'
 
@@ -42,17 +42,12 @@ export const ActiveLink = React.forwardRef<
     ref,
   ) => {
     const pathname = usePathname()
-    const [isCurrent, setIsCurrent] = useState(false)
-
-    useEffect(() => {
-      const linkPathname = new URL(href, location.href).pathname
-      setIsCurrent(
-        linkPathname === pathname ||
-          (matchPrefix &&
-            linkPathname !== '/' &&
-            pathname.startsWith(linkPathname + '/')),
-      )
-    }, [pathname, href, matchPrefix])
+    const linkPathname = new URL(href, 'http://localhost').pathname
+    const isCurrent =
+      linkPathname === pathname ||
+      (matchPrefix &&
+        linkPathname !== '/' &&
+        pathname.startsWith(linkPathname + '/'))
 
     return (
       <Link
