@@ -22,7 +22,6 @@ export type Row =
   | { component: 'RelativeDate'; props: { children: string } }
   | { component: 'ScreeningRow'; props: ScreeningWithLuxonDate }
 
-
 const containerStyle = css({
   marginTop: '24px',
   marginBottom: '24px',

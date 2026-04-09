@@ -1,9 +1,6 @@
 export type MatchStatus = 'matched' | 'manual' | 'ambiguous' | 'unmatched'
 
-export type MatchMethod =
-  | 'manual-override'
-  | 'tmdb-search'
-  | 'unmatched'
+export type MatchMethod = 'manual-override' | 'tmdb-search' | 'unmatched'
 
 export type TmdbMovie = {
   id: number

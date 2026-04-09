@@ -23,7 +23,10 @@ const NOISE_PATTERNS = [
 ]
 
 const cleanupWhitespace = (value: string) =>
-  value.replace(/\s+/g, ' ').replace(/\s([:)\]])/g, '$1').trim()
+  value
+    .replace(/\s+/g, ' ')
+    .replace(/\s([:)\]])/g, '$1')
+    .trim()
 
 const matchesNoisePattern = (value: string) =>
   NOISE_PATTERNS.some((pattern) => {
@@ -32,11 +35,7 @@ const matchesNoisePattern = (value: string) =>
   })
 
 export const normalizeMovieTitleForLookup = (title: string) =>
-  cleanupWhitespace(
-    removeDiacritics(title)
-      .replace(/[’`]/g, "'")
-      .toLowerCase(),
-  )
+  cleanupWhitespace(removeDiacritics(title).replace(/[’`]/g, "'").toLowerCase())
 
 export const extractYearHint = (title: string): number | undefined => {
   const match = title.match(/\b(18|19|20)\d{2}\b/)
@@ -104,7 +103,9 @@ export const scoreCandidate = (
   candidate: ScoreCandidateInput,
 ) => {
   const normalizedRaw = normalizeMovieTitleForLookup(rawTitle)
-  const normalizedStripped = normalizeMovieTitleForLookup(stripTitleNoise(rawTitle))
+  const normalizedStripped = normalizeMovieTitleForLookup(
+    stripTitleNoise(rawTitle),
+  )
   const yearHint = extractYearHint(rawTitle)
 
   const candidateTitles = [

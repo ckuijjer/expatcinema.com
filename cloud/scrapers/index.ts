@@ -216,8 +216,9 @@ export const scrapers = async () => {
     })
 
     const uniqueTitlesAndMetadata = await pMap(
-      Array.from(titleQueriesToRawTitles.values(), (rawTitles) =>
-        Array.from(rawTitles)[0],
+      Array.from(
+        titleQueriesToRawTitles.values(),
+        (rawTitles) => Array.from(rawTitles)[0],
       ).sort(),
       getMetadata,
       {
@@ -267,7 +268,9 @@ export const scrapers = async () => {
 
     const toTitleMatchRecord = (metadata) => ({
       query: metadata.query,
-      titleRaw: Array.from(titleQueriesToRawTitles.get(metadata.query) ?? [])[0],
+      titleRaw: Array.from(
+        titleQueriesToRawTitles.get(metadata.query) ?? [],
+      )[0],
       titleRawVariants: Array.from(
         titleQueriesToRawTitles.get(metadata.query) ?? [],
       ),

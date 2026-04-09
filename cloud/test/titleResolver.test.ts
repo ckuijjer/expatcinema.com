@@ -8,12 +8,12 @@ import {
 
 describe('titleResolver', () => {
   test('normalizes titles for stable lookups', () => {
-    expect(normalizeMovieTitleForLookup("Amélie  ")).toBe('amelie')
+    expect(normalizeMovieTitleForLookup('Amélie  ')).toBe('amelie')
   })
 
   test('strips common cinema noise from titles', () => {
     expect(stripTitleNoise('Amelie (2001) 4K Restoration')).toBe('Amelie')
-    expect(stripTitleNoise("The Third Man - 75th Anniversary")).toBe(
+    expect(stripTitleNoise('The Third Man - 75th Anniversary')).toBe(
       'The Third Man',
     )
   })
@@ -44,11 +44,14 @@ describe('titleResolver', () => {
       releaseDate: '2001-04-25',
     })
 
-    const alternateTitleScore = scoreCandidate("Le Fabuleux Destin d'Amelie Poulain", {
-      title: 'Amelie',
-      originalTitle: "Le Fabuleux Destin d'Amelie Poulain",
-      releaseDate: '2001-04-25',
-    })
+    const alternateTitleScore = scoreCandidate(
+      "Le Fabuleux Destin d'Amelie Poulain",
+      {
+        title: 'Amelie',
+        originalTitle: "Le Fabuleux Destin d'Amelie Poulain",
+        releaseDate: '2001-04-25',
+      },
+    )
 
     const wrongMovieScore = scoreCandidate('Amelie', {
       title: 'Alien',
