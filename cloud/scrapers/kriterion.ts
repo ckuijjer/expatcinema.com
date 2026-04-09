@@ -111,11 +111,11 @@ const cleanTitle = (title: string) =>
 const extractFromMainPage = async () => {
   try {
     const showsApiResponse: KriterionShowsApiResponse = await got(
-      'https://storage.googleapis.com/kritsite-buffer/shows.json',
+      'https://www.kriterion.nl/data/shows.json',
     ).json()
 
     const filmsApiResponse: KriterionFilmsApiResponse = await got(
-      'https://storage.googleapis.com/kritsite-buffer/films.json',
+      'https://www.kriterion.nl/data/films.json',
     ).json()
 
     logger.info('extracted api responses', {
