@@ -94,7 +94,7 @@ const searchMetadata = async (
   year?: number,
 ): Promise<Omit<Metadata, 'query' | 'createdAt'>> => {
   const normalizedTitle = normalizeMovieTitleForLookup(title)
-  const manualOverride = getManualTitleOverride(title)
+  const manualOverride = getManualTitleOverride(title, year)
 
   if (manualOverride?.tmdbId) {
     const tmdbMovie = await getTmdbMovie(manualOverride.tmdbId)
