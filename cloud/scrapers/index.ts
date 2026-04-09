@@ -231,20 +231,9 @@ export const scrapers = async () => {
           (entry) => entry.query === normalizeMovieTitleForLookup(movie.title),
         )
 
-        const titleDisplay = metadata?.title ?? movie.title
-
         return {
           ...movie,
-          titleRaw: movie.title,
-          titleDisplay,
-          title: titleDisplay,
           movieId: metadata?.movieId,
-          imdbUrl: metadata?.imdbId
-            ? `https://www.imdb.com/title/${metadata.imdbId}/`
-            : undefined,
-          tmdbUrl: metadata?.tmdb?.id
-            ? `https://www.themoviedb.org/movie/${metadata.tmdb.id}`
-            : undefined,
         }
       }),
     )
@@ -257,17 +246,20 @@ export const scrapers = async () => {
             metadata.movieId,
             {
               movieId: metadata.movieId,
-              tmdbId: metadata.tmdb?.id,
               imdbId: metadata.imdbId,
               title: metadata.title,
-              originalTitle: metadata.originalTitle,
-              releaseDate: metadata.tmdb?.releaseDate,
-              posterPath: metadata.tmdb?.posterPath,
-              backdropPath: metadata.tmdb?.backdropPath,
-              overview: metadata.tmdb?.overview,
-              originalLanguage: metadata.tmdb?.originalLanguage,
-              voteAverage: metadata.tmdb?.voteAverage,
-              genreIds: metadata.tmdb?.genreIds ?? [],
+              tmdb: {
+                id: metadata.tmdb?.id,
+                title: metadata.title,
+                originalTitle: metadata.originalTitle,
+                releaseDate: metadata.tmdb?.releaseDate,
+                posterPath: metadata.tmdb?.posterPath,
+                backdropPath: metadata.tmdb?.backdropPath,
+                overview: metadata.tmdb?.overview,
+                originalLanguage: metadata.tmdb?.originalLanguage,
+                voteAverage: metadata.tmdb?.voteAverage,
+                genreIds: metadata.tmdb?.genreIds ?? [],
+              },
             },
           ]),
       ).values(),
