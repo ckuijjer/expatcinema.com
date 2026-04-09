@@ -42,6 +42,7 @@ export type MetadataMatch = {
 
 export type Metadata = {
   query: string
+  year?: number
   createdAt: string
   movieId?: string
   title?: string

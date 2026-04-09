@@ -91,6 +91,9 @@ const similarity = (left: string, right: string) => {
 
 export const getMovieId = (tmdbId: number) => `tmdb:${tmdbId}`
 
+export const getMetadataLookupKey = (title: string, year?: number) =>
+  `${normalizeMovieTitleForLookup(title)}::${year ?? ''}`
+
 type ScoreCandidateInput = {
   title?: string
   originalTitle?: string
@@ -101,12 +104,13 @@ type ScoreCandidateInput = {
 export const scoreCandidate = (
   rawTitle: string,
   candidate: ScoreCandidateInput,
+  yearHintOverride?: number,
 ) => {
   const normalizedRaw = normalizeMovieTitleForLookup(rawTitle)
   const normalizedStripped = normalizeMovieTitleForLookup(
     stripTitleNoise(rawTitle),
   )
-  const yearHint = extractYearHint(rawTitle)
+  const yearHint = yearHintOverride ?? extractYearHint(rawTitle)
 
   const candidateTitles = [
     candidate.title,

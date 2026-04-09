@@ -2,6 +2,7 @@ import { normalizeMovieTitleForLookup } from './titleResolver'
 
 type ManualTitleOverrideInput = {
   title: string
+  year?: number
   tmdbId?: number
   imdbId?: string
   note?: string
@@ -20,7 +21,11 @@ export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
   }),
 )
 
-export const getManualTitleOverride = (title: string) => {
+export const getManualTitleOverride = (title: string, year?: number) => {
   const query = normalizeMovieTitleForLookup(title)
-  return manualTitleOverrides.find((override) => override.query === query)
+  return (
+    manualTitleOverrides.find(
+      (override) => override.query === query && override.year === year,
+    ) ?? manualTitleOverrides.find((override) => override.query === query)
+  )
 }
