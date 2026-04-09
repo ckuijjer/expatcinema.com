@@ -63,4 +63,26 @@ describe('titleResolver', () => {
     expect(alternateTitleScore).toBeGreaterThan(0.9)
     expect(wrongMovieScore).toBeLessThan(0.6)
   })
+
+  test('uses an explicit year hint when provided', () => {
+    const preferredYearScore = scoreCandidate(
+      'A Family',
+      {
+        title: 'A Family',
+        releaseDate: '2026-04-02',
+      },
+      2026,
+    )
+
+    const wrongYearScore = scoreCandidate(
+      'A Family',
+      {
+        title: 'A Family',
+        releaseDate: '1970-04-02',
+      },
+      2026,
+    )
+
+    expect(preferredYearScore).toBeGreaterThan(wrongYearScore)
+  })
 })

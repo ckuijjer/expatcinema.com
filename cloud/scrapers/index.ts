@@ -44,7 +44,10 @@ import springhaver from './springhaver'
 import studiok from './studiok'
 import themovies from './themovies'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
-import { normalizeMovieTitleForLookup } from '../metadata/titleResolver'
+import {
+  getMetadataLookupKey,
+  normalizeMovieTitleForLookup,
+} from '../metadata/titleResolver'
 
 const SCRAPERS = {
   bioscopenleiden,
@@ -207,19 +210,33 @@ export const scrapers = async () => {
       Object.values(results).flat(),
     )
 
-    const titleQueriesToRawTitles = new Map<string, Set<string>>()
-    allRawScreenings.forEach(({ title }) => {
+    const metadataLookups = new Map<
+      string,
+      { query: string; year?: number; rawTitles: Set<string> }
+    >()
+    allRawScreenings.forEach(({ title, year }) => {
       const query = normalizeMovieTitleForLookup(title)
-      const rawTitles = titleQueriesToRawTitles.get(query) ?? new Set<string>()
-      rawTitles.add(title)
-      titleQueriesToRawTitles.set(query, rawTitles)
+      const lookupKey = getMetadataLookupKey(title, year)
+      const existingLookup = metadataLookups.get(lookupKey) ?? {
+        query,
+        year,
+        rawTitles: new Set<string>(),
+      }
+      existingLookup.rawTitles.add(title)
+      metadataLookups.set(lookupKey, existingLookup)
     })
 
     const uniqueTitlesAndMetadata = await pMap(
-      Array.from(
-        titleQueriesToRawTitles.values(),
-        (rawTitles) => Array.from(rawTitles)[0],
-      ).sort(),
+      Array.from(metadataLookups.values())
+        .sort((left, right) => {
+          const leftRawTitle = Array.from(left.rawTitles)[0] ?? ''
+          const rightRawTitle = Array.from(right.rawTitles)[0] ?? ''
+          return leftRawTitle.localeCompare(rightRawTitle)
+        })
+        .map((lookup) => ({
+          title: Array.from(lookup.rawTitles)[0] ?? '',
+          year: lookup.year,
+        })),
       getMetadata,
       {
         concurrency: 5,
@@ -228,8 +245,10 @@ export const scrapers = async () => {
 
     const allWithResolvedMovies = makeScreeningsUniqueAndSorted(
       allRawScreenings.map((movie) => {
+        const lookupKey = getMetadataLookupKey(movie.title, movie.year)
         const metadata = uniqueTitlesAndMetadata.find(
-          (entry) => entry.query === normalizeMovieTitleForLookup(movie.title),
+          (entry) =>
+            getMetadataLookupKey(entry.query, entry.year) === lookupKey,
         )
 
         return {
@@ -269,11 +288,14 @@ export const scrapers = async () => {
 
     const toTitleMatchRecord = (metadata) => ({
       query: metadata.query,
+      year: metadata.year,
       titleRaw: Array.from(
-        titleQueriesToRawTitles.get(metadata.query) ?? [],
+        metadataLookups.get(getMetadataLookupKey(metadata.query, metadata.year))
+          ?.rawTitles ?? [],
       )[0],
       titleRawVariants: Array.from(
-        titleQueriesToRawTitles.get(metadata.query) ?? [],
+        metadataLookups.get(getMetadataLookupKey(metadata.query, metadata.year))
+          ?.rawTitles ?? [],
       ),
       movieId: metadata.movieId,
       title: metadata.title,

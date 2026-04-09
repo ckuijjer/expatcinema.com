@@ -26,11 +26,12 @@ const getTmdb = () => {
   return getTmdbClient(apiKey)
 }
 
-const searchTmdb = async (query: string) => {
+const searchTmdb = async (query: string, year?: number) => {
   const tmdb = getTmdb()
   const { results } = (await tmdb.get('search/movie', {
     searchParams: {
       query,
+      ...(year ? { primary_release_year: year } : {}),
     },
   })) as unknown as TmdbSearchResponse
 
@@ -90,6 +91,7 @@ const buildResolvedMetadata = (
 
 const searchMetadata = async (
   title: string,
+  year?: number,
 ): Promise<Omit<Metadata, 'query' | 'createdAt'>> => {
   const normalizedTitle = normalizeMovieTitleForLookup(title)
   const manualOverride = getManualTitleOverride(title)
@@ -125,7 +127,7 @@ const searchMetadata = async (
   const uniqueCandidates = new Map<number, TmdbMovieResult>()
 
   for (const query of searchQueries) {
-    const results = await searchTmdb(query)
+    const results = await searchTmdb(query, year)
     results.slice(0, 5).forEach((result) => {
       uniqueCandidates.set(result.id, result)
     })
@@ -134,7 +136,7 @@ const searchMetadata = async (
   const scoredCandidates = Array.from(uniqueCandidates.values())
     .map((candidate) => ({
       candidate,
-      confidence: scoreCandidate(title, candidate),
+      confidence: scoreCandidate(title, candidate, year),
     }))
     .sort((left, right) => right.confidence - left.confidence)
 
@@ -143,6 +145,7 @@ const searchMetadata = async (
 
   logger.info('searchMetadata scored candidates', {
     normalizedTitle,
+    year,
     searchQueries,
     scoredCandidates: scoredCandidates.slice(0, 5).map((entry) => ({
       tmdbId: entry.candidate.id,
