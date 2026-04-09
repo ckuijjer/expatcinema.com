@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
@@ -22,6 +23,7 @@ type WpJsonMovie = {
   title: { rendered: string }
   link: string
   movie_sync_id: number
+  release_year?: string
   language_subtitles: string
   status_other: string
 }
@@ -86,6 +88,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
           return shows.map((show) => {
             return {
               title: cleanTitle(movie),
+              year: parseFkFeedYear(movie.release_year),
               url: movie.link,
               cinema: 'Cinecitta',
               date: extractDate(show.start),
