@@ -11,6 +11,7 @@ import getMetadata from '../metadata'
 import { logger } from '../powertools'
 import { Screening } from '../types'
 import bioscopenleiden from './bioscopenleiden'
+import chasse from './chasse'
 import cinecenter from './cinecenter'
 import cinecitta from './cinecitta'
 import cinemadevlugt from './cinemadevlugt'
@@ -53,6 +54,7 @@ import {
 
 const SCRAPERS = {
   bioscopenleiden,
+  chasse,
   cinecenter,
   cinecitta,
   cinemadevlugt,

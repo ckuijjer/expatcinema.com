@@ -28,6 +28,12 @@
     "logo": "filmhuisdenhaag.png"
   },
   {
+    "name": "Chassé Cinema",
+    "slug": "chasse-cinema",
+    "city": "breda",
+    "url": "https://www.chasse.nl"
+  },
+  {
     "name": "Filmtheater De Witt",
     "slug": "filmtheater-de-witt",
     "city": "dordrecht",
