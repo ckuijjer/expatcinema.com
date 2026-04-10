@@ -81,6 +81,12 @@
     "logo": "eye.png"
   },
   {
+    "name": "FC Hyena",
+    "slug": "fc-hyena",
+    "city": "amsterdam",
+    "url": "https://fchyena.nl/"
+  },
+  {
     "name": "Kriterion",
     "slug": "kriterion",
     "city": "amsterdam",
