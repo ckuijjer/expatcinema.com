@@ -30,6 +30,7 @@ import florafilmtheater from './florafilmtheater'
 import focusarnhem from './focusarnhem'
 import forumgroningen from './forumgroningen'
 import hartlooper from './hartlooper'
+import heerenstraattheater from './heerenstraattheater'
 import hetdocumentairepaviljoen from './hetdocumentairepaviljoen'
 import ketelhuis from './ketelhuis'
 import kinorotterdam from './kinorotterdam'
@@ -74,6 +75,7 @@ const SCRAPERS = {
   focusarnhem, // uses puppeteer
   forumgroningen,
   hartlooper,
+  heerenstraattheater,
   hetdocumentairepaviljoen,
   ketelhuis, // uses puppeteer
   kinorotterdam,
