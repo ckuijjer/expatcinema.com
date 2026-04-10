@@ -46,6 +46,7 @@ import melkweg from './melkweg'
 import natlab from './natlab'
 import rialto from './rialto'
 import schuur from './schuur'
+import sliekerfilm from './sliekerfilm'
 import slachtstraat from './slachtstraat'
 import springhaver from './springhaver'
 import studiok from './studiok'
@@ -93,6 +94,7 @@ const SCRAPERS = {
   natlab,
   rialto,
   schuur, // uses puppeteer
+  sliekerfilm,
   slachtstraat,
   springhaver,
   studiok,
