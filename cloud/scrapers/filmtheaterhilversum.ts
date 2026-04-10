@@ -55,11 +55,6 @@ const cleanTitle = (title: string) =>
       .replace(/\s+-\s+Laatste kans$/i, ''),
   )
 
-const isOtherSpecialProgramme = (title: string) =>
-  /\b(?:movies that matter on tour|rainbow night|royal opera|mamoru hosoda retrospectief|klassieker|ontbijt\s*&\s*film|senver|pannenkoeken\s*&\s*pyjamafilm)\b/i.test(
-    title,
-  )
-
 const extractTime = (time: string) => {
   const matchedTime = time.match(/\b\d{1,2}:\d{2}\b/)?.[0]
 
@@ -150,7 +145,7 @@ const extractFromMoviePage = async ({
 
   logger.info('movie page', { title, url, detailPage })
 
-  if (isOtherSpecialProgramme(title) || !hasEnglishSubtitles(detailPage)) {
+  if (!hasEnglishSubtitles(detailPage)) {
     return []
   }
 
