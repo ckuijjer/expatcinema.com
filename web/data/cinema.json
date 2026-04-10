@@ -110,6 +110,12 @@
     "logo": "slachtstraat.png"
   },
   {
+    "name": "De Sien",
+    "slug": "de-sien",
+    "city": "utrecht",
+    "url": "https://desienfilm.nl"
+  },
+  {
     "name": "Rialto De Pijp",
     "slug": "rialto-de-pijp",
     "city": "amsterdam",

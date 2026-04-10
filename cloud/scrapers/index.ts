@@ -17,6 +17,7 @@ import cinecitta from './cinecitta'
 import cinemadevlugt from './cinemadevlugt'
 import cinerama from './cinerama'
 import concordia from './concordia'
+import desien from './desien'
 import dewittdordrecht from './dewittdordrecht'
 import defilmhallen from './defilmhallen'
 import deuitkijk from './deuitkijk'
@@ -60,6 +61,7 @@ const SCRAPERS = {
   cinemadevlugt,
   cinerama,
   concordia,
+  desien,
   dewittdordrecht,
   defilmhallen,
   deuitkijk,
