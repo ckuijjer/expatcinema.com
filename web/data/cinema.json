@@ -28,6 +28,12 @@
     "logo": "filmhuisdenhaag.png"
   },
   {
+    "name": "Chassé Cinema",
+    "slug": "chasse-cinema",
+    "city": "breda",
+    "url": "https://www.chasse.nl"
+  },
+  {
     "name": "Kino",
     "slug": "kino",
     "city": "rotterdam",
