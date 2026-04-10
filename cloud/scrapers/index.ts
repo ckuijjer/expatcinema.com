@@ -25,6 +25,7 @@ import dokhuis from './dokhuis'
 import eyefilm from './eyefilm'
 import fchyena from './fchyena'
 import filmhuisdenhaag from './filmhuisdenhaag'
+import filmtheaterhilversum from './filmtheaterhilversum'
 import filmhuislumen from './filmhuislumen'
 import filmkoepel from './filmkoepel'
 import florafilmtheater from './florafilmtheater'
@@ -71,6 +72,7 @@ const SCRAPERS = {
   eyefilm,
   fchyena,
   filmhuisdenhaag,
+  filmtheaterhilversum,
   filmhuislumen,
   filmkoepel,
   florafilmtheater, // uses puppeteer
