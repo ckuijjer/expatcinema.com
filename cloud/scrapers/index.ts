@@ -13,6 +13,7 @@ import { Screening } from '../types'
 import bioscopenleiden from './bioscopenleiden'
 import cinecenter from './cinecenter'
 import cinecitta from './cinecitta'
+import cinemadevlugt from './cinemadevlugt'
 import cinerama from './cinerama'
 import concordia from './concordia'
 import defilmhallen from './defilmhallen'
@@ -53,6 +54,7 @@ const SCRAPERS = {
   bioscopenleiden,
   cinecenter,
   cinecitta,
+  cinemadevlugt,
   cinerama,
   concordia,
   defilmhallen,

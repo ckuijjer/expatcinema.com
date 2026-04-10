@@ -119,6 +119,12 @@
     "logo": "cinecenter.png"
   },
   {
+    "name": "Cinema de Vlugt",
+    "slug": "cinema-de-vlugt",
+    "city": "amsterdam",
+    "url": "https://www.cinemadevlugt.nl/"
+  },
+  {
     "name": "Forum Groningen",
     "slug": "forum-groningen",
     "city": "groningen",
