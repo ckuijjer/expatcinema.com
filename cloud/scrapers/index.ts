@@ -11,12 +11,14 @@ import getMetadata from '../metadata'
 import { logger } from '../powertools'
 import { Screening } from '../types'
 import bioscopenleiden from './bioscopenleiden'
+import chasse from './chasse'
 import cinecenter from './cinecenter'
 import cinecitta from './cinecitta'
 import cinemadevlugt from './cinemadevlugt'
 import cinerama from './cinerama'
 import concordia from './concordia'
 import desien from './desien'
+import dewittdordrecht from './dewittdordrecht'
 import defilmhallen from './defilmhallen'
 import deuitkijk from './deuitkijk'
 import dokhuis from './dokhuis'
@@ -53,12 +55,14 @@ import {
 
 const SCRAPERS = {
   bioscopenleiden,
+  chasse,
   cinecenter,
   cinecitta,
   cinemadevlugt,
   cinerama,
   concordia,
   desien,
+  dewittdordrecht,
   defilmhallen,
   deuitkijk,
   dokhuis,
