@@ -150,6 +150,12 @@
     "logo": "forumgroningen.png"
   },
   {
+    "name": "Heerenstraat Theater",
+    "slug": "heerenstraat-theater",
+    "city": "wageningen",
+    "url": "https://www.heerenstraattheater.nl/"
+  },
+  {
     "name": "Filmhuis Lumen",
     "slug": "filmhuis-lumen",
     "city": "delft",

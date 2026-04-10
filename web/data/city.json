@@ -14,5 +14,6 @@
   { "name": "Leiden", "slug": "leiden" },
   { "name": "Maastricht", "slug": "maastricht" },
   { "name": "Nijmegen", "slug": "nijmegen" },
-  { "name": "Tilburg", "slug": "tilburg" }
+  { "name": "Tilburg", "slug": "tilburg" },
+  { "name": "Wageningen", "slug": "wageningen" }
 ]
