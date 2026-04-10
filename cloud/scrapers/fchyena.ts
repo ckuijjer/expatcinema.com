@@ -51,6 +51,18 @@ const hasEnglishSubtitles = ({ credits }: DetailPageResult) => {
   )
 }
 
+const parseReleaseYear = ({ credits }: DetailPageResult) => {
+  const creditIndex = (credits ?? []).findIndex((credit) => /^Jaar$/i.test(credit))
+
+  if (creditIndex === -1) {
+    return undefined
+  }
+
+  const year = Number(credits[creditIndex + 1])
+
+  return Number.isInteger(year) ? year : undefined
+}
+
 const parseScreeningDate = (date: string) => {
   const parsed = DateTime.fromFormat(date, 'ccc d LLLL yyyy, HH:mm', {
     locale: 'nl',
@@ -68,7 +80,8 @@ const extractFromTicketPage = async ({
   title,
   url,
   productionId,
-}: MainPageResult): Promise<Screening[]> => {
+  year,
+}: MainPageResult & { year?: number }): Promise<Screening[]> => {
   if (!productionId || productionId === '0') {
     return []
   }
@@ -92,6 +105,7 @@ const extractFromTicketPage = async ({
 
   return screenings.map(({ date }) => ({
     title,
+    year,
     url,
     cinema: 'FC Hyena',
     date: parseScreeningDate(date),
@@ -111,7 +125,10 @@ const extractFromMoviePage = async (
     return []
   }
 
-  return extractFromTicketPage(movie)
+  return extractFromTicketPage({
+    ...movie,
+    year: parseReleaseYear(detailPage),
+  })
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
