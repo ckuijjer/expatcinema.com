@@ -33,6 +33,7 @@ type MainPageResult = {
 
 type MoviePageResult = {
   timestamps: string[]
+  details: string[]
 }
 
 const cleanTitle = (title: string) =>
@@ -50,19 +51,37 @@ const parseTimestamp = (timestamp: string) => {
   return parsed.toJSDate()
 }
 
+const parseReleaseYear = (details: string[]) => {
+  const detailIndex = (details ?? []).findIndex((detail) =>
+    /^Productiejaar$/i.test(detail),
+  )
+
+  if (detailIndex === -1) {
+    return undefined
+  }
+
+  const year = Number(details[detailIndex + 1])
+
+  return Number.isInteger(year) ? year : undefined
+}
+
 const extractFromMoviePage = async ({
   title,
   url,
 }: MainPageResult): Promise<Screening[]> => {
   const movie: MoviePageResult = await xray(url, {
     timestamps: ['a.ticketstrigger@data-timestamp'],
+    details: ['.detailinfo p | normalizeWhitespace | trim'],
   })
 
   logger.info('movie page', { url, movie })
 
+  const year = parseReleaseYear(movie.details)
+
   return makeScreeningsUniqueAndSorted(
     (movie.timestamps ?? []).map((timestamp) => ({
       title: cleanTitle(title),
+      year,
       url,
       cinema: 'Heerenstraat Theater',
       date: parseTimestamp(timestamp),
