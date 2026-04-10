@@ -17,7 +17,7 @@ const logger = parentLogger.createChild({
 })
 
 const CURRENT_MOVIES_URL =
-  'https://sliekerfilm.nl/wp-json/wp/v2/wp_theatre_prod?per_page=30&_fields=id,link,title'
+  'https://sliekerfilm.nl/wp-json/wp/v2/wp_theatre_prod?per_page=100&_fields=id,link,title'
 
 const MOVIE_API_URL = (id: number) =>
   `https://sliekerfilm.nl/wp-json/lvc/v1/movie/${id}`
