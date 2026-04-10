@@ -28,6 +28,12 @@
     "logo": "filmhuisdenhaag.png"
   },
   {
+    "name": "Filmtheater Hilversum",
+    "slug": "filmtheater-hilversum",
+    "city": "hilversum",
+    "url": "https://filmtheaterhilversum.nl/"
+  },
+  {
     "name": "Chassé Cinema",
     "slug": "chasse-cinema",
     "city": "breda",
