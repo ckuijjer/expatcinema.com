@@ -28,6 +28,12 @@
     "logo": "filmhuisdenhaag.png"
   },
   {
+    "name": "Filmtheater De Witt",
+    "slug": "filmtheater-de-witt",
+    "city": "dordrecht",
+    "url": "https://www.dewittdordrecht.nl/filmtheater/"
+  },
+  {
     "name": "Kino",
     "slug": "kino",
     "city": "rotterdam",
