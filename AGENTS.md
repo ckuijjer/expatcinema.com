@@ -215,8 +215,14 @@ After merging cloud changes that affect scraper output:
 
 1. wait for the `Cloud` workflow on `main` to succeed
 2. run `cd cloud && pnpm run scrapers:prod`
-3. trigger `Web`
-4. validate production `screenings.json` in S3
+3. validate the affected cinema or scraper output in production `screenings.json` in S3 before rebuilding the site
+4. trigger `Web`
+5. validate the refreshed site data after the `Web` workflow finishes
+
+Notes:
+
+- `pnpm run scrapers:prod` depends on a valid AWS session for the `casper` profile. If it fails with an expired-session error, reauthenticate with `aws login` before retrying.
+- Prefer running deployment steps from local `main` that is aligned with `origin/main` or directly from `origin/main`, rather than from an older feature branch checkout.
 
 ## Testing and Validation
 
