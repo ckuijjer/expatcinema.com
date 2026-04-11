@@ -358,7 +358,7 @@ export const scrapers = async () => {
         Object.entries(results).map(([name, data]) => [name, data.length]),
       ),
       all: allRawScreenings.length,
-      allWithMetadata: allWithResolvedMovies.filter((screening) =>
+      allWithMovieId: allWithResolvedMovies.filter((screening) =>
         Boolean((screening as Screening & { movieId?: string }).movieId),
       ).length,
     }

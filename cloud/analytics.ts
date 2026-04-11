@@ -13,6 +13,7 @@ type AnalyticsRow = {
   type: string
   createdAt: string
   all?: number
+  allWithMovieId?: number
   allWithMetadata?: number
 } & Record<string, unknown>
 
@@ -34,51 +35,49 @@ const getAllScreeningsFromS3 = async (
   return JSON.parse(body ?? '[]')
 }
 
-const getFallbackAllCount = (item: AnalyticsRow) =>
-  Object.entries(item)
-    .filter(
-      ([key, value]) =>
-        !['type', 'createdAt', 'all', 'allWithMetadata'].includes(key) &&
-        typeof value === 'number',
-    )
-    .reduce((sum, [, value]) => sum + Number(value), 0)
-
 const withAggregateCounts = async (
   item: AnalyticsRow,
 ): Promise<AnalyticsRow> => {
-  const existingAll =
-    typeof item.all === 'number' ? Number(item.all) : undefined
+  const existingAllWithMovieId =
+    typeof item.allWithMovieId === 'number'
+      ? Number(item.allWithMovieId)
+      : undefined
   const existingAllWithMetadata =
     typeof item.allWithMetadata === 'number'
       ? Number(item.allWithMetadata)
       : undefined
+  const existingAll =
+    typeof item.all === 'number' ? Number(item.all) : undefined
+
+  if (existingAll !== undefined && existingAllWithMovieId !== undefined) {
+    return {
+      ...item,
+      all: existingAll,
+      allWithMovieId: existingAllWithMovieId,
+    }
+  }
 
   if (existingAll !== undefined && existingAllWithMetadata !== undefined) {
     return {
       ...item,
       all: existingAll,
-      allWithMetadata: existingAllWithMetadata,
+      allWithMovieId: existingAllWithMetadata,
     }
   }
-
-  const fallbackAll = existingAll ?? getFallbackAllCount(item)
 
   try {
     const screenings = await getAllScreeningsFromS3(String(item.createdAt))
 
     return {
       ...item,
-      all: existingAll ?? screenings.length ?? fallbackAll,
-      allWithMetadata:
+      all: existingAll,
+      allWithMovieId:
+        existingAllWithMovieId ??
         existingAllWithMetadata ??
         screenings.filter((screening) => Boolean(screening.movieId)).length,
     }
   } catch {
-    return {
-      ...item,
-      all: fallbackAll,
-      allWithMetadata: existingAllWithMetadata ?? fallbackAll,
-    }
+    return item
   }
 }
 

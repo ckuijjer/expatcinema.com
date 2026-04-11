@@ -52,7 +52,7 @@ type AnalyticsItem = {
   scraper: string
   createdAt: string
   count: number
-  allWithMetadata?: number
+  allWithMovieId?: number
 }
 
 type KeyWithScraperAndCreatedAt = {
@@ -82,7 +82,7 @@ const fillAnalytics = async (_input = {}) => {
           key,
           ...rest,
           count: object.length,
-          allWithMetadata: object.filter((item: { movieId?: string }) =>
+          allWithMovieId: object.filter((item: { movieId?: string }) =>
             Boolean(item.movieId),
           ).length,
         }
@@ -108,7 +108,7 @@ const fillAnalytics = async (_input = {}) => {
 
     if (cur.scraper === 'all') {
       acc[cur.createdAt].all = cur.count
-      acc[cur.createdAt].allWithMetadata = cur.allWithMetadata ?? cur.count
+      acc[cur.createdAt].allWithMovieId = cur.allWithMovieId ?? cur.count
     } else {
       acc[cur.createdAt][cur.scraper] = cur.count
     }

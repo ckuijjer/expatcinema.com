@@ -88,7 +88,7 @@ const movieMetadataPlayground = async () => {
       concurrency: 5,
     })
 
-    const allWithMetadata = screenings.map((screening) => {
+    const allWithMovieId = screenings.map((screening) => {
       const metadata = uniqueTitlesAndMetadata.find(
         ({ query }) => query === normalizeMovieTitleForLookup(screening.title),
       )
@@ -109,7 +109,7 @@ const movieMetadataPlayground = async () => {
       // searchImage,
       uniqueTitles,
       uniqueTitlesAndMetadata,
-      allWithMetadata,
+      allWithMovieId,
     }
   } catch (error) {
     console.error(error)
