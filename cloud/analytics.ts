@@ -70,7 +70,7 @@ const withAggregateCounts = async (
 
     return {
       ...item,
-      all: existingAll,
+      ...(existingAll !== undefined ? { all: existingAll } : {}),
       allWithMovieId:
         existingAllWithMovieId ??
         existingAllWithMetadata ??
