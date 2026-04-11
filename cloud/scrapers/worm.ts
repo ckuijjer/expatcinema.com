@@ -7,6 +7,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { runIfMain } from './utils/runIfMain'
+import { titleCase } from './utils/titleCase'
 import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
@@ -129,7 +130,7 @@ const parseTitleAndYear = (page: ProductionPage) => {
     titleFromMetadata || decode(page.title).replace(/\s+/g, ' ').trim()
 
   return {
-    title,
+    title: titleCase(title),
     year: metadataParagraphs[0].year,
   }
 }
