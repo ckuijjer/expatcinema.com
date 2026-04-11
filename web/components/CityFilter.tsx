@@ -6,7 +6,6 @@ import { useParams } from 'next/navigation'
 
 import { css, cx } from 'styled-system/css'
 
-import cities from '../data/city.json'
 import { useSearch } from '../utils/hooks'
 import { ActiveLink } from './ActiveLink'
 
@@ -26,19 +25,15 @@ export const Container = React.forwardRef<
 ))
 Container.displayName = 'Container'
 
-export const CityFilter = () => {
+export type FilterLink = {
+  text: string
+  slug: string | null
+}
+
+export const CityFilter = ({ links }: { links: FilterLink[] }) => {
   const { searchQuery } = useSearch()
   const { city } = useParams<{ city?: string }>()
   const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
-
-  const links = [
-    { text: 'All', slug: null, href: `/${searchQuery}` },
-    ...cities.map(({ name, slug }) => ({
-      text: name,
-      slug,
-      href: `/city/${slug}${searchQuery}`,
-    })),
-  ]
 
   useEffect(() => {
     if (!city) return
@@ -60,14 +55,16 @@ export const CityFilter = () => {
         gap: '12px',
       })}
     >
-      {links.map(({ text, slug, href }) => (
+      {links.map(({ text, slug }) => (
         <ActiveLink
           ref={(el) => {
             if (slug === null) return
             if (el) linkRefs.current.set(slug, el)
             else linkRefs.current.delete(slug)
           }}
-          href={href}
+          href={
+            slug === null ? `/${searchQuery}` : `/city/${slug}${searchQuery}`
+          }
           key={text}
           matchPrefix
         >
