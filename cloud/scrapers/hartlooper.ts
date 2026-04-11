@@ -40,6 +40,9 @@ const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
   )
 }
 
+const isLouisHartlooperComplex = (time: FkFeedItem['times'][0]) =>
+  time.location !== 'DOM'
+
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const movies = Object.values<FkFeedItem>(
     await got('https://hartlooper.nl/fk-feed/agenda').json(),
@@ -50,16 +53,15 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings: Screening[][] = movies
     .map((movie) => {
       return movie.times
-        ?.filter(() => hasEnglishSubtitlesLabel(movie))
+        ?.filter(
+          (time) => hasEnglishSubtitlesLabel(movie) && isLouisHartlooperComplex(time),
+        )
         .map((time) => {
           return {
             title: cleanTitle(decode(movie.title)),
             year: parseFkFeedYear(movie.year),
             url: movie.permalink,
-            cinema:
-              time.location === 'DOM'
-                ? 'DOM Cinema Bar'
-                : 'Louis Hartlooper Complex',
+            cinema: 'Louis Hartlooper Complex',
             date: extractDate(time.program_start),
           }
         })

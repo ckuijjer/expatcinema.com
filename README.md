@@ -22,6 +22,10 @@ pnpm run deploy # deploy to dev
 
 ### Scrapers
 
+For a generated inventory of scrapers, sources, addresses, and map links, see:
+
+- [`SCRAPERS_OVERVIEW.md`](./SCRAPERS_OVERVIEW.md)
+
 #### Scheduled Prod
 
 The scrapers run on a daily schedule defined in the cdk stack in `cloud/lib/backend-stack.ts`.
