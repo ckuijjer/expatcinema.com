@@ -27,7 +27,16 @@ const textLinkStyle = css({
   color: 'var(--secondary-color)',
 })
 
-const citySlugs = [...new Set(cinemas.map((cinema) => cinema.city))].sort()
+const compareAlphabetically = (left: string, right: string) =>
+  left.localeCompare(right, undefined, { sensitivity: 'base' })
+
+const citySlugs = [...new Set(cinemas.map((cinema) => cinema.city))].sort(
+  (left, right) =>
+    compareAlphabetically(
+      getCity(left)?.name ?? left,
+      getCity(right)?.name ?? right,
+    ),
+)
 
 export const About = () => {
   return (
@@ -60,7 +69,7 @@ export const About = () => {
             const href = `/city/${city}`
             const cinemasInCity = cinemas
               .filter((cinema) => cinema.city === city)
-              .sort((a, b) => a.name.localeCompare(b.name))
+              .sort((a, b) => compareAlphabetically(a.name, b.name))
 
             return (
               <>
