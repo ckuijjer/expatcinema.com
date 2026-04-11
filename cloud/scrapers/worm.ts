@@ -16,7 +16,7 @@ const logger = parentLogger.createChild({
 })
 
 const BASE_URL = 'https://worm.org'
-const SHOW_TIME = '21:30'
+const SEARCH_TERM = 'subtitle'
 
 const xray = Xray({
   filters: {
@@ -35,90 +35,153 @@ type SearchResult = {
   subtype: string
 }
 
-type ProgrammeEntry = {
-  text: string
-  url: string
+type ProductionPage = {
+  title: string
+  programme: string
+  dateText: string
+  startText: string
+  detailParagraphs: string[]
 }
 
-const parseProgrammeEntry = (entry: ProgrammeEntry, year: number): Screening => {
-  const normalized = decode(entry.text)
-    .replace(/[–—]/g, '-')
-    .replace(/\s+/g, ' ')
-    .trim()
+const parseScreeningDate = (dateText: string, startText: string) => {
+  const normalizedDateText = decode(dateText).replace(/\s+/g, ' ').trim()
+  const normalizedStartText = decode(startText).replace(/\s+/g, ' ').trim()
 
-  const match = normalized.match(
-    /^(?<month>[A-Za-z]+)\s+(?<day>\d+)\s*-\s*(?<title>.+?)\s+\(/,
+  const dateMatch = normalizedDateText.match(
+    /(?<weekday>Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+(?<day>\d{1,2})\s+(?<month>[A-Za-z]+)\s+(?<year>\d{4})/i,
   )
+  const timeMatch = normalizedStartText.match(/(?<time>\d{1,2}:\d{2})/)
 
-  if (!match?.groups) {
-    throw new Error(`Could not parse WORM programme entry: ${normalized}`)
+  if (!dateMatch?.groups || !timeMatch?.groups?.time) {
+    throw new Error(
+      `Could not parse WORM screening date: ${normalizedDateText} ${normalizedStartText}`,
+    )
   }
 
   const parsedDate = DateTime.fromFormat(
-    `${match.groups.month} ${match.groups.day} ${year} ${SHOW_TIME}`,
-    'LLLL d yyyy HH:mm',
+    `${dateMatch.groups.weekday} ${dateMatch.groups.day} ${dateMatch.groups.month} ${dateMatch.groups.year} ${timeMatch.groups.time}`,
+    'ccc d LLLL yyyy HH:mm',
     { zone: 'Europe/Amsterdam' },
   )
 
   if (!parsedDate.isValid) {
-    throw new Error(`Could not parse WORM date: ${normalized}`)
+    throw new Error(
+      `Could not parse WORM date: ${normalizedDateText} ${normalizedStartText}`,
+    )
   }
 
-  return {
-    title: match.groups.title.trim(),
-    url: new URL(entry.url, BASE_URL).toString(),
-    cinema: 'WORM',
-    date: parsedDate.toJSDate(),
-  }
+  return parsedDate.toJSDate()
 }
 
-const getProgrammePageUrl = async (year: number): Promise<string | null> => {
+const getProductionResults = async (): Promise<SearchResult[]> => {
   const results = await got
     .get(`${BASE_URL}/wp-json/wp/v2/search`, {
       searchParams: {
-        search: `filmtuin ${year}`,
+        search: SEARCH_TERM,
+        per_page: 100,
       },
     })
     .json<SearchResult[]>()
 
-  logger.info('search results', { year, results })
-
-  const programmePage = results.find(
+  const productions = results.filter(
     ({ subtype, url }) =>
-      subtype === 'post' && url.toLowerCase().includes(`filmtuin-${year}`),
+      subtype === 'wp_theatre_prod' && url.startsWith(`${BASE_URL}/production/`),
   )
 
-  return programmePage?.url ?? null
+  logger.info('search results', {
+    searchTerm: SEARCH_TERM,
+    count: productions.length,
+    productions,
+  })
+
+  return productions
 }
 
-const extractFromMainPage = async (): Promise<Screening[]> => {
-  const year = DateTime.now().year
-  const programmePageUrl = await getProgrammePageUrl(year)
+const hasEnglishSubtitles = (paragraphs: string[]) =>
+  paragraphs.some((paragraph) =>
+    paragraph.toLowerCase().includes('english subtitles'),
+  )
 
-  if (!programmePageUrl) {
-    logger.info('no current filmtuin page found', { year })
+const parseMetadataParagraph = (paragraph: string) => {
+  const normalized = decode(paragraph).replace(/\s+/g, ' ').trim()
+  const yearMatch = normalized.match(/\b(?<year>\d{4})\b/)
+
+  return {
+    normalized,
+    year: yearMatch?.groups?.year ? Number(yearMatch.groups.year) : undefined,
+  }
+}
+
+const parseTitleAndYear = (page: ProductionPage) => {
+  const metadataParagraphs = page.detailParagraphs
+    .map(parseMetadataParagraph)
+    .filter(({ normalized }) => normalized.toLowerCase().includes('english subtitles'))
+
+  if (metadataParagraphs.length !== 1) {
+    return null
+  }
+
+  const titleFromMetadata = metadataParagraphs[0].normalized.match(
+    /(?<title>.+?)(?:\s*by\s+|\s*Directed by\s+|\s*Dir:\s*).+?\b\d{4}\b/i,
+  )?.groups?.title
+
+  const title =
+    titleFromMetadata || decode(page.title).replace(/\s+/g, ' ').trim()
+
+  return {
+    title,
+    year: metadataParagraphs[0].year,
+  }
+}
+
+const extractFromProductionPage = async ({
+  title,
+  url,
+}: SearchResult): Promise<Screening[]> => {
+  const page: ProductionPage = await xray(url, {
+    title: 'h1 | normalizeWhitespace | trim',
+    programme: '.agenda-single-meta__subtitle | normalizeWhitespace | trim',
+    dateText: '.agenda-single-meta__date | normalizeWhitespace | trim',
+    startText: '.agenda-single-meta__start | normalizeWhitespace | trim',
+    detailParagraphs: xray('.single-container__content__other p', [
+      ' | normalizeWhitespace | trim',
+    ]),
+  })
+
+  logger.info('production page', { title, url, page })
+
+  if (!hasEnglishSubtitles(page.detailParagraphs)) {
     return []
   }
 
-  const entries: ProgrammeEntry[] = await xray(
-    programmePageUrl,
-    '.fc__text a[href*="/production/filmtuin-"]',
-    [
-      {
-        text: 'text() | normalizeWhitespace | trim',
-        url: '@href',
-      },
-    ],
-  )
+  const titleAndYear = parseTitleAndYear(page)
 
-  logger.info('programme page', { programmePageUrl, entries })
+  if (!titleAndYear) {
+    logger.info('skipping ambiguous multi-film production', { title, url, page })
+    return []
+  }
 
-  const today = DateTime.now().startOf('day')
+  return [
+    {
+      title: titleAndYear.title,
+      year: titleAndYear.year,
+      url: new URL(url, BASE_URL).toString(),
+      cinema: 'WORM',
+      date: parseScreeningDate(page.dateText, page.startText),
+    },
+  ]
+}
+
+const extractFromMainPage = async (): Promise<Screening[]> => {
+  const productions = await getProductionResults()
+
+  const now = DateTime.now().minus({ hours: 1 }).toJSDate()
+  const screenings = (
+    await Promise.all(productions.map(extractFromProductionPage))
+  ).flat()
 
   return makeScreeningsUniqueAndSorted(
-    entries
-      .map((entry) => parseProgrammeEntry(entry, year))
-      .filter(({ date }) => DateTime.fromJSDate(date) >= today),
+    screenings.filter(({ date }) => date >= now),
   )
 }
 
