@@ -171,6 +171,7 @@ export class BackendStack extends cdk.Stack {
         entry: 'analytics.ts',
         environment: {
           ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
+          PRIVATE_BUCKET: scrapersOutputBucketName,
           DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
         },
       },
@@ -207,6 +208,7 @@ export class BackendStack extends cdk.Stack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     })
+    scrapersOutputBucket.grantRead(analyticsLambda)
     scrapersOutputBucket.grantRead(playgroundLambda)
     scrapersOutputBucket.grantRead(fillAnalyticsLambda)
     scrapersOutputBucket.grantReadWrite(scrapersLambda)

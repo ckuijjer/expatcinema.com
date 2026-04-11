@@ -353,9 +353,15 @@ export const scrapers = async () => {
     await writeToPublicFile('movies.json')(movies)
     await writeToPublicFile('title-matches.json')(titleMatches)
 
-    const countPerScraper = Object.fromEntries(
-      Object.entries(results).map(([name, data]) => [name, data.length]),
-    )
+    const countPerScraper = {
+      ...Object.fromEntries(
+        Object.entries(results).map(([name, data]) => [name, data.length]),
+      ),
+      all: allRawScreenings.length,
+      allWithMetadata: allWithResolvedMovies.filter((screening) =>
+        Boolean((screening as Screening & { movieId?: string }).movieId),
+      ).length,
+    }
 
     logger.warn('writing to analytics json', { countPerScraper })
     await writeToAnalytics('count')(countPerScraper)

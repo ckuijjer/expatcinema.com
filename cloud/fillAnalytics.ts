@@ -29,7 +29,9 @@ const getAllKeysFromS3 = async () => {
 
 const addScraperAndCreatedAt = (keys: (string | undefined)[]) => {
   return keys.map((key) => {
-    const matches = /(?<scraper>.*)\/(?<createdAt>.*Z).*\.json/.exec(key)
+    const matches = /^(?<scraper>[^/]+)\/(?<createdAt>.*Z)\.json$/.exec(
+      key ?? '',
+    )
     return { key, ...(matches?.groups ?? {}) }
   })
 }
@@ -45,15 +47,47 @@ const writeToAnalytics = async (data: Record<string, unknown>) => {
   return await documentClient.send(putCommand)
 }
 
-const fillAnalytics = async ({ event, context } = {}) => {
+type AnalyticsItem = {
+  key: string
+  scraper: string
+  createdAt: string
+  count: number
+  allWithMetadata?: number
+}
+
+type KeyWithScraperAndCreatedAt = {
+  key?: string
+  scraper?: string
+  createdAt?: string
+}
+
+const fillAnalytics = async (_input = {}) => {
   const keys = await getAllKeysFromS3()
 
-  const keyAndScraperAndCreatedAt = addScraperAndCreatedAt(keys)
+  const keyAndScraperAndCreatedAt = addScraperAndCreatedAt(
+    keys,
+  ) as KeyWithScraperAndCreatedAt[]
 
   const keyAndScraperAndCreatedAtAndCount = await pMap(
     keyAndScraperAndCreatedAt,
     async ({ key, ...rest }) => {
+      if (!key || !rest.scraper || !rest.createdAt) {
+        return null
+      }
+
       const object = await getObjectFromS3(key)
+
+      if (rest.scraper === 'all') {
+        return {
+          key,
+          ...rest,
+          count: object.length,
+          allWithMetadata: object.filter((item: { movieId?: string }) =>
+            Boolean(item.movieId),
+          ).length,
+        }
+      }
+
       const count = object.length
 
       return { key, count, ...rest }
@@ -61,17 +95,26 @@ const fillAnalytics = async ({ event, context } = {}) => {
     { concurrency: 100 },
   )
 
-  const byCreatedAtObject = keyAndScraperAndCreatedAtAndCount.reduce(
-    (acc, cur) => {
-      if (!acc[cur.createdAt]) {
-        acc[cur.createdAt] = {}
-      }
-
-      acc[cur.createdAt][cur.scraper] = cur.count
-      return acc
-    },
-    {},
+  const analyticsItems = keyAndScraperAndCreatedAtAndCount.filter(
+    (item): item is AnalyticsItem => item !== null,
   )
+
+  const byCreatedAtObject = analyticsItems.reduce<
+    Record<string, Record<string, number>>
+  >((acc, cur) => {
+    if (!acc[cur.createdAt]) {
+      acc[cur.createdAt] = {}
+    }
+
+    if (cur.scraper === 'all') {
+      acc[cur.createdAt].all = cur.count
+      acc[cur.createdAt].allWithMetadata = cur.allWithMetadata ?? cur.count
+    } else {
+      acc[cur.createdAt][cur.scraper] = cur.count
+    }
+
+    return acc
+  }, {})
 
   const byCreatedAtArray = Object.entries(byCreatedAtObject).map(
     ([createdAt, data]) => ({ createdAt, ...data }),
@@ -80,15 +123,15 @@ const fillAnalytics = async ({ event, context } = {}) => {
   await pMap(byCreatedAtArray, writeToAnalytics, { concurrency: 100 })
 }
 
-const getObjectFromS3 = async (key) => {
+const getObjectFromS3 = async (key: string) => {
   const command = new GetObjectCommand({
     Bucket: PRIVATE_BUCKET,
     Key: key,
   })
 
   const data = await s3Client.send(command)
-  const body = data.Body.toString()
-  const json = JSON.parse(body)
+  const body = await data.Body?.transformToString()
+  const json = JSON.parse(body ?? '[]')
 
   return json
 }
