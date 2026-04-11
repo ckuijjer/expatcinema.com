@@ -258,6 +258,12 @@
     "logo": "cinerama.png"
   },
   {
+    "name": "WORM",
+    "slug": "worm",
+    "city": "rotterdam",
+    "url": "https://worm.org/"
+  },
+  {
     "name": "Melkweg",
     "slug": "melkweg",
     "city": "amsterdam",

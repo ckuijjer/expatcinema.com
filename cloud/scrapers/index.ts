@@ -51,6 +51,7 @@ import slachtstraat from './slachtstraat'
 import springhaver from './springhaver'
 import studiok from './studiok'
 import themovies from './themovies'
+import worm from './worm'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import {
   getMetadataLookupKey,
@@ -99,6 +100,7 @@ const SCRAPERS = {
   springhaver,
   studiok,
   themovies,
+  worm,
 }
 
 // Set the default timezone to Europe/Amsterdam, otherwise AWS Lambda will scrape as UTC and running it locally
