@@ -4,8 +4,10 @@ import Xray from 'x-ray'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import xRayPuppeteer from '../xRayPuppeteer'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { guessYear } from './utils/guessYear'
 import { monthToNumber } from './utils/monthToNumber'
+import { removeYearSuffix } from './utils/removeYearSuffix'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
@@ -19,7 +21,13 @@ const logger = parentLogger.createChild({
 const trim = (value) => (typeof value === 'string' ? value.trim() : value)
 
 const cleanTitle = (value) =>
-  typeof value === 'string' ? titleCase(value.replace(/\(.*\)$/gi, '')) : value
+  typeof value === 'string'
+    ? titleCase(
+        // Flora appends both an `- En Subs` subtitle marker and, in some cases,
+        // a trailing release year suffix like `(1934)` to the public title.
+        removeYearSuffix(value.replace(/\s*-\s*en subs$/i, '').trim()).trim(),
+      )
+    : value
 
 const normalizeWhitespace = (value) =>
   typeof value === 'string' ? value.replace(/\s+/g, ' ') : value
@@ -41,6 +49,7 @@ const xray = Xray({
   .throttle(10, 300)
 
 type XRayFromMainPage = {
+  rawTitle: string
   title: string
   url: string
   metadata: string[]
@@ -82,6 +91,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
     const movies: XRayFromMainPage[] = await xray(url, '.flex.flex-col.gap-8', [
       {
+        rawTitle: 'a h2 | trim',
         title: 'a h2 | trim | cleanTitle',
         url: 'a@href',
         metadata: ['a ul li | normalizeWhitespace | trim'],
@@ -112,6 +122,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
           return {
             title: movie.title,
+            year: extractYearFromTitle(movie.rawTitle),
             url: movie.url,
             cinema: 'Flora Filmtheater',
             date: DateTime.fromObject({
