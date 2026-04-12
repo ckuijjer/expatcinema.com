@@ -5,8 +5,10 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { runIfMain } from './utils/runIfMain'
+import { removeYearSuffix } from './utils/removeYearSuffix'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -52,7 +54,8 @@ const hasTimeWithEnglishSubtitlesTag = (time: FkFeedItem['times'][0]) => {
   return time.tags.includes('EN SUBS')
 }
 
-const cleanTitle = (title: string) => titleCase(title)
+const cleanTitle = (title: string, cinema: string) =>
+  titleCase(cinema === 'Trianon' ? removeYearSuffix(title) : title)
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const movies = Object.values<FkFeedItem>(
@@ -70,11 +73,13 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
             hasTimeWithEnglishSubtitlesTag(time),
         )
         .map((time) => {
+          const cinema = capitalize(extractLocation(time.location))
+
           return {
-            title: cleanTitle(decode(movie.title)),
-            year: parseFkFeedYear(movie.year),
+            title: cleanTitle(decode(movie.title), cinema),
+            year: parseFkFeedYear(movie.year) ?? extractYearFromTitle(movie.title),
             url: movie.permalink,
-            cinema: capitalize(extractLocation(time.location)),
+            cinema,
             date: extractDate(time.program_start),
           }
         })
