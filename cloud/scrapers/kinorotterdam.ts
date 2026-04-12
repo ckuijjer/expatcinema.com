@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { runIfMain } from './utils/runIfMain'
@@ -49,8 +50,23 @@ const removeSpecialPrefix = (title: string) => {
   return title.replace(/^kinoxeur:\s+/i, '')
 }
 
+const removeSpecialSuffixes = (title: string) => {
+  return title
+    .replace(/\s+[0-9]+th anniversary$/i, '')
+    .replace(/\s+[–-]\s+part 1 & 2$/i, '')
+    .replace(/\s+[–-]\s+a 70mm presentation$/i, '')
+}
+
+const normalizeAcronyms = (title: string) => {
+  return title.replace(/\b(?:[A-Za-z]\.){2,}[A-Za-z]\.?/g, (match) =>
+    match.toUpperCase(),
+  )
+}
+
 const cleanTitle = (title: string) => {
-  return titleCase(removeYearSuffix(removeSpecialPrefix(title)))
+  return normalizeAcronyms(
+    titleCase(removeYearSuffix(removeSpecialSuffixes(removeSpecialPrefix(title)))),
+  )
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
@@ -67,7 +83,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         .map((time) => {
           return {
             title: cleanTitle(decode(movie.title)),
-            year: parseFkFeedYear(movie.year),
+            year: parseFkFeedYear(movie.year) ?? extractYearFromTitle(movie.title),
             url: movie.permalink,
             cinema: 'Kino',
             date: extractDate(time.program_start),

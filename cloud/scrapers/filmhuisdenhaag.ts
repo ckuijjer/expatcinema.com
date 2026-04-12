@@ -69,7 +69,10 @@ const cleanTitle = (title: string) =>
   titleCase(
     title
       .replace(/ - EN subs$/i, '') // remove subs from the title
-      .replace(/ -(.*?)$/, ''), // actually remove the last dash and everything after it (bit questionable)
+      .replace(
+        /\s+\((?:4K Restoration|Re-Release)\)(?:\s+-\s+Late Night Anime)?$/i,
+        '',
+      ), // remove presentation-only suffixes
   )
 
 const hasEnglishSubtitles = (item) => {
