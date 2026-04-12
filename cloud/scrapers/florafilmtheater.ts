@@ -19,7 +19,14 @@ const logger = parentLogger.createChild({
 const trim = (value) => (typeof value === 'string' ? value.trim() : value)
 
 const cleanTitle = (value) =>
-  typeof value === 'string' ? titleCase(value.replace(/\(.*\)$/gi, '')) : value
+  typeof value === 'string'
+    ? titleCase(
+        value
+          .replace(/\s*-\s*en subs$/i, '')
+          .replace(/\(.*\)$/gi, '')
+          .trim(),
+      )
+    : value
 
 const normalizeWhitespace = (value) =>
   typeof value === 'string' ? value.replace(/\s+/g, ' ') : value
