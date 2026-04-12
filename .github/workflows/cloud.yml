@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v5
+      - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24
@@ -29,7 +29,7 @@ jobs:
         working-directory: .
         run: pnpm install --frozen-lockfile
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v6
+        uses: aws-actions/configure-aws-credentials@v6.1.0
         with:
           aws-region: eu-west-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
