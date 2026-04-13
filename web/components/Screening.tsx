@@ -8,23 +8,28 @@ import { Cinema } from '../utils/getScreenings'
 import { Time } from './Time'
 
 const aStyle = css({
-  display: 'block',
   textDecoration: 'none',
   color: 'var(--text-color)',
+})
+
+const linkStyle = css({
+  display: 'block',
+})
+
+const containerStyle = css({
+  display: 'grid',
+  gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
+  gridColumnGap: '12px',
+  lineHeight: '1.5',
+  padding: '12px',
+  alignItems: 'center',
+  minHeight: '72px',
   marginLeft: '-12px',
   marginRight: '-12px',
   _hover: {
     backgroundColor: 'var(--background-highlight-color)',
     borderRadius: '10px',
   },
-})
-
-const containerStyle = css({
-  display: 'grid',
-  gridTemplateColumns: '[time] 60px [rest] auto',
-  gridColumnGap: '12px',
-  lineHeight: '1.5',
-  padding: '12px',
 })
 
 const titleStyle = css({
@@ -34,12 +39,52 @@ const titleStyle = css({
   overflow: 'hidden',
 })
 
+const titleYearStyle = css({
+  color: 'color-mix(in srgb, var(--text-color) 35%, transparent)',
+})
+
 const cinemaInfoStyle = css({
   fontSize: '14px',
   gridColumnStart: 'rest',
   color: 'var(--text-muted-color)',
   display: 'flex',
   alignItems: 'center',
+})
+
+const posterStyle = css({
+  gridColumnStart: 'poster',
+  gridRow: '1 / span 2',
+  width: '48px',
+  height: '72px',
+  borderRadius: '4px',
+  objectFit: 'cover',
+})
+
+const posterPlaceholderStyle = css({
+  gridColumnStart: 'poster',
+  gridRow: '1 / span 2',
+  width: '48px',
+  height: '72px',
+  borderRadius: '4px',
+  backgroundColor: 'var(--background-highlight-color)',
+  border: '1px solid var(--border-color)',
+})
+
+const posterLinkStyle = css({
+  gridColumnStart: 'poster',
+  gridRow: '1 / span 2',
+  display: 'block',
+  width: '48px',
+  height: '72px',
+})
+
+const textContentStyle = css({
+  gridColumn: 'time / poster',
+  display: 'grid',
+  gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr)',
+  gridColumnGap: '12px',
+  alignItems: 'center',
+  minHeight: '72px',
 })
 
 const cinemaIconStyle = css({
@@ -72,26 +117,72 @@ export const ScreeningRow = ({
   url,
   date,
   title,
+  year,
   cinema,
+  movieId,
+  posterUrl,
   showCity = true,
 }: {
   url: string
   date: DateTime
   title: string
+  year?: number
   cinema: Cinema
+  movieId?: string
+  posterUrl?: string
   showCity?: boolean
 }) => {
+  const movieIdClassName = movieId
+    ? `movie-id-${movieId.replace(/[^a-zA-Z0-9_-]/g, '-')}`
+    : undefined
+  const tmdbUrl = movieId?.startsWith('tmdb:')
+    ? `https://www.themoviedb.org/movie/${movieId.slice(5)}`
+    : undefined
+
   return (
-    <a href={url} className={aStyle}>
+    <div className={movieIdClassName}>
       <div className={containerStyle}>
-        <Time>{date}</Time>
-        <div className={titleStyle}>{title}</div>
-        <div className={cinemaInfoStyle}>
-          <CinemaIcon cinema={cinema} />
-          {cinema.name}
-          {showCity ? <> | {cinema.city.name}</> : null}
-        </div>
+        <a href={url} className={`${aStyle} ${linkStyle} ${textContentStyle}`}>
+          <Time>{date}</Time>
+          <div className={titleStyle}>
+            {title}
+            {year ? <span className={titleYearStyle}> ({year})</span> : null}
+          </div>
+          <div className={cinemaInfoStyle}>
+            <CinemaIcon cinema={cinema} />
+            {cinema.name}
+            {showCity ? <> | {cinema.city.name}</> : null}
+          </div>
+        </a>
+        {posterUrl && tmdbUrl ? (
+          <a
+            href={tmdbUrl}
+            target="_blank"
+            rel="noreferrer"
+            className={posterLinkStyle}
+          >
+            <Image
+              src={posterUrl}
+              width={48}
+              height={72}
+              alt=""
+              aria-hidden
+              className={posterStyle}
+            />
+          </a>
+        ) : posterUrl ? (
+          <Image
+            src={posterUrl}
+            width={48}
+            height={72}
+            alt=""
+            aria-hidden
+            className={posterStyle}
+          />
+        ) : movieId ? (
+          <div aria-hidden className={posterPlaceholderStyle} />
+        ) : null}
       </div>
-    </a>
+    </div>
   )
 }
