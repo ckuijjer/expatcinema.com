@@ -3,6 +3,7 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { trim } from './utils/xrayFilters'
@@ -33,6 +34,11 @@ type XRayFromMainPage = {
 type XRayFromMoviePage = {
   date: string
   subtitles: string
+}
+
+type XRayFromMovieMetadata = {
+  metadata: string[]
+  screenings: XRayFromMoviePage[]
 }
 
 type ScreeningEvent = {
@@ -110,6 +116,13 @@ const hasEnglishSubtitles = (subtitles: string) => {
 const extractDate = (time: string) =>
   DateTime.fromISO(time, { zone: 'Europe/Amsterdam' }).toJSDate()
 
+const extractMetadataYear = (metadata: string[]) => {
+  const jaarField = metadata.find((entry) => /^jaar:/i.test(entry))
+  const match = jaarField?.match(/\b((?:19|20)\d{2})\b/)
+
+  return match?.[1] ? Number(match[1]) : undefined
+}
+
 const extractFromMoviePage = async ({
   url,
   title,
@@ -125,20 +138,26 @@ const extractFromMoviePage = async ({
   // })
   // const screeningEvents: ScreeningEvent[] = JSON.parse(scrapeResult.jsonLd)
 
-  const scrapeResult: XRayFromMoviePage[] = await xray(url, '.shows a', [
-    {
-      date: 'time@datetime | trim',
-      subtitles: '.subtitles | trim',
-    },
-  ])
+  const scrapeResult: XRayFromMovieMetadata = await xray(url, 'body', {
+    metadata: ['.meta | normalizeWhitespace | trim'],
+    screenings: xray('.shows a', [
+      {
+        date: 'time@datetime | trim',
+        subtitles: '.subtitles | trim',
+      },
+    ]),
+  })
 
   logger.info('scrape result', { scrapeResult })
 
-  const screenings: Screening[] = scrapeResult
+  const year = extractMetadataYear(scrapeResult.metadata ?? [])
+
+  const screenings: Screening[] = scrapeResult.screenings
     .filter(({ subtitles }) => hasEnglishSubtitles(subtitles))
     .map(({ date }) => {
       return {
         title: cleanTitle(title),
+        year: year ?? extractYearFromTitle(title),
         url: url,
         cinema: 'Lab-1',
         date: extractDate(date),
