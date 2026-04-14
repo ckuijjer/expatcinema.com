@@ -1,5 +1,6 @@
 import got from 'got'
 import { DateTime } from 'luxon'
+import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -11,6 +12,13 @@ import { titleCase } from './utils/titleCase'
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
     scraper: 'filmhuisdenhaag',
+  },
+})
+
+const xray = Xray({
+  filters: {
+    normalizeWhitespace: (value) =>
+      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
 
@@ -83,6 +91,14 @@ const hasEnglishSubtitles = (item) => {
   )
 }
 
+const parseReleaseYear = (metadata: string[]) => {
+  const match = metadata
+    .map((entry) => entry.match(/\b((?:19|20)\d{2})\b/))
+    .find(Boolean)
+
+  return match?.[1] ? Number(match[1]) : undefined
+}
+
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const apiResponse: FilmhuisDenhaagAPIResponse = await got(
     'https://filmhuisdenhaag.nl/api/program',
@@ -102,6 +118,20 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       }))
     })
 
+  const releaseYearByUrl = new Map(
+    await Promise.all(
+      Array.from(
+        new Set(programs.map((item) => `https://filmhuisdenhaag.nl${item.uri}`)),
+      ).map(async (url) => {
+        const detailPage = await xray(url, {
+          metadata: ['aside .flex.flex-col.space-y-2 p | normalizeWhitespace'],
+        })
+
+        return [url, parseReleaseYear(detailPage.metadata ?? [])] as const
+      }),
+    ),
+  )
+
   const screenings: Screening[] = programs
     .filter(hasEnglishSubtitles)
     .map((item) => {
@@ -112,6 +142,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
       return {
         title: cleanTitle(item.title),
+        year: releaseYearByUrl.get(`https://filmhuisdenhaag.nl${item.uri}`),
         url: `https://filmhuisdenhaag.nl${item.uri}`,
         cinema: 'Filmhuis Den Haag',
         date: DateTime.fromObject({
