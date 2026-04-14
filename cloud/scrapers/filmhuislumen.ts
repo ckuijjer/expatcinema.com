@@ -45,6 +45,7 @@ type XRayFromMoviePage = {
   title: string
   language: string
   subtitles: string
+  year: string
   screenings: {
     date: string
     times: string[]
@@ -95,6 +96,7 @@ const extractFromMoviePage = async ({
     title: 'h1.wp-block-post-title | cleanTitle | trim',
     language: 'p.field-language .value | normalizeWhitespace | trim',
     subtitles: 'p.field-subtitles .value | normalizeWhitespace | trim',
+    year: 'p.field-year .value | normalizeWhitespace | trim',
     screenings: xray('#voorstellingen .wp-block-group:has(> .datum-tekst)', [
       {
         date: '.datum-tekst | normalizeWhitespace | trim',
@@ -113,6 +115,7 @@ const extractFromMoviePage = async ({
     .filter(({ date }) => date) // skip rows without a date (e.g. separator divs)
     .flatMap(({ date, times }) => {
       const { day, month, year } = parseDate(date)
+      const releaseYear = Number(movie.year) || undefined
 
       return (times ?? []).map((time) => {
         const [hourStr, minuteStr] = time.split(':')
@@ -121,6 +124,7 @@ const extractFromMoviePage = async ({
 
         return {
           title: movie.title,
+          year: releaseYear,
           url,
           cinema: 'Filmhuis Lumen',
           date: DateTime.fromObject({
