@@ -39,6 +39,16 @@ type RialtoFilmFeedResult = {
   }
 }
 
+const extractReleaseYear = (html: string) => {
+  const labelledCellMatch = html.match(
+    /<dt[^>]*>\s*(?:Jaar|Release date)\s*<\/dt>\s*<dd[^>]*>\s*([^<]+)\s*<\/dd>/i,
+  )
+
+  const match = labelledCellMatch?.[1]?.match(/\b((?:19|20)\d{2})\b/)
+
+  return match?.[1] ? Number(match[1]) : undefined
+}
+
 const extractFromMoviePage = async ({
   url,
   title,
@@ -55,6 +65,7 @@ const extractFromMoviePage = async ({
   const data: RialtoFilmFeedResult = await got(
     `https://rialtofilm.nl/feed/en/film/${movieId}`,
   ).json()
+  const releaseYear = extractReleaseYear(await got(url).text())
 
   const screenings: Screening[] = Object.entries(data).flatMap(
     ([cinema, dates]) => {
@@ -77,6 +88,7 @@ const extractFromMoviePage = async ({
 
           return {
             title,
+            year: releaseYear,
             url,
             cinema,
             date: date.toJSDate(),
