@@ -98,6 +98,14 @@ interface KriterionFilmsApiResponse {
   [key: string]: number
 }
 
+interface KriterionCmsFilmApiResponse {
+  data?: {
+    attributes?: {
+      jaar?: string
+    }
+  }
+}
+
 const hasEnglishSubtitles = (name: string) =>
   /\([^)]*eng subs[^)]*\)/i.test(name)
 
@@ -107,6 +115,23 @@ const ENG_SUBS_PARENTHETICAL = /\s*\([^)]*eng subs[^)]*\)/i
 
 const cleanTitle = (title: string) =>
   titleCase(title.trim().replace(ENG_SUBS_PARENTHETICAL, ''))
+
+const extractCmsYear = async (slug: string) => {
+  try {
+    const response: KriterionCmsFilmApiResponse = await got(
+      `https://testcms.kriterion.nl/api/films/${slug}?populate=*`,
+    ).json()
+
+    const match = response.data?.attributes?.jaar?.match(
+      /\b((?:19|20)\d{2})\b/,
+    )
+
+    return match?.[1] ? Number(match[1]) : undefined
+  } catch (error) {
+    logger.warn('failed to fetch cms film year', { slug, error })
+    return undefined
+  }
+}
 
 const extractFromMainPage = async () => {
   try {
@@ -131,15 +156,35 @@ const extractFromMainPage = async () => {
       {} as { [key: number]: string },
     )
 
-    const screenings: Screening[] = showsApiResponse.shows
-      .filter((item) => hasEnglishSubtitles(item.name))
+    const filteredShows = showsApiResponse.shows.filter((item) =>
+      hasEnglishSubtitles(item.name),
+    )
+
+    const relevantSlugs = Array.from(
+      new Set(
+        filteredShows
+          .map((item) => productionIdToSlug[item.production_id])
+          .filter(Boolean),
+      ),
+    )
+
+    const releaseYearBySlug = new Map(
+      await Promise.all(
+        relevantSlugs.map(async (slug) => [
+          slug,
+          await extractCmsYear(slug),
+        ]),
+      ),
+    )
+
+    const screenings: Screening[] = filteredShows
       .map((item) => {
         const slug = productionIdToSlug[item.production_id]
         const url = `https://kriterion.nl/films/${slug}`
 
         const screening: Screening = {
           title: cleanTitle(item.name),
-          year: extractYearFromTitle(item.name),
+          year: releaseYearBySlug.get(slug) ?? extractYearFromTitle(item.name),
           url,
           cinema: 'Kriterion',
           date: DateTime.fromISO(item.starts_at).toJSDate(),
