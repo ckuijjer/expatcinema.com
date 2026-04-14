@@ -33,6 +33,18 @@ type XRayFromMoviePage = {
   }[]
 }
 
+type MainPageItem = {
+  id: number
+  title: string
+  permalink: string
+  releaseDate?: {
+    date?: string
+    dateTime?: {
+      date?: string
+    }
+  }
+}
+
 const cleanTitle = (title: string) =>
   titleCase(
     title
@@ -58,10 +70,18 @@ const splitFirstDate = (date: string) => {
   }
 }
 
+const extractReleaseYear = (item: MainPageItem) => {
+  const dateString = item.releaseDate?.dateTime?.date ?? item.releaseDate?.date
+  const match = dateString?.match(/\b((?:19|20)\d{2})\b/)
+
+  return match?.[1] ? Number(match[1]) : undefined
+}
+
 const extractFromMoviePage = async ({
   title,
   permalink: url,
-}: MainPageResponse['items'][0]) => {
+  ...item
+}: MainPageItem) => {
   // url example 'https://www.lux-nijmegen.nl/programma/english-subs-perfect-days/'
 
   const data: XRayFromMoviePage = await xray(url, 'body', {
@@ -83,6 +103,7 @@ const extractFromMoviePage = async ({
 
       return {
         title: cleanTitle(data.title),
+        year: extractReleaseYear({ title, permalink: url, ...item }),
         url,
         cinema: 'Lux',
         date: DateTime.fromObject({
@@ -101,11 +122,7 @@ const extractFromMoviePage = async ({
 }
 
 type MainPageResponse = {
-  items: {
-    id: number
-    title: string
-    permalink: string
-  }[]
+  items: MainPageItem[]
 }
 
 const extractFromMainPage = async () => {
