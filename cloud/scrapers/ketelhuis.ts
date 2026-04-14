@@ -102,6 +102,13 @@ const hasEnglishSubtitles = ({ metadata, mainContent, title }) =>
   metadata?.toLowerCase().includes('engels ondertiteld') ||
   mainContent?.toLowerCase().includes('engels ondertiteld')
 
+const extractReleaseYear = (metadata: string) => {
+  const match = metadata.match(/(?:^|\s)Jaar\s*(?:19|20)\d{2}\b/i)
+  const year = match?.[0].match(/\b((?:19|20)\d{2})\b/)
+
+  return year?.[1] ? Number(year[1]) : undefined
+}
+
 const splitFirstDate = (date: string) => {
   if (date === 'Vandaag') {
     const { day, month, year } = DateTime.now()
@@ -179,11 +186,14 @@ const extractFromMoviePage = async ({ url, title }) => {
     })
   })
 
+  const releaseYear = extractReleaseYear(scrapeResult.metadata ?? '')
+
   const screenings = [...firstDates, ...otherDates].map((date) => ({
     date,
     url,
     cinema: 'Ketelhuis',
     title,
+    year: releaseYear,
   }))
 
   logger.info('screenings', { screenings })
