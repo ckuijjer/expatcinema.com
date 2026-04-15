@@ -12,6 +12,7 @@ type ScreeningData = {
 
 type MovieData = {
   movieId: string
+  title: string
   tmdb?: {
     releaseDate?: string | null
     posterPath?: string | null
@@ -70,6 +71,7 @@ export const getScreenings = async () => {
 
     return {
       ...screening,
+      title: movie?.title ?? screening.title,
       year: movieYear ?? screening.year,
       cinema,
       posterUrl: screening.movieId
