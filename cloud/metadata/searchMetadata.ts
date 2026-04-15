@@ -4,6 +4,11 @@ import getTmdbClient from '../clients/tmdb'
 import { logger } from '../powertools'
 import { getManualTitleOverride } from './manualTitleOverrides'
 import {
+  getTmdbSearchYears,
+  mergeTmdbSearchResults,
+  type TmdbMovieResult,
+} from './tmdbSearchHelpers'
+import {
   getMovieId,
   getTitleSearchVariants,
   normalizeMovieTitleForLookup,
@@ -11,10 +16,6 @@ import {
 } from './titleResolver'
 import { Metadata, TmdbMovie } from './types'
 
-type TmdbMovieResult = TmdbMovie & {
-  id: number
-  [key: string]: unknown
-}
 type TmdbSearchResponse = { results: TmdbMovieResult[] }
 type TmdbFindResponse = { movieResults: TmdbMovieResult[] }
 type TmdbAlternativeTitlesResponse = {
@@ -23,6 +24,9 @@ type TmdbAlternativeTitlesResponse = {
 
 const getTmdb = () => {
   const apiKey = process.env.TMDB_API_KEY
+  if (!apiKey) {
+    throw new Error('TMDB_API_KEY is required')
+  }
   return getTmdbClient(apiKey)
 }
 
@@ -31,11 +35,20 @@ const searchTmdb = async (query: string, year?: number) => {
   const { results } = (await tmdb.get('search/movie', {
     searchParams: {
       query,
-      ...(year ? { primary_release_year: year } : {}),
+      ...(year !== undefined ? { primary_release_year: year } : {}),
     },
   })) as unknown as TmdbSearchResponse
 
   return results ?? []
+}
+
+const searchTmdbCandidates = async (query: string, year?: number) => {
+  const searchYears = getTmdbSearchYears(year)
+  const resultSets = await Promise.all(
+    searchYears.map((searchYear) => searchTmdb(query, searchYear)),
+  )
+
+  return mergeTmdbSearchResults(resultSets)
 }
 
 const getTmdbMovie = async (tmdbId: number) => {
@@ -127,8 +140,8 @@ const searchMetadata = async (
   const uniqueCandidates = new Map<number, TmdbMovieResult>()
 
   for (const query of searchQueries) {
-    const results = await searchTmdb(query, year)
-    results.slice(0, 5).forEach((result) => {
+    const results = await searchTmdbCandidates(query, year)
+    results.forEach((result) => {
       uniqueCandidates.set(result.id, result)
     })
   }
@@ -146,6 +159,7 @@ const searchMetadata = async (
   logger.info('searchMetadata scored candidates', {
     normalizedTitle,
     year,
+    searchYears: getTmdbSearchYears(year),
     searchQueries,
     scoredCandidates: scoredCandidates.slice(0, 5).map((entry) => ({
       tmdbId: entry.candidate.id,
