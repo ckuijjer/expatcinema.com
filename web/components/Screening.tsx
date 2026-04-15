@@ -18,7 +18,7 @@ const linkStyle = css({
 
 const containerStyle = css({
   display: 'grid',
-  gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
+  gridTemplateColumns: '[time] 60px [text] minmax(0, 1fr) [poster] auto',
   gridColumnGap: '12px',
   lineHeight: '1.5',
   padding: '12px',
@@ -45,7 +45,6 @@ const titleYearStyle = css({
 
 const cinemaInfoStyle = css({
   fontSize: '14px',
-  gridColumnStart: 'rest',
   color: 'var(--text-muted-color)',
   display: 'flex',
   alignItems: 'center',
@@ -79,12 +78,17 @@ const posterLinkStyle = css({
 })
 
 const textContentStyle = css({
-  gridColumn: 'time / poster',
+  gridColumn: 'text',
   display: 'grid',
-  gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr)',
-  gridColumnGap: '12px',
+  rowGap: '0',
+  minWidth: '0',
+})
+
+const timeRowStyle = css({
+  display: 'grid',
+  gridTemplateColumns: '[time] 60px [text] minmax(0, 1fr)',
+  columnGap: '12px',
   alignItems: 'center',
-  minHeight: '72px',
 })
 
 const cinemaIconStyle = css({
@@ -141,9 +145,6 @@ export const ScreeningRow = ({
   const movieIdClassName = movieId
     ? `movie-id-${movieId.replace(/[^a-zA-Z0-9_-]/g, '-')}`
     : undefined
-  const tmdbUrl = movieId?.startsWith('tmdb:')
-    ? `https://www.themoviedb.org/movie/${movieId.slice(5)}`
-    : undefined
   const movieUrl = movieSlug
     ? currentCity && currentCinema
       ? `/city/${currentCity}/cinema/${currentCinema}/movie/${movieSlug}`
@@ -155,25 +156,22 @@ export const ScreeningRow = ({
   return (
     <div className={movieIdClassName}>
       <div className={containerStyle}>
-        <a href={url} className={`${aStyle} ${linkStyle} ${textContentStyle}`}>
+        <a href={url} className={`${aStyle} ${linkStyle} ${timeRowStyle}`}>
           <Time>{date}</Time>
-          <div className={titleStyle}>
-            {title}
-            {year ? <span className={titleYearStyle}> ({year})</span> : null}
-          </div>
-          <div className={cinemaInfoStyle}>
-            <CinemaIcon cinema={cinema} />
-            {cinema.name}
-            {showCity ? <> | {cinema.city.name}</> : null}
+          <div className={textContentStyle}>
+            <div className={titleStyle}>
+              {title}
+              {year ? <span className={titleYearStyle}> ({year})</span> : null}
+            </div>
+            <div className={cinemaInfoStyle}>
+              <CinemaIcon cinema={cinema} />
+              {cinema.name}
+              {showCity ? <> | {cinema.city.name}</> : null}
+            </div>
           </div>
         </a>
-        {posterUrl && tmdbUrl ? (
-          <a
-            href={movieUrl}
-            target="_blank"
-            rel="noreferrer"
-            className={posterLinkStyle}
-          >
+        {posterUrl ? (
+          <a href={movieUrl} className={posterLinkStyle}>
             <Image
               src={posterUrl}
               width={48}
@@ -183,15 +181,6 @@ export const ScreeningRow = ({
               className={posterStyle}
             />
           </a>
-        ) : posterUrl ? (
-          <Image
-            src={posterUrl}
-            width={48}
-            height={72}
-            alt=""
-            aria-hidden
-            className={posterStyle}
-          />
         ) : movieId ? (
           <div aria-hidden className={posterPlaceholderStyle} />
         ) : null}
