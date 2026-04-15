@@ -3,6 +3,7 @@ import leven from 'leven'
 import getTmdbClient from '../clients/tmdb'
 import { logger } from '../powertools'
 import { getManualTitleOverride } from './manualTitleOverrides'
+import { titleCase } from '../scrapers/utils/titleCase'
 import {
   getTmdbSearchYears,
   mergeTmdbSearchResults,
@@ -92,9 +93,11 @@ const buildResolvedMetadata = (
   tmdbMovie: TmdbMovieResult,
   match: Metadata['match'],
 ): Omit<Metadata, 'query' | 'createdAt'> => {
-  const winningTitle = [tmdbMovie.title, tmdbMovie.originalTitle].sort(
-    (b, a) => leven(b ?? '', title) - leven(a ?? '', title),
-  )[0]
+  const winningTitle = titleCase(
+    [tmdbMovie.title, tmdbMovie.originalTitle].sort(
+      (b, a) => leven(b ?? '', title) - leven(a ?? '', title),
+    )[0] ?? title,
+  )
 
   return {
     movieId: getMovieId(tmdbMovie.id),
