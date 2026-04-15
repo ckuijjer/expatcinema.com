@@ -12,7 +12,14 @@ export type ManualTitleOverride = ManualTitleOverrideInput & {
   query: string
 }
 
-const rawOverrides: ManualTitleOverrideInput[] = []
+const rawOverrides: ManualTitleOverrideInput[] = [
+  {
+    title: 'A Family',
+    year: 2024,
+    tmdbId: 1359694,
+    note: 'Kino returns the wrong release year for A Family; force the 2026 TMDB match.',
+  },
+]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
   (override) => ({
