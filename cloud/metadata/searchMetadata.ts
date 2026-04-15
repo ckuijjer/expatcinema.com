@@ -4,17 +4,18 @@ import getTmdbClient from '../clients/tmdb'
 import { logger } from '../powertools'
 import { getManualTitleOverride } from './manualTitleOverrides'
 import {
+  getTmdbSearchYears,
+  mergeTmdbSearchResults,
+  type TmdbMovieResult,
+} from './tmdbSearchHelpers'
+import {
   getMovieId,
   getTitleSearchVariants,
   normalizeMovieTitleForLookup,
-  scoreCandidate,
+  scoreCandidateWithYearHints,
 } from './titleResolver'
 import { Metadata, TmdbMovie } from './types'
 
-type TmdbMovieResult = TmdbMovie & {
-  id: number
-  [key: string]: unknown
-}
 type TmdbSearchResponse = { results: TmdbMovieResult[] }
 type TmdbFindResponse = { movieResults: TmdbMovieResult[] }
 type TmdbAlternativeTitlesResponse = {
@@ -23,6 +24,9 @@ type TmdbAlternativeTitlesResponse = {
 
 const getTmdb = () => {
   const apiKey = process.env.TMDB_API_KEY
+  if (!apiKey) {
+    throw new Error('TMDB_API_KEY is required')
+  }
   return getTmdbClient(apiKey)
 }
 
@@ -31,11 +35,24 @@ const searchTmdb = async (query: string, year?: number) => {
   const { results } = (await tmdb.get('search/movie', {
     searchParams: {
       query,
-      ...(year ? { primary_release_year: year } : {}),
+      ...(year !== undefined ? { primary_release_year: year } : {}),
     },
   })) as unknown as TmdbSearchResponse
 
   return results ?? []
+}
+
+const searchTmdbCandidates = async (
+  query: string,
+  year?: number,
+  siblingYearHints: number[] = [],
+) => {
+  const searchYears = getTmdbSearchYears(year, siblingYearHints)
+  const resultSets = await Promise.all(
+    searchYears.map((searchYear) => searchTmdb(query, searchYear)),
+  )
+
+  return mergeTmdbSearchResults(resultSets)
 }
 
 const getTmdbMovie = async (tmdbId: number) => {
@@ -92,6 +109,7 @@ const buildResolvedMetadata = (
 const searchMetadata = async (
   title: string,
   year?: number,
+  siblingYearHints: number[] = [],
 ): Promise<Omit<Metadata, 'query' | 'createdAt'>> => {
   const normalizedTitle = normalizeMovieTitleForLookup(title)
   const manualOverride = getManualTitleOverride(title, year)
@@ -127,8 +145,8 @@ const searchMetadata = async (
   const uniqueCandidates = new Map<number, TmdbMovieResult>()
 
   for (const query of searchQueries) {
-    const results = await searchTmdb(query, year)
-    results.slice(0, 5).forEach((result) => {
+    const results = await searchTmdbCandidates(query, year, siblingYearHints)
+    results.forEach((result) => {
       uniqueCandidates.set(result.id, result)
     })
   }
@@ -136,7 +154,10 @@ const searchMetadata = async (
   const scoredCandidates = Array.from(uniqueCandidates.values())
     .map((candidate) => ({
       candidate,
-      confidence: scoreCandidate(title, candidate, year),
+      confidence: scoreCandidateWithYearHints(title, candidate, [
+        ...(year !== undefined ? [year] : []),
+        ...siblingYearHints,
+      ]),
     }))
     .sort((left, right) => right.confidence - left.confidence)
 
@@ -146,6 +167,8 @@ const searchMetadata = async (
   logger.info('searchMetadata scored candidates', {
     normalizedTitle,
     year,
+    siblingYearHints,
+    searchYears: getTmdbSearchYears(year, siblingYearHints),
     searchQueries,
     scoredCandidates: scoredCandidates.slice(0, 5).map((entry) => ({
       tmdbId: entry.candidate.id,
