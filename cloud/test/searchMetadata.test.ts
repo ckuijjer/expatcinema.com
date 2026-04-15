@@ -17,7 +17,6 @@ describe('searchMetadata TMDB search planning', () => {
       undefined,
     ])
   })
-
   test('tries only yearless search when no year exists', () => {
     expect(getTmdbSearchYears()).toEqual([undefined])
   })
