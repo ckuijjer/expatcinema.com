@@ -60,6 +60,14 @@ const hasEnglishSubtitles = (movie: XRayFromMainPage) => {
   return movie.metadata.includes('EN SUBS')
 }
 
+const extractMetadataYear = (metadata: string[]) => {
+  const match = metadata
+    .map((entry) => entry.match(/\b((?:19|20)\d{2})\b/))
+    .find(Boolean)
+
+  return match?.[1] ? Number(match[1]) : undefined
+}
+
 const splitDate = (date: string) => {
   if (date === 'Vandaag') {
     const { day, month, year } = DateTime.now()
@@ -122,7 +130,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
           return {
             title: movie.title,
-            year: extractYearFromTitle(movie.rawTitle),
+            year:
+              extractMetadataYear(movie.metadata) ??
+              extractYearFromTitle(movie.rawTitle),
             url: movie.url,
             cinema: 'Flora Filmtheater',
             date: DateTime.fromObject({

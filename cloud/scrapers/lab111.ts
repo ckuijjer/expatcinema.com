@@ -1,3 +1,4 @@
+import got from 'got'
 import { DateTime } from 'luxon'
 import Xray from 'x-ray'
 
@@ -28,6 +29,14 @@ const xray = Xray({
   .concurrency(3)
   .throttle(10, 300)
 
+const detailPageXray = Xray({
+  filters: {
+    trim,
+    normalizeWhitespace: (value) =>
+      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+  },
+})
+
 const hasEnglishSubtitles = (movie: XRayFromMainPage) =>
   movie.metadata.includes('Ondertiteling: Engels')
 
@@ -46,6 +55,24 @@ type XRayFromMainPage = {
   url: string
   metadata: string
   dates: string[]
+}
+
+type XRayFromDetailPage = {
+  metadata: {
+    label: string
+    values: string[]
+  }[]
+}
+
+const parseReleaseYear = (detailPage: XRayFromDetailPage) => {
+  const releaseValues =
+    detailPage.metadata.find(({ label }) => label === 'Release')?.values ?? []
+
+  const match = releaseValues
+    .map((value) => value.match(/\b((?:19|20)\d{2})\b/))
+    .find(Boolean)
+
+  return match?.[1] ? Number(match[1]) : undefined
 }
 
 const extractFromMainPage = async () => {
@@ -67,6 +94,29 @@ const extractFromMainPage = async () => {
     )
 
     logger.info('scrape result', { scrapeResult })
+
+    const releaseYearByUrl = new Map(
+      await Promise.all(
+        Array.from(new Set(scrapeResult.map((movie) => movie.url))).map(
+          async (url) => {
+            const detailPage: XRayFromDetailPage = await detailPageXray(
+              await got(url).text(),
+              {
+                metadata: [
+                  '.zmovie-meta',
+                  {
+                    label: 'h4 | normalizeWhitespace',
+                    values: ['li | normalizeWhitespace'],
+                  },
+                ],
+              },
+            )
+
+            return [url, parseReleaseYear(detailPage)] as const
+          },
+        ),
+      ),
+    )
 
     const screenings = scrapeResult
       .filter(hasEnglishSubtitles)
@@ -96,7 +146,9 @@ const extractFromMainPage = async () => {
 
           return {
             title: cleanTitle(movie.title),
-            year: extractYearFromTitle(movie.title),
+            year:
+              releaseYearByUrl.get(movie.url) ??
+              extractYearFromTitle(movie.title),
             url: movie.url,
             cinema: 'Lab111',
             date: DateTime.fromObject({

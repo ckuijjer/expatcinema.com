@@ -43,6 +43,13 @@ const xray = Xray({
 const hasEnglishSubtitles = ({ metadata }: { metadata: string[] }) =>
   metadata.some((x) => x.match(/ondertiteling:\s*engels/i))
 
+const parseReleaseYear = (metadata: string[]) => {
+  const jaarField = metadata.find((entry) => /^jaar:/i.test(entry))
+  const match = jaarField?.match(/\b((?:19|20)\d{2})\b/)
+
+  return match?.[1] ? Number(match[1]) : undefined
+}
+
 // 31-10-22-16:30
 const extractDate = (time: string) =>
   DateTime.fromFormat(time, 'dd-MM-yy-HH:mm').toJSDate()
@@ -89,7 +96,7 @@ export const extractFromMoviePage = async (
   const screenings: Screening[] = movie.screenings.map((screening) => {
     return {
       title: cleanTitle(movie.title),
-      year: extractYearFromTitle(movie.title),
+      year: parseReleaseYear(movie.metadata) ?? extractYearFromTitle(movie.title),
       url,
       cinema: 'De Uitkijk',
       date: extractDate(screening),
