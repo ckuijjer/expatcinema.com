@@ -101,16 +101,38 @@ type ScoreCandidateInput = {
   alternativeTitles?: string[]
 }
 
-export const scoreCandidate = (
+const getYearScore = (
+  releaseYear: number | undefined,
+  yearHints: number[],
+) => {
+  if (!releaseYear || yearHints.length === 0) {
+    return 0.5
+  }
+
+  return Math.max(
+    ...yearHints.map((yearHint) =>
+      Math.max(0, 1 - Math.min(Math.abs(yearHint - releaseYear), 3) / 3),
+    ),
+  )
+}
+
+export const scoreCandidateWithYearHints = (
   rawTitle: string,
   candidate: ScoreCandidateInput,
-  yearHintOverride?: number,
+  yearHints: number[] = [],
 ) => {
   const normalizedRaw = normalizeMovieTitleForLookup(rawTitle)
   const normalizedStripped = normalizeMovieTitleForLookup(
     stripTitleNoise(rawTitle),
   )
-  const yearHint = yearHintOverride ?? extractYearHint(rawTitle)
+  const inferredYearHint = extractYearHint(rawTitle)
+  const uniqueYearHints = Array.from(
+    new Set(
+      [...yearHints, inferredYearHint].filter(
+        (value): value is number => typeof value === 'number',
+      ),
+    ),
+  )
 
   const candidateTitles = [
     candidate.title,
@@ -126,15 +148,24 @@ export const scoreCandidate = (
       similarity(normalizedRaw, value),
       similarity(normalizedStripped, value),
     )
-  }, 0)
+    }, 0)
 
   const releaseYear = candidate.releaseDate
     ? Number(candidate.releaseDate.slice(0, 4))
     : undefined
-  const yearScore =
-    yearHint && releaseYear
-      ? Math.max(0, 1 - Math.min(Math.abs(yearHint - releaseYear), 3) / 3)
-      : 0.5
+  const yearScore = getYearScore(releaseYear, uniqueYearHints)
 
   return bestTitleScore * 0.85 + yearScore * 0.15
+}
+
+export const scoreCandidate = (
+  rawTitle: string,
+  candidate: ScoreCandidateInput,
+  yearHintOverride?: number,
+) => {
+  return scoreCandidateWithYearHints(
+    rawTitle,
+    candidate,
+    yearHintOverride !== undefined ? [yearHintOverride] : [],
+  )
 }

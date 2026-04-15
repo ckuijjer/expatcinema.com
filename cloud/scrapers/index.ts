@@ -261,10 +261,67 @@ export const scrapers = async () => {
       },
     )
 
+    const matchedYearsByQuery = new Map<string, Set<number>>()
+    uniqueTitlesAndMetadata.forEach((metadata) => {
+      if (metadata.match.status !== 'matched' || metadata.year === undefined) {
+        return
+      }
+
+      const existingYears = matchedYearsByQuery.get(metadata.query) ?? new Set()
+      existingYears.add(metadata.year)
+      matchedYearsByQuery.set(metadata.query, existingYears)
+    })
+
+    const secondaryResolvedMetadata = await pMap(
+      uniqueTitlesAndMetadata.filter(
+        (metadata) =>
+          metadata.match.status !== 'matched' &&
+          (matchedYearsByQuery.get(metadata.query)?.size ?? 0) > 0,
+      ),
+      async (metadata) => {
+        const siblingYearHints = Array.from(
+          matchedYearsByQuery.get(metadata.query) ?? [],
+        ).filter((hint) => hint !== metadata.year)
+
+        if (siblingYearHints.length === 0) {
+          return metadata
+        }
+
+        const retryMetadata = await getMetadata({
+          title: metadata.query,
+          year: metadata.year,
+          siblingYearHints,
+        })
+
+        return retryMetadata.match.status === 'matched'
+          ? retryMetadata
+          : metadata
+      },
+      { concurrency: 5 },
+    )
+
+    const metadataByLookupKey = new Map(
+      uniqueTitlesAndMetadata.map((metadata) => [
+        getMetadataLookupKey(metadata.query, metadata.year),
+        metadata,
+      ]),
+    )
+
+    secondaryResolvedMetadata.forEach((metadata) => {
+      metadataByLookupKey.set(
+        getMetadataLookupKey(metadata.query, metadata.year),
+        metadata,
+      )
+    })
+
+    const uniqueTitlesAndMetadataWithSiblingHints = Array.from(
+      metadataByLookupKey.values(),
+    )
+
     const allWithResolvedMovies = makeScreeningsUniqueAndSorted(
       allRawScreenings.map((movie) => {
         const lookupKey = getMetadataLookupKey(movie.title, movie.year)
-        const metadata = uniqueTitlesAndMetadata.find(
+        const metadata = uniqueTitlesAndMetadataWithSiblingHints.find(
           (entry) =>
             getMetadataLookupKey(entry.query, entry.year) === lookupKey,
         )
@@ -278,7 +335,7 @@ export const scrapers = async () => {
 
     const movies = Array.from(
       new Map(
-        uniqueTitlesAndMetadata
+        uniqueTitlesAndMetadataWithSiblingHints
           .filter((metadata) => metadata.movieId && metadata.tmdb?.id)
           .map((metadata) => [
             metadata.movieId,
@@ -323,13 +380,15 @@ export const scrapers = async () => {
       match: metadata.match,
     })
 
-    const titleMatches = uniqueTitlesAndMetadata.map(toTitleMatchRecord)
+    const titleMatchesWithSiblingHints = uniqueTitlesAndMetadataWithSiblingHints.map(
+      toTitleMatchRecord,
+    )
 
-    const ambiguousMovies = uniqueTitlesAndMetadata
+    const ambiguousMovies = uniqueTitlesAndMetadataWithSiblingHints
       .filter((metadata) => metadata.match.status === 'ambiguous')
       .map(toTitleMatchRecord)
 
-    const unmatchedMovies = uniqueTitlesAndMetadata
+    const unmatchedMovies = uniqueTitlesAndMetadataWithSiblingHints
       .filter((metadata) => metadata.match.status === 'unmatched')
       .map(toTitleMatchRecord)
 
@@ -351,7 +410,7 @@ export const scrapers = async () => {
     logger.info('writing all, the combined json, to public S3 bucket')
     await writeToPublicFile('screenings.json')(allWithResolvedMovies)
     await writeToPublicFile('movies.json')(movies)
-    await writeToPublicFile('title-matches.json')(titleMatches)
+    await writeToPublicFile('title-matches.json')(titleMatchesWithSiblingHints)
 
     const countPerScraper = {
       ...Object.fromEntries(

@@ -12,7 +12,7 @@ import {
   getMovieId,
   getTitleSearchVariants,
   normalizeMovieTitleForLookup,
-  scoreCandidate,
+  scoreCandidateWithYearHints,
 } from './titleResolver'
 import { Metadata, TmdbMovie } from './types'
 
@@ -42,8 +42,12 @@ const searchTmdb = async (query: string, year?: number) => {
   return results ?? []
 }
 
-const searchTmdbCandidates = async (query: string, year?: number) => {
-  const searchYears = getTmdbSearchYears(year)
+const searchTmdbCandidates = async (
+  query: string,
+  year?: number,
+  siblingYearHints: number[] = [],
+) => {
+  const searchYears = getTmdbSearchYears(year, siblingYearHints)
   const resultSets = await Promise.all(
     searchYears.map((searchYear) => searchTmdb(query, searchYear)),
   )
@@ -105,6 +109,7 @@ const buildResolvedMetadata = (
 const searchMetadata = async (
   title: string,
   year?: number,
+  siblingYearHints: number[] = [],
 ): Promise<Omit<Metadata, 'query' | 'createdAt'>> => {
   const normalizedTitle = normalizeMovieTitleForLookup(title)
   const manualOverride = getManualTitleOverride(title, year)
@@ -140,7 +145,7 @@ const searchMetadata = async (
   const uniqueCandidates = new Map<number, TmdbMovieResult>()
 
   for (const query of searchQueries) {
-    const results = await searchTmdbCandidates(query, year)
+    const results = await searchTmdbCandidates(query, year, siblingYearHints)
     results.forEach((result) => {
       uniqueCandidates.set(result.id, result)
     })
@@ -149,7 +154,10 @@ const searchMetadata = async (
   const scoredCandidates = Array.from(uniqueCandidates.values())
     .map((candidate) => ({
       candidate,
-      confidence: scoreCandidate(title, candidate, year),
+      confidence: scoreCandidateWithYearHints(title, candidate, [
+        ...(year !== undefined ? [year] : []),
+        ...siblingYearHints,
+      ]),
     }))
     .sort((left, right) => right.confidence - left.confidence)
 
@@ -159,6 +167,7 @@ const searchMetadata = async (
   logger.info('searchMetadata scored candidates', {
     normalizedTitle,
     year,
+    siblingYearHints,
     searchYears: getTmdbSearchYears(year),
     searchQueries,
     scoredCandidates: scoredCandidates.slice(0, 5).map((entry) => ({

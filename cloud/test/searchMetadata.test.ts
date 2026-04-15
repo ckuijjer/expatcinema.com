@@ -9,6 +9,15 @@ describe('searchMetadata TMDB search planning', () => {
     expect(getTmdbSearchYears(2026)).toEqual([2026, undefined])
   })
 
+  test('prefers sibling year hints after the direct screening year', () => {
+    expect(getTmdbSearchYears(2026, [2025, 2024, 2025])).toEqual([
+      2026,
+      2025,
+      2024,
+      undefined,
+    ])
+  })
+
   test('tries only yearless search when no year exists', () => {
     expect(getTmdbSearchYears()).toEqual([undefined])
   })
