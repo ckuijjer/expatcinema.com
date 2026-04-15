@@ -117,7 +117,12 @@ export const Calendar = ({
           {emptyStateMessage}
         </h3>
       ) : (
-        <DirectCalendar rows={rows} showCity={showCity} />
+        <DirectCalendar
+          rows={rows}
+          showCity={showCity}
+          currentCity={currentCity}
+          currentCinema={currentCinema}
+        />
       )}
     </div>
   )

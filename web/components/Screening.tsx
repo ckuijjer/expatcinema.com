@@ -12,17 +12,14 @@ const aStyle = css({
   color: 'var(--text-color)',
 })
 
-const linkStyle = css({
-  display: 'block',
-})
-
 const containerStyle = css({
   display: 'grid',
   gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
+  gridTemplateRows: 'auto auto',
   gridColumnGap: '12px',
   lineHeight: '1.5',
   padding: '12px',
-  alignItems: 'center',
+  alignItems: 'start',
   minHeight: '72px',
   marginLeft: '-12px',
   marginRight: '-12px',
@@ -32,7 +29,22 @@ const containerStyle = css({
   },
 })
 
+const timeStyle = css({
+  gridColumnStart: 'time',
+  gridRow: '1 / span 2',
+  alignSelf: 'start',
+  paddingTop: '4px',
+})
+
+const contentStyle = css({
+  display: 'contents',
+})
+
 const titleStyle = css({
+  gridColumnStart: 'rest',
+  gridRowStart: '1',
+  minWidth: '0',
+  paddingTop: '4px',
   fontSize: '18px',
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
@@ -44,16 +56,16 @@ const titleYearStyle = css({
 })
 
 const cinemaInfoStyle = css({
-  fontSize: '14px',
   gridColumnStart: 'rest',
+  gridRowStart: '2',
+  minWidth: '0',
+  fontSize: '14px',
   color: 'var(--text-muted-color)',
   display: 'flex',
   alignItems: 'center',
 })
 
 const posterStyle = css({
-  gridColumnStart: 'poster',
-  gridRow: '1 / span 2',
   width: '48px',
   height: '72px',
   borderRadius: '4px',
@@ -61,8 +73,6 @@ const posterStyle = css({
 })
 
 const posterPlaceholderStyle = css({
-  gridColumnStart: 'poster',
-  gridRow: '1 / span 2',
   width: '48px',
   height: '72px',
   borderRadius: '4px',
@@ -71,20 +81,16 @@ const posterPlaceholderStyle = css({
 })
 
 const posterLinkStyle = css({
-  gridColumnStart: 'poster',
   gridRow: '1 / span 2',
+  alignSelf: 'start',
   display: 'block',
   width: '48px',
   height: '72px',
 })
 
-const textContentStyle = css({
-  gridColumn: 'time / poster',
-  display: 'grid',
-  gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr)',
-  gridColumnGap: '12px',
-  alignItems: 'center',
-  minHeight: '72px',
+const screeningLinkStyle = css({
+  textDecoration: 'none',
+  color: 'var(--text-color)',
 })
 
 const cinemaIconStyle = css({
@@ -120,8 +126,11 @@ export const ScreeningRow = ({
   year,
   cinema,
   movieId,
+  movieSlug,
   posterUrl,
   showCity = true,
+  currentCity,
+  currentCinema,
 }: {
   url: string
   date: DateTime
@@ -129,8 +138,11 @@ export const ScreeningRow = ({
   year?: number
   cinema: Cinema
   movieId?: string
+  movieSlug?: string
   posterUrl?: string
   showCity?: boolean
+  currentCity?: string
+  currentCinema?: string
 }) => {
   const movieIdClassName = movieId
     ? `movie-id-${movieId.replace(/[^a-zA-Z0-9_-]/g, '-')}`
@@ -138,12 +150,21 @@ export const ScreeningRow = ({
   const tmdbUrl = movieId?.startsWith('tmdb:')
     ? `https://www.themoviedb.org/movie/${movieId.slice(5)}`
     : undefined
+  const movieUrl = movieSlug
+    ? currentCity && currentCinema
+      ? `/city/${currentCity}/cinema/${currentCinema}/movie/${movieSlug}`
+      : currentCity
+        ? `/city/${currentCity}/movie/${movieSlug}`
+        : `/movie/${movieSlug}`
+    : undefined
 
   return (
     <div className={movieIdClassName}>
       <div className={containerStyle}>
-        <a href={url} className={`${aStyle} ${linkStyle} ${textContentStyle}`}>
+        <a href={url} className={`${aStyle} ${screeningLinkStyle} ${timeStyle}`}>
           <Time>{date}</Time>
+        </a>
+        <a href={url} className={`${aStyle} ${screeningLinkStyle} ${contentStyle}`}>
           <div className={titleStyle}>
             {title}
             {year ? <span className={titleYearStyle}> ({year})</span> : null}
@@ -154,7 +175,18 @@ export const ScreeningRow = ({
             {showCity ? <> | {cinema.city.name}</> : null}
           </div>
         </a>
-        {posterUrl && tmdbUrl ? (
+        {posterUrl && movieUrl ? (
+          <a href={movieUrl} className={posterLinkStyle}>
+            <Image
+              src={posterUrl}
+              width={48}
+              height={72}
+              alt=""
+              aria-hidden
+              className={posterStyle}
+            />
+          </a>
+        ) : posterUrl && tmdbUrl ? (
           <a
             href={tmdbUrl}
             target="_blank"
