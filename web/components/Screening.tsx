@@ -120,8 +120,11 @@ export const ScreeningRow = ({
   year,
   cinema,
   movieId,
+  movieSlug,
   posterUrl,
   showCity = true,
+  currentCity,
+  currentCinema,
 }: {
   url: string
   date: DateTime
@@ -129,8 +132,11 @@ export const ScreeningRow = ({
   year?: number
   cinema: Cinema
   movieId?: string
+  movieSlug?: string
   posterUrl?: string
   showCity?: boolean
+  currentCity?: string
+  currentCinema?: string
 }) => {
   const movieIdClassName = movieId
     ? `movie-id-${movieId.replace(/[^a-zA-Z0-9_-]/g, '-')}`
@@ -138,11 +144,18 @@ export const ScreeningRow = ({
   const tmdbUrl = movieId?.startsWith('tmdb:')
     ? `https://www.themoviedb.org/movie/${movieId.slice(5)}`
     : undefined
+  const movieUrl = movieSlug
+    ? currentCity && currentCinema
+      ? `/city/${currentCity}/cinema/${currentCinema}/movie/${movieSlug}`
+      : currentCity
+        ? `/city/${currentCity}/movie/${movieSlug}`
+        : `/movie/${movieSlug}`
+    : url
 
   return (
     <div className={movieIdClassName}>
       <div className={containerStyle}>
-        <a href={url} className={`${aStyle} ${linkStyle} ${textContentStyle}`}>
+        <a href={movieUrl} className={`${aStyle} ${linkStyle} ${textContentStyle}`}>
           <Time>{date}</Time>
           <div className={titleStyle}>
             {title}

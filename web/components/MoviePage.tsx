@@ -72,6 +72,21 @@ const movieInfoStyle = css({
   minWidth: '0',
 })
 
+const linkRowStyle = css({
+  display: 'flex',
+  gap: '12px',
+  flexWrap: 'wrap',
+})
+
+const externalLinkStyle = css({
+  fontSize: '14px',
+  color: 'var(--secondary-color)',
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
+})
+
 export const MoviePage = ({
   movie,
   screenings,
@@ -87,6 +102,12 @@ export const MoviePage = ({
 }) => {
   const posterUrl = getMoviePosterUrl(movie.tmdb?.posterPath, 'w342')
   const year = getMovieReleaseYear(movie)
+  const tmdbHref = movie.tmdb?.id
+    ? `https://www.themoviedb.org/movie/${movie.tmdb.id}`
+    : undefined
+  const imdbHref = movie.imdbId
+    ? `https://www.imdb.com/title/${movie.imdbId}/`
+    : undefined
 
   return (
     <Layout>
@@ -109,6 +130,28 @@ export const MoviePage = ({
             {movie.title}
             {year ? <span className={yearStyle}> ({year})</span> : null}
           </h1>
+          <div className={linkRowStyle}>
+            {tmdbHref ? (
+              <a
+                href={tmdbHref}
+                target="_blank"
+                rel="noreferrer"
+                className={externalLinkStyle}
+              >
+                TMDB
+              </a>
+            ) : null}
+            {imdbHref ? (
+              <a
+                href={imdbHref}
+                target="_blank"
+                rel="noreferrer"
+                className={externalLinkStyle}
+              >
+                IMDb
+              </a>
+            ) : null}
+          </div>
         </div>
         <div style={{ gridColumn: '1 / -1' }}>
           <Suspense>
