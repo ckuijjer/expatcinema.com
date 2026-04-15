@@ -13,6 +13,7 @@ type ScreeningData = {
 type MovieData = {
   movieId: string
   tmdb?: {
+    releaseDate?: string | null
     posterPath?: string | null
   }
 }
@@ -53,9 +54,7 @@ export const getScreenings = async () => {
   const [screeningsData, moviesData]: [ScreeningData[], MovieData[]] =
     await Promise.all([screeningsResponse.json(), moviesResponse.json()])
 
-  const moviesById = new Map(
-    moviesData.map((movie) => [movie.movieId, movie.tmdb?.posterPath]),
-  )
+  const moviesById = new Map(moviesData.map((movie) => [movie.movieId, movie]))
 
   const screenings: Screening[] = screeningsData.map((screening) => {
     const cinemaData = cinemas.find(
@@ -66,12 +65,15 @@ export const getScreenings = async () => {
       ...cinemaData,
       city: cities.find((city) => city.slug === cinemaData?.city),
     } as Cinema
+    const movie = screening.movieId ? moviesById.get(screening.movieId) : undefined
+    const movieYear = getTmdbReleaseYear(movie?.tmdb?.releaseDate)
 
     return {
       ...screening,
+      year: movieYear ?? screening.year,
       cinema,
       posterUrl: screening.movieId
-        ? getTmdbPosterUrl(moviesById.get(screening.movieId))
+        ? getTmdbPosterUrl(movie?.tmdb?.posterPath)
         : undefined,
     }
   })
@@ -85,4 +87,13 @@ const getTmdbPosterUrl = (posterPath?: string | null) => {
   }
 
   return `https://image.tmdb.org/t/p/w92${posterPath}`
+}
+
+const getTmdbReleaseYear = (releaseDate?: string | null) => {
+  if (!releaseDate) {
+    return undefined
+  }
+
+  const year = Number(releaseDate.slice(0, 4))
+  return Number.isFinite(year) ? year : undefined
 }
