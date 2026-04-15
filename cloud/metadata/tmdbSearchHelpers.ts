@@ -5,8 +5,20 @@ export type TmdbMovieResult = TmdbMovie & {
   [key: string]: unknown
 }
 
-export const getTmdbSearchYears = (year?: number): Array<number | undefined> =>
-  year === undefined ? [undefined] : [year, undefined]
+export const getTmdbSearchYears = (
+  year?: number,
+  siblingYearHints: number[] = [],
+): Array<number | undefined> => {
+  const orderedYears = Array.from(
+    new Set(
+      [year, ...siblingYearHints].filter(
+        (value): value is number => value !== undefined,
+      ),
+    ),
+  )
+
+  return orderedYears.length > 0 ? [...orderedYears, undefined] : [undefined]
+}
 
 export const mergeTmdbSearchResults = (
   resultSets: TmdbMovieResult[][],

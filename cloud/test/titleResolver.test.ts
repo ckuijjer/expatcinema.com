@@ -3,6 +3,7 @@ import {
   getTitleSearchVariants,
   normalizeMovieTitleForLookup,
   scoreCandidate,
+  scoreCandidateWithYearHints,
   stripTitleNoise,
 } from '../metadata/titleResolver'
 
@@ -84,5 +85,28 @@ describe('titleResolver', () => {
     )
 
     expect(preferredYearScore).toBeGreaterThan(wrongYearScore)
+  })
+
+  test('lets sibling year hints raise the score when the screening year is off', () => {
+    const screeningYearScore = scoreCandidateWithYearHints(
+      "Kiki's Delivery Service",
+      {
+        title: "Kiki's Delivery Service",
+        releaseDate: '1989-11-23',
+      },
+      [2026],
+    )
+
+    const siblingYearScore = scoreCandidateWithYearHints(
+      "Kiki's Delivery Service",
+      {
+        title: "Kiki's Delivery Service",
+        releaseDate: '1989-11-23',
+      },
+      [2026, 1989],
+    )
+
+    expect(siblingYearScore).toBeGreaterThan(screeningYearScore)
+    expect(siblingYearScore).toBeGreaterThan(0.9)
   })
 })
