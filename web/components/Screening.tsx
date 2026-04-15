@@ -16,9 +16,18 @@ const linkStyle = css({
   display: 'block',
 })
 
+const timeLinkStyle = css({
+  gridColumn: 'time',
+})
+
+const textLinkStyle = css({
+  gridColumn: 'rest',
+  minWidth: '0',
+})
+
 const containerStyle = css({
   display: 'grid',
-  gridTemplateColumns: '[time] 60px [text] minmax(0, 1fr) [poster] auto',
+  gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
   gridColumnGap: '12px',
   lineHeight: '1.5',
   padding: '12px',
@@ -78,17 +87,9 @@ const posterLinkStyle = css({
 })
 
 const textContentStyle = css({
-  gridColumn: 'text',
   display: 'grid',
-  rowGap: '0',
+  gap: '0',
   minWidth: '0',
-})
-
-const timeRowStyle = css({
-  display: 'grid',
-  gridTemplateColumns: '[time] 60px [text] minmax(0, 1fr)',
-  columnGap: '12px',
-  alignItems: 'center',
 })
 
 const cinemaIconStyle = css({
@@ -156,18 +157,18 @@ export const ScreeningRow = ({
   return (
     <div className={movieIdClassName}>
       <div className={containerStyle}>
-        <a href={url} className={`${aStyle} ${linkStyle} ${timeRowStyle}`}>
+        <a href={url} className={`${aStyle} ${linkStyle} ${timeLinkStyle}`}>
           <Time>{date}</Time>
-          <div className={textContentStyle}>
-            <div className={titleStyle}>
-              {title}
-              {year ? <span className={titleYearStyle}> ({year})</span> : null}
-            </div>
-            <div className={cinemaInfoStyle}>
-              <CinemaIcon cinema={cinema} />
-              {cinema.name}
-              {showCity ? <> | {cinema.city.name}</> : null}
-            </div>
+        </a>
+        <a href={url} className={`${aStyle} ${linkStyle} ${textLinkStyle}`}>
+          <div className={titleStyle}>
+            {title}
+            {year ? <span className={titleYearStyle}> ({year})</span> : null}
+          </div>
+          <div className={cinemaInfoStyle}>
+            <CinemaIcon cinema={cinema} />
+            {cinema.name}
+            {showCity ? <> | {cinema.city.name}</> : null}
           </div>
         </a>
         {posterUrl ? (
