@@ -120,6 +120,7 @@ export const ScreeningRow = ({
   year,
   cinema,
   movieId,
+  movieSlug,
   posterUrl,
   showCity = true,
 }: {
@@ -129,14 +130,15 @@ export const ScreeningRow = ({
   year?: number
   cinema: Cinema
   movieId?: string
+  movieSlug?: string
   posterUrl?: string
   showCity?: boolean
 }) => {
   const movieIdClassName = movieId
     ? `movie-id-${movieId.replace(/[^a-zA-Z0-9_-]/g, '-')}`
     : undefined
-  const tmdbUrl = movieId?.startsWith('tmdb:')
-    ? `https://www.themoviedb.org/movie/${movieId.slice(5)}`
+  const movieUrl = movieSlug
+    ? `/movie/${movieSlug}`
     : undefined
 
   return (
@@ -154,13 +156,8 @@ export const ScreeningRow = ({
             {showCity ? <> | {cinema.city.name}</> : null}
           </div>
         </a>
-        {posterUrl && tmdbUrl ? (
-          <a
-            href={tmdbUrl}
-            target="_blank"
-            rel="noreferrer"
-            className={posterLinkStyle}
-          >
+        {posterUrl && movieUrl ? (
+          <a href={movieUrl} className={posterLinkStyle}>
             <Image
               src={posterUrl}
               width={48}
