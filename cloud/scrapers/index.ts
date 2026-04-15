@@ -56,6 +56,7 @@ import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSo
 import {
   getMetadataLookupKey,
   normalizeMovieTitleForLookup,
+  slugifyMovieTitle,
 } from '../metadata/titleResolver'
 
 const SCRAPERS = {
@@ -341,6 +342,7 @@ export const scrapers = async () => {
             metadata.movieId,
             {
               movieId: metadata.movieId,
+              slug: slugifyMovieTitle(metadata.title ?? ''),
               tmdbId: metadata.tmdb?.id,
               imdbId: metadata.imdbId,
               title: metadata.title,
