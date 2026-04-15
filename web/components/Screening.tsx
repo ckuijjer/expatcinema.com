@@ -16,15 +16,6 @@ const linkStyle = css({
   display: 'block',
 })
 
-const timeLinkStyle = css({
-  gridColumn: 'time',
-})
-
-const textLinkStyle = css({
-  gridColumn: 'rest',
-  minWidth: '0',
-})
-
 const containerStyle = css({
   display: 'grid',
   gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
@@ -54,6 +45,7 @@ const titleYearStyle = css({
 
 const cinemaInfoStyle = css({
   fontSize: '14px',
+  gridColumnStart: 'rest',
   color: 'var(--text-muted-color)',
   display: 'flex',
   alignItems: 'center',
@@ -87,9 +79,12 @@ const posterLinkStyle = css({
 })
 
 const textContentStyle = css({
+  gridColumn: 'time / poster',
   display: 'grid',
-  gap: '0',
-  minWidth: '0',
+  gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr)',
+  gridColumnGap: '12px',
+  alignItems: 'center',
+  minHeight: '72px',
 })
 
 const cinemaIconStyle = css({
@@ -157,10 +152,8 @@ export const ScreeningRow = ({
   return (
     <div className={movieIdClassName}>
       <div className={containerStyle}>
-        <a href={url} className={`${aStyle} ${linkStyle} ${timeLinkStyle}`}>
+        <a href={url} className={`${aStyle} ${linkStyle} ${textContentStyle}`}>
           <Time>{date}</Time>
-        </a>
-        <a href={url} className={`${aStyle} ${linkStyle} ${textLinkStyle}`}>
           <div className={titleStyle}>
             {title}
             {year ? <span className={titleYearStyle}> ({year})</span> : null}
