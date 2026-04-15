@@ -1,5 +1,3 @@
-import { slugifyMovieTitle } from './slugifyMovieTitle'
-
 export type MovieData = {
   movieId: string
   slug?: string
@@ -20,9 +18,7 @@ export type MovieData = {
   }
 }
 
-export type Movie = Omit<MovieData, 'slug'> & {
-  slug: string
-}
+export type Movie = Omit<MovieData, 'slug'> & { slug?: string }
 
 export const getMovies = async (): Promise<Movie[]> => {
   const bucket = process.env.PUBLIC_BUCKET
@@ -32,12 +28,11 @@ export const getMovies = async (): Promise<Movie[]> => {
 
   return moviesData.map((movie) => ({
     ...movie,
-    slug: movie.slug ?? slugifyMovieTitle(movie.title),
+    slug: movie.slug,
   }))
 }
 
-export const getMovieSlug = (movie: Pick<Movie, 'title' | 'slug'>) =>
-  movie.slug ?? slugifyMovieTitle(movie.title)
+export const getMovieSlug = (movie: Pick<Movie, 'slug'>) => movie.slug
 
 export const getMovieBySlug = (movies: Movie[], slug: string) =>
   movies.find((movie) => movie.slug === slug)

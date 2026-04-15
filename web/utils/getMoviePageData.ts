@@ -4,7 +4,6 @@ import { getCinema } from './getCinema'
 import { getCity } from './getCity'
 import { getMovieReleaseYear, getMovieSlug, Movie } from './getMovies'
 import { Screening } from './getScreenings'
-import { slugifyMovieTitle } from './slugifyMovieTitle'
 
 const getMovieIdScreeningCounts = (screenings: Screening[]) =>
   screenings.reduce<Record<string, number>>((counts, screening) => {
@@ -20,9 +19,14 @@ const pickRepresentativeMovie = (
   movies: Movie[],
   screenings: Screening[],
 ): Movie => {
+  const moviesWithSlug = movies.filter((movie): movie is Movie & { slug: string } =>
+    Boolean(movie.slug),
+  )
   const counts = getMovieIdScreeningCounts(screenings)
 
-  return [...movies].sort((left, right) => {
+  return [...moviesWithSlug].sort((left, right) => {
+    const leftSlug = getMovieSlug(left) ?? ''
+    const rightSlug = getMovieSlug(right) ?? ''
     const countDifference =
       (counts[right.movieId] ?? 0) - (counts[left.movieId] ?? 0)
     if (countDifference !== 0) {
@@ -31,7 +35,7 @@ const pickRepresentativeMovie = (
 
     return (
       (getMovieReleaseYear(right) ?? 0) - (getMovieReleaseYear(left) ?? 0) ||
-      getMovieSlug(left).localeCompare(getMovieSlug(right))
+      leftSlug.localeCompare(rightSlug)
     )
   })[0]
 }
@@ -65,7 +69,7 @@ export const getMoviePageData = (
       return true
     }
 
-    return slugifyMovieTitle(screening.title) === movieSlug
+    return false
   })
 
   return {
@@ -81,9 +85,13 @@ export const getMovieRouteSlugs = (
   city?: string,
   cinema?: string,
 ) => {
-  const movieSlugs = new Set(movies.map((movie) => getMovieSlug(movie)))
+  const movieSlugs = new Set(
+    movies.flatMap((movie) => (movie.slug ? [movie.slug] : [])),
+  )
   const movieSlugByMovieId = new Map<string, string>(
-    movies.map((movie) => [movie.movieId, getMovieSlug(movie)]),
+    movies.flatMap((movie) =>
+      movie.slug ? [[movie.movieId, movie.slug] as const] : [],
+    ),
   )
 
   const screeningSlugs = new Set<string>()
@@ -98,7 +106,7 @@ export const getMovieRouteSlugs = (
 
     const screeningSlug = screening.movieId
       ? movieSlugByMovieId.get(screening.movieId)
-      : slugifyMovieTitle(screening.title)
+      : undefined
 
     if (screeningSlug && movieSlugs.has(screeningSlug)) {
       screeningSlugs.add(screeningSlug)

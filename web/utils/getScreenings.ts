@@ -1,7 +1,6 @@
 import cinemas from '../data/cinema.json'
 import cities from '../data/city.json'
 import { MovieData, getMoviePosterUrl, getMovieReleaseYear } from './getMovies'
-import { slugifyMovieTitle } from './slugifyMovieTitle'
 
 type ScreeningData = {
   cinema: string
@@ -62,7 +61,7 @@ export const getScreenings = async () => {
     } as Cinema
     const movie = screening.movieId ? moviesById.get(screening.movieId) : undefined
     const movieYear = movie ? getMovieReleaseYear(movie) : undefined
-    const movieSlug = movie?.slug ?? slugifyMovieTitle(movie?.title ?? screening.title)
+    const movieSlug = movie?.slug
 
     return {
       ...screening,
