@@ -94,6 +94,11 @@ export const getMovieId = (tmdbId: number) => `tmdb:${tmdbId}`
 export const getMetadataLookupKey = (title: string, year?: number) =>
   `${normalizeMovieTitleForLookup(title)}::${year ?? ''}`
 
+export const slugifyMovieTitle = (title: string) =>
+  normalizeMovieTitleForLookup(title)
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
 type ScoreCandidateInput = {
   title?: string
   originalTitle?: string

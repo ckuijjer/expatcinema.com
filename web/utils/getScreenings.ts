@@ -1,5 +1,6 @@
 import cinemas from '../data/cinema.json'
 import cities from '../data/city.json'
+import { MovieData, getMoviePosterUrl, getMovieReleaseYear } from './getMovies'
 
 type ScreeningData = {
   cinema: string
@@ -8,14 +9,6 @@ type ScreeningData = {
   year?: number
   title: string
   url: string
-}
-
-type MovieData = {
-  movieId: string
-  tmdb?: {
-    releaseDate?: string | null
-    posterPath?: string | null
-  }
 }
 
 export type City = {
@@ -66,34 +59,18 @@ export const getScreenings = async () => {
       city: cities.find((city) => city.slug === cinemaData?.city),
     } as Cinema
     const movie = screening.movieId ? moviesById.get(screening.movieId) : undefined
-    const movieYear = getTmdbReleaseYear(movie?.tmdb?.releaseDate)
+    const movieYear = movie ? getMovieReleaseYear(movie) : undefined
 
     return {
       ...screening,
+      title: movie?.title ?? screening.title,
       year: movieYear ?? screening.year,
       cinema,
       posterUrl: screening.movieId
-        ? getTmdbPosterUrl(movie?.tmdb?.posterPath)
+        ? getMoviePosterUrl(movie?.tmdb?.posterPath)
         : undefined,
     }
   })
 
   return screenings
-}
-
-const getTmdbPosterUrl = (posterPath?: string | null) => {
-  if (!posterPath) {
-    return undefined
-  }
-
-  return `https://image.tmdb.org/t/p/w92${posterPath}`
-}
-
-const getTmdbReleaseYear = (releaseDate?: string | null) => {
-  if (!releaseDate) {
-    return undefined
-  }
-
-  const year = Number(releaseDate.slice(0, 4))
-  return Number.isFinite(year) ? year : undefined
 }
