@@ -155,7 +155,7 @@ export const ScreeningRow = ({
   return (
     <div className={movieIdClassName}>
       <div className={containerStyle}>
-        <a href={movieUrl} className={`${aStyle} ${linkStyle} ${textContentStyle}`}>
+        <a href={url} className={`${aStyle} ${linkStyle} ${textContentStyle}`}>
           <Time>{date}</Time>
           <div className={titleStyle}>
             {title}
@@ -169,7 +169,7 @@ export const ScreeningRow = ({
         </a>
         {posterUrl && tmdbUrl ? (
           <a
-            href={tmdbUrl}
+            href={movieUrl}
             target="_blank"
             rel="noreferrer"
             className={posterLinkStyle}
