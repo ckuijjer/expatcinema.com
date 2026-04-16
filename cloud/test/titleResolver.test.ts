@@ -37,6 +37,9 @@ describe('titleResolver', () => {
       'Fabuleux Destin d’Amélie Poulain',
     )
     expect(getMovieSortTitle("L'engloutie")).toBe('engloutie')
+    expect(getMovieSortTitle('El laberinto del fauno')).toBe(
+      'laberinto del fauno',
+    )
     expect(getMovieSortTitle('Los Olvidados')).toBe('Olvidados')
     expect(getMovieSortTitle('Der Himmel über Berlin')).toBe(
       'Himmel über Berlin',

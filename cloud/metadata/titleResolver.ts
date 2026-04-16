@@ -108,7 +108,7 @@ const SORT_TITLE_ARTICLE_PATTERNS = [
   [/^(?:le|la|les|un|une)\s+/i],
   [/^l['’]/i],
   // Spanish
-  [/^los\s+/i],
+  [/^(?:el|los)\s+/i],
   // German
   [/^(?:der|das)\s+/i],
 ] as const
