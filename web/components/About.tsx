@@ -9,6 +9,8 @@ import { palette } from '../utils/theme'
 import { Layout } from './Layout'
 import { NavigationBar } from './NavigationBar'
 import { PageTitle } from './PageTitle'
+import { PageSection } from './PageSection'
+import { TmdbLogo } from './TmdbLogo'
 
 const containerStyle = css({
   paddingBottom: '16px',
@@ -25,6 +27,13 @@ const cityLinkStyle = css({
 
 const textLinkStyle = css({
   color: 'var(--secondary-color)',
+})
+
+const tmdbAttributionStyle = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  lineHeight: '1.4',
 })
 
 const compareAlphabetically = (left: string, right: string) =>
@@ -64,6 +73,7 @@ export const About = () => {
               info@expatcinema.com
             </Link>
           </p>
+          <PageSection>Cinemas</PageSection>
           <br />
           {citySlugs.map((city) => {
             const href = `/city/${city}`
@@ -92,12 +102,37 @@ export const About = () => {
               </>
             )
           })}
+          <PageSection>Contact</PageSection>
           <p>
             Contact us at{' '}
             <Link href="mailto:info@expatcinema.com" className={textLinkStyle}>
               info@expatcinema.com
             </Link>
           </p>
+          <PageSection>Attribution</PageSection>
+          <div className={tmdbAttributionStyle}>
+            <Link
+              href="https://www.themoviedb.org/"
+              target="_blank"
+              rel="noreferrer"
+              className={textLinkStyle}
+            >
+              <TmdbLogo />
+            </Link>
+            <p>
+              Movie metadata and poster images are provided by{' '}
+              <Link
+                href="https://www.themoviedb.org/"
+                target="_blank"
+                rel="noreferrer"
+                className={textLinkStyle}
+              >
+                TMDB
+              </Link>
+              . This product uses the TMDB API but is not endorsed or certified
+              by TMDB.
+            </p>
+          </div>
         </div>
       </Layout>
     </>
