@@ -158,6 +158,7 @@ export const MoviePage = ({
             <Calendar
               screenings={screenings}
               showCity={showCity}
+              showPoster={false}
               currentCity={currentCity}
               currentCinema={currentCinema}
             />
