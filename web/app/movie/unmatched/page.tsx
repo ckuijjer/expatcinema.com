@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import { NavigationBar } from '../../components/NavigationBar'
-import { Layout } from '../../components/Layout'
-import { UnmatchedMoviesOverview } from '../../components/UnmatchedMoviesOverview'
-import { getScreenings } from '../../utils/getScreenings'
-import { palette } from '../../utils/theme'
+import { NavigationBar } from '../../../components/NavigationBar'
+import { Layout } from '../../../components/Layout'
+import { UnmatchedMoviesOverview } from '../../../components/UnmatchedMoviesOverview'
+import { getScreenings } from '../../../utils/getScreenings'
+import { palette } from '../../../utils/theme'
 
 export const metadata: Metadata = {
   title: 'Unmatched movies – Expat Cinema',
