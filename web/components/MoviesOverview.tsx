@@ -2,13 +2,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-import { css } from 'styled-system/css'
+import { css, cx } from 'styled-system/css'
 
 import {
   getMoviePosterUrl,
   getMovieReleaseYear,
   Movie,
 } from '../utils/getMovies'
+import { headerFont } from '../utils/theme'
 import { Layout } from './Layout'
 import { PageTitle } from './PageTitle'
 
@@ -36,6 +37,7 @@ const sectionStyle = css({
   fontSize: '16px',
   fontWeight: '700',
   margin: '12px 0 4px',
+  color: 'var(--text-color)',
 })
 
 const rowStyle = css({
@@ -162,7 +164,9 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
         <div className={listStyle}>
           {sections.map((section) => (
             <div key={section}>
-              <h3 className={sectionStyle}>{section}</h3>
+              <h3 className={cx(sectionStyle, headerFont.className)}>
+                {section}
+              </h3>
               {moviesBySection[section].map((movie) => (
                 <MovieOverviewRow key={movie.movieId} movie={movie} />
               ))}
