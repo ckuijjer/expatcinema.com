@@ -2,6 +2,7 @@ export type MovieData = {
   movieId: string
   slug?: string
   title: string
+  sortTitle?: string
   tmdbId: number
   imdbId?: string
   tmdb?: {

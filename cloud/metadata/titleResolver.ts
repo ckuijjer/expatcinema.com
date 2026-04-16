@@ -99,6 +99,33 @@ export const slugifyMovieTitle = (title: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
 
+const SORT_TITLE_ARTICLE_PATTERNS = [
+  // English
+  [/^(?:a|an|the)\s+/i],
+  // Dutch
+  [/^(?:de|het|een)\s+/i],
+  // French
+  [/^(?:le|la|les|un|une)\s+/i],
+  [/^l['’]/i],
+  // Spanish
+  [/^(?:el|los)\s+/i],
+  // German
+  [/^(?:der|das)\s+/i],
+] as const
+
+export const getMovieSortTitle = (title: string) => {
+  const trimmedTitle = title.trim()
+
+  for (const [pattern] of SORT_TITLE_ARTICLE_PATTERNS) {
+    const match = trimmedTitle.match(pattern)
+    if (match) {
+      return trimmedTitle.slice(match[0].length).trimStart()
+    }
+  }
+
+  return trimmedTitle
+}
+
 type ScoreCandidateInput = {
   title?: string
   originalTitle?: string

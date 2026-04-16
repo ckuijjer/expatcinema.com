@@ -129,12 +129,16 @@ const MovieOverviewRow = ({ movie }: { movie: Movie }) => {
 
 export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
   const sortedMovies = [...movies].sort((left, right) =>
-    left.title.localeCompare(right.title, undefined, { sensitivity: 'base' }),
+    (left.sortTitle ?? left.title).localeCompare(
+      right.sortTitle ?? right.title,
+      undefined,
+      { sensitivity: 'base' },
+    ),
   )
 
   const moviesBySection = sortedMovies.reduce<Record<string, Movie[]>>(
     (sections, movie) => {
-      const section = getMovieSection(movie.title)
+      const section = getMovieSection(movie.sortTitle ?? movie.title)
       sections[section] = sections[section] ?? []
       sections[section].push(movie)
       return sections
