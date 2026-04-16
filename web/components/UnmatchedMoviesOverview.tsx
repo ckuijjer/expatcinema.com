@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 
 import { css, cx } from 'styled-system/css'
 
@@ -88,7 +89,10 @@ const getUnmatchedMovieKey = (screening: Screening) =>
   `${screening.title}__${screening.year ?? ''}`
 
 const UnmatchedMovieRow = ({ screening }: { screening: Screening }) => (
-  <div className={rowStyle}>
+  <Link
+    href={`/?search=${encodeURIComponent(screening.title)}`}
+    className={rowStyle}
+  >
     <div
       aria-hidden
       className={cx(
@@ -102,7 +106,7 @@ const UnmatchedMovieRow = ({ screening }: { screening: Screening }) => (
         <span className={titleYearStyle}> ({screening.year})</span>
       ) : null}
     </div>
-  </div>
+  </Link>
 )
 
 export const UnmatchedMoviesOverview = ({
