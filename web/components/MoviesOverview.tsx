@@ -2,31 +2,21 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-import { css, cx } from 'styled-system/css'
+import { css } from 'styled-system/css'
 
-import { headerFont } from '../utils/theme'
 import {
   getMoviePosterUrl,
   getMovieReleaseYear,
   Movie,
 } from '../utils/getMovies'
 import { Layout } from './Layout'
+import { PageTitle } from './PageTitle'
 
 const pageStyle = css({
   marginTop: '16px',
   marginBottom: '16px',
   display: 'grid',
   rowGap: '16px',
-})
-
-const titleStyle = css({
-  marginTop: '0',
-  marginBottom: '0',
-  fontSize: '44px',
-  lineHeight: '1.05',
-  '@media (max-width: 640px)': {
-    fontSize: '32px',
-  },
 })
 
 const introStyle = css({
@@ -132,7 +122,7 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
     <Layout>
       <div className={pageStyle}>
         <div>
-          <h1 className={cx(titleStyle, headerFont.className)}>Movies</h1>
+          <PageTitle>Movies</PageTitle>
           <p className={introStyle}>All movies sorted alphabetically.</p>
         </div>
         <div className={listStyle}>
