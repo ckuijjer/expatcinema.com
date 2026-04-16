@@ -87,16 +87,16 @@ export const Menu = () => {
   return (
     <>
       <Link
-        href="/about"
-        className={cx(menuTextItemStyle, headerFont.className)}
-      >
-        About
-      </Link>
-      <Link
         href="/movie"
         className={cx(menuTextItemStyle, headerFont.className)}
       >
         Movies
+      </Link>
+      <Link
+        href="/about"
+        className={cx(menuTextItemStyle, headerFont.className)}
+      >
+        About
       </Link>
       <Link
         href="/statistics"
@@ -121,16 +121,16 @@ export const Menu = () => {
                 Home
               </Link>
               <Link
-                href="/about"
-                className={cx(menuItemStyle, headerFont.className)}
-              >
-                About
-              </Link>
-              <Link
                 href="/movie"
                 className={cx(menuItemStyle, headerFont.className)}
               >
                 Movies
+              </Link>
+              <Link
+                href="/about"
+                className={cx(menuItemStyle, headerFont.className)}
+              >
+                About
               </Link>
               <Link
                 href="/statistics"
