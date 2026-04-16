@@ -93,6 +93,12 @@ export const Menu = () => {
         About
       </Link>
       <Link
+        href="/movie"
+        className={cx(menuTextItemStyle, headerFont.className)}
+      >
+        Movies
+      </Link>
+      <Link
         href="/statistics"
         className={cx(menuTextItemStyle, headerFont.className)}
       >
@@ -119,6 +125,12 @@ export const Menu = () => {
                 className={cx(menuItemStyle, headerFont.className)}
               >
                 About
+              </Link>
+              <Link
+                href="/movie"
+                className={cx(menuItemStyle, headerFont.className)}
+              >
+                Movies
               </Link>
               <Link
                 href="/statistics"
