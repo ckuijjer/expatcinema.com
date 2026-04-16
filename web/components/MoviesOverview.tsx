@@ -32,6 +32,12 @@ const listStyle = css({
   rowGap: '2px',
 })
 
+const sectionStyle = css({
+  fontSize: '16px',
+  fontWeight: '700',
+  margin: '12px 0 4px',
+})
+
 const rowStyle = css({
   display: 'grid',
   gridTemplateColumns: 'auto minmax(0, 1fr)',
@@ -78,6 +84,12 @@ const titleYearStyle = css({
   color: 'color-mix(in srgb, var(--text-color) 35%, transparent)',
 })
 
+const getMovieSection = (title: string) => {
+  const firstLetter = title.trim().charAt(0).toUpperCase()
+
+  return firstLetter >= 'A' && firstLetter <= 'Z' ? firstLetter : '#'
+}
+
 const MovieOverviewRow = ({ movie }: { movie: Movie }) => {
   const posterUrl = getMoviePosterUrl(movie.tmdb?.posterPath)
   const year = getMovieReleaseYear(movie)
@@ -118,6 +130,28 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
     left.title.localeCompare(right.title, undefined, { sensitivity: 'base' }),
   )
 
+  const moviesBySection = sortedMovies.reduce<Record<string, Movie[]>>(
+    (sections, movie) => {
+      const section = getMovieSection(movie.title)
+      sections[section] = sections[section] ?? []
+      sections[section].push(movie)
+      return sections
+    },
+    {},
+  )
+
+  const sections = Object.keys(moviesBySection).sort((left, right) => {
+    if (left === '#') {
+      return -1
+    }
+
+    if (right === '#') {
+      return 1
+    }
+
+    return left.localeCompare(right)
+  })
+
   return (
     <Layout>
       <div className={pageStyle}>
@@ -126,8 +160,13 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
           <p className={introStyle}>All movies sorted alphabetically.</p>
         </div>
         <div className={listStyle}>
-          {sortedMovies.map((movie) => (
-            <MovieOverviewRow key={movie.movieId} movie={movie} />
+          {sections.map((section) => (
+            <div key={section}>
+              <h3 className={sectionStyle}>{section}</h3>
+              {moviesBySection[section].map((movie) => (
+                <MovieOverviewRow key={movie.movieId} movie={movie} />
+              ))}
+            </div>
           ))}
         </div>
       </div>
