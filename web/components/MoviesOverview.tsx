@@ -36,7 +36,7 @@ const listStyle = css({
 const sectionStyle = css({
   fontSize: '16px',
   fontWeight: '700',
-  margin: '12px 0 4px',
+  margin: '12px 0',
   color: 'var(--text-color)',
 })
 
