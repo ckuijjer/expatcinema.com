@@ -3,7 +3,7 @@ import React from 'react'
 import { css, cx } from 'styled-system/css'
 
 import { Screening } from '../utils/getScreenings'
-import { headerFont } from '../utils/theme'
+import { headerFont, palette } from '../utils/theme'
 import { Layout } from './Layout'
 import { PageTitle } from './PageTitle'
 
@@ -46,9 +46,13 @@ const rowStyle = css({
   marginRight: '-12px',
   textDecoration: 'none',
   color: 'var(--text-color)',
-  _hover: {
+  '&:hover': {
     backgroundColor: 'var(--background-highlight-color)',
     borderRadius: '10px',
+  },
+  '&:hover .unmatched-movie-poster-placeholder': {
+    backgroundColor: palette.purple500,
+    borderColor: palette.purple500,
   },
 })
 
@@ -58,6 +62,7 @@ const posterPlaceholderStyle = css({
   borderRadius: '4px',
   backgroundColor: 'var(--background-highlight-color)',
   border: '1px solid var(--border-color)',
+  transition: 'background-color 120ms ease, border-color 120ms ease',
 })
 
 const movieTitleStyle = css({
@@ -84,7 +89,13 @@ const getUnmatchedMovieKey = (screening: Screening) =>
 
 const UnmatchedMovieRow = ({ screening }: { screening: Screening }) => (
   <div className={rowStyle}>
-    <div aria-hidden className={posterPlaceholderStyle} />
+    <div
+      aria-hidden
+      className={cx(
+        posterPlaceholderStyle,
+        'unmatched-movie-poster-placeholder',
+      )}
+    />
     <div className={movieTitleStyle}>
       {screening.title}
       {screening.year ? (
