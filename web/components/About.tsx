@@ -29,6 +29,13 @@ const textLinkStyle = css({
   color: 'var(--secondary-color)',
 })
 
+const tmdbAttributionStyle = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  lineHeight: '1.4',
+})
+
 const compareAlphabetically = (left: string, right: string) =>
   left.localeCompare(right, undefined, { sensitivity: 'base' })
 
