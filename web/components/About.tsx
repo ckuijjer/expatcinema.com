@@ -52,6 +52,19 @@ export const About = () => {
             find English subtitled movie screenings at the following cinemas.
           </p>
           <p>
+            Movie metadata and poster images are provided by{' '}
+            <Link
+              href="https://www.themoviedb.org/"
+              target="_blank"
+              rel="noreferrer"
+              className={textLinkStyle}
+            >
+              TMDB
+            </Link>
+            . This product uses the TMDB API but is not endorsed or certified by
+            TMDB.
+          </p>
+          <p>
             Note that this means there's unfortunately no guarantee that the
             screenings are actually with English subtitles, so please check the
             cinema's website before going.
