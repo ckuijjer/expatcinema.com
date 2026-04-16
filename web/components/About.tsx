@@ -111,7 +111,14 @@ export const About = () => {
           </p>
           <PageSection>Attribution</PageSection>
           <div className={tmdbAttributionStyle}>
-            <TmdbLogo />
+            <Link
+              href="https://www.themoviedb.org/"
+              target="_blank"
+              rel="noreferrer"
+              className={textLinkStyle}
+            >
+              <TmdbLogo />
+            </Link>
             <p>
               Movie metadata and poster images are provided by{' '}
               <Link
