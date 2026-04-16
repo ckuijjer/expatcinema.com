@@ -166,7 +166,8 @@ export const UnmatchedMoviesOverview = ({
         <div>
           <PageTitle>Unmatched movies</PageTitle>
           <p className={introStyle}>
-            All movies without a movieId, sorted alphabetically.
+            All movies that couldn't be matched to a known movie in The Movie
+            Database.
           </p>
         </div>
         <div className={listStyle}>

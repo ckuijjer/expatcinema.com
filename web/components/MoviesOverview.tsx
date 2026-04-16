@@ -173,7 +173,10 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
       <div className={pageStyle}>
         <div>
           <PageTitle>Movies</PageTitle>
-          <p className={introStyle}>All movies sorted alphabetically.</p>
+          <p className={introStyle}>
+            All movies for which there are screenings with English subtitles
+            scheduled.
+          </p>
         </div>
         <div className={listStyle}>
           {sections.map((section) => (
