@@ -129,6 +129,7 @@ export const ScreeningRow = ({
   movieSlug,
   posterUrl,
   showCity = true,
+  showPoster = true,
 }: {
   url: string
   date: DateTime
@@ -139,6 +140,7 @@ export const ScreeningRow = ({
   movieSlug?: string
   posterUrl?: string
   showCity?: boolean
+  showPoster?: boolean
 }) => {
   const movieIdClassName = movieId
     ? `movie-id-${movieId.replace(/[^a-zA-Z0-9_-]/g, '-')}`
@@ -171,7 +173,7 @@ export const ScreeningRow = ({
             {showCity ? <> | {cinema.city.name}</> : null}
           </div>
         </a>
-        {posterUrl && movieUrl ? (
+        {showPoster && posterUrl && movieUrl ? (
           <a href={movieUrl} className={posterLinkStyle}>
             <Image
               src={posterUrl}
@@ -182,7 +184,7 @@ export const ScreeningRow = ({
               className={posterStyle}
             />
           </a>
-        ) : posterUrl && tmdbUrl ? (
+        ) : showPoster && posterUrl && tmdbUrl ? (
           <a
             href={tmdbUrl}
             target="_blank"
@@ -198,7 +200,7 @@ export const ScreeningRow = ({
               className={posterStyle}
             />
           </a>
-        ) : posterUrl ? (
+        ) : showPoster && posterUrl ? (
           <Image
             src={posterUrl}
             width={48}
@@ -207,7 +209,7 @@ export const ScreeningRow = ({
             aria-hidden
             className={posterStyle}
           />
-        ) : movieId ? (
+        ) : showPoster && movieId ? (
           <div aria-hidden className={posterPlaceholderStyle} />
         ) : null}
       </div>

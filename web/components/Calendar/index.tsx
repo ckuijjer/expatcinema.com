@@ -55,11 +55,13 @@ const screeningMatchesSearch = (
 export const Calendar = ({
   screenings,
   showCity,
+  showPoster = true,
   currentCity,
   currentCinema,
 }: {
   screenings: Screening[]
   showCity: boolean
+  showPoster?: boolean
   currentCity?: string
   currentCinema?: string
 }) => {
@@ -117,7 +119,11 @@ export const Calendar = ({
           {emptyStateMessage}
         </h3>
       ) : (
-        <DirectCalendar rows={rows} showCity={showCity} />
+        <DirectCalendar
+          rows={rows}
+          showCity={showCity}
+          showPoster={showPoster}
+        />
       )}
     </div>
   )
