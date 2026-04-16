@@ -129,8 +129,6 @@ export const ScreeningRow = ({
   movieSlug,
   posterUrl,
   showCity = true,
-  currentCity,
-  currentCinema,
 }: {
   url: string
   date: DateTime
@@ -141,8 +139,6 @@ export const ScreeningRow = ({
   movieSlug?: string
   posterUrl?: string
   showCity?: boolean
-  currentCity?: string
-  currentCinema?: string
 }) => {
   const movieIdClassName = movieId
     ? `movie-id-${movieId.replace(/[^a-zA-Z0-9_-]/g, '-')}`
@@ -150,21 +146,21 @@ export const ScreeningRow = ({
   const tmdbUrl = movieId?.startsWith('tmdb:')
     ? `https://www.themoviedb.org/movie/${movieId.slice(5)}`
     : undefined
-  const movieUrl = movieSlug
-    ? currentCity && currentCinema
-      ? `/city/${currentCity}/cinema/${currentCinema}/movie/${movieSlug}`
-      : currentCity
-        ? `/city/${currentCity}/movie/${movieSlug}`
-        : `/movie/${movieSlug}`
-    : undefined
+  const movieUrl = movieSlug ? `/movie/${movieSlug}` : undefined
 
   return (
     <div className={movieIdClassName}>
       <div className={containerStyle}>
-        <a href={url} className={`${aStyle} ${screeningLinkStyle} ${timeStyle}`}>
+        <a
+          href={url}
+          className={`${aStyle} ${screeningLinkStyle} ${timeStyle}`}
+        >
           <Time>{date}</Time>
         </a>
-        <a href={url} className={`${aStyle} ${screeningLinkStyle} ${contentStyle}`}>
+        <a
+          href={url}
+          className={`${aStyle} ${screeningLinkStyle} ${contentStyle}`}
+        >
           <div className={titleStyle}>
             {title}
             {year ? <span className={titleYearStyle}> ({year})</span> : null}
