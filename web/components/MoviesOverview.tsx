@@ -12,6 +12,7 @@ import {
 import { headerFont } from '../utils/theme'
 import { Layout } from './Layout'
 import { PageTitle } from './PageTitle'
+import { PageSection } from './PageSection'
 
 const pageStyle = css({
   marginTop: '16px',
@@ -26,6 +27,15 @@ const introStyle = css({
   fontSize: '16px',
   lineHeight: '1.5',
   color: 'var(--text-muted-color)',
+})
+
+const footerStyle = css({
+  fontSize: '18px',
+  lineHeight: '1.4',
+})
+
+const textLinkStyle = css({
+  color: 'var(--secondary-color)',
 })
 
 const listStyle = css({
@@ -163,7 +173,10 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
       <div className={pageStyle}>
         <div>
           <PageTitle>Movies</PageTitle>
-          <p className={introStyle}>All movies sorted alphabetically.</p>
+          <p className={introStyle}>
+            All movies for which there are screenings with English subtitles
+            scheduled.
+          </p>
         </div>
         <div className={listStyle}>
           {sections.map((section) => (
@@ -176,6 +189,16 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
               ))}
             </div>
           ))}
+        </div>
+        <div className={footerStyle}>
+          <PageSection>Unmatched movies</PageSection>
+          <p>
+            View the{' '}
+            <Link href="/movie/unmatched" className={textLinkStyle}>
+              unmatched movies
+            </Link>{' '}
+            list.
+          </p>
         </div>
       </div>
     </Layout>
