@@ -9,7 +9,7 @@ import { palette } from '../../utils/theme'
 
 export const metadata: Metadata = {
   title: 'Unmatched movies – Expat Cinema',
-  alternates: { canonical: 'https://expatcinema.com/unmatched_movie' },
+  alternates: { canonical: 'https://expatcinema.com/movie/unmatched' },
   robots: {
     index: false,
     follow: false,
