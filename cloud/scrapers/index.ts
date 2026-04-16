@@ -55,6 +55,7 @@ import worm from './worm'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import {
   getMetadataLookupKey,
+  getMovieSortTitle,
   normalizeMovieTitleForLookup,
   slugifyMovieTitle,
 } from '../metadata/titleResolver'
@@ -346,6 +347,7 @@ export const scrapers = async () => {
               tmdbId: metadata.tmdb?.id,
               imdbId: metadata.imdbId,
               title: metadata.title,
+              sortTitle: getMovieSortTitle(metadata.title ?? ''),
               tmdb: {
                 id: metadata.tmdb?.id,
                 title: metadata.title,

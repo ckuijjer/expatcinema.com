@@ -1,4 +1,5 @@
 import {
+  getMovieSortTitle,
   getMovieId,
   getTitleSearchVariants,
   normalizeMovieTitleForLookup,
@@ -23,6 +24,24 @@ describe('titleResolver', () => {
     expect(stripTitleNoise('Hard Boiled (4K Restoration)')).toBe('Hard Boiled')
     expect(stripTitleNoise('A Family (En Subs)')).toBe('A Family')
     expect(stripTitleNoise('Hard Boiled (4K Restoration)')).toBe('Hard Boiled')
+  })
+
+  test('builds sort titles without leading articles', () => {
+    expect(getMovieSortTitle('The Matrix')).toBe('Matrix')
+    expect(getMovieSortTitle('A Family')).toBe('Family')
+    expect(getMovieSortTitle('An Education')).toBe('Education')
+    expect(getMovieSortTitle('De Tweeling')).toBe('Tweeling')
+    expect(getMovieSortTitle('Het Diner')).toBe('Diner')
+    expect(getMovieSortTitle('Een Duitse Film')).toBe('Duitse Film')
+    expect(getMovieSortTitle('Le Fabuleux Destin d’Amélie Poulain')).toBe(
+      'Fabuleux Destin d’Amélie Poulain',
+    )
+    expect(getMovieSortTitle("L'engloutie")).toBe('engloutie')
+    expect(getMovieSortTitle('Los Olvidados')).toBe('Olvidados')
+    expect(getMovieSortTitle('Der Himmel über Berlin')).toBe(
+      'Himmel über Berlin',
+    )
+    expect(getMovieSortTitle('Das Boot')).toBe('Boot')
   })
 
   test('produces multiple search variants', () => {
