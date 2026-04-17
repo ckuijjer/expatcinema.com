@@ -133,10 +133,12 @@ type ScoreCandidateInput = {
   alternativeTitles?: string[]
 }
 
-const getYearScore = (
-  releaseYear: number | undefined,
-  yearHints: number[],
-) => {
+export type ScoredCandidate<T> = {
+  candidate: T
+  confidence: number
+}
+
+const getYearScore = (releaseYear: number | undefined, yearHints: number[]) => {
   if (!releaseYear || yearHints.length === 0) {
     return 0.5
   }
@@ -200,4 +202,37 @@ export const scoreCandidate = (
     candidate,
     yearHintOverride !== undefined ? [yearHintOverride] : [],
   )
+}
+
+export const selectCandidateWithPopularityTieBreak = <
+  T extends { popularity?: number },
+>(
+  candidates: Array<ScoredCandidate<T>>,
+) => {
+  const byConfidence = [...candidates].sort(
+    (left, right) => right.confidence - left.confidence,
+  )
+  const bestConfidence = byConfidence[0]?.confidence
+
+  if (bestConfidence === undefined) {
+    return undefined
+  }
+
+  const confidenceBand = byConfidence.filter(
+    (candidate) => bestConfidence - candidate.confidence < 0.05,
+  )
+  const byPopularity = [...confidenceBand].sort(
+    (left, right) =>
+      (right.candidate.popularity ?? -1) - (left.candidate.popularity ?? -1),
+  )
+
+  const winner = byPopularity[0] ?? byConfidence[0]
+  const topPopularity = byPopularity[0]?.candidate.popularity ?? -1
+  const secondPopularity = byPopularity[1]?.candidate.popularity ?? -1
+
+  return {
+    winner,
+    hasPopularityTieBreak:
+      confidenceBand.length > 1 && topPopularity > secondPopularity,
+  }
 }

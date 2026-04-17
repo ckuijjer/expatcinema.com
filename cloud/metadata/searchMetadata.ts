@@ -14,6 +14,7 @@ import {
   getTitleSearchVariants,
   normalizeMovieTitleForLookup,
   scoreCandidateWithYearHints,
+  selectCandidateWithPopularityTieBreak,
 } from './titleResolver'
 import { Metadata, TmdbMovie } from './types'
 
@@ -169,7 +170,9 @@ const searchMetadata = async (
     }))
     .sort((left, right) => right.confidence - left.confidence)
 
-  const bestCandidate = scoredCandidates[0]
+  const bestCandidateSelection =
+    selectCandidateWithPopularityTieBreak(scoredCandidates)
+  const bestCandidate = bestCandidateSelection?.winner
   const secondCandidate = scoredCandidates[1]
 
   logger.info('searchMetadata scored candidates', {
@@ -183,6 +186,7 @@ const searchMetadata = async (
       title: entry.candidate.title,
       originalTitle: entry.candidate.originalTitle,
       releaseDate: entry.candidate.releaseDate,
+      popularity: entry.candidate.popularity,
       confidence: entry.confidence,
     })),
   })
@@ -190,7 +194,8 @@ const searchMetadata = async (
   if (
     bestCandidate &&
     bestCandidate.confidence >= 0.9 &&
-    (!secondCandidate ||
+    (bestCandidateSelection?.hasPopularityTieBreak ||
+      !secondCandidate ||
       bestCandidate.confidence - secondCandidate.confidence >= 0.05)
   ) {
     const tmdbMovie = await getTmdbMovie(bestCandidate.candidate.id)
@@ -211,6 +216,7 @@ const searchMetadata = async (
         title: entry.candidate.title,
         originalTitle: entry.candidate.originalTitle,
         releaseDate: entry.candidate.releaseDate,
+        popularity: entry.candidate.popularity,
         confidence: entry.confidence,
       })),
     })
@@ -230,6 +236,7 @@ const searchMetadata = async (
         title: entry.candidate.title,
         originalTitle: entry.candidate.originalTitle,
         releaseDate: entry.candidate.releaseDate,
+        popularity: entry.candidate.popularity,
         confidence: entry.confidence,
       })),
     },
