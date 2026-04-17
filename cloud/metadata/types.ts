@@ -15,6 +15,7 @@ export type TmdbMovie = {
   popularity?: number
   posterPath?: string
   releaseDate?: string
+  runtime?: number
   title?: string
   video?: boolean
   voteAverage?: number

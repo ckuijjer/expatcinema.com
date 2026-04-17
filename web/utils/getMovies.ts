@@ -14,6 +14,7 @@ export type MovieData = {
     overview?: string | null
     posterPath?: string | null
     releaseDate?: string | null
+    runtime?: number | null
     title?: string | null
     voteAverage?: number | null
   }

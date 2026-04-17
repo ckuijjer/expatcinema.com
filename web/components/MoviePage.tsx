@@ -72,6 +72,38 @@ const movieInfoStyle = css({
   minWidth: '0',
 })
 
+const detailsStyle = css({
+  display: 'grid',
+  rowGap: '12px',
+  marginTop: '4px',
+})
+
+const descriptionStyle = css({
+  marginTop: '0',
+  marginBottom: '0',
+  fontSize: '18px',
+  lineHeight: '1.5',
+})
+
+const metadataStyle = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '16px',
+  fontSize: '14px',
+  lineHeight: '1.4',
+  color: 'var(--text-muted-color)',
+})
+
+const metadataItemStyle = css({
+  display: 'flex',
+  gap: '4px',
+})
+
+const metadataLabelStyle = css({
+  fontWeight: '700',
+  color: 'var(--text-color)',
+})
+
 const linkRowStyle = css({
   display: 'flex',
   gap: '12px',
@@ -86,6 +118,18 @@ const externalLinkStyle = css({
     textDecoration: 'underline',
   },
 })
+
+const originalLanguageNames = new Intl.DisplayNames(['en'], {
+  type: 'language',
+})
+
+const formatOriginalLanguage = (language?: string | null) => {
+  if (!language) {
+    return undefined
+  }
+
+  return originalLanguageNames.of(language) ?? language
+}
 
 export const MoviePage = ({
   movie,
@@ -108,6 +152,9 @@ export const MoviePage = ({
   const imdbHref = movie.imdbId
     ? `https://www.imdb.com/title/${movie.imdbId}/`
     : undefined
+  const originalLanguage = formatOriginalLanguage(movie.tmdb?.originalLanguage)
+  const runtime = movie.tmdb?.runtime
+  const description = movie.tmdb?.overview
 
   return (
     <Layout>
@@ -130,6 +177,29 @@ export const MoviePage = ({
             {movie.title}
             {year ? <span className={yearStyle}> ({year})</span> : null}
           </h1>
+          {description || originalLanguage || runtime ? (
+            <div className={detailsStyle}>
+              {description ? (
+                <p className={descriptionStyle}>{description}</p>
+              ) : null}
+              <div className={metadataStyle}>
+                {originalLanguage ? (
+                  <div className={metadataItemStyle}>
+                    <span className={metadataLabelStyle}>
+                      Original language:
+                    </span>
+                    <span>{originalLanguage}</span>
+                  </div>
+                ) : null}
+                {runtime ? (
+                  <div className={metadataItemStyle}>
+                    <span className={metadataLabelStyle}>Runtime:</span>
+                    <span>{runtime} min</span>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
           <div className={linkRowStyle}>
             {tmdbHref ? (
               <a
