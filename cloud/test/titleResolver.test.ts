@@ -5,6 +5,7 @@ import {
   normalizeMovieTitleForLookup,
   scoreCandidate,
   scoreCandidateWithYearHints,
+  selectCandidateWithPopularityTieBreak,
   stripTitleNoise,
 } from '../metadata/titleResolver'
 
@@ -130,5 +131,21 @@ describe('titleResolver', () => {
 
     expect(siblingYearScore).toBeGreaterThan(screeningYearScore)
     expect(siblingYearScore).toBeGreaterThan(0.9)
+  })
+
+  test('uses popularity to break ties between equally strong candidates', () => {
+    const selected = selectCandidateWithPopularityTieBreak([
+      {
+        candidate: { id: 399031, popularity: 1.8699 },
+        confidence: 1,
+      },
+      {
+        candidate: { id: 399219, popularity: 0.0306 },
+        confidence: 1,
+      },
+    ])
+
+    expect(selected?.winner?.candidate.id).toBe(399031)
+    expect(selected?.hasPopularityTieBreak).toBe(true)
   })
 })

@@ -53,6 +53,7 @@ export type MetadataMatch = {
     title?: string
     originalTitle?: string
     releaseDate?: string
+    popularity?: number
     confidence: number
   }>
 }
