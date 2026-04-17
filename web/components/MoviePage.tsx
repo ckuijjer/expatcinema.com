@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import { Suspense } from 'react'
+import { Duration } from 'luxon'
 
 import { css, cx } from 'styled-system/css'
 
@@ -131,6 +132,27 @@ const formatOriginalLanguage = (language?: string | null) => {
   return originalLanguageNames.of(language) ?? language
 }
 
+const formatRuntime = (runtime?: number | null) => {
+  if (!runtime) {
+    return undefined
+  }
+
+  const balancedDuration = Duration.fromObject({ minutes: runtime }).shiftTo(
+    'hours',
+    'minutes',
+  )
+
+  const parts = []
+  if (balancedDuration.hours) {
+    parts.push(`${balancedDuration.hours}h`)
+  }
+  if (balancedDuration.minutes || parts.length === 0) {
+    parts.push(`${balancedDuration.minutes}m`)
+  }
+
+  return parts.join('')
+}
+
 export const MoviePage = ({
   movie,
   screenings,
@@ -153,7 +175,7 @@ export const MoviePage = ({
     ? `https://www.imdb.com/title/${movie.imdbId}/`
     : undefined
   const originalLanguage = formatOriginalLanguage(movie.tmdb?.originalLanguage)
-  const runtime = movie.tmdb?.runtime
+  const runtime = formatRuntime(movie.tmdb?.runtime)
   const description = movie.tmdb?.overview
 
   return (
@@ -194,7 +216,7 @@ export const MoviePage = ({
                 {runtime ? (
                   <div className={metadataItemStyle}>
                     <span className={metadataLabelStyle}>Runtime:</span>
-                    <span>{runtime} min</span>
+                    <span>{runtime}</span>
                   </div>
                 ) : null}
               </div>
