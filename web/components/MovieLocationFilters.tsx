@@ -15,11 +15,11 @@ type SelectOption = {
 
 const filtersStyle = css({
   display: 'grid',
-  gap: '12px',
-  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-  '@media (max-width: 640px)': {
-    gridTemplateColumns: 'minmax(0, 1fr)',
-  },
+  gap: '16px',
+  padding: '16px',
+  borderRadius: '12px',
+  backgroundColor: 'var(--background-inverse-color)',
+  color: 'var(--text-inverse-color)',
 })
 
 const filterStyle = css({
@@ -28,26 +28,27 @@ const filterStyle = css({
 })
 
 const labelStyle = css({
-  fontSize: '14px',
+  fontSize: '16px',
   fontWeight: '700',
-  color: 'var(--text-color)',
+  color: 'var(--text-inverse-color)',
 })
 
 const selectStyle = css({
   width: '100%',
   minWidth: '0',
-  padding: '10px 12px',
+  padding: '12px 14px',
   borderRadius: '10px',
-  border: '1px solid var(--border-color)',
-  backgroundColor: 'var(--background-color)',
-  color: 'var(--text-color)',
-  fontSize: '16px',
+  border:
+    '1px solid color-mix(in srgb, var(--text-inverse-color) 30%, transparent)',
+  backgroundColor: 'var(--background-inverse-color)',
+  color: 'var(--text-inverse-color)',
+  fontSize: '18px',
   lineHeight: '1.4',
   outline: 'none',
   '&:focus': {
-    borderColor: 'var(--secondary-color)',
+    borderColor: 'var(--primary-color)',
     boxShadow:
-      '0 0 0 2px color-mix(in srgb, var(--secondary-color) 25%, transparent)',
+      '0 0 0 2px color-mix(in srgb, var(--primary-color) 25%, transparent)',
   },
 })
 
