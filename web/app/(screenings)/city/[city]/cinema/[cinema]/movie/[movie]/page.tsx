@@ -5,6 +5,10 @@ import { MoviePage } from '../../../../../../../../components/MoviePage'
 import cinemas from '../../../../../../../../data/cinema.json'
 import { getMovies } from '../../../../../../../../utils/getMovies'
 import {
+  buildCityFilterLinks,
+  buildCinemaFilterLinks,
+} from '../../../../../../../../utils/getFilterLinks'
+import {
   buildMoviePageMetadata,
   getMoviePageData,
   getMovieRouteSlugs,
@@ -59,6 +63,8 @@ export default async function CityCinemaMoviePage({
       currentCity={city}
       currentCinema={cinema}
       showCity
+      cityFilterLinks={buildCityFilterLinks(screenings)}
+      cinemaFilterLinks={buildCinemaFilterLinks(screenings, city)}
     />
   )
 }

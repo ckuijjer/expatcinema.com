@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 
 import { MoviePage } from '../../../../components/MoviePage'
 import { getMovies } from '../../../../utils/getMovies'
+import { buildCityFilterLinks } from '../../../../utils/getFilterLinks'
 import {
   buildMoviePageMetadata,
   getMoviePageData,
@@ -49,6 +50,7 @@ export default async function MoviePageRoute({
       movie={data.movie}
       screenings={data.screenings}
       showCity
+      cityFilterLinks={buildCityFilterLinks(screenings)}
     />
   )
 }

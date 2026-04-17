@@ -4,6 +4,8 @@ import { Suspense } from 'react'
 
 import { css, cx } from 'styled-system/css'
 
+import { CinemaFilter } from './CinemaFilter'
+import { CityFilter, FilterLink } from './CityFilter'
 import { headerFont } from '../utils/theme'
 import {
   getMoviePosterUrl,
@@ -78,6 +80,12 @@ const linkRowStyle = css({
   flexWrap: 'wrap',
 })
 
+const filtersStyle = css({
+  display: 'grid',
+  rowGap: '8px',
+  marginTop: '8px',
+})
+
 const externalLinkStyle = css({
   fontSize: '14px',
   color: 'var(--secondary-color)',
@@ -93,12 +101,16 @@ export const MoviePage = ({
   showCity = true,
   currentCity,
   currentCinema,
+  cityFilterLinks,
+  cinemaFilterLinks,
 }: {
   movie: Movie
   screenings: Screening[]
   showCity?: boolean
   currentCity?: string
   currentCinema?: string
+  cityFilterLinks?: FilterLink[]
+  cinemaFilterLinks?: FilterLink[]
 }) => {
   const posterUrl = getMoviePosterUrl(movie.tmdb?.posterPath, 'w342')
   const year = getMovieReleaseYear(movie)
@@ -154,6 +166,12 @@ export const MoviePage = ({
           </div>
         </div>
         <div style={{ gridColumn: '1 / -1' }}>
+          <div className={filtersStyle}>
+            {cityFilterLinks ? <CityFilter links={cityFilterLinks} /> : null}
+            {cityFilterLinks && cinemaFilterLinks ? (
+              <CinemaFilter links={cinemaFilterLinks} />
+            ) : null}
+          </div>
           <Suspense>
             <Calendar
               screenings={screenings}

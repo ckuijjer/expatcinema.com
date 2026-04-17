@@ -4,6 +4,10 @@ import { notFound } from 'next/navigation'
 import { MoviePage } from '../../../../../../components/MoviePage'
 import { getMovies } from '../../../../../../utils/getMovies'
 import {
+  buildCityFilterLinks,
+  buildCinemaFilterLinks,
+} from '../../../../../../utils/getFilterLinks'
+import {
   buildMoviePageMetadata,
   getMoviePageData,
   getMovieRouteSlugs,
@@ -59,6 +63,8 @@ export default async function CityMoviePage({
       screenings={data.screenings}
       currentCity={city}
       showCity
+      cityFilterLinks={buildCityFilterLinks(screenings)}
+      cinemaFilterLinks={buildCinemaFilterLinks(screenings, city)}
     />
   )
 }
