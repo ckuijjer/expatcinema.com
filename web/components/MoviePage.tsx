@@ -6,14 +6,12 @@ import { Duration } from 'luxon'
 import { css, cx } from 'styled-system/css'
 
 import { headerFont } from '../utils/theme'
-import {
-  getMoviePosterUrl,
-  getMovieReleaseYear,
-  Movie,
-} from '../utils/getMovies'
-import { Screening } from '../utils/getScreenings'
+import { getMoviePosterUrl, getMovieReleaseYear } from '../utils/getMovies'
+import type { Movie, MovieVideo } from '../utils/getMovies'
+import type { Screening } from '../utils/getScreenings'
 import { Calendar } from './Calendar'
 import { Layout } from './Layout'
+import { PageSection } from './PageSection'
 
 const pageStyle = css({
   marginTop: '16px',
@@ -120,6 +118,30 @@ const externalLinkStyle = css({
   },
 })
 
+const trailerSectionStyle = css({
+  display: 'grid',
+  rowGap: '12px',
+})
+
+const trailerEmbedStyle = css({
+  position: 'relative',
+  width: '100%',
+  aspectRatio: '16 / 9',
+  overflow: 'hidden',
+  borderRadius: '12px',
+  border: '1px solid var(--border-color)',
+  backgroundColor: 'var(--background-highlight-color)',
+  maxWidth: '960px',
+})
+
+const trailerFrameStyle = css({
+  position: 'absolute',
+  inset: '0',
+  width: '100%',
+  height: '100%',
+  border: '0',
+})
+
 const originalLanguageNames = new Intl.DisplayNames(['en'], {
   type: 'language',
 })
@@ -153,6 +175,23 @@ const formatRuntime = (runtime?: number | null) => {
   return parts.join('')
 }
 
+const getTrailer = (movie: Movie) => {
+  const videos = movie.tmdb?.videos?.results?.filter(
+    (video): video is MovieVideo & { key: string } =>
+      video.site === 'YouTube' && Boolean(video.key),
+  )
+
+  if (!videos?.length) {
+    return undefined
+  }
+
+  return (
+    videos.find((video) => video.type === 'Trailer' && video.official) ??
+    videos.find((video) => video.type === 'Trailer') ??
+    videos[0]
+  )
+}
+
 export const MoviePage = ({
   movie,
   screenings,
@@ -177,6 +216,7 @@ export const MoviePage = ({
   const originalLanguage = formatOriginalLanguage(movie.tmdb?.originalLanguage)
   const runtime = formatRuntime(movie.tmdb?.runtime)
   const description = movie.tmdb?.overview
+  const trailer = getTrailer(movie)
 
   return (
     <Layout>
@@ -244,6 +284,21 @@ export const MoviePage = ({
               </a>
             ) : null}
           </div>
+          {trailer?.key ? (
+            <div className={trailerSectionStyle}>
+              <PageSection>Trailer</PageSection>
+              <div className={trailerEmbedStyle}>
+                <iframe
+                  className={trailerFrameStyle}
+                  src={`https://www.youtube-nocookie.com/embed/${trailer.key}?rel=0`}
+                  title={`Trailer for ${movie.title}`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          ) : null}
         </div>
         <div style={{ gridColumn: '1 / -1' }}>
           <Suspense>

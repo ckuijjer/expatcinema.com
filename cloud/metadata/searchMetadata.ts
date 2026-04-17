@@ -58,7 +58,11 @@ const searchTmdbCandidates = async (
 
 const getTmdbMovie = async (tmdbId: number) => {
   const tmdb = getTmdb()
-  const movie = (await tmdb.get(`movie/${tmdbId}`)) as TmdbMovieResult
+  const movie = (await tmdb.get(`movie/${tmdbId}`, {
+    searchParams: {
+      append_to_response: 'videos',
+    },
+  })) as TmdbMovieResult
   const externalIds = (await tmdb.get(`movie/${tmdbId}/external_ids`)) as {
     imdbId?: string
   }
