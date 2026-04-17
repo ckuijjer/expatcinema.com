@@ -2,21 +2,6 @@ export type MatchStatus = 'matched' | 'manual' | 'ambiguous' | 'unmatched'
 
 export type MatchMethod = 'manual-override' | 'tmdb-search' | 'unmatched'
 
-export type TmdbVideo = {
-  id?: string
-  key?: string
-  name?: string
-  official?: boolean
-  publishedAt?: string
-  site?: string
-  size?: number
-  type?: string
-}
-
-export type TmdbVideos = {
-  results?: TmdbVideo[]
-}
-
 export type TmdbMovie = {
   id: number
   adult?: boolean
@@ -30,10 +15,8 @@ export type TmdbMovie = {
   popularity?: number
   posterPath?: string
   releaseDate?: string
-  runtime?: number
   title?: string
   video?: boolean
-  videos?: TmdbVideos
   voteAverage?: number
   voteCount?: number
   alternativeTitles?: string[]

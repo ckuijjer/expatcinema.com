@@ -19,13 +19,8 @@ import { Metadata, TmdbMovie } from './types'
 
 type TmdbSearchResponse = { results: TmdbMovieResult[] }
 type TmdbFindResponse = { movieResults: TmdbMovieResult[] }
-type TmdbMovieAppendResponse = Omit<TmdbMovieResult, 'alternativeTitles'> & {
-  alternativeTitles?: {
-    titles?: Array<{ title?: string }>
-  }
-  externalIds?: {
-    imdbId?: string
-  }
+type TmdbAlternativeTitlesResponse = {
+  titles?: Array<{ title?: string }>
 }
 
 const getTmdb = () => {
@@ -63,22 +58,22 @@ const searchTmdbCandidates = async (
 
 const getTmdbMovie = async (tmdbId: number) => {
   const tmdb = getTmdb()
-  const movie = (await tmdb.get(`movie/${tmdbId}`, {
-    searchParams: {
-      append_to_response: 'videos,alternative_titles,external_ids',
-    },
-  })) as unknown as TmdbMovieAppendResponse
+  const movie = (await tmdb.get(`movie/${tmdbId}`)) as TmdbMovieResult
+  const externalIds = (await tmdb.get(`movie/${tmdbId}/external_ids`)) as {
+    imdbId?: string
+  }
+  const alternativeTitles = (await tmdb.get(
+    `movie/${tmdbId}/alternative_titles`,
+  )) as TmdbAlternativeTitlesResponse
 
-  const normalizedMovie = {
+  return {
     ...movie,
-    imdbId: movie.externalIds?.imdbId,
+    imdbId: externalIds.imdbId,
     alternativeTitles:
-      movie.alternativeTitles?.titles
+      alternativeTitles.titles
         ?.map(({ title }) => title)
         .filter((title): title is string => Boolean(title)) ?? [],
-  } as TmdbMovieResult
-
-  return normalizedMovie
+  }
 }
 
 const getTmdbUsingImdbId = async (imdbId: string) => {
