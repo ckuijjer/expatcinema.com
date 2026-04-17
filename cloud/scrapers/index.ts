@@ -357,6 +357,8 @@ export const scrapers = async () => {
                 backdropPath: metadata.tmdb?.backdropPath,
                 overview: metadata.tmdb?.overview,
                 originalLanguage: metadata.tmdb?.originalLanguage,
+                runtime: metadata.tmdb?.runtime,
+                videos: metadata.tmdb?.videos,
                 voteAverage: metadata.tmdb?.voteAverage,
                 genreIds: metadata.tmdb?.genreIds ?? [],
               },
@@ -384,9 +386,8 @@ export const scrapers = async () => {
       match: metadata.match,
     })
 
-    const titleMatchesWithSiblingHints = uniqueTitlesAndMetadataWithSiblingHints.map(
-      toTitleMatchRecord,
-    )
+    const titleMatchesWithSiblingHints =
+      uniqueTitlesAndMetadataWithSiblingHints.map(toTitleMatchRecord)
 
     const ambiguousMovies = uniqueTitlesAndMetadataWithSiblingHints
       .filter((metadata) => metadata.match.status === 'ambiguous')
