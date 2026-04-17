@@ -1,18 +1,17 @@
 import Image from 'next/image'
 import React from 'react'
 import { Suspense } from 'react'
+import { Duration } from 'luxon'
 
 import { css, cx } from 'styled-system/css'
 
 import { headerFont } from '../utils/theme'
-import {
-  getMoviePosterUrl,
-  getMovieReleaseYear,
-  Movie,
-} from '../utils/getMovies'
-import { Screening } from '../utils/getScreenings'
+import { getMoviePosterUrl, getMovieReleaseYear } from '../utils/getMovies'
+import type { Movie, MovieVideo } from '../utils/getMovies'
+import type { Screening } from '../utils/getScreenings'
 import { Calendar } from './Calendar'
 import { Layout } from './Layout'
+import { PageSection } from './PageSection'
 
 const pageStyle = css({
   marginTop: '16px',
@@ -72,6 +71,38 @@ const movieInfoStyle = css({
   minWidth: '0',
 })
 
+const detailsStyle = css({
+  display: 'grid',
+  rowGap: '12px',
+  marginTop: '4px',
+})
+
+const descriptionStyle = css({
+  marginTop: '0',
+  marginBottom: '0',
+  fontSize: '18px',
+  lineHeight: '1.5',
+})
+
+const metadataStyle = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '16px',
+  fontSize: '14px',
+  lineHeight: '1.4',
+  color: 'var(--text-muted-color)',
+})
+
+const metadataItemStyle = css({
+  display: 'flex',
+  gap: '4px',
+})
+
+const metadataLabelStyle = css({
+  fontWeight: '700',
+  color: 'var(--text-color)',
+})
+
 const linkRowStyle = css({
   display: 'flex',
   gap: '12px',
@@ -86,6 +117,80 @@ const externalLinkStyle = css({
     textDecoration: 'underline',
   },
 })
+
+const trailerSectionStyle = css({
+  display: 'grid',
+  rowGap: '12px',
+})
+
+const trailerEmbedStyle = css({
+  position: 'relative',
+  width: '100%',
+  aspectRatio: '16 / 9',
+  overflow: 'hidden',
+  borderRadius: '12px',
+  border: '1px solid var(--border-color)',
+  backgroundColor: 'var(--background-highlight-color)',
+  maxWidth: '960px',
+})
+
+const trailerFrameStyle = css({
+  position: 'absolute',
+  inset: '0',
+  width: '100%',
+  height: '100%',
+  border: '0',
+})
+
+const originalLanguageNames = new Intl.DisplayNames(['en'], {
+  type: 'language',
+})
+
+const formatOriginalLanguage = (language?: string | null) => {
+  if (!language) {
+    return undefined
+  }
+
+  return originalLanguageNames.of(language) ?? language
+}
+
+const formatRuntime = (runtime?: number | null) => {
+  if (!runtime) {
+    return undefined
+  }
+
+  const balancedDuration = Duration.fromObject({ minutes: runtime }).shiftTo(
+    'hours',
+    'minutes',
+  )
+
+  const parts = []
+  if (balancedDuration.hours) {
+    parts.push(`${balancedDuration.hours}h`)
+  }
+  if (balancedDuration.minutes || parts.length === 0) {
+    parts.push(`${balancedDuration.minutes}m`)
+  }
+
+  return parts.join('')
+}
+
+const getTrailer = (movie: Movie) => {
+  const videos = movie.tmdb?.videos?.results?.filter(
+    (video): video is MovieVideo & { key: string } =>
+      video.site === 'YouTube' && Boolean(video.key),
+  )
+
+  if (!videos?.length) {
+    return undefined
+  }
+
+  return (
+    videos.find((video) => video.type === 'Trailer' && video.official) ??
+    videos.find((video) => video.type === 'Trailer') ??
+    videos[0]
+  )
+}
 
 export const MoviePage = ({
   movie,
@@ -108,6 +213,10 @@ export const MoviePage = ({
   const imdbHref = movie.imdbId
     ? `https://www.imdb.com/title/${movie.imdbId}/`
     : undefined
+  const originalLanguage = formatOriginalLanguage(movie.tmdb?.originalLanguage)
+  const runtime = formatRuntime(movie.tmdb?.runtime)
+  const description = movie.tmdb?.overview
+  const trailer = getTrailer(movie)
 
   return (
     <Layout>
@@ -130,6 +239,29 @@ export const MoviePage = ({
             {movie.title}
             {year ? <span className={yearStyle}> ({year})</span> : null}
           </h1>
+          {description || originalLanguage || runtime ? (
+            <div className={detailsStyle}>
+              {description ? (
+                <p className={descriptionStyle}>{description}</p>
+              ) : null}
+              <div className={metadataStyle}>
+                {originalLanguage ? (
+                  <div className={metadataItemStyle}>
+                    <span className={metadataLabelStyle}>
+                      Original language:
+                    </span>
+                    <span>{originalLanguage}</span>
+                  </div>
+                ) : null}
+                {runtime ? (
+                  <div className={metadataItemStyle}>
+                    <span className={metadataLabelStyle}>Runtime:</span>
+                    <span>{runtime}</span>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
           <div className={linkRowStyle}>
             {tmdbHref ? (
               <a
@@ -152,6 +284,21 @@ export const MoviePage = ({
               </a>
             ) : null}
           </div>
+          {trailer?.key ? (
+            <div className={trailerSectionStyle}>
+              <PageSection>Trailer</PageSection>
+              <div className={trailerEmbedStyle}>
+                <iframe
+                  className={trailerFrameStyle}
+                  src={`https://www.youtube-nocookie.com/embed/${trailer.key}?rel=0`}
+                  title={`Trailer for ${movie.title}`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          ) : null}
         </div>
         <div style={{ gridColumn: '1 / -1' }}>
           <Suspense>

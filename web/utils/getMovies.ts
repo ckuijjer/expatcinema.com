@@ -14,9 +14,24 @@ export type MovieData = {
     overview?: string | null
     posterPath?: string | null
     releaseDate?: string | null
+    runtime?: number | null
     title?: string | null
+    videos?: {
+      results?: MovieVideo[]
+    }
     voteAverage?: number | null
   }
+}
+
+export type MovieVideo = {
+  id?: string
+  key?: string
+  name?: string
+  official?: boolean
+  publishedAt?: string
+  site?: string
+  size?: number
+  type?: string
 }
 
 export type Movie = Omit<MovieData, 'slug'> & { slug?: string }
