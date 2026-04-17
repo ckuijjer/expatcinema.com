@@ -11,6 +11,7 @@ import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
 import { Calendar } from './Calendar'
 import { Layout } from './Layout'
+import { MovieLocationFilters } from './MovieLocationFilters'
 import { PageSection } from './PageSection'
 
 const pageStyle = css({
@@ -194,13 +195,17 @@ const getTrailer = (movie: Movie) => {
 
 export const MoviePage = ({
   movie,
+  movieSlug,
   screenings,
+  availableScreenings,
   showCity = true,
   currentCity,
   currentCinema,
 }: {
   movie: Movie
+  movieSlug: string
   screenings: Screening[]
+  availableScreenings: Screening[]
   showCity?: boolean
   currentCity?: string
   currentCinema?: string
@@ -299,6 +304,14 @@ export const MoviePage = ({
               </div>
             </div>
           ) : null}
+        </div>
+        <div style={{ gridColumn: '1 / -1' }}>
+          <MovieLocationFilters
+            movieSlug={movieSlug}
+            screenings={availableScreenings}
+            currentCity={currentCity}
+            currentCinema={currentCinema}
+          />
         </div>
         <div style={{ gridColumn: '1 / -1' }}>
           <Suspense>
