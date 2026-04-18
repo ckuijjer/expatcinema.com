@@ -227,9 +227,11 @@ export const MoviePage = ({
 
   return (
     <>
-      <Layout backgroundColor={palette.purple600}>
-        <NavigationBar showSearch={false} />
-      </Layout>
+      <Suspense>
+        <Layout backgroundColor={palette.purple600}>
+          <NavigationBar showSearch={false} />
+        </Layout>
+      </Suspense>
       <Layout>
         <div className={pageStyle}>
           <div className={posterWrapStyle}>
