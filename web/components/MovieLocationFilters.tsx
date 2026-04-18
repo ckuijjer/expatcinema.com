@@ -15,22 +15,7 @@ type SelectOption = {
 
 const filtersStyle = css({
   display: 'grid',
-  gap: '16px',
-  padding: '16px',
-  borderRadius: '12px',
-  backgroundColor: 'var(--background-inverse-color)',
-  color: 'var(--text-inverse-color)',
-})
-
-const filterStyle = css({
-  display: 'grid',
-  gap: '6px',
-})
-
-const labelStyle = css({
-  fontSize: '16px',
-  fontWeight: '700',
-  color: 'var(--text-inverse-color)',
+  gap: '12px',
 })
 
 const selectStyle = css({
@@ -38,17 +23,15 @@ const selectStyle = css({
   minWidth: '0',
   padding: '12px 14px',
   borderRadius: '10px',
-  border:
-    '1px solid color-mix(in srgb, var(--text-inverse-color) 30%, transparent)',
-  backgroundColor: 'var(--background-inverse-color)',
+  border: '2px solid var(--background-inverse-color)',
+  backgroundColor: 'transparent',
   color: 'var(--text-inverse-color)',
   fontSize: '18px',
   lineHeight: '1.4',
   outline: 'none',
   '&:focus': {
-    borderColor: 'var(--primary-color)',
     boxShadow:
-      '0 0 0 2px color-mix(in srgb, var(--primary-color) 25%, transparent)',
+      '0 0 0 2px color-mix(in srgb, var(--background-inverse-color) 25%, transparent)',
   },
 })
 
@@ -115,51 +98,45 @@ export const MovieLocationFilters = ({
 
   return (
     <div className={filtersStyle}>
-      <label className={filterStyle}>
-        <span className={labelStyle}>City</span>
-        <select
-          className={selectStyle}
-          value={citySelectValue}
-          onChange={(event) => {
-            const nextCity = event.target.value || undefined
-            navigateTo(nextCity, undefined)
-          }}
-        >
-          <option value="">All</option>
-          {cityOptions.map((option) => (
-            <option key={option.slug} value={option.slug}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className={filterStyle}>
-        <span className={labelStyle}>Cinema</span>
-        <select
-          className={selectStyle}
-          value={cinemaSelectValue}
-          onChange={(event) => {
-            const nextCinema = event.target.value || undefined
-            if (!nextCinema) {
-              navigateTo(currentCity, undefined)
-              return
-            }
+      <select
+        className={selectStyle}
+        aria-label="City filter"
+        value={citySelectValue}
+        onChange={(event) => {
+          const nextCity = event.target.value || undefined
+          navigateTo(nextCity, undefined)
+        }}
+      >
+        <option value="">All Cities</option>
+        {cityOptions.map((option) => (
+          <option key={option.slug} value={option.slug}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <select
+        className={selectStyle}
+        aria-label="Cinema filter"
+        value={cinemaSelectValue}
+        onChange={(event) => {
+          const nextCinema = event.target.value || undefined
+          if (!nextCinema) {
+            navigateTo(currentCity, undefined)
+            return
+          }
 
-            const nextCity =
-              getCityForCinema(screenings, nextCinema) ??
-              currentCity ??
-              undefined
-            navigateTo(nextCity, nextCinema)
-          }}
-        >
-          <option value="">All</option>
-          {cinemaOptions.map((option) => (
-            <option key={option.slug} value={option.slug}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </label>
+          const nextCity =
+            getCityForCinema(screenings, nextCinema) ?? currentCity ?? undefined
+          navigateTo(nextCity, nextCinema)
+        }}
+      >
+        <option value="">All Cinemas</option>
+        {cinemaOptions.map((option) => (
+          <option key={option.slug} value={option.slug}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </div>
   )
 }
