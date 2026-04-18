@@ -2,33 +2,33 @@ import { DateTime } from 'luxon'
 import Image from 'next/image'
 import React from 'react'
 
-import { css } from 'styled-system/css'
+import { css, cx } from 'styled-system/css'
 
 import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
 import { Time } from './Time'
+import {
+  listPosterPlaceholderStyle,
+  listPosterStyle,
+  listRowBaseStyle,
+  listTitleStyle,
+  listYearStyle,
+} from './listStyles'
 
 const aStyle = css({
   textDecoration: 'none',
   color: 'var(--text-color)',
 })
 
-const containerStyle = css({
-  display: 'grid',
-  gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
-  gridTemplateRows: 'auto auto',
-  gridColumnGap: '12px',
-  lineHeight: '1.5',
-  padding: '12px',
-  alignItems: 'start',
-  minHeight: '72px',
-  marginLeft: '-12px',
-  marginRight: '-12px',
-  _hover: {
-    backgroundColor: 'var(--background-highlight-color)',
-    borderRadius: '10px',
-  },
-})
+const containerStyle = cx(
+  listRowBaseStyle,
+  css({
+    display: 'grid',
+    gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
+    gridTemplateRows: 'auto auto',
+    gridColumnGap: '12px',
+  }),
+)
 
 const timeStyle = css({
   gridColumnStart: 'time',
@@ -41,21 +41,6 @@ const contentStyle = css({
   display: 'contents',
 })
 
-const titleStyle = css({
-  gridColumnStart: 'rest',
-  gridRowStart: '1',
-  minWidth: '0',
-  paddingTop: '4px',
-  fontSize: '18px',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-})
-
-const titleYearStyle = css({
-  color: 'color-mix(in srgb, var(--text-color) 35%, transparent)',
-})
-
 const cinemaInfoStyle = css({
   gridColumnStart: 'rest',
   gridRowStart: '2',
@@ -64,21 +49,6 @@ const cinemaInfoStyle = css({
   color: 'var(--text-muted-color)',
   display: 'flex',
   alignItems: 'center',
-})
-
-const posterStyle = css({
-  width: '48px',
-  height: '72px',
-  borderRadius: '4px',
-  objectFit: 'cover',
-})
-
-const posterPlaceholderStyle = css({
-  width: '48px',
-  height: '72px',
-  borderRadius: '4px',
-  backgroundColor: 'var(--background-highlight-color)',
-  border: '1px solid var(--border-color)',
 })
 
 const posterLinkStyle = css({
@@ -167,9 +137,9 @@ export const ScreeningRow = ({
           href={url}
           className={`${aStyle} ${screeningLinkStyle} ${contentStyle}`}
         >
-          <div className={titleStyle}>
+          <div className={listTitleStyle}>
             {title}
-            {year ? <span className={titleYearStyle}> ({year})</span> : null}
+            {year ? <span className={listYearStyle}> ({year})</span> : null}
           </div>
           <div className={cinemaInfoStyle}>
             <CinemaIcon cinema={cinema} />
@@ -185,7 +155,7 @@ export const ScreeningRow = ({
               height={72}
               alt=""
               aria-hidden
-              className={posterStyle}
+              className={listPosterStyle}
             />
           </a>
         ) : showPoster && posterUrl && tmdbUrl ? (
@@ -201,7 +171,7 @@ export const ScreeningRow = ({
               height={72}
               alt=""
               aria-hidden
-              className={posterStyle}
+              className={listPosterStyle}
             />
           </a>
         ) : showPoster && posterUrl ? (
@@ -211,10 +181,10 @@ export const ScreeningRow = ({
             height={72}
             alt=""
             aria-hidden
-            className={posterStyle}
+            className={listPosterStyle}
           />
         ) : showPoster && movieId ? (
-          <div aria-hidden className={posterPlaceholderStyle} />
+          <div aria-hidden className={listPosterPlaceholderStyle} />
         ) : null}
       </div>
     </div>

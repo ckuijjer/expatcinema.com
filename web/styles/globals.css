@@ -12,6 +12,7 @@ body {
   --background-color: #fff5f0;
   --background-inverse-color: #310d23;
   --background-highlight-color: #ffe5e0;
+  --border-color: color-mix(in srgb, var(--text-color) 18%, transparent);
 
   --primary-color: #ffafb0;
   --secondary-color: #8c3547;
@@ -21,6 +22,7 @@ body {
     --text-muted-color: rgba(255, 255, 255, 0.7);
     --background-color: #310d23;
     --background-highlight-color: #411d33;
+    --border-color: color-mix(in srgb, var(--text-color) 18%, transparent);
   }
 
   background-color: var(--background-color);

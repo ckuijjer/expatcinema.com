@@ -9,10 +9,18 @@ import {
   getMovieReleaseYear,
   Movie,
 } from '../utils/getMovies'
-import { headerFont } from '../utils/theme'
 import { Layout } from './Layout'
 import { PageTitle } from './PageTitle'
 import { PageSection } from './PageSection'
+import {
+  listContainerStyle,
+  listSectionHeadingStyle,
+  listPosterPlaceholderStyle,
+  listPosterStyle,
+  listRowBaseStyle,
+  listTitleStyle,
+  listYearStyle,
+} from './listStyles'
 
 const pageStyle = css({
   marginTop: '16px',
@@ -38,63 +46,13 @@ const textLinkStyle = css({
   color: 'var(--secondary-color)',
 })
 
-const listStyle = css({
-  display: 'grid',
-  rowGap: '2px',
-})
-
-const sectionStyle = css({
-  fontSize: '16px',
-  fontWeight: '700',
-  margin: '12px 0',
-  color: 'var(--text-color)',
-})
-
 const rowStyle = css({
   display: 'grid',
   gridTemplateColumns: 'auto minmax(0, 1fr)',
   gridColumnGap: '12px',
-  lineHeight: '1.5',
-  padding: '12px',
-  alignItems: 'start',
-  minHeight: '72px',
-  marginLeft: '-12px',
-  marginRight: '-12px',
-  textDecoration: 'none',
-  color: 'var(--text-color)',
-  _hover: {
-    backgroundColor: 'var(--background-highlight-color)',
-    borderRadius: '10px',
-  },
 })
 
-const posterStyle = css({
-  width: '48px',
-  height: '72px',
-  borderRadius: '4px',
-  objectFit: 'cover',
-})
-
-const posterPlaceholderStyle = css({
-  width: '48px',
-  height: '72px',
-  borderRadius: '4px',
-  backgroundColor: 'var(--background-highlight-color)',
-  border: '1px solid var(--border-color)',
-})
-
-const movieTitleStyle = css({
-  minWidth: '0',
-  paddingTop: '4px',
-  fontSize: '18px',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-})
-
-const titleYearStyle = css({
-  color: 'color-mix(in srgb, var(--text-color) 35%, transparent)',
-})
+const rowClassName = cx(listRowBaseStyle, rowStyle)
 
 const getMovieSection = (title: string) => {
   const firstLetter = title.trim().charAt(0).toUpperCase()
@@ -114,27 +72,27 @@ const MovieOverviewRow = ({ movie }: { movie: Movie }) => {
           height={72}
           alt=""
           aria-hidden
-          className={posterStyle}
+          className={listPosterStyle}
         />
       ) : (
-        <div aria-hidden className={posterPlaceholderStyle} />
+        <div aria-hidden className={listPosterPlaceholderStyle} />
       )}
-      <div className={movieTitleStyle}>
+      <div className={listTitleStyle}>
         {movie.title}
-        {year ? <span className={titleYearStyle}> ({year})</span> : null}
+        {year ? <span className={listYearStyle}> ({year})</span> : null}
       </div>
     </>
   )
 
   if (movie.slug) {
     return (
-      <Link href={`/movie/${movie.slug}`} className={rowStyle}>
+      <Link href={`/movie/${movie.slug}`} className={rowClassName}>
         {content}
       </Link>
     )
   }
 
-  return <div className={rowStyle}>{content}</div>
+  return <div className={rowClassName}>{content}</div>
 }
 
 export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
@@ -178,12 +136,10 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
             scheduled.
           </p>
         </div>
-        <div className={listStyle}>
+        <div className={listContainerStyle}>
           {sections.map((section) => (
             <div key={section}>
-              <h3 className={cx(sectionStyle, headerFont.className)}>
-                {section}
-              </h3>
+              <h3 className={listSectionHeadingStyle}>{section}</h3>
               {moviesBySection[section].map((movie) => (
                 <MovieOverviewRow key={movie.movieId} movie={movie} />
               ))}

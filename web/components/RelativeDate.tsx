@@ -2,16 +2,8 @@
 
 import { DateTime } from 'luxon'
 
-import { css, cx } from 'styled-system/css'
-
 import { getToday } from '../utils/getToday'
-import { headerFont } from '../utils/theme'
-
-const dateStyle = css({
-  fontSize: '16px',
-  fontWeight: '700',
-  margin: '12px 0',
-})
+import { listSectionHeadingStyle } from './listStyles'
 
 export const RelativeDate = ({ children }: { children: string }) => {
   const date = DateTime.fromISO(children)
@@ -26,5 +18,5 @@ export const RelativeDate = ({ children }: { children: string }) => {
     relativeDate = 'Tomorrow'
   }
 
-  return <h3 className={cx(dateStyle, headerFont.className)}>{relativeDate}</h3>
+  return <h3 className={listSectionHeadingStyle}>{relativeDate}</h3>
 }

@@ -4,9 +4,8 @@ import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
 import React from 'react'
 
-import { css, cx } from 'styled-system/css'
+import { css } from 'styled-system/css'
 
-import { headerFont } from '../../utils/theme'
 import { getCinema } from '../../utils/getCinema'
 import { getCity } from '../../utils/getCity'
 import { Screening } from '../../utils/getScreenings'
@@ -18,6 +17,7 @@ import { getMoviePagePath } from '../../utils/getMoviePagePath'
 import { useSearch } from '../../utils/hooks'
 import { DirectCalendar } from './DirectCalendar'
 import { removeDiacritics } from '../../utils/removeDiacritics'
+import { listSectionHeadingStyle } from '../listStyles'
 
 export type Row =
   | { component: 'RelativeDate'; props: { children: string } }
@@ -29,12 +29,6 @@ export type Row =
 const containerStyle = css({
   marginTop: '24px',
   marginBottom: '24px',
-})
-
-const emptyStateStyle = css({
-  fontSize: '16px',
-  fontWeight: '700',
-  margin: '12px 0',
 })
 
 const screeningMatchesSearch = (
@@ -124,9 +118,7 @@ export const Calendar = ({
   return (
     <div className={containerStyle}>
       {rows.length === 0 ? (
-        <h3 className={cx(emptyStateStyle, headerFont.className)}>
-          {emptyStateMessage}
-        </h3>
+        <h3 className={listSectionHeadingStyle}>{emptyStateMessage}</h3>
       ) : (
         <DirectCalendar
           rows={rows}
