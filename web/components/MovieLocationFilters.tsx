@@ -115,7 +115,9 @@ export const MovieLocationFilters = ({
   const cinemaSelectValue = currentCinema ?? ''
 
   const navigateTo = (city?: string, cinema?: string) => {
-    router.push(getMoviePagePath(movieSlug, city ?? null, cinema ?? null))
+    router.push(getMoviePagePath(movieSlug, city ?? null, cinema ?? null), {
+      scroll: false,
+    })
   }
 
   return (
