@@ -16,14 +16,15 @@ type SelectOption = {
 const filtersStyle = css({
   display: 'grid',
   gap: '12px',
-  width: 'fit-content',
-  maxWidth: '100%',
+  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+  '@media (max-width: 640px)': {
+    gridTemplateColumns: 'minmax(0, 1fr)',
+  },
 })
 
 const selectStyle = css({
-  width: 'auto',
-  minWidth: '240px',
-  maxWidth: '100%',
+  width: '100%',
+  minWidth: '0',
   padding: '12px 14px',
   borderRadius: '10px',
   border: '2px solid var(--secondary-color)',
