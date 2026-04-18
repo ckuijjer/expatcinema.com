@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
-import { MoviePage } from '../../../../../../components/MoviePage'
-import { getMovies } from '../../../../../../utils/getMovies'
+import { MoviePage } from '../../../../../components/MoviePage'
+import { getMovies } from '../../../../../utils/getMovies'
 import {
   buildMoviePageMetadata,
   getMoviePageData,
   getMovieRouteSlugs,
-} from '../../../../../../utils/getMoviePageData'
-import { getScreenings } from '../../../../../../utils/getScreenings'
+} from '../../../../../utils/getMoviePageData'
+import { getScreenings } from '../../../../../utils/getScreenings'
 
 export const generateStaticParams = async () => {
   const [movies, screenings] = await Promise.all([getMovies(), getScreenings()])
@@ -56,7 +56,9 @@ export default async function CityMoviePage({
   return (
     <MoviePage
       movie={data.movie}
+      movieSlug={movieSlug}
       screenings={data.screenings}
+      availableScreenings={data.availableScreenings}
       currentCity={city}
       showCity
     />

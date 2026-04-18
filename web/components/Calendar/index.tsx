@@ -14,13 +14,17 @@ import {
   ScreeningWithLuxonDate,
   groupAndSortScreenings,
 } from '../../utils/groupAndSortScreenings'
+import { getMoviePagePath } from '../../utils/getMoviePagePath'
 import { useSearch } from '../../utils/hooks'
 import { DirectCalendar } from './DirectCalendar'
 import { removeDiacritics } from '../../utils/removeDiacritics'
 
 export type Row =
   | { component: 'RelativeDate'; props: { children: string } }
-  | { component: 'ScreeningRow'; props: ScreeningWithLuxonDate }
+  | {
+      component: 'ScreeningRow'
+      props: ScreeningWithLuxonDate & { movieHref?: string }
+    }
 
 const containerStyle = css({
   marginTop: '24px',
@@ -84,7 +88,12 @@ export const Calendar = ({
       { component: 'RelativeDate' as const, props: { children: date } },
       ...filteredScreenings.map((screening) => ({
         component: 'ScreeningRow' as const,
-        props: screening,
+        props: {
+          ...screening,
+          movieHref: screening.movieSlug
+            ? getMoviePagePath(screening.movieSlug, currentCity, currentCinema)
+            : undefined,
+        },
       })),
     ]
   })

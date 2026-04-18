@@ -5,6 +5,7 @@ import React from 'react'
 import { css } from 'styled-system/css'
 
 import { Cinema } from '../utils/getScreenings'
+import { getMoviePagePath } from '../utils/getMoviePagePath'
 import { Time } from './Time'
 
 const aStyle = css({
@@ -127,6 +128,7 @@ export const ScreeningRow = ({
   cinema,
   movieId,
   movieSlug,
+  movieHref,
   posterUrl,
   showCity = true,
   showPoster = true,
@@ -138,6 +140,7 @@ export const ScreeningRow = ({
   cinema: Cinema
   movieId?: string
   movieSlug?: string
+  movieHref?: string
   posterUrl?: string
   showCity?: boolean
   showPoster?: boolean
@@ -148,7 +151,8 @@ export const ScreeningRow = ({
   const tmdbUrl = movieId?.startsWith('tmdb:')
     ? `https://www.themoviedb.org/movie/${movieId.slice(5)}`
     : undefined
-  const movieUrl = movieSlug ? `/movie/${movieSlug}` : undefined
+  const movieUrl =
+    movieHref ?? (movieSlug ? getMoviePagePath(movieSlug) : undefined)
 
   return (
     <div className={movieIdClassName}>

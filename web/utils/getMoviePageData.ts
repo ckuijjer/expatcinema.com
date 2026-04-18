@@ -4,6 +4,7 @@ import { getCinema } from './getCinema'
 import { getCity } from './getCity'
 import { getMovieReleaseYear, getMovieSlug, Movie } from './getMovies'
 import { Screening } from './getScreenings'
+import { getMoviePagePath } from './getMoviePagePath'
 
 const getMovieIdScreeningCounts = (screenings: Screening[]) =>
   screenings.reduce<Record<string, number>>((counts, screening) => {
@@ -19,8 +20,8 @@ const pickRepresentativeMovie = (
   movies: Movie[],
   screenings: Screening[],
 ): Movie => {
-  const moviesWithSlug = movies.filter((movie): movie is Movie & { slug: string } =>
-    Boolean(movie.slug),
+  const moviesWithSlug = movies.filter(
+    (movie): movie is Movie & { slug: string } => Boolean(movie.slug),
   )
   const counts = getMovieIdScreeningCounts(screenings)
 
@@ -54,9 +55,20 @@ export const getMoviePageData = (
   }
 
   const movieIds = new Set(matchingMovies.map((movie) => movie.movieId))
-  const representativeMovie = pickRepresentativeMovie(matchingMovies, screenings)
+  const representativeMovie = pickRepresentativeMovie(
+    matchingMovies,
+    screenings,
+  )
 
-  const movieScreenings = screenings.filter((screening) => {
+  const matchingScreenings = screenings.filter((screening) => {
+    if (!screening.movieId) {
+      return false
+    }
+
+    return movieIds.has(screening.movieId)
+  })
+
+  const movieScreenings = matchingScreenings.filter((screening) => {
     if (city && screening.cinema.city.slug !== city) {
       return false
     }
@@ -76,6 +88,7 @@ export const getMoviePageData = (
     matchingMovies,
     movie: representativeMovie,
     screenings: movieScreenings,
+    availableScreenings: matchingScreenings,
   }
 }
 
@@ -123,8 +136,8 @@ export const buildMoviePageMetadata = (
   cinema?: string,
 ): Metadata => {
   const movieYear = getMovieReleaseYear(movie)
-  const cityName = city ? getCity(city)?.name ?? city : null
-  const cinemaName = cinema ? getCinema(cinema)?.name ?? cinema : null
+  const cityName = city ? (getCity(city)?.name ?? city) : null
+  const cinemaName = cinema ? (getCinema(cinema)?.name ?? cinema) : null
   const locationLabel = cinemaName
     ? cityName
       ? `${cinemaName}, ${cityName}`
@@ -137,11 +150,11 @@ export const buildMoviePageMetadata = (
       ? `${title} in ${locationLabel} – Expat Cinema`
       : `${title} – Expat Cinema`,
     alternates: {
-      canonical: cinema
-        ? `https://expatcinema.com/city/${city}/cinema/${cinema}/movie/${movieSlug}`
-        : city
-          ? `https://expatcinema.com/city/${city}/movie/${movieSlug}`
-          : `https://expatcinema.com/movie/${movieSlug}`,
+      canonical: `https://expatcinema.com${getMoviePagePath(
+        movieSlug,
+        city,
+        cinema,
+      )}`,
     },
   }
 }

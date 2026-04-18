@@ -5,12 +5,15 @@ import { Duration } from 'luxon'
 
 import { css, cx } from 'styled-system/css'
 
+import { NavigationBar } from './NavigationBar'
 import { headerFont } from '../utils/theme'
+import { palette } from '../utils/theme'
 import { getMoviePosterUrl, getMovieReleaseYear } from '../utils/getMovies'
 import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
 import { Calendar } from './Calendar'
 import { Layout } from './Layout'
+import { MovieLocationFilters } from './MovieLocationFilters'
 import { PageSection } from './PageSection'
 
 const pageStyle = css({
@@ -194,13 +197,17 @@ const getTrailer = (movie: Movie) => {
 
 export const MoviePage = ({
   movie,
+  movieSlug,
   screenings,
+  availableScreenings,
   showCity = true,
   currentCity,
   currentCinema,
 }: {
   movie: Movie
+  movieSlug: string
   screenings: Screening[]
+  availableScreenings: Screening[]
   showCity?: boolean
   currentCity?: string
   currentCinema?: string
@@ -219,99 +226,114 @@ export const MoviePage = ({
   const trailer = getTrailer(movie)
 
   return (
-    <Layout>
-      <div className={pageStyle}>
-        <div className={posterWrapStyle}>
-          {posterUrl ? (
-            <Image
-              src={posterUrl}
-              fill
-              alt={`Poster for ${movie.title}`}
-              className={posterStyle}
-              sizes="(max-width: 640px) 180px, 240px"
-            />
-          ) : (
-            <div aria-hidden className={posterPlaceholderStyle} />
-          )}
-        </div>
-        <div className={movieInfoStyle}>
-          <h1 className={cx(titleStyle, headerFont.className)}>
-            {movie.title}
-            {year ? <span className={yearStyle}> ({year})</span> : null}
-          </h1>
-          {description || originalLanguage || runtime ? (
-            <div className={detailsStyle}>
-              {description ? (
-                <p className={descriptionStyle}>{description}</p>
-              ) : null}
-              <div className={metadataStyle}>
-                {originalLanguage ? (
-                  <div className={metadataItemStyle}>
-                    <span className={metadataLabelStyle}>
-                      Original language:
-                    </span>
-                    <span>{originalLanguage}</span>
-                  </div>
+    <>
+      <Suspense>
+        <Layout backgroundColor={palette.purple600}>
+          <NavigationBar showSearch={false} />
+        </Layout>
+      </Suspense>
+      <Layout>
+        <div className={pageStyle}>
+          <div className={posterWrapStyle}>
+            {posterUrl ? (
+              <Image
+                src={posterUrl}
+                fill
+                alt={`Poster for ${movie.title}`}
+                className={posterStyle}
+                sizes="(max-width: 640px) 180px, 240px"
+              />
+            ) : (
+              <div aria-hidden className={posterPlaceholderStyle} />
+            )}
+          </div>
+          <div className={movieInfoStyle}>
+            <h1 className={cx(titleStyle, headerFont.className)}>
+              {movie.title}
+              {year ? <span className={yearStyle}> ({year})</span> : null}
+            </h1>
+            {description || originalLanguage || runtime ? (
+              <div className={detailsStyle}>
+                {description ? (
+                  <p className={descriptionStyle}>{description}</p>
                 ) : null}
-                {runtime ? (
-                  <div className={metadataItemStyle}>
-                    <span className={metadataLabelStyle}>Runtime:</span>
-                    <span>{runtime}</span>
-                  </div>
-                ) : null}
+                <div className={metadataStyle}>
+                  {originalLanguage ? (
+                    <div className={metadataItemStyle}>
+                      <span className={metadataLabelStyle}>
+                        Original language:
+                      </span>
+                      <span>{originalLanguage}</span>
+                    </div>
+                  ) : null}
+                  {runtime ? (
+                    <div className={metadataItemStyle}>
+                      <span className={metadataLabelStyle}>Runtime:</span>
+                      <span>{runtime}</span>
+                    </div>
+                  ) : null}
+                </div>
               </div>
-            </div>
-          ) : null}
-          <div className={linkRowStyle}>
-            {tmdbHref ? (
-              <a
-                href={tmdbHref}
-                target="_blank"
-                rel="noreferrer"
-                className={externalLinkStyle}
-              >
-                TMDB
-              </a>
             ) : null}
-            {imdbHref ? (
-              <a
-                href={imdbHref}
-                target="_blank"
-                rel="noreferrer"
-                className={externalLinkStyle}
-              >
-                IMDb
-              </a>
+            <div className={linkRowStyle}>
+              {tmdbHref ? (
+                <a
+                  href={tmdbHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={externalLinkStyle}
+                >
+                  TMDB
+                </a>
+              ) : null}
+              {imdbHref ? (
+                <a
+                  href={imdbHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={externalLinkStyle}
+                >
+                  IMDb
+                </a>
+              ) : null}
+            </div>
+            {trailer?.key ? (
+              <div className={trailerSectionStyle}>
+                <PageSection>Trailer</PageSection>
+                <div className={trailerEmbedStyle}>
+                  <iframe
+                    className={trailerFrameStyle}
+                    src={`https://www.youtube-nocookie.com/embed/${trailer.key}?rel=0`}
+                    title={`Trailer for ${movie.title}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              </div>
             ) : null}
           </div>
-          {trailer?.key ? (
-            <div className={trailerSectionStyle}>
-              <PageSection>Trailer</PageSection>
-              <div className={trailerEmbedStyle}>
-                <iframe
-                  className={trailerFrameStyle}
-                  src={`https://www.youtube-nocookie.com/embed/${trailer.key}?rel=0`}
-                  title={`Trailer for ${movie.title}`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          ) : null}
-        </div>
-        <div style={{ gridColumn: '1 / -1' }}>
-          <Suspense>
-            <Calendar
-              screenings={screenings}
-              showCity={showCity}
-              showPoster={false}
+          <div style={{ gridColumn: '1 / -1' }}>
+            <MovieLocationFilters
+              movieSlug={movieSlug}
+              screenings={availableScreenings}
               currentCity={currentCity}
               currentCinema={currentCinema}
             />
-          </Suspense>
+          </div>
+          <div style={{ gridColumn: '1 / -1' }}>
+            <Suspense>
+              <Calendar
+                screenings={screenings}
+                showCity={showCity}
+                showPoster={false}
+                currentCity={currentCity}
+                currentCinema={currentCinema}
+              />
+            </Suspense>
+          </div>
         </div>
-      </div>
-    </Layout>
+      </Layout>
+    </>
   )
 }
