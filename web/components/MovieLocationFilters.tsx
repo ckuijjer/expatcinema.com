@@ -31,7 +31,7 @@ const selectStyle = css({
   minWidth: '0',
   height: '40px',
   padding: '0 44px 0 14px',
-  borderRadius: '10px',
+  borderRadius: '4px',
   border: '2px solid var(--secondary-color)',
   backgroundColor: 'var(--primary-color)',
   color: 'var(--secondary-color)',
