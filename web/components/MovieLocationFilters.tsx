@@ -16,22 +16,25 @@ type SelectOption = {
 const filtersStyle = css({
   display: 'grid',
   gap: '12px',
+  width: 'fit-content',
+  maxWidth: '100%',
 })
 
 const selectStyle = css({
-  width: '100%',
-  minWidth: '0',
+  width: 'auto',
+  minWidth: '240px',
+  maxWidth: '100%',
   padding: '12px 14px',
   borderRadius: '10px',
-  border: '2px solid var(--background-inverse-color)',
-  backgroundColor: 'transparent',
-  color: 'var(--text-inverse-color)',
+  border: '2px solid var(--secondary-color)',
+  backgroundColor: 'var(--primary-color)',
+  color: 'var(--secondary-color)',
   fontSize: '18px',
   lineHeight: '1.4',
   outline: 'none',
   '&:focus': {
     boxShadow:
-      '0 0 0 2px color-mix(in srgb, var(--background-inverse-color) 25%, transparent)',
+      '0 0 0 2px color-mix(in srgb, var(--secondary-color) 25%, transparent)',
   },
 })
 
