@@ -22,10 +22,15 @@ const filtersStyle = css({
   },
 })
 
+const selectWrapStyle = css({
+  position: 'relative',
+})
+
 const selectStyle = css({
   width: '100%',
   minWidth: '0',
-  padding: '12px 14px',
+  height: '40px',
+  padding: '0 44px 0 14px',
   borderRadius: '10px',
   border: '2px solid var(--secondary-color)',
   backgroundColor: 'var(--primary-color)',
@@ -33,10 +38,23 @@ const selectStyle = css({
   fontSize: '18px',
   lineHeight: '1.4',
   outline: 'none',
+  appearance: 'none',
+  WebkitAppearance: 'none',
   '&:focus': {
     boxShadow:
       '0 0 0 2px color-mix(in srgb, var(--secondary-color) 25%, transparent)',
   },
+})
+
+const arrowStyle = css({
+  position: 'absolute',
+  right: '14px',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  pointerEvents: 'none',
+  color: 'var(--secondary-color)',
+  fontSize: '16px',
+  lineHeight: '1',
 })
 
 const sortOptions = (left: SelectOption, right: SelectOption) =>
@@ -102,45 +120,57 @@ export const MovieLocationFilters = ({
 
   return (
     <div className={filtersStyle}>
-      <select
-        className={selectStyle}
-        aria-label="City filter"
-        value={citySelectValue}
-        onChange={(event) => {
-          const nextCity = event.target.value || undefined
-          navigateTo(nextCity, undefined)
-        }}
-      >
-        <option value="">All Cities</option>
-        {cityOptions.map((option) => (
-          <option key={option.slug} value={option.slug}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <select
-        className={selectStyle}
-        aria-label="Cinema filter"
-        value={cinemaSelectValue}
-        onChange={(event) => {
-          const nextCinema = event.target.value || undefined
-          if (!nextCinema) {
-            navigateTo(currentCity, undefined)
-            return
-          }
+      <div className={selectWrapStyle}>
+        <select
+          className={selectStyle}
+          aria-label="City filter"
+          value={citySelectValue}
+          onChange={(event) => {
+            const nextCity = event.target.value || undefined
+            navigateTo(nextCity, undefined)
+          }}
+        >
+          <option value="">All Cities</option>
+          {cityOptions.map((option) => (
+            <option key={option.slug} value={option.slug}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <span className={arrowStyle} aria-hidden>
+          ▾
+        </span>
+      </div>
+      <div className={selectWrapStyle}>
+        <select
+          className={selectStyle}
+          aria-label="Cinema filter"
+          value={cinemaSelectValue}
+          onChange={(event) => {
+            const nextCinema = event.target.value || undefined
+            if (!nextCinema) {
+              navigateTo(currentCity, undefined)
+              return
+            }
 
-          const nextCity =
-            getCityForCinema(screenings, nextCinema) ?? currentCity ?? undefined
-          navigateTo(nextCity, nextCinema)
-        }}
-      >
-        <option value="">All Cinemas</option>
-        {cinemaOptions.map((option) => (
-          <option key={option.slug} value={option.slug}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+            const nextCity =
+              getCityForCinema(screenings, nextCinema) ??
+              currentCity ??
+              undefined
+            navigateTo(nextCity, nextCinema)
+          }}
+        >
+          <option value="">All Cinemas</option>
+          {cinemaOptions.map((option) => (
+            <option key={option.slug} value={option.slug}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <span className={arrowStyle} aria-hidden>
+          ▾
+        </span>
+      </div>
     </div>
   )
 }
