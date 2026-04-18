@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 
 import cities from '../../data/city.json'
 import { CityFilter, FilterLink } from '../../components/CityFilter'
+import { FullBleedSection } from '../../components/FullBleedSection'
 import { Layout } from '../../components/Layout'
 import { NavigationBar } from '../../components/NavigationBar'
 import { getScreenings } from '../../utils/getScreenings'
@@ -44,11 +45,11 @@ export default async function ScreeningsLayout({
           <NavigationBar />
         </Suspense>
       </Layout>
-      <Layout backgroundColor={palette.purple400}>
+      <FullBleedSection backgroundColor={palette.purple400}>
         <Suspense>
           <CityFilter links={links} />
         </Suspense>
-      </Layout>
+      </FullBleedSection>
       {children}
     </>
   )

@@ -7,7 +7,7 @@ import { palette } from '../utils/theme'
 type Color = keyof typeof palette
 type ColorValue = (typeof palette)[Color]
 
-const contentStyle = css({
+export const pageContentStyle = css({
   margin: '0 auto',
   paddingLeft: '16px',
   paddingRight: '16px',
@@ -22,7 +22,7 @@ type LayoutProps = {
 export const Layout = ({ backgroundColor, children }: LayoutProps) => {
   return (
     <div style={{ backgroundColor }}>
-      <div className={contentStyle}>{children}</div>
+      <div className={pageContentStyle}>{children}</div>
     </div>
   )
 }

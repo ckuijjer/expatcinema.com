@@ -10,9 +10,7 @@ import { useSearch } from '../utils/hooks'
 import { ActiveLink } from './ActiveLink'
 
 const scrollerStyle = css({
-  marginLeft: '-16px',
-  marginRight: '-16px',
-  paddingLeft: '10px',
+  paddingLeft: '0',
   whiteSpace: 'nowrap',
   overflowX: 'auto',
 })
@@ -65,7 +63,7 @@ export const CityFilter = ({ links }: { links: FilterLink[] }) => {
           href={
             slug === null ? `/${searchQuery}` : `/city/${slug}${searchQuery}`
           }
-          key={text}
+          key={slug ?? text}
           matchPrefix
         >
           {text}
