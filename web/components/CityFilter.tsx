@@ -10,7 +10,7 @@ import { useSearch } from '../utils/hooks'
 import { ActiveLink } from './ActiveLink'
 
 const scrollerStyle = css({
-  paddingLeft: '0',
+  paddingLeft: '10px',
   whiteSpace: 'nowrap',
   overflowX: 'auto',
 })
