@@ -39,7 +39,7 @@ const currentLinkVariants = cva({
   variants: {
     tone: {
       light: {
-        color: 'var(--text-color)',
+        color: 'var(--secondary-color)',
       },
       dark: {
         backgroundColor: 'var(--secondary-color)',
