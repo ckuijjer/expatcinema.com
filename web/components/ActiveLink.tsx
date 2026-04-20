@@ -80,7 +80,7 @@ export const ActiveLink = React.forwardRef<
 >(({ children, href, tone = 'light', matchPrefix = false }, ref) => {
   const pathname = usePathname()
   const linkPathname = new URL(href, 'http://localhost').pathname
-  const isCurrent =
+  const isActive =
     linkPathname === pathname ||
     (matchPrefix &&
       linkPathname !== '/' &&
@@ -90,7 +90,7 @@ export const ActiveLink = React.forwardRef<
     <Link
       ref={ref}
       href={href}
-      className={linkVariants({ active: isCurrent, tone })}
+      className={linkVariants({ active: isActive, tone })}
       aria-current={isCurrent ? 'page' : undefined}
     >
       {children}
