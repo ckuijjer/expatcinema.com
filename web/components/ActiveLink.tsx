@@ -6,6 +6,8 @@ import React from 'react'
 
 import { cva, cx } from 'styled-system/css'
 
+import { palette } from '../utils/theme'
+
 const linkVariants = cva({
   base: {
     display: 'inline-block',
@@ -39,7 +41,7 @@ const currentLinkVariants = cva({
   variants: {
     tone: {
       light: {
-        color: 'var(--secondary-color)',
+        color: palette.purple500,
       },
       dark: {
         backgroundColor: 'var(--secondary-color)',
@@ -58,29 +60,37 @@ export const ActiveLink = React.forwardRef<
     children: React.ReactNode
     href: string
     tone?: 'light' | 'dark'
+    currentTone?: 'light' | 'dark'
     matchPrefix?: boolean
   }
->(({ children, href, tone = 'light', matchPrefix = false }, ref) => {
-  const pathname = usePathname()
-  const linkPathname = new URL(href, 'http://localhost').pathname
-  const isCurrent =
-    linkPathname === pathname ||
-    (matchPrefix &&
-      linkPathname !== '/' &&
-      pathname.startsWith(linkPathname + '/'))
+>(
+  (
+    { children, href, tone = 'light', currentTone, matchPrefix = false },
+    ref,
+  ) => {
+    const pathname = usePathname()
+    const linkPathname = new URL(href, 'http://localhost').pathname
+    const isCurrent =
+      linkPathname === pathname ||
+      (matchPrefix &&
+        linkPathname !== '/' &&
+        pathname.startsWith(linkPathname + '/'))
 
-  return (
-    <Link
-      ref={ref}
-      href={href}
-      className={cx(
-        linkVariants({ tone }),
-        isCurrent ? currentLinkVariants({ tone }) : undefined,
-      )}
-      aria-current={isCurrent ? 'page' : undefined}
-    >
-      {children}
-    </Link>
-  )
-})
+    return (
+      <Link
+        ref={ref}
+        href={href}
+        className={cx(
+          linkVariants({ tone }),
+          isCurrent
+            ? currentLinkVariants({ tone: currentTone ?? tone })
+            : undefined,
+        )}
+        aria-current={isCurrent ? 'page' : undefined}
+      >
+        {children}
+      </Link>
+    )
+  },
+)
 ActiveLink.displayName = 'ActiveLink'
