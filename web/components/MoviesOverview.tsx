@@ -56,7 +56,8 @@ const rowStyle = css({
   gridColumnGap: '12px',
 })
 
-const rowClassName = cx(listRowBaseStyle, rowStyle)
+const rowClassName = (className?: string) =>
+  cx(listRowBaseStyle, rowStyle, className)
 
 const getMovieSection = (title: string) => {
   const firstLetter = title.trim().charAt(0).toUpperCase()
@@ -64,7 +65,17 @@ const getMovieSection = (title: string) => {
   return firstLetter >= 'A' && firstLetter <= 'Z' ? firstLetter : '#'
 }
 
-const MovieOverviewRow = ({ movie }: { movie: Movie }) => {
+export const MovieOverviewRow = ({
+  movie,
+  href,
+  className,
+  posterPlaceholderClassName,
+}: {
+  movie: Movie
+  href?: string
+  className?: string
+  posterPlaceholderClassName?: string
+}) => {
   const posterUrl = getMoviePosterUrl(movie.tmdb?.posterPath)
   const year = getMovieReleaseYear(movie)
   const content = (
@@ -79,7 +90,10 @@ const MovieOverviewRow = ({ movie }: { movie: Movie }) => {
           className={listPosterStyle}
         />
       ) : (
-        <div aria-hidden className={listPosterPlaceholderStyle} />
+        <div
+          aria-hidden
+          className={cx(listPosterPlaceholderStyle, posterPlaceholderClassName)}
+        />
       )}
       <div className={listTitleStyle}>
         {movie.title}
@@ -88,15 +102,18 @@ const MovieOverviewRow = ({ movie }: { movie: Movie }) => {
     </>
   )
 
-  if (movie.slug) {
+  if (href || movie.slug) {
     return (
-      <Link href={`/movie/${movie.slug}`} className={rowClassName}>
+      <Link
+        href={href ?? `/movie/${movie.slug}`}
+        className={rowClassName(className)}
+      >
         {content}
       </Link>
     )
   }
 
-  return <div className={rowClassName}>{content}</div>
+  return <div className={rowClassName(className)}>{content}</div>
 }
 
 export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
