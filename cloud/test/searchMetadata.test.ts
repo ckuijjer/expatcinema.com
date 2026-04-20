@@ -24,16 +24,48 @@ describe('searchMetadata TMDB search planning', () => {
   test('merges year-filtered and yearless result sets without duplicates', () => {
     const results = mergeTmdbSearchResults([
       [
-        { id: 101, title: 'First', releaseDate: '2026-01-01' } as TmdbMovieResult,
-        { id: 102, title: 'Second', releaseDate: '2026-01-02' } as TmdbMovieResult,
-        { id: 103, title: 'Third', releaseDate: '2026-01-03' } as TmdbMovieResult,
-        { id: 104, title: 'Fourth', releaseDate: '2026-01-04' } as TmdbMovieResult,
-        { id: 105, title: 'Fifth', releaseDate: '2026-01-05' } as TmdbMovieResult,
-        { id: 106, title: 'Ignored', releaseDate: '2026-01-06' } as TmdbMovieResult,
+        {
+          id: 101,
+          title: 'First',
+          releaseDate: '2026-01-01',
+        } as TmdbMovieResult,
+        {
+          id: 102,
+          title: 'Second',
+          releaseDate: '2026-01-02',
+        } as TmdbMovieResult,
+        {
+          id: 103,
+          title: 'Third',
+          releaseDate: '2026-01-03',
+        } as TmdbMovieResult,
+        {
+          id: 104,
+          title: 'Fourth',
+          releaseDate: '2026-01-04',
+        } as TmdbMovieResult,
+        {
+          id: 105,
+          title: 'Fifth',
+          releaseDate: '2026-01-05',
+        } as TmdbMovieResult,
+        {
+          id: 106,
+          title: 'Ignored',
+          releaseDate: '2026-01-06',
+        } as TmdbMovieResult,
       ],
       [
-        { id: 104, title: 'Fourth', releaseDate: '2026-01-04' } as TmdbMovieResult,
-        { id: 107, title: 'Seventh', releaseDate: '2025-01-07' } as TmdbMovieResult,
+        {
+          id: 104,
+          title: 'Fourth',
+          releaseDate: '2026-01-04',
+        } as TmdbMovieResult,
+        {
+          id: 107,
+          title: 'Seventh',
+          releaseDate: '2025-01-07',
+        } as TmdbMovieResult,
       ],
     ])
 

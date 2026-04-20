@@ -96,7 +96,8 @@ export const extractFromMoviePage = async (
   const screenings: Screening[] = movie.screenings.map((screening) => {
     return {
       title: cleanTitle(movie.title),
-      year: parseReleaseYear(movie.metadata) ?? extractYearFromTitle(movie.title),
+      year:
+        parseReleaseYear(movie.metadata) ?? extractYearFromTitle(movie.title),
       url,
       cinema: 'De Uitkijk',
       date: extractDate(screening),

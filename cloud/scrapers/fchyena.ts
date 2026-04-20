@@ -52,7 +52,9 @@ const hasEnglishSubtitles = ({ credits }: DetailPageResult) => {
 }
 
 const parseReleaseYear = ({ credits }: DetailPageResult) => {
-  const creditIndex = (credits ?? []).findIndex((credit) => /^Jaar$/i.test(credit))
+  const creditIndex = (credits ?? []).findIndex((credit) =>
+    /^Jaar$/i.test(credit),
+  )
 
   if (creditIndex === -1) {
     return undefined

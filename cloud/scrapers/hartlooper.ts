@@ -54,7 +54,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     .map((movie) => {
       return movie.times
         ?.filter(
-          (time) => hasEnglishSubtitlesLabel(movie) && isLouisHartlooperComplex(time),
+          (time) =>
+            hasEnglishSubtitlesLabel(movie) && isLouisHartlooperComplex(time),
         )
         .map((time) => {
           return {

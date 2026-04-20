@@ -59,7 +59,9 @@ export const getScreenings = async () => {
       ...cinemaData,
       city: cities.find((city) => city.slug === cinemaData?.city),
     } as Cinema
-    const movie = screening.movieId ? moviesById.get(screening.movieId) : undefined
+    const movie = screening.movieId
+      ? moviesById.get(screening.movieId)
+      : undefined
     const movieYear = movie ? getMovieReleaseYear(movie) : undefined
     const movieSlug = movie?.slug
 

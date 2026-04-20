@@ -122,9 +122,7 @@ const extractCmsYear = async (slug: string) => {
       `https://testcms.kriterion.nl/api/films/${slug}?populate=*`,
     ).json()
 
-    const match = response.data?.attributes?.jaar?.match(
-      /\b((?:19|20)\d{2})\b/,
-    )
+    const match = response.data?.attributes?.jaar?.match(/\b((?:19|20)\d{2})\b/)
 
     return match?.[1] ? Number(match[1]) : undefined
   } catch (error) {
@@ -170,10 +168,7 @@ const extractFromMainPage = async () => {
 
     const releaseYearBySlug = new Map(
       await Promise.all(
-        relevantSlugs.map(async (slug) => [
-          slug,
-          await extractCmsYear(slug),
-        ]),
+        relevantSlugs.map(async (slug) => [slug, await extractCmsYear(slug)]),
       ),
     )
 

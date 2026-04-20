@@ -77,7 +77,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
           return {
             title: cleanTitle(decode(movie.title), cinema),
-            year: parseFkFeedYear(movie.year) ?? extractYearFromTitle(movie.title),
+            year:
+              parseFkFeedYear(movie.year) ?? extractYearFromTitle(movie.title),
             url: movie.permalink,
             cinema,
             date: extractDate(time.program_start),

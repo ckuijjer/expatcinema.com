@@ -103,14 +103,16 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.info('main page', { results })
 
-  const screenings = (await Promise.all(
-    results.map(({ title, url }) =>
-      extractFromMoviePage({
-        title,
-        url: new URL(url, BASE_URL).toString(),
-      }),
-    ),
-  )).flat()
+  const screenings = (
+    await Promise.all(
+      results.map(({ title, url }) =>
+        extractFromMoviePage({
+          title,
+          url: new URL(url, BASE_URL).toString(),
+        }),
+      ),
+    )
+  ).flat()
 
   return makeScreeningsUniqueAndSorted(screenings)
 }

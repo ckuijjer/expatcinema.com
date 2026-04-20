@@ -101,7 +101,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.info('main page', { movies })
 
-  const screenings = (await Promise.all(movies.map(extractFromMoviePage))).flat()
+  const screenings = (
+    await Promise.all(movies.map(extractFromMoviePage))
+  ).flat()
 
   logger.info('screenings found', { count: screenings.length, screenings })
 

@@ -86,7 +86,8 @@ const getProductionResults = async (): Promise<SearchResult[]> => {
 
   const productions = results.filter(
     ({ subtype, url }) =>
-      subtype === 'wp_theatre_prod' && url.startsWith(`${BASE_URL}/production/`),
+      subtype === 'wp_theatre_prod' &&
+      url.startsWith(`${BASE_URL}/production/`),
   )
 
   logger.info('search results', {
@@ -116,7 +117,9 @@ const parseMetadataParagraph = (paragraph: string) => {
 const parseTitleAndYear = (page: ProductionPage) => {
   const metadataParagraphs = page.detailParagraphs
     .map(parseMetadataParagraph)
-    .filter(({ normalized }) => normalized.toLowerCase().includes('english subtitles'))
+    .filter(({ normalized }) =>
+      normalized.toLowerCase().includes('english subtitles'),
+    )
 
   if (metadataParagraphs.length !== 1) {
     return null
@@ -158,7 +161,11 @@ const extractFromProductionPage = async ({
   const titleAndYear = parseTitleAndYear(page)
 
   if (!titleAndYear) {
-    logger.info('skipping ambiguous multi-film production', { title, url, page })
+    logger.info('skipping ambiguous multi-film production', {
+      title,
+      url,
+      page,
+    })
     return []
   }
 

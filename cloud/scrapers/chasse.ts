@@ -47,25 +47,25 @@ const parseDate = (startsAt: string) => {
 }
 
 const cleanTitle = (title: string) =>
-  titleCase(title.replace(/^Internationals Cinema:\s*/i, '').replace(/\s*\(EN subs\)$/i, ''))
+  titleCase(
+    title
+      .replace(/^Internationals Cinema:\s*/i, '')
+      .replace(/\s*\(EN subs\)$/i, ''),
+  )
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const html = await got(
     'https://www.chasse.nl/nl/internationals-cinema-breda-chasse-cinema-breda-13gr',
   ).text()
 
-  const results: XRayResult[] = await xray(
-    html,
-    '.eventCard',
-    [
-      {
-        title: 'h3.title | normalizeWhitespace | trim',
-        url: 'a.desc@href',
-        venue: '.venue | normalizeWhitespace | trim',
-        startsAt: 'a.btn-order@data-event-start',
-      },
-    ],
-  )
+  const results: XRayResult[] = await xray(html, '.eventCard', [
+    {
+      title: 'h3.title | normalizeWhitespace | trim',
+      url: 'a.desc@href',
+      venue: '.venue | normalizeWhitespace | trim',
+      startsAt: 'a.btn-order@data-event-start',
+    },
+  ])
 
   logger.info('main page', { results })
 

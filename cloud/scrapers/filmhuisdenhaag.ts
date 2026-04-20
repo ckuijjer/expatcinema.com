@@ -121,7 +121,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const releaseYearByUrl = new Map(
     await Promise.all(
       Array.from(
-        new Set(programs.map((item) => `https://filmhuisdenhaag.nl${item.uri}`)),
+        new Set(
+          programs.map((item) => `https://filmhuisdenhaag.nl${item.uri}`),
+        ),
       ).map(async (url) => {
         const detailPage = await xray(url, {
           metadata: ['aside .flex.flex-col.space-y-2 p | normalizeWhitespace'],

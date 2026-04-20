@@ -65,7 +65,9 @@ const normalizeAcronyms = (title: string) => {
 
 const cleanTitle = (title: string) => {
   return normalizeAcronyms(
-    titleCase(removeYearSuffix(removeSpecialSuffixes(removeSpecialPrefix(title)))),
+    titleCase(
+      removeYearSuffix(removeSpecialSuffixes(removeSpecialPrefix(title))),
+    ),
   )
 }
 
@@ -83,7 +85,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         .map((time) => {
           return {
             title: cleanTitle(decode(movie.title)),
-            year: parseFkFeedYear(movie.year) ?? extractYearFromTitle(movie.title),
+            year:
+              parseFkFeedYear(movie.year) ?? extractYearFromTitle(movie.title),
             url: movie.permalink,
             cinema: 'Kino',
             date: extractDate(time.program_start),

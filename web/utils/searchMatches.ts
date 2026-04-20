@@ -1,5 +1,4 @@
 import type { Movie } from './getMovies'
-import type { Screening } from './getScreenings'
 import { getMovieReleaseYear } from './getMovies'
 import { removeDiacritics } from './removeDiacritics'
 
