@@ -91,7 +91,7 @@ export const ActiveLink = React.forwardRef<
       ref={ref}
       href={href}
       className={linkVariants({ active: isActive, tone })}
-      aria-current={isCurrent ? 'page' : undefined}
+      aria-current={isActive ? 'page' : undefined}
     >
       {children}
     </Link>
