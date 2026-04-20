@@ -10,9 +10,6 @@ import { palette } from '../utils/theme'
 
 const linkVariants = cva({
   base: {
-    '--link-active-background': 'var(--primary-color)',
-    '--link-active-color': palette.purple500,
-    '--link-inactive-color': 'var(--text-inverse-color)',
     display: 'inline-block',
     fontSize: '18px',
     padding: '10px',
@@ -24,28 +21,48 @@ const linkVariants = cva({
   },
   variants: {
     tone: {
-      light: {
-        '--link-active-background': 'var(--primary-color)',
-        '--link-active-color': palette.purple500,
-        '--link-inactive-color': 'var(--text-inverse-color)',
-      },
-      dark: {
-        '--link-active-background': 'var(--secondary-color)',
-        '--link-active-color': 'var(--text-inverse-color)',
-        '--link-inactive-color': 'var(--secondary-color)',
-      },
+      light: {},
+      dark: {},
     },
     active: {
-      true: {
-        backgroundColor: 'var(--link-active-background)',
-        color: 'var(--link-active-color)',
-      },
-      false: {
-        backgroundColor: 'transparent',
-        color: 'var(--link-inactive-color)',
-      },
+      true: {},
+      false: {},
     },
   },
+  compoundVariants: [
+    {
+      tone: 'light',
+      active: false,
+      css: {
+        backgroundColor: 'transparent',
+        color: 'var(--text-inverse-color)',
+      },
+    },
+    {
+      tone: 'light',
+      active: true,
+      css: {
+        backgroundColor: 'var(--primary-color)',
+        color: palette.purple500,
+      },
+    },
+    {
+      tone: 'dark',
+      active: false,
+      css: {
+        backgroundColor: 'transparent',
+        color: 'var(--secondary-color)',
+      },
+    },
+    {
+      tone: 'dark',
+      active: true,
+      css: {
+        backgroundColor: 'var(--secondary-color)',
+        color: 'var(--text-inverse-color)',
+      },
+    },
+  ],
   defaultVariants: {
     active: false,
     tone: 'light',
