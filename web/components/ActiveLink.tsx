@@ -19,7 +19,16 @@ const linkVariants = cva({
     textDecoration: 'none',
     borderRadius: '4px',
   },
-
+  variants: {
+    tone: {
+      light: {},
+      dark: {},
+    },
+    active: {
+      true: {},
+      false: {},
+    },
+  },
   compoundVariants: [
     {
       tone: 'light',
@@ -42,7 +51,7 @@ const linkVariants = cva({
       active: false,
       css: {
         backgroundColor: 'transparent',
-        color: palette.purple500,
+        color: 'var(--secondary-color)',
       },
     },
     {
@@ -56,7 +65,7 @@ const linkVariants = cva({
   ],
   defaultVariants: {
     active: false,
-    tone: 'dark',
+    tone: 'light',
   },
 })
 
@@ -82,7 +91,7 @@ export const ActiveLink = React.forwardRef<
       ref={ref}
       href={href}
       className={linkVariants({ active: isActive, tone })}
-      aria-current={isActive ? 'page' : undefined}
+      aria-current={isCurrent ? 'page' : undefined}
     >
       {children}
     </Link>
