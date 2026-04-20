@@ -44,7 +44,7 @@ export default async function ScreeningsLayout({
           <NavigationBar />
         </Suspense>
       </Layout>
-      <Layout backgroundColor={palette.purple400}>
+      <Layout backgroundColor={palette.purple400} noPadding>
         <Suspense>
           <CityFilter links={links} />
         </Suspense>

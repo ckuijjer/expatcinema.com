@@ -2,9 +2,9 @@ import React, { Suspense } from 'react'
 
 import { CinemaFilter } from '../../../../components/CinemaFilter'
 import { FilterLink } from '../../../../components/CityFilter'
-import { Layout } from '../../../../components/Layout'
 import cinemas from '../../../../data/cinema.json'
 import { getScreenings } from '../../../../utils/getScreenings'
+import { Layout } from '../../../../components/Layout'
 import { palette } from '../../../../utils/theme'
 
 export default async function CityLayout({
@@ -42,7 +42,7 @@ export default async function CityLayout({
 
   return (
     <>
-      <Layout backgroundColor={palette.purple300}>
+      <Layout backgroundColor={palette.purple300} noPadding>
         <Suspense>
           <CinemaFilter links={links} />
         </Suspense>
