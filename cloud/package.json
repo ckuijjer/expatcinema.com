@@ -36,7 +36,7 @@
     "@aws-sdk/client-s3": "^3.1014.0",
     "@aws-sdk/lib-dynamodb": "^3.1014.0",
     "@middy/core": "^7.2.1",
-    "@sparticuz/chromium": "^143.0.4",
+    "@sparticuz/chromium": "^147.0.1",
     "aws-cdk-lib": "2.244.0",
     "camelcase-keys": "^10.0.2",
     "constructs": "^10.5.1",
