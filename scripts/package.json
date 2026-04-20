@@ -12,7 +12,7 @@
   "devDependencies": {
     "@tsconfig/node22": "^22.0.5",
     "@types/luxon": "^3.7.1",
-    "prettier": "^3.8.1",
+    "prettier": "^3.8.3",
     "tsx": "^4.21.0",
     "typescript": "5.9.3"
   },
