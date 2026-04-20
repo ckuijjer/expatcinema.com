@@ -1,26 +1,30 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 import { css, cx } from 'styled-system/css'
 
+import { useSearch } from '../utils/hooks'
+import { removeDiacritics } from '../utils/removeDiacritics'
 import {
   getMoviePosterUrl,
   getMovieReleaseYear,
   Movie,
 } from '../utils/getMovies'
 import { Layout } from './Layout'
-import { PageTitle } from './PageTitle'
-import { PageSection } from './PageSection'
 import {
   listContainerStyle,
-  listSectionHeadingStyle,
   listPosterPlaceholderStyle,
   listPosterStyle,
   listRowBaseStyle,
+  listSectionHeadingStyle,
   listTitleStyle,
   listYearStyle,
 } from './listStyles'
+import { PageSection } from './PageSection'
+import { PageTitle } from './PageTitle'
 
 const pageStyle = css({
   marginTop: '16px',
@@ -60,6 +64,21 @@ const getMovieSection = (title: string) => {
   return firstLetter >= 'A' && firstLetter <= 'Z' ? firstLetter : '#'
 }
 
+const movieMatchesSearch = (movie: Movie, searchComponents: string[]) => {
+  const title = removeDiacritics(movie.title.toLowerCase())
+  const sortTitle = removeDiacritics(
+    (movie.sortTitle ?? movie.title).toLowerCase(),
+  )
+
+  return (
+    searchComponents.length === 0 ||
+    searchComponents.every(
+      (searchComponent) =>
+        title.includes(searchComponent) || sortTitle.includes(searchComponent),
+    )
+  )
+}
+
 const MovieOverviewRow = ({ movie }: { movie: Movie }) => {
   const posterUrl = getMoviePosterUrl(movie.tmdb?.posterPath)
   const year = getMovieReleaseYear(movie)
@@ -96,13 +115,17 @@ const MovieOverviewRow = ({ movie }: { movie: Movie }) => {
 }
 
 export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
-  const sortedMovies = [...movies].sort((left, right) =>
-    (left.sortTitle ?? left.title).localeCompare(
-      right.sortTitle ?? right.title,
-      undefined,
-      { sensitivity: 'base' },
-    ),
-  )
+  const { search, searchComponents } = useSearch()
+
+  const sortedMovies = movies
+    .filter((movie) => movieMatchesSearch(movie, searchComponents))
+    .sort((left, right) =>
+      (left.sortTitle ?? left.title).localeCompare(
+        right.sortTitle ?? right.title,
+        undefined,
+        { sensitivity: 'base' },
+      ),
+    )
 
   const moviesBySection = sortedMovies.reduce<Record<string, Movie[]>>(
     (sections, movie) => {
@@ -136,16 +159,22 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
             scheduled.
           </p>
         </div>
-        <div className={listContainerStyle}>
-          {sections.map((section) => (
-            <div key={section}>
-              <h3 className={listSectionHeadingStyle}>{section}</h3>
-              {moviesBySection[section].map((movie) => (
-                <MovieOverviewRow key={movie.movieId} movie={movie} />
-              ))}
-            </div>
-          ))}
-        </div>
+        {sortedMovies.length === 0 ? (
+          <h3 className={listSectionHeadingStyle}>
+            No movies found{search ? ` for ${search}` : ''}
+          </h3>
+        ) : (
+          <div className={listContainerStyle}>
+            {sections.map((section) => (
+              <div key={section}>
+                <h3 className={listSectionHeadingStyle}>{section}</h3>
+                {moviesBySection[section].map((movie) => (
+                  <MovieOverviewRow key={movie.movieId} movie={movie} />
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
         <div className={footerStyle}>
           <PageSection>Unmatched movies</PageSection>
           <p>
