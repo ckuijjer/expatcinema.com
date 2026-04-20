@@ -15,8 +15,8 @@ import {
 } from '../../utils/groupAndSortScreenings'
 import { getMoviePagePath } from '../../utils/getMoviePagePath'
 import { useSearch } from '../../utils/hooks'
+import { matchesScreeningSearch } from '../../utils/searchMatches'
 import { DirectCalendar } from './DirectCalendar'
-import { removeDiacritics } from '../../utils/removeDiacritics'
 import { listSectionHeadingStyle } from '../listStyles'
 
 export type Row =
@@ -30,25 +30,6 @@ const containerStyle = css({
   marginTop: '24px',
   marginBottom: '24px',
 })
-
-const screeningMatchesSearch = (
-  screening: ScreeningWithLuxonDate,
-  searchComponents: string[],
-) => {
-  const title = removeDiacritics(screening.title.toLowerCase())
-  const cinema = removeDiacritics(screening.cinema.name.toLowerCase())
-  const city = removeDiacritics(screening.cinema.city.name.toLowerCase())
-
-  return (
-    searchComponents.length === 0 ||
-    searchComponents.every(
-      (searchComponent) =>
-        title.includes(searchComponent) ||
-        cinema.includes(searchComponent) ||
-        city.includes(searchComponent),
-    )
-  )
-}
 
 export const Calendar = ({
   screenings,
@@ -73,7 +54,7 @@ export const Calendar = ({
 
   const rows = screeningsByDate.flatMap(([date, screenings]) => {
     const filteredScreenings = screenings?.filter((screening) =>
-      screeningMatchesSearch(screening, searchComponents),
+      matchesScreeningSearch(screening, searchComponents),
     )
 
     if (!filteredScreenings?.length) return []

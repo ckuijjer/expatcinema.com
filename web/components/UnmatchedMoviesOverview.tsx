@@ -1,20 +1,18 @@
+'use client'
+
 import React from 'react'
-import Link from 'next/link'
 
 import { css, cx } from 'styled-system/css'
 
+import { useSearch } from '../utils/hooks'
 import { Screening } from '../utils/getScreenings'
 import { palette } from '../utils/theme'
+import type { Movie } from '../utils/getMovies'
+import { matchesMovieSearch } from '../utils/searchMatches'
+import { MovieOverviewRow } from './MoviesOverview'
 import { Layout } from './Layout'
 import { PageTitle } from './PageTitle'
-import {
-  listContainerStyle,
-  listSectionHeadingStyle,
-  listPosterPlaceholderStyle,
-  listRowBaseStyle,
-  listTitleStyle,
-  listYearStyle,
-} from './listStyles'
+import { listContainerStyle, listSectionHeadingStyle } from './listStyles'
 
 const pageStyle = css({
   marginTop: '16px',
@@ -32,10 +30,7 @@ const introStyle = css({
 })
 
 const rowStyle = cx(
-  listRowBaseStyle,
   css({
-    display: 'grid',
-    gridTemplateColumns: 'auto minmax(0, 1fr)',
     '&:hover': {
       backgroundColor: 'var(--background-highlight-color)',
       borderRadius: '10px',
@@ -56,32 +51,24 @@ const getMovieSection = (title: string) => {
 const getUnmatchedMovieKey = (screening: Screening) =>
   `${screening.title}__${screening.year ?? ''}`
 
-const UnmatchedMovieRow = ({ screening }: { screening: Screening }) => (
-  <Link
-    href={`/?search=${encodeURIComponent(screening.title)}`}
-    className={rowStyle}
-  >
-    <div
-      aria-hidden
-      className={cx(
-        listPosterPlaceholderStyle,
-        'unmatched-movie-poster-placeholder',
-      )}
-    />
-    <div className={listTitleStyle}>
-      {screening.title}
-      {screening.year ? (
-        <span className={listYearStyle}> ({screening.year})</span>
-      ) : null}
-    </div>
-  </Link>
-)
+const toMovie = (screening: Screening): Movie => ({
+  movieId: getUnmatchedMovieKey(screening),
+  title: screening.title,
+  tmdbId: 0,
+  tmdb: screening.year
+    ? {
+        releaseDate: `${screening.year}-01-01`,
+      }
+    : undefined,
+})
 
 export const UnmatchedMoviesOverview = ({
   screenings,
 }: {
   screenings: Screening[]
 }) => {
+  const { search, searchComponents } = useSearch()
+
   const unmatchedMovies = screenings.filter((screening) => !screening.movieId)
 
   const uniqueUnmatchedMovies = Array.from(
@@ -107,14 +94,19 @@ export const UnmatchedMoviesOverview = ({
     return (right.year ?? 0) - (left.year ?? 0)
   })
 
-  const moviesBySection = uniqueUnmatchedMovies.reduce<
-    Record<string, Screening[]>
-  >((sections, screening) => {
-    const section = getMovieSection(screening.title)
-    sections[section] = sections[section] ?? []
-    sections[section].push(screening)
-    return sections
-  }, {})
+  const filteredMovies = uniqueUnmatchedMovies.filter((screening) =>
+    matchesMovieSearch(toMovie(screening), searchComponents),
+  )
+
+  const moviesBySection = filteredMovies.reduce<Record<string, Screening[]>>(
+    (sections, screening) => {
+      const section = getMovieSection(screening.title)
+      sections[section] = sections[section] ?? []
+      sections[section].push(screening)
+      return sections
+    },
+    {},
+  )
 
   const sections = Object.keys(moviesBySection).sort((left, right) => {
     if (left === '#') {
@@ -138,19 +130,28 @@ export const UnmatchedMoviesOverview = ({
             Database.
           </p>
         </div>
-        <div className={listContainerStyle}>
-          {sections.map((section) => (
-            <div key={section}>
-              <h3 className={listSectionHeadingStyle}>{section}</h3>
-              {moviesBySection[section].map((screening) => (
-                <UnmatchedMovieRow
-                  key={getUnmatchedMovieKey(screening)}
-                  screening={screening}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
+        {filteredMovies.length === 0 ? (
+          <h3 className={listSectionHeadingStyle}>
+            No movies found{search ? ` for ${search}` : ''}
+          </h3>
+        ) : (
+          <div className={listContainerStyle}>
+            {sections.map((section) => (
+              <div key={section}>
+                <h3 className={listSectionHeadingStyle}>{section}</h3>
+                {moviesBySection[section].map((screening) => (
+                  <MovieOverviewRow
+                    key={getUnmatchedMovieKey(screening)}
+                    movie={toMovie(screening)}
+                    href={`/?search=${encodeURIComponent(screening.title)}`}
+                    className={rowStyle}
+                    posterPlaceholderClassName="unmatched-movie-poster-placeholder"
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </Layout>
   )

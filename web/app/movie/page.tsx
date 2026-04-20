@@ -22,7 +22,9 @@ export default async function MoviesPage() {
           <NavigationBar />
         </Suspense>
       </Layout>
-      <MoviesOverview movies={movies} />
+      <Suspense>
+        <MoviesOverview movies={movies} />
+      </Suspense>
     </>
   )
 }

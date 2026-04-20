@@ -229,7 +229,7 @@ export const MoviePage = ({
     <>
       <Suspense>
         <Layout backgroundColor={palette.purple600}>
-          <NavigationBar showSearch={false} />
+          <NavigationBar />
         </Layout>
       </Suspense>
       <Layout>
