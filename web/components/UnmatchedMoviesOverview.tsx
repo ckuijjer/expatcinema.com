@@ -8,7 +8,7 @@ import { css, cx } from 'styled-system/css'
 import { useSearch } from '../utils/hooks'
 import { Screening } from '../utils/getScreenings'
 import { palette } from '../utils/theme'
-import { matchesUnmatchedMovieSearch } from '../utils/searchMatches'
+import { matchesScreeningSearch } from '../utils/searchMatches'
 import { Layout } from './Layout'
 import { PageTitle } from './PageTitle'
 import {
@@ -114,7 +114,7 @@ export const UnmatchedMoviesOverview = ({
   })
 
   const filteredMovies = uniqueUnmatchedMovies.filter((screening) =>
-    matchesUnmatchedMovieSearch(screening, searchComponents),
+    matchesScreeningSearch(screening, searchComponents),
   )
 
   const moviesBySection = filteredMovies.reduce<Record<string, Screening[]>>(

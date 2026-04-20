@@ -1,11 +1,13 @@
 import type { Movie } from './getMovies'
 import type { Screening } from './getScreenings'
+import { getMovieReleaseYear } from './getMovies'
 import { removeDiacritics } from './removeDiacritics'
 
 const normalize = (value: string) => removeDiacritics(value.toLowerCase())
 
 type ScreeningSearchTarget = {
   title: string
+  year?: number
   cinema: {
     name: string
     city: {
@@ -34,21 +36,17 @@ export const matchesScreeningSearch = <T extends ScreeningSearchTarget>(
   searchComponents: string[],
 ) =>
   matchesSearchComponents(
-    [screening.title, screening.cinema.name, screening.cinema.city.name],
+    [
+      screening.title,
+      screening.year?.toString() ?? '',
+      screening.cinema.name,
+      screening.cinema.city.name,
+    ],
     searchComponents,
   )
 
 export const matchesMovieSearch = (movie: Movie, searchComponents: string[]) =>
   matchesSearchComponents(
-    [movie.title, movie.sortTitle ?? movie.title],
-    searchComponents,
-  )
-
-export const matchesUnmatchedMovieSearch = (
-  screening: Screening,
-  searchComponents: string[],
-) =>
-  matchesSearchComponents(
-    [screening.title, screening.year?.toString() ?? ''],
+    [movie.title, getMovieReleaseYear(movie)?.toString() ?? ''],
     searchComponents,
   )
