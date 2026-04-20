@@ -49,10 +49,8 @@ export const CinemaFilter = ({ links }: { links: FilterLink[] }) => {
               ? `/city/${city}${searchQuery}`
               : `/city/${city}/cinema/${slug}${searchQuery}`
           }
-          key={text}
-          activeColor={palette.purple100}
-          activeBackgroundColor={palette.purple400}
-          inactiveColor={palette.purple500}
+          key={slug ?? text}
+          tone="dark"
         >
           {text}
         </ActiveLink>
