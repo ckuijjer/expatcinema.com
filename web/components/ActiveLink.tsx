@@ -51,7 +51,7 @@ const linkVariants = cva({
       active: false,
       css: {
         backgroundColor: 'transparent',
-        color: 'var(--secondary-color)',
+        color: palette.purple500,
       },
     },
     {
