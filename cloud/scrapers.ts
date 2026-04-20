@@ -2,7 +2,7 @@ import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware'
 import middy from '@middy/core'
 
 import { logger as parentLogger } from './powertools'
-import { scrapers } from './scrapers/index.ts'
+import { scrapers } from './scrapers/index'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

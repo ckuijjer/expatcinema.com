@@ -4,10 +4,15 @@ import puppeteer, { Browser, LaunchOptions } from 'puppeteer-core'
 
 import { LOCAL_CHROMIUM_EXECUTABLE_PATH } from './browser-local-constants'
 
+type InitializationEntry = {
+  resolve: (browser: Browser) => void
+  reject: (error: unknown) => void
+}
+
 const createBrowserSingleton = () => {
-  let instance: Browser
+  let instance: Browser | undefined
   let isInitializing = false
-  const initializationQueue = []
+  const initializationQueue: InitializationEntry[] = []
 
   const initializeBrowser = async ({ logger }: { logger?: Logger }) => {
     try {
@@ -30,24 +35,26 @@ const createBrowserSingleton = () => {
 
       logger?.info('launching browser', { options })
       instance = await puppeteer.launch(options)
-      isInitializing = false
       logger?.info('browser launched')
-
-      // Resolve all pending promises in the queue
-      let i = 0
-      while (initializationQueue.length) {
-        logger?.info(`resolving pending promises in the queue: ${i++}`)
-        const resolver = initializationQueue.shift()
-        resolver(instance)
-      }
     } catch (error) {
-      // Reject all pending promises in the queue on error
-      let i = 0
-      while (initializationQueue.length) {
-        logger?.info(`resolving pending promises in the queue: ${i++}`)
-        const resolver = initializationQueue.shift()
-        resolver(Promise.reject(error))
-      }
+      instance = undefined
+      throw error
+    } finally {
+      isInitializing = false
+
+      const pendingRequests = initializationQueue.splice(0)
+      pendingRequests.forEach(({ resolve, reject }, index) => {
+        logger?.info('settling pending browser initialization request', {
+          index,
+          hasInstance: Boolean(instance),
+        })
+
+        if (instance) {
+          resolve(instance)
+        } else {
+          reject(new Error('browser initialization failed'))
+        }
+      })
     }
   }
 
@@ -60,13 +67,17 @@ const createBrowserSingleton = () => {
 
     if (isInitializing) {
       logger?.info('browser is initializing')
-      // If initialization is in progress, return a promise that resolves when it's done
-      return new Promise((resolve) => {
-        initializationQueue.push(resolve)
+      // If initialization is in progress, return a promise that settles when it's done
+      return new Promise<Browser>((resolve, reject) => {
+        initializationQueue.push({ resolve, reject })
       })
     } else {
       logger?.info('browser is initialized')
       // If instance is available, return it
+      if (!instance) {
+        throw new Error('browser failed to initialize')
+      }
+
       return instance
     }
   }

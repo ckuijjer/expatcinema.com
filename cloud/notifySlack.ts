@@ -18,12 +18,32 @@ const filters = [
 
 const gunzip = util.promisify(zlib.gunzip)
 
-const notifySlack = async ({ awslogs } = {}) => {
+type CloudWatchLogsEvent = {
+  awslogs: {
+    data: string
+  }
+}
+
+type LogEvent = {
+  message: string
+}
+
+type SlackBlock = {
+  type: string
+  text: {
+    type: string
+    text: string
+  }
+}
+
+const notifySlack = async ({ awslogs }: CloudWatchLogsEvent) => {
   const payload = Buffer.from(awslogs.data, 'base64')
 
   const unzippedPayload = await gunzip(payload)
 
-  const { logEvents } = JSON.parse(unzippedPayload.toString())
+  const { logEvents } = JSON.parse(unzippedPayload.toString()) as {
+    logEvents: LogEvent[]
+  }
 
   const filteredLogEvents = logEvents.filter(({ message }) =>
     filters.some((f) => f.test(message)),
@@ -41,16 +61,19 @@ const levelsToEmoji = {
   DEBUG: ':information_source:',
 }
 
-const getSlackBlocks = (logEvent) => {
+const getSlackBlocks = (logEvent: LogEvent): SlackBlock[] => {
   try {
-    const json = JSON.parse(logEvent.message)
+    const json = JSON.parse(logEvent.message) as {
+      level?: keyof typeof levelsToEmoji
+      message: string
+    }
 
     const blocks = [
       {
         type: 'section',
         text: {
           type: 'plain_text',
-          text: `${levelsToEmoji[json.level]} ${json.message}`,
+          text: `${levelsToEmoji[json.level ?? 'INFO']} ${json.message}`,
         },
       },
       {
@@ -74,8 +97,13 @@ const getSlackBlocks = (logEvent) => {
   }
 }
 
-const postToSlack = (blocks) => {
-  return got.post(process.env.SLACK_WEBHOOK, {
+const postToSlack = (blocks: SlackBlock[]) => {
+  const slackWebhook = process.env.SLACK_WEBHOOK
+  if (!slackWebhook) {
+    throw new Error('SLACK_WEBHOOK is required')
+  }
+
+  return got.post(slackWebhook, {
     json: { blocks },
   })
 }

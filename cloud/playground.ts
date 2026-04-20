@@ -65,7 +65,16 @@ const getUsingChromium = async () => {
 
   await page.waitForSelector('body')
   const textContent = await page.evaluate(
-    () => document.querySelector('a').textContent,
+    () =>
+      (
+        globalThis as unknown as {
+          document: {
+            querySelector: (selector: string) => {
+              textContent?: string | null
+            } | null
+          }
+        }
+      ).document.querySelector('a')?.textContent,
   )
 
   logger.info('First link' + textContent)
@@ -84,9 +93,13 @@ const movieMetadataPlayground = async () => {
       new Set(screenings.map(({ title }) => title)),
     ).sort()
 
-    const uniqueTitlesAndMetadata = await pMap(uniqueTitles, getMetadata, {
-      concurrency: 5,
-    })
+    const uniqueTitlesAndMetadata = await pMap(
+      uniqueTitles.map((title) => ({ title })),
+      getMetadata,
+      {
+        concurrency: 5,
+      },
+    )
 
     const allWithMovieId = screenings.map((screening) => {
       const metadata = uniqueTitlesAndMetadata.find(
