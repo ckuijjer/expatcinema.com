@@ -3,6 +3,8 @@ import Link from 'next/link'
 
 import { css, cx } from 'styled-system/css'
 
+import { useSearch } from '../utils/hooks'
+import { removeDiacritics } from '../utils/removeDiacritics'
 import { Screening } from '../utils/getScreenings'
 import { palette } from '../utils/theme'
 import { Layout } from './Layout'
@@ -56,6 +58,22 @@ const getMovieSection = (title: string) => {
 const getUnmatchedMovieKey = (screening: Screening) =>
   `${screening.title}__${screening.year ?? ''}`
 
+const screeningMatchesSearch = (
+  screening: Screening,
+  searchComponents: string[],
+) => {
+  const title = removeDiacritics(screening.title.toLowerCase())
+  const year = screening.year?.toString() ?? ''
+
+  return (
+    searchComponents.length === 0 ||
+    searchComponents.every(
+      (searchComponent) =>
+        title.includes(searchComponent) || year.includes(searchComponent),
+    )
+  )
+}
+
 const UnmatchedMovieRow = ({ screening }: { screening: Screening }) => (
   <Link
     href={`/?search=${encodeURIComponent(screening.title)}`}
@@ -82,6 +100,8 @@ export const UnmatchedMoviesOverview = ({
 }: {
   screenings: Screening[]
 }) => {
+  const { search, searchComponents } = useSearch()
+
   const unmatchedMovies = screenings.filter((screening) => !screening.movieId)
 
   const uniqueUnmatchedMovies = Array.from(
@@ -107,14 +127,19 @@ export const UnmatchedMoviesOverview = ({
     return (right.year ?? 0) - (left.year ?? 0)
   })
 
-  const moviesBySection = uniqueUnmatchedMovies.reduce<
-    Record<string, Screening[]>
-  >((sections, screening) => {
-    const section = getMovieSection(screening.title)
-    sections[section] = sections[section] ?? []
-    sections[section].push(screening)
-    return sections
-  }, {})
+  const filteredMovies = uniqueUnmatchedMovies.filter((screening) =>
+    screeningMatchesSearch(screening, searchComponents),
+  )
+
+  const moviesBySection = filteredMovies.reduce<Record<string, Screening[]>>(
+    (sections, screening) => {
+      const section = getMovieSection(screening.title)
+      sections[section] = sections[section] ?? []
+      sections[section].push(screening)
+      return sections
+    },
+    {},
+  )
 
   const sections = Object.keys(moviesBySection).sort((left, right) => {
     if (left === '#') {
@@ -138,19 +163,25 @@ export const UnmatchedMoviesOverview = ({
             Database.
           </p>
         </div>
-        <div className={listContainerStyle}>
-          {sections.map((section) => (
-            <div key={section}>
-              <h3 className={listSectionHeadingStyle}>{section}</h3>
-              {moviesBySection[section].map((screening) => (
-                <UnmatchedMovieRow
-                  key={getUnmatchedMovieKey(screening)}
-                  screening={screening}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
+        {filteredMovies.length === 0 ? (
+          <h3 className={listSectionHeadingStyle}>
+            No movies found{search ? ` for ${search}` : ''}
+          </h3>
+        ) : (
+          <div className={listContainerStyle}>
+            {sections.map((section) => (
+              <div key={section}>
+                <h3 className={listSectionHeadingStyle}>{section}</h3>
+                {moviesBySection[section].map((screening) => (
+                  <UnmatchedMovieRow
+                    key={getUnmatchedMovieKey(screening)}
+                    screening={screening}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </Layout>
   )

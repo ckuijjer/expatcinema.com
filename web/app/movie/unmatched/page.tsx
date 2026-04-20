@@ -26,7 +26,9 @@ export default async function UnmatchedMoviesPage() {
           <NavigationBar />
         </Suspense>
       </Layout>
-      <UnmatchedMoviesOverview screenings={screenings} />
+      <Suspense>
+        <UnmatchedMoviesOverview screenings={screenings} />
+      </Suspense>
     </>
   )
 }
