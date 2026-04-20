@@ -8,7 +8,8 @@ import { css, cx } from 'styled-system/css'
 import { useSearch } from '../utils/hooks'
 import { Screening } from '../utils/getScreenings'
 import { palette } from '../utils/theme'
-import { matchesScreeningSearch } from '../utils/searchMatches'
+import type { Movie } from '../utils/getMovies'
+import { matchesMovieSearch } from '../utils/searchMatches'
 import { Layout } from './Layout'
 import { PageTitle } from './PageTitle'
 import {
@@ -59,6 +60,17 @@ const getMovieSection = (title: string) => {
 
 const getUnmatchedMovieKey = (screening: Screening) =>
   `${screening.title}__${screening.year ?? ''}`
+
+const toMovie = (screening: Screening): Movie => ({
+  movieId: getUnmatchedMovieKey(screening),
+  title: screening.title,
+  tmdbId: 0,
+  tmdb: screening.year
+    ? {
+        releaseDate: `${screening.year}-01-01`,
+      }
+    : undefined,
+})
 
 const UnmatchedMovieRow = ({ screening }: { screening: Screening }) => (
   <Link
@@ -114,7 +126,7 @@ export const UnmatchedMoviesOverview = ({
   })
 
   const filteredMovies = uniqueUnmatchedMovies.filter((screening) =>
-    matchesScreeningSearch(screening, searchComponents),
+    matchesMovieSearch(toMovie(screening), searchComponents),
   )
 
   const moviesBySection = filteredMovies.reduce<Record<string, Screening[]>>(
