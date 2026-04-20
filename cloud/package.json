@@ -39,7 +39,7 @@
     "@sparticuz/chromium": "^143.0.4",
     "aws-cdk-lib": "2.244.0",
     "camelcase-keys": "^10.0.2",
-    "constructs": "^10.5.1",
+    "constructs": "^10.6.0",
     "got": "^14.6.6",
     "graphql": "^16.13.1",
     "html-entities": "^2.6.0",
