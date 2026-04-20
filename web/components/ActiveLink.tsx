@@ -4,12 +4,15 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
-import { cva, cx } from 'styled-system/css'
+import { cva } from 'styled-system/css'
 
 import { palette } from '../utils/theme'
 
 const linkVariants = cva({
   base: {
+    '--link-active-background': 'var(--primary-color)',
+    '--link-active-color': palette.purple500,
+    '--link-inactive-color': 'var(--text-inverse-color)',
     display: 'inline-block',
     fontSize: '18px',
     padding: '10px',
@@ -22,34 +25,29 @@ const linkVariants = cva({
   variants: {
     tone: {
       light: {
-        color: 'var(--text-inverse-color)',
+        '--link-active-background': 'var(--primary-color)',
+        '--link-active-color': palette.purple500,
+        '--link-inactive-color': 'var(--text-inverse-color)',
       },
       dark: {
-        color: 'var(--secondary-color)',
+        '--link-active-background': 'var(--secondary-color)',
+        '--link-active-color': 'var(--text-inverse-color)',
+        '--link-inactive-color': 'var(--secondary-color)',
+      },
+    },
+    active: {
+      true: {
+        backgroundColor: 'var(--link-active-background)',
+        color: 'var(--link-active-color)',
+      },
+      false: {
+        backgroundColor: 'transparent',
+        color: 'var(--link-inactive-color)',
       },
     },
   },
   defaultVariants: {
-    tone: 'light',
-  },
-})
-
-const currentLinkVariants = cva({
-  base: {
-    backgroundColor: 'var(--primary-color)',
-  },
-  variants: {
-    tone: {
-      light: {
-        color: palette.purple500,
-      },
-      dark: {
-        backgroundColor: 'var(--secondary-color)',
-        color: 'var(--text-inverse-color)',
-      },
-    },
-  },
-  defaultVariants: {
+    active: false,
     tone: 'light',
   },
 })
@@ -60,37 +58,26 @@ export const ActiveLink = React.forwardRef<
     children: React.ReactNode
     href: string
     tone?: 'light' | 'dark'
-    currentTone?: 'light' | 'dark'
     matchPrefix?: boolean
   }
->(
-  (
-    { children, href, tone = 'light', currentTone, matchPrefix = false },
-    ref,
-  ) => {
-    const pathname = usePathname()
-    const linkPathname = new URL(href, 'http://localhost').pathname
-    const isCurrent =
-      linkPathname === pathname ||
-      (matchPrefix &&
-        linkPathname !== '/' &&
-        pathname.startsWith(linkPathname + '/'))
+>(({ children, href, tone = 'light', matchPrefix = false }, ref) => {
+  const pathname = usePathname()
+  const linkPathname = new URL(href, 'http://localhost').pathname
+  const isCurrent =
+    linkPathname === pathname ||
+    (matchPrefix &&
+      linkPathname !== '/' &&
+      pathname.startsWith(linkPathname + '/'))
 
-    return (
-      <Link
-        ref={ref}
-        href={href}
-        className={cx(
-          linkVariants({ tone }),
-          isCurrent
-            ? currentLinkVariants({ tone: currentTone ?? tone })
-            : undefined,
-        )}
-        aria-current={isCurrent ? 'page' : undefined}
-      >
-        {children}
-      </Link>
-    )
-  },
-)
+  return (
+    <Link
+      ref={ref}
+      href={href}
+      className={linkVariants({ active: isCurrent, tone })}
+      aria-current={isCurrent ? 'page' : undefined}
+    >
+      {children}
+    </Link>
+  )
+})
 ActiveLink.displayName = 'ActiveLink'
