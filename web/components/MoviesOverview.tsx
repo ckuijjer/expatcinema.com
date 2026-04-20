@@ -7,12 +7,12 @@ import React from 'react'
 import { css, cx } from 'styled-system/css'
 
 import { useSearch } from '../utils/hooks'
-import { removeDiacritics } from '../utils/removeDiacritics'
 import {
   getMoviePosterUrl,
   getMovieReleaseYear,
   Movie,
 } from '../utils/getMovies'
+import { matchesMovieSearch } from '../utils/searchMatches'
 import { Layout } from './Layout'
 import {
   listContainerStyle,
@@ -64,21 +64,6 @@ const getMovieSection = (title: string) => {
   return firstLetter >= 'A' && firstLetter <= 'Z' ? firstLetter : '#'
 }
 
-const movieMatchesSearch = (movie: Movie, searchComponents: string[]) => {
-  const title = removeDiacritics(movie.title.toLowerCase())
-  const sortTitle = removeDiacritics(
-    (movie.sortTitle ?? movie.title).toLowerCase(),
-  )
-
-  return (
-    searchComponents.length === 0 ||
-    searchComponents.every(
-      (searchComponent) =>
-        title.includes(searchComponent) || sortTitle.includes(searchComponent),
-    )
-  )
-}
-
 const MovieOverviewRow = ({ movie }: { movie: Movie }) => {
   const posterUrl = getMoviePosterUrl(movie.tmdb?.posterPath)
   const year = getMovieReleaseYear(movie)
@@ -118,7 +103,7 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
   const { search, searchComponents } = useSearch()
 
   const sortedMovies = movies
-    .filter((movie) => movieMatchesSearch(movie, searchComponents))
+    .filter((movie) => matchesMovieSearch(movie, searchComponents))
     .sort((left, right) =>
       (left.sortTitle ?? left.title).localeCompare(
         right.sortTitle ?? right.title,

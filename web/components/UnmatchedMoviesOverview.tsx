@@ -6,9 +6,9 @@ import Link from 'next/link'
 import { css, cx } from 'styled-system/css'
 
 import { useSearch } from '../utils/hooks'
-import { removeDiacritics } from '../utils/removeDiacritics'
 import { Screening } from '../utils/getScreenings'
 import { palette } from '../utils/theme'
+import { matchesUnmatchedMovieSearch } from '../utils/searchMatches'
 import { Layout } from './Layout'
 import { PageTitle } from './PageTitle'
 import {
@@ -59,22 +59,6 @@ const getMovieSection = (title: string) => {
 
 const getUnmatchedMovieKey = (screening: Screening) =>
   `${screening.title}__${screening.year ?? ''}`
-
-const screeningMatchesSearch = (
-  screening: Screening,
-  searchComponents: string[],
-) => {
-  const title = removeDiacritics(screening.title.toLowerCase())
-  const year = screening.year?.toString() ?? ''
-
-  return (
-    searchComponents.length === 0 ||
-    searchComponents.every(
-      (searchComponent) =>
-        title.includes(searchComponent) || year.includes(searchComponent),
-    )
-  )
-}
 
 const UnmatchedMovieRow = ({ screening }: { screening: Screening }) => (
   <Link
@@ -130,7 +114,7 @@ export const UnmatchedMoviesOverview = ({
   })
 
   const filteredMovies = uniqueUnmatchedMovies.filter((screening) =>
-    screeningMatchesSearch(screening, searchComponents),
+    matchesUnmatchedMovieSearch(screening, searchComponents),
   )
 
   const moviesBySection = filteredMovies.reduce<Record<string, Screening[]>>(
