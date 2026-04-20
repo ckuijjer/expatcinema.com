@@ -15,7 +15,12 @@ export const groupAndSortScreenings = (
   screenings: Screening[],
 ): Partial<Record<string, ScreeningWithLuxonDate[]>> => {
   const sorted = screenings
-    .map((x) => ({ ...x, date: DateTime.fromISO(x.date) })) // use luxon on the date
+    .map((x) => ({
+      ...x,
+      date: DateTime.fromISO(x.date, { setZone: true }).setZone(
+        'Europe/Amsterdam',
+      ),
+    }))
     .filter((x) => x.date >= getToday())
     .sort((a, b) => a.date.toMillis() - b.date.toMillis())
 

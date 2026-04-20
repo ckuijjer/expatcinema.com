@@ -6,7 +6,7 @@ import { getToday } from '../utils/getToday'
 import { listSectionHeadingStyle } from './listStyles'
 
 export const RelativeDate = ({ children }: { children: string }) => {
-  const date = DateTime.fromISO(children)
+  const date = DateTime.fromISO(children, { zone: 'Europe/Amsterdam' })
   const today = getToday()
 
   const diff = date.diff(today, 'days').days
