@@ -6,7 +6,6 @@ import { css, cx } from 'styled-system/css'
 
 import { useSearch } from '../utils/hooks'
 import { Screening } from '../utils/getScreenings'
-import { palette } from '../utils/theme'
 import type { Movie } from '../utils/getMovies'
 import { matchesMovieSearch } from '../utils/searchMatches'
 import { MovieOverviewRow } from './MoviesOverview'
@@ -36,8 +35,8 @@ const rowStyle = cx(
       borderRadius: '10px',
     },
     '&:hover .unmatched-movie-poster-placeholder': {
-      backgroundColor: palette.purple500,
-      borderColor: palette.purple500,
+      backgroundColor: 'var(--palette-purple-500)',
+      borderColor: 'var(--palette-purple-500)',
     },
   }),
 )

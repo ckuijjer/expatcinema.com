@@ -6,7 +6,6 @@ import { useParams } from 'next/navigation'
 import { css } from 'styled-system/css'
 
 import { useSearch } from '../utils/hooks'
-import { palette } from '../utils/theme'
 import { ActiveLink } from './ActiveLink'
 import { Container, FilterLink } from './CityFilter'
 
@@ -35,7 +34,7 @@ export const CinemaFilter = ({ links }: { links: FilterLink[] }) => {
   return (
     <Container
       className={containerOverrideStyle}
-      style={{ backgroundColor: palette.purple300 }}
+      style={{ backgroundColor: 'var(--palette-purple-300)' }}
     >
       {links.map(({ text, slug }) => (
         <ActiveLink

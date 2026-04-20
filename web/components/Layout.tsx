@@ -2,11 +2,6 @@ import React from 'react'
 
 import { cva } from 'styled-system/css'
 
-import { palette } from '../utils/theme'
-
-type Color = keyof typeof palette
-type ColorValue = (typeof palette)[Color]
-
 export const pageContentStyle = cva({
   base: {
     margin: '0 auto',
@@ -28,7 +23,7 @@ export const pageContentStyle = cva({
 })
 
 type LayoutProps = {
-  backgroundColor?: ColorValue
+  backgroundColor?: React.CSSProperties['backgroundColor']
   noPadding?: boolean
   children: React.ReactNode
 }

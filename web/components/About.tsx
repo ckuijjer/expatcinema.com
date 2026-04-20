@@ -5,7 +5,6 @@ import { css } from 'styled-system/css'
 
 import cinemas from '../data/cinema.json'
 import { getCity } from '../utils/getCity'
-import { palette } from '../utils/theme'
 import { Layout } from './Layout'
 import { NavigationBar } from './NavigationBar'
 import { PageTitle } from './PageTitle'
@@ -50,7 +49,7 @@ const citySlugs = [...new Set(cinemas.map((cinema) => cinema.city))].sort(
 export const About = () => {
   return (
     <>
-      <Layout backgroundColor={palette.purple600}>
+      <Layout backgroundColor="var(--palette-purple-600)">
         <NavigationBar showSearch={false} />
       </Layout>
       <Layout>

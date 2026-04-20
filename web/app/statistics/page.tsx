@@ -4,7 +4,6 @@ import React, { Suspense } from 'react'
 import { Layout } from '../../components/Layout'
 import { NavigationBar } from '../../components/NavigationBar'
 import { PageTitle } from '../../components/PageTitle'
-import { palette } from '../../utils/theme'
 import { StatisticsClient } from './StatisticsClient'
 
 export const metadata: Metadata = {
@@ -19,7 +18,7 @@ export default async function StatisticsPage() {
 
   return (
     <Suspense>
-      <Layout backgroundColor={palette.purple600}>
+      <Layout backgroundColor="var(--palette-purple-600)">
         <NavigationBar showSearch={false} />
       </Layout>
       <Layout>

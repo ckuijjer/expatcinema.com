@@ -7,7 +7,6 @@ import { css, cx } from 'styled-system/css'
 
 import { NavigationBar } from './NavigationBar'
 import { headerFont } from '../utils/theme'
-import { palette } from '../utils/theme'
 import { getMoviePosterUrl, getMovieReleaseYear } from '../utils/getMovies'
 import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
@@ -228,7 +227,7 @@ export const MoviePage = ({
   return (
     <>
       <Suspense>
-        <Layout backgroundColor={palette.purple600}>
+        <Layout backgroundColor="var(--palette-purple-600)">
           <NavigationBar />
         </Layout>
       </Suspense>

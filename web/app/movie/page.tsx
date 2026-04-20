@@ -5,7 +5,6 @@ import { MoviesOverview } from '../../components/MoviesOverview'
 import { NavigationBar } from '../../components/NavigationBar'
 import { Layout } from '../../components/Layout'
 import { getMovies } from '../../utils/getMovies'
-import { palette } from '../../utils/theme'
 
 export const metadata: Metadata = {
   title: 'Movies – Expat Cinema',
@@ -17,7 +16,7 @@ export default async function MoviesPage() {
 
   return (
     <>
-      <Layout backgroundColor={palette.purple600}>
+      <Layout backgroundColor="var(--palette-purple-600)">
         <Suspense>
           <NavigationBar />
         </Suspense>

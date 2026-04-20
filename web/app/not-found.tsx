@@ -4,14 +4,13 @@ import { Suspense } from 'react'
 import { Layout } from '../components/Layout'
 import { NavigationBar } from '../components/NavigationBar'
 import { PageTitle } from '../components/PageTitle'
-import { palette } from '../utils/theme'
 
 const textLinkStyle = { color: 'var(--secondary-color)' }
 
 export default function NotFound() {
   return (
     <Suspense>
-      <Layout backgroundColor={palette.purple600}>
+      <Layout backgroundColor="var(--palette-purple-600)">
         <NavigationBar showSearch={false} />
       </Layout>
       <Layout>

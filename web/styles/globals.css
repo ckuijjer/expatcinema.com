@@ -1,29 +1,40 @@
-@layer reset, base, tokens, recipes, utilities;
-
-body {
-  margin: 0;
-  padding: 0;
+:root {
+  --palette-purple-100: #fff5f0;
+  --palette-purple-200: #ffe5e0;
+  --palette-purple-300: #ffafb0;
+  --palette-purple-400: #8c3547;
+  --palette-purple-500: #411d33;
+  --palette-purple-600: #310d23;
 
   --text-color: rgba(0, 0, 0, 0.9);
   --text-muted-color: rgba(0, 0, 0, 0.7);
   --text-inverse-color: rgba(255, 255, 255, 0.9);
   --text-inverse-muted-color: rgba(255, 255, 255, 0.7);
 
-  --background-color: #fff5f0;
-  --background-inverse-color: #310d23;
-  --background-highlight-color: #ffe5e0;
+  --background-color: var(--palette-purple-100);
+  --background-inverse-color: var(--palette-purple-600);
+  --background-highlight-color: var(--palette-purple-200);
   --border-color: color-mix(in srgb, var(--text-color) 18%, transparent);
 
-  --primary-color: #ffafb0;
-  --secondary-color: #8c3547;
+  --primary-color: var(--palette-purple-300);
+  --secondary-color: var(--palette-purple-400);
+}
 
-  @media (prefers-color-scheme: dark) {
+@layer reset, base, tokens, recipes, utilities;
+
+@media (prefers-color-scheme: dark) {
+  :root {
     --text-color: rgba(255, 255, 255, 0.9);
     --text-muted-color: rgba(255, 255, 255, 0.7);
-    --background-color: #310d23;
-    --background-highlight-color: #411d33;
+    --background-color: var(--palette-purple-600);
+    --background-highlight-color: var(--palette-purple-500);
     --border-color: color-mix(in srgb, var(--text-color) 18%, transparent);
   }
+}
+
+body {
+  margin: 0;
+  padding: 0;
 
   background-color: var(--background-color);
   color: var(--text-color);

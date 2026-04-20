@@ -5,7 +5,6 @@ import { CityFilter, FilterLink } from '../../components/CityFilter'
 import { Layout } from '../../components/Layout'
 import { NavigationBar } from '../../components/NavigationBar'
 import { getScreenings } from '../../utils/getScreenings'
-import { palette } from '../../utils/theme'
 
 export default async function ScreeningsLayout({
   children,
@@ -39,12 +38,12 @@ export default async function ScreeningsLayout({
 
   return (
     <>
-      <Layout backgroundColor={palette.purple600}>
+      <Layout backgroundColor="var(--palette-purple-600)">
         <Suspense>
           <NavigationBar />
         </Suspense>
       </Layout>
-      <Layout backgroundColor={palette.purple400} noPadding>
+      <Layout backgroundColor="var(--palette-purple-400)" noPadding>
         <Suspense>
           <CityFilter links={links} />
         </Suspense>

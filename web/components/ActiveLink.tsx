@@ -6,8 +6,6 @@ import React from 'react'
 
 import { cva } from 'styled-system/css'
 
-import { palette } from '../utils/theme'
-
 const linkVariants = cva({
   base: {
     display: 'inline-block',
@@ -43,7 +41,7 @@ const linkVariants = cva({
       active: true,
       css: {
         backgroundColor: 'var(--primary-color)',
-        color: palette.purple500,
+        color: 'var(--palette-purple-500)',
       },
     },
     {
@@ -51,7 +49,7 @@ const linkVariants = cva({
       active: false,
       css: {
         backgroundColor: 'transparent',
-        color: palette.purple500,
+        color: 'var(--palette-purple-500)',
       },
     },
     {
