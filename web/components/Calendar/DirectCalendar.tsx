@@ -14,12 +14,12 @@ export const DirectCalendar = ({
   showPoster: boolean
 }) => (
   <>
-    {rows.map((row, i) =>
+    {rows.map((row) =>
       row.component === 'RelativeDate' ? (
-        <RelativeDate key={i} {...row.props} />
+        <RelativeDate key={row.props.children} {...row.props} />
       ) : (
         <ScreeningRow
-          key={i}
+          key={`${row.props.url}-${row.props.date.toISO()}-${row.props.title}`}
           {...row.props}
           showCity={showCity}
           showPoster={showPoster}

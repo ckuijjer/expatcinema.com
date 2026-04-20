@@ -82,7 +82,7 @@ export const About = () => {
               .sort((a, b) => compareAlphabetically(a.name, b.name))
 
             return (
-              <>
+              <React.Fragment key={city}>
                 <Link href={href} className={cityLinkStyle}>
                   {getCity(city)?.name ?? city}
                 </Link>
@@ -90,16 +90,16 @@ export const About = () => {
                 {cinemasInCity.map((cinema, i, arr) => {
                   const isLast = i === arr.length - 1
                   return (
-                    <>
+                    <React.Fragment key={cinema.url}>
                       <Link href={cinema.url} className={textLinkStyle}>
                         {cinema.name}
                       </Link>
                       {isLast ? '' : ', '}
-                    </>
+                    </React.Fragment>
                   )
                 })}
                 <br />
-              </>
+              </React.Fragment>
             )
           })}
           <PageSection>Contact</PageSection>
