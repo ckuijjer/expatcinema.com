@@ -16,19 +16,24 @@ const logger = parentLogger.createChild({
   },
 })
 
+const cleanTitle = (value: string) =>
+  titleCase(
+    value
+      .replace('Movie: ', '')
+      .replace('Film: ', '')
+      .replace('Classics: ', '')
+      .replace('Cinematic Beauty: ', ''),
+  )
+    .replace(/^Cinemasia:\s+/i, '')
+    .replace(/^Movies That Matter:\s+/i, '')
+    .replace(/^Framed Shorts:\s+/i, '')
+    .replace(/^Film Lovers Tuesday:\s+/i, '')
+
 const xray = Xray({
   filters: {
     trim,
     cleanTitle: (value) =>
-      typeof value === 'string'
-        ? titleCase(
-            value
-              .replace('Movie: ', '')
-              .replace('Film: ', '')
-              .replace('Classics: ', '')
-              .replace('Cinematic Beauty: ', ''),
-          )
-        : value,
+      typeof value === 'string' ? cleanTitle(value) : value,
     normalizeWhitespace: (value) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },

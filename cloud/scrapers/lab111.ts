@@ -46,7 +46,10 @@ const cleanTitle = (title: string) => {
       .replace(/ \(4k Restoration\)/i, '')
       .replace(' (with English subtitles)', '')
       .replace(/^Club Imagine:\s+/i, '')
-      .replace(/^HoFF x IQMF:\s+/i, ''),
+      .replace(/^HoFF x IQMF:\s+/i, '')
+      .replace(/^IQMF:\s+/i, '')
+      .replace(/^Africadelic & Caribbean Creativity Present\s+/i, '')
+      .replace(/^Kaboom Cult Presents\s+/i, ''),
   )
 }
 
