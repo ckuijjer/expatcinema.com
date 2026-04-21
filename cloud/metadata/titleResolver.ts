@@ -49,7 +49,8 @@ export const stripTitleNoise = (title: string) => {
   let previous = ''
   while (cleaned !== previous) {
     previous = cleaned
-    const shouldStripDoubleBillSuffix = /\bpart\b|\(\d{4}\)/i.test(cleaned)
+    const shouldStripDoubleBillSuffix =
+      /\bpart\b/i.test(cleaned) && /\s*&\s*/.test(cleaned)
 
     cleaned = cleaned.replace(/\[(.*?)\]/g, ' ')
     cleaned = cleaned.replace(/\((.*?)\)/g, (fullMatch, inner) => {

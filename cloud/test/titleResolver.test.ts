@@ -36,7 +36,7 @@ describe('titleResolver', () => {
       'Trenque Lauquen',
     )
     expect(stripTitleNoise('Uncle Mustache (1970) & Journey')).toBe(
-      'Uncle Mustache',
+      'Uncle Mustache & Journey',
     )
   })
 
