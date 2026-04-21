@@ -52,7 +52,7 @@ const extractFromSpecialExpatCinemaPage = async () => {
 
   const screenings: Screening[] = movies.flatMap(
     ({ title, url, screenings }) => {
-      return screenings
+        return screenings
         .filter((screening) => screening.includes('EN SUBS'))
         .map((screening) => {
           let day, month
@@ -78,10 +78,12 @@ const extractFromSpecialExpatCinemaPage = async () => {
             month = monthToNumber(monthString)
           }
 
-          const [hour, minute] = screening
-            .match(/\d\d:\d\d/)[0]
-            .split(':')
-            .map(Number)
+          const timeMatch = screening.match(/\d\d:\d\d/)
+          if (!timeMatch) {
+            throw new Error(`filmkoepel screening missing time: ${screening}`)
+          }
+
+          const [hour, minute] = timeMatch[0].split(':').map(Number)
 
           const year = guessYear({
             day,

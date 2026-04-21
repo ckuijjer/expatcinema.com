@@ -19,7 +19,7 @@ const logger = parentLogger.createChild({
 const xray = Xray({
   filters: {
     trim,
-    normalizeWhitespace: (value) =>
+    normalizeWhitespace: (value: unknown) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
@@ -29,6 +29,19 @@ const xray = Xray({
 type XRayFromMainPage = {
   url: string
   title: string
+}
+
+type NatlabMoviePage = {
+  title: string
+  screenings: {
+    date: string
+    times: string[]
+  }[]
+  metadata: {
+    key: string[]
+    value: string[]
+  }
+  genres: string[]
 }
 
 const cleanTitle = (title: string) =>
@@ -43,7 +56,7 @@ const extractFromMoviePage = async ({
   url,
   title,
 }: XRayFromMainPage): Promise<Screening[]> => {
-  const scrapeResult = await xray(url, {
+  const scrapeResult = (await xray(url, {
     title: 'h1 | normalizeWhitespace | trim',
     screenings: xray('.subshow', [
       {
@@ -56,7 +69,7 @@ const extractFromMoviePage = async ({
       value: ['dd | normalizeWhitespace | trim'],
     }),
     genres: ['.meta .genres li | normalizeWhitespace | trim'],
-  })
+  })) as NatlabMoviePage
 
   logger.info('movie page', { scrapeResult })
 
@@ -84,9 +97,10 @@ const extractFromMoviePage = async ({
   logger.info('screenings', { screenings: scrapeResult.screenings })
 
   const screenings: Screening[] = scrapeResult.screenings.flatMap(
-    (screening) => {
+    (screening: NatlabMoviePage['screenings'][number]) => {
       return screening.times.map((time: string) => {
-        const [dayOfWeek, day, monthString] = screening.date.split(/\s+/)
+        const [_dayOfWeek, dayString, monthString] = screening.date.split(/\s+/)
+        const day = Number(dayString)
 
         const month = shortMonthToNumberDutch(monthString)
         const [hour, minute] = splitTime(time)

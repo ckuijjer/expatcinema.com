@@ -1,11 +1,12 @@
 import { Logger } from '@aws-lambda-powertools/logger'
 import { WaitForOptions } from 'puppeteer-core'
-import { Driver } from 'x-ray-crawler'
+import { type Driver, type DriverContext } from 'x-ray-crawler'
+import type { Page } from 'puppeteer-core'
 
 import { getBrowser } from './browser'
 
 type XRayPuppeteerOptions = {
-  interactWithPage?: (page: any, ctx: any) => Promise<void>
+  interactWithPage?: (page: Page, ctx: DriverContext) => Promise<void>
   logger?: Logger
   waitForOptions?: WaitForOptions
 }
@@ -15,13 +16,13 @@ const xRayPuppeteer = ({
   logger,
   waitForOptions,
 }: XRayPuppeteerOptions = {}): Driver => {
-  return async (ctx, done) => {
+  return async (ctx: DriverContext, done) => {
     try {
       const browser = await getBrowser({ logger })
 
       logger?.info('opening page', { url: ctx.url })
       let page = await browser.newPage()
-      await page.goto(ctx.url, waitForOptions)
+      await page.goto(String(ctx.url), waitForOptions)
 
       if (interactWithPage) {
         await interactWithPage(page, ctx)

@@ -166,9 +166,14 @@ const extractFromMainPage = async () => {
       ),
     )
 
-    const releaseYearBySlug = new Map(
+    const releaseYearBySlug = new Map<string, number | undefined>(
       await Promise.all(
-        relevantSlugs.map(async (slug) => [slug, await extractCmsYear(slug)]),
+        relevantSlugs.map(
+          async (slug): Promise<[string, number | undefined]> => [
+            slug,
+            await extractCmsYear(slug),
+          ],
+        ),
       ),
     )
 

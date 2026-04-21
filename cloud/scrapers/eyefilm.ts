@@ -84,12 +84,14 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
     },
   })
 
-  const hasEnglishSubtitles = (show) =>
+  const hasEnglishSubtitles = (show: EyeShow) =>
     show.singleSubtitles === '42c27a5b-2d4e-4195-b547-cb6fbe9fcd49'
 
-  logger.info('number of shows', { count: results.data.shows.length })
+  const shows = results.data?.shows ?? []
 
-  const screenings = results.data.shows
+  logger.info('number of shows', { count: shows.length })
+
+  const screenings = shows
     .filter(hasEnglishSubtitles)
     .map((show) => {
       return {

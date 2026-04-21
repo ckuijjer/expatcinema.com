@@ -18,9 +18,10 @@ const logger = parentLogger.createChild({
   },
 })
 
-const trim = (value) => (typeof value === 'string' ? value.trim() : value)
+const trim = (value: unknown) =>
+  typeof value === 'string' ? value.trim() : value
 
-const cleanTitle = (value) =>
+const cleanTitle = (value: unknown) =>
   typeof value === 'string'
     ? titleCase(
         // Flora appends both an `- En Subs` subtitle marker and, in some cases,
@@ -29,7 +30,7 @@ const cleanTitle = (value) =>
       )
     : value
 
-const normalizeWhitespace = (value) =>
+const normalizeWhitespace = (value: unknown) =>
   typeof value === 'string' ? value.replace(/\s+/g, ' ') : value
 
 const xray = Xray({

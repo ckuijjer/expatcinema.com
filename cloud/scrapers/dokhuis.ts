@@ -23,6 +23,11 @@ type XRayFromMoviePage = {
   time: string
 }
 
+type DokhuisMovie = {
+  title?: string
+  url?: string
+}
+
 const extractFromMoviePage = async ({
   url,
 }: {
@@ -78,15 +83,17 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   // easy way to go through the entire agenda
   const url = 'https://dokhuis.org/programma/'
 
-  const xrayResult = await xray(url, '.events-items .event-item', [
+  const xrayResult = (await xray(url, '.events-items .event-item', [
     {
       title: '.event-title',
       url: 'a@href',
     },
-  ])
+  ])) as DokhuisMovie[]
 
   const movies = xrayResult
-    .filter(({ url }) => url !== undefined) // remove movies without url (e.g. in the past)
+    .filter((item): item is DokhuisMovie & { url: string; title: string } =>
+      Boolean(item.url && item.title),
+    ) // remove movies without url (e.g. in the past)
     .filter(({ title }) =>
       title.toLowerCase().includes('movie night: acts of care'),
     ) // only events with "Movie Night: Acts of care" in the title have English subtitles

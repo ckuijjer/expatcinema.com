@@ -108,7 +108,7 @@ const extractFromMoviePage = async ({
           value: 'strong | normalizeWhitespace | trim',
         },
       ]),
-    }) as Promise<MovieDetailPage>,
+    }) as unknown as Promise<MovieDetailPage>,
   ])
 
   logger.info('movie page', { id, link, movie, detailPage })

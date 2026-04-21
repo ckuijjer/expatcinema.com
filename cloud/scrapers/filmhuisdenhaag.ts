@@ -73,6 +73,15 @@ type FilmhuisDenhaagAPIResponse = {
   }
 }
 
+type ProgramItem = {
+  title: string
+  subtitle?: string
+  characteristics?: string[]
+  uri: string
+  starts_at_date: string
+  starts_at_time: string
+}
+
 const cleanTitle = (title: string) =>
   titleCase(
     title
@@ -83,11 +92,11 @@ const cleanTitle = (title: string) =>
       ), // remove presentation-only suffixes
   )
 
-const hasEnglishSubtitles = (item) => {
+const hasEnglishSubtitles = (item: ProgramItem) => {
   return (
     item.subtitle === 'Engels' ||
     item.subtitle === 'English' ||
-    item.characteristics.includes('EN subs')
+    (item.characteristics ?? []).includes('EN subs')
   )
 }
 
@@ -139,7 +148,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     .map((item) => {
       const [year, month, day] = item.starts_at_date
         .split('-')
-        .map((x) => Number(x))
+        .map((x: string) => Number(x))
       const [hour, minute] = splitTime(item.starts_at_time)
 
       return {

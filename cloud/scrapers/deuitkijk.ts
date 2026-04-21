@@ -1,7 +1,7 @@
 import got from 'got'
 import { DateTime } from 'luxon'
 import Xray from 'x-ray'
-import XRayCrawler from 'x-ray-crawler'
+import { type Driver } from 'x-ray-crawler'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -19,7 +19,7 @@ const logger = parentLogger.createChild({
 // De Uitkijk has a certificate for which the intermediate certificate is not included in the default Node.js certificate store.
 // Using a custom got driver that ignores certificate errors feels like a reasonable workaround, and definitely
 // better than setting NODE_TLS_REJECT_UNAUTHORIZED=0 for all scrapers.
-const driver: XRayCrawler.Driver = (context, callback) => {
+const driver: Driver = (context, callback) => {
   const { url } = context
 
   got(String(url), { https: { rejectUnauthorized: false } })
