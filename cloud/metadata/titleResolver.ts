@@ -20,6 +20,7 @@ const NOISE_PATTERNS = [
   /\benglish\s+subtitles?\b/gi,
   /\bengels\s+ondertiteld\b/gi,
   /\ben\s+subs?\b/gi,
+  /\bpart\s+(?:one|two|three|four|five|six|seven|eight|nine|ten|i|ii|iii|iv|v|vi|vii|viii|ix|x|\d+)(?:\s*&\s*part\s+(?:one|two|three|four|five|six|seven|eight|nine|ten|i|ii|iii|iv|v|vi|vii|viii|ix|x|\d+))?\b/gi,
 ]
 
 const cleanupWhitespace = (value: string) =>
@@ -45,21 +46,31 @@ export const extractYearHint = (title: string): number | undefined => {
 export const stripTitleNoise = (title: string) => {
   let cleaned = title.replace(/[’`]/g, "'")
 
-  cleaned = cleaned.replace(/\[(.*?)\]/g, ' ')
-  cleaned = cleaned.replace(/\((.*?)\)/g, (fullMatch, inner) => {
-    return matchesNoisePattern(inner) || /^\d{4}$/.test(inner.trim())
-      ? ' '
-      : fullMatch
-  })
+  let previous = ''
+  while (cleaned !== previous) {
+    previous = cleaned
+    const shouldStripDoubleBillSuffix = /\bpart\b|\(\d{4}\)/i.test(cleaned)
 
-  cleaned = cleaned.replace(/\s[-–,:]\s/g, ' ')
-  NOISE_PATTERNS.forEach((pattern) => {
-    pattern.lastIndex = 0
-    cleaned = cleaned.replace(pattern, ' ')
-  })
+    cleaned = cleaned.replace(/\[(.*?)\]/g, ' ')
+    cleaned = cleaned.replace(/\((.*?)\)/g, (fullMatch, inner) => {
+      return matchesNoisePattern(inner) || /^\d{4}$/.test(inner.trim())
+        ? ' '
+        : fullMatch
+    })
 
-  cleaned = cleaned.replace(/\b(18|19|20)\d{2}\b/g, ' ')
-  return cleanupWhitespace(cleaned)
+    cleaned = cleaned.replace(/\s[-–,:]\s/g, ' ')
+    NOISE_PATTERNS.forEach((pattern) => {
+      pattern.lastIndex = 0
+      cleaned = cleaned.replace(pattern, ' ')
+    })
+
+    if (shouldStripDoubleBillSuffix) {
+      cleaned = cleaned.replace(/\s*&\s*[^&]+$/i, ' ')
+    }
+    cleaned = cleanupWhitespace(cleaned)
+  }
+
+  return cleaned
 }
 
 export const getTitleSearchVariants = (title: string) => {

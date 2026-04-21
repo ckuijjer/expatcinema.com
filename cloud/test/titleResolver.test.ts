@@ -27,6 +27,19 @@ describe('titleResolver', () => {
     expect(stripTitleNoise('Hard Boiled (4K Restoration)')).toBe('Hard Boiled')
   })
 
+  test('strips part markers and double-bill suffixes to a single canonical title', () => {
+    expect(stripTitleNoise('1900 (Novecento) – Part One')).toBe(
+      '1900 (Novecento)',
+    )
+    expect(stripTitleNoise('Kaiba (Part 1)')).toBe('Kaiba')
+    expect(stripTitleNoise('Trenque Lauquen Part I & Part II')).toBe(
+      'Trenque Lauquen',
+    )
+    expect(stripTitleNoise('Uncle Mustache (1970) & Journey')).toBe(
+      'Uncle Mustache',
+    )
+  })
+
   test('builds sort titles without leading articles', () => {
     expect(getMovieSortTitle('The Matrix')).toBe('Matrix')
     expect(getMovieSortTitle('A Family')).toBe('Family')
@@ -54,6 +67,15 @@ describe('titleResolver', () => {
       'Amelie',
       'amelie (2001) 4k restoration',
       'amelie',
+    ])
+  })
+
+  test('produces canonical search variants for part-based titles', () => {
+    expect(getTitleSearchVariants('Trenque Lauquen Part I & Part II')).toEqual([
+      'Trenque Lauquen Part I & Part II',
+      'Trenque Lauquen',
+      'trenque lauquen part i & part ii',
+      'trenque lauquen',
     ])
   })
 
