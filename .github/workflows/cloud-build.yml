@@ -38,12 +38,7 @@ jobs:
       - name: Run Tests
         run: pnpm test
       - name: Type Check
-        id: typecheck
-        continue-on-error: true
         run: pnpm type-check
-      - name: Warn on Type Check Failure
-        if: steps.typecheck.outcome == 'failure'
-        run: echo "::warning::cloud type-check failed; this is currently non-blocking"
       - name: CDK Synth
         env:
           STAGE: dev

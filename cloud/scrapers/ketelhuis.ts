@@ -3,6 +3,7 @@ import pRetry from 'p-retry'
 import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
+import { Screening } from '../types'
 import xRayPuppeteer from '../xRayPuppeteer'
 import {
   fullMonthToNumberDutch,
@@ -23,7 +24,7 @@ const logger = parentLogger.createChild({
 const xray = Xray({
   filters: {
     trim,
-    cleanTitle: (value) =>
+    cleanTitle: (value: unknown) =>
       typeof value === 'string'
         ? titleCase(
             value
@@ -31,7 +32,7 @@ const xray = Xray({
               .replace(/ \(English subs\)$/i, ''),
           )
         : value,
-    normalizeWhitespace: (value) =>
+    normalizeWhitespace: (value: unknown) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
@@ -39,6 +40,23 @@ const xray = Xray({
   .concurrency(3)
   .throttle(3, 600)
   .timeout('45s')
+
+type KetelhuisListing = {
+  url: string
+  title: string
+}
+
+type KetelhuisMoviePage = {
+  title: string
+  metadata: string
+  mainContent: string
+  firstDate: string
+  firstTimes: string[]
+  other: {
+    date: string
+    times: string[]
+  }[]
+}
 
 const extractFromMainPage = async () => {
   const selector = [
@@ -48,7 +66,7 @@ const extractFromMainPage = async () => {
     },
   ]
 
-  const expatCinemaResults = await pRetry(
+  const expatCinemaResults = await pRetry<KetelhuisListing[]>(
     async () =>
       xray(
         'https://www.ketelhuis.nl/specials/expat-cinema/',
@@ -74,7 +92,7 @@ const extractFromMainPage = async () => {
 
   const screenings = await (
     await Promise.all(
-      uniqueResults.map(async ({ url, title }, i) => {
+      uniqueResults.map(async ({ url, title }: KetelhuisListing, i) => {
         return pRetry(
           async () => {
             const result = await extractFromMoviePage({ url, title })
@@ -96,7 +114,15 @@ const extractFromMainPage = async () => {
   return screenings
 }
 
-const hasEnglishSubtitles = ({ metadata, mainContent, title }) =>
+const hasEnglishSubtitles = ({
+  metadata,
+  mainContent,
+  title,
+}: {
+  metadata?: string
+  mainContent?: string
+  title?: string
+}) =>
   title?.toLowerCase().includes('english subs') ||
   metadata?.toLowerCase().includes('english subtitles') ||
   metadata?.toLowerCase().includes('engels ondertiteld') ||
@@ -124,10 +150,22 @@ const splitFirstDate = (date: string) => {
   }
 }
 
-const extractFromMoviePage = async ({ url, title }) => {
+const toDateOrThrow = (date: DateTime, url: string) => {
+  const parsed = date.toJSDate()
+  if (Number.isNaN(parsed.getTime())) {
+    throw new Error(`Could not format screening date for ${url}`)
+  }
+
+  return parsed
+}
+
+const extractFromMoviePage = async ({
+  url,
+  title,
+}: KetelhuisListing): Promise<Screening[]> => {
   logger.info('extracting', { url })
 
-  const scrapeResult = await xray(url, {
+  const scrapeResult = (await xray(url, {
     title: '.c-filmheader__content h1 > span', // not using cleanTitle because we want to keep the "English subs" part here
     metadata: '.c-detail-info__filminfo | normalizeWhitespace',
     mainContent: '.c-main-content | normalizeWhitespace',
@@ -139,7 +177,7 @@ const extractFromMoviePage = async ({ url, title }) => {
         times: ['.c-detail-schedule-complete__time'],
       },
     ]),
-  })
+  })) as KetelhuisMoviePage
 
   logger.info('extracted', { url, scrapeResult })
 
@@ -149,42 +187,46 @@ const extractFromMoviePage = async ({ url, title }) => {
     return []
   }
 
-  const firstDates = scrapeResult.firstTimes.map((time) => {
+  const firstDates = scrapeResult.firstTimes.map((time: string) => {
     const { day, month, year } = splitFirstDate(scrapeResult.firstDate)
 
     const [hour, minute] = splitTime(time)
 
-    return DateTime.fromObject({
-      day,
-      month,
-      hour,
-      minute,
-      year,
-    })
-      .toUTC()
-      .toISO()
-  })
-
-  const otherDates = scrapeResult.other.flatMap(({ date, times }) => {
-    const [dayString, monthString, yearString] = date.split(' ')
-    const day = Number(dayString)
-    const month = shortMonthToNumberDutch(monthString)
-    const year = Number(yearString)
-
-    return times.map((time) => {
-      const [hour, minute] = splitTime(time)
-
-      return DateTime.fromObject({
+    return toDateOrThrow(
+      DateTime.fromObject({
         day,
         month,
         hour,
         minute,
         year,
-      })
-        .toUTC()
-        .toISO()
-    })
+      }),
+      url,
+    )
   })
+
+  const otherDates = scrapeResult.other.flatMap(
+    ({ date, times }: KetelhuisMoviePage['other'][number]) => {
+      const [dayString, monthString, yearString] = date.split(' ')
+      const day = Number(dayString)
+      const month = shortMonthToNumberDutch(monthString)
+      const year = Number(yearString)
+
+      return times.map((time: string) => {
+        const [hour, minute] = splitTime(time)
+
+        return toDateOrThrow(
+          DateTime.fromObject({
+            day,
+            month,
+            hour,
+            minute,
+            year,
+          }),
+          url,
+        )
+      })
+    },
+  )
 
   const releaseYear = extractReleaseYear(scrapeResult.metadata ?? '')
 

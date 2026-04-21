@@ -16,22 +16,23 @@ const logger = parentLogger.createChild({
   },
 })
 
-const trim = (value) => (typeof value === 'string' ? value.trim() : value)
+const trim = (value: unknown) =>
+  typeof value === 'string' ? value.trim() : value
 
-const cleanTitle = (value) =>
+const cleanTitle = (value: unknown): string =>
   typeof value === 'string'
     ? titleCase(
         value.replace(/^Expat Cinema: /gi, '').replace(/^English Subs: /gi, ''),
       )
-    : value
+    : ''
 
-const toLowerCase = (value) =>
+const toLowerCase = (value: unknown) =>
   typeof value === 'string' ? value.toLowerCase() : value
 
-const replaceNoBreakSpace = (value) =>
+const replaceNoBreakSpace = (value: unknown) =>
   typeof value === 'string' ? value.replace(/\u00a0/g, ' ') : value
 
-const normalizeWhitespace = (value) =>
+const normalizeWhitespace = (value: unknown) =>
   typeof value === 'string' ? value.replace(/\s+/g, ' ') : value
 
 const xray = Xray({

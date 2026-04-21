@@ -4,13 +4,13 @@ import { handler as analytics } from './analytics'
 import { handler as fillAnalytics } from './fillAnalytics'
 import { handler as notifySlack } from './notifySlack'
 import { handler as playground } from './playground'
-import { handler as scrapers } from './scrapers/index.ts'
+import { scrapers } from './scrapers/index'
 
 const scrapersWrappedWithHTTP = async (
   event: APIGatewayEvent,
   context: Context,
 ) => {
-  await scrapers(event, context)
+  await scrapers()
 
   return {
     statusCode: 200,

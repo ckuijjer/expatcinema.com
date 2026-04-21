@@ -7,7 +7,7 @@ import { BackendStack } from '../lib/backend-stack'
 dotenv.config({ quiet: true })
 
 const app = new cdk.App()
-const stage = process.env.STAGE || 'prod'
+const stage: 'dev' | 'prod' = process.env.STAGE === 'dev' ? 'dev' : 'prod'
 
 new BackendStack(app, `expatcinema-${stage}`, {
   description: 'expatcinema.com',

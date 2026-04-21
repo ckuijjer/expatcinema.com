@@ -59,6 +59,7 @@ import {
   normalizeMovieTitleForLookup,
   slugifyMovieTitle,
 } from '../metadata/titleResolver'
+import type { Metadata } from '../metadata/types'
 
 const SCRAPERS = {
   bioscopenleiden,
@@ -113,6 +114,9 @@ const s3Client = new S3Client({})
 
 const PRIVATE_BUCKET = process.env.PRIVATE_BUCKET
 const PUBLIC_BUCKET = process.env.PUBLIC_BUCKET
+if (!PRIVATE_BUCKET || !PUBLIC_BUCKET) {
+  throw new Error('PRIVATE_BUCKET and PUBLIC_BUCKET must be set')
+}
 
 const now = DateTime.fromObject({}).toUTC().toISO()
 
@@ -367,7 +371,7 @@ export const scrapers = async () => {
       ).values(),
     )
 
-    const toTitleMatchRecord = (metadata) => ({
+    const toTitleMatchRecord = (metadata: Metadata) => ({
       query: metadata.query,
       year: metadata.year,
       titleRaw: Array.from(

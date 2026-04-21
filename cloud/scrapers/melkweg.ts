@@ -16,15 +16,45 @@ const logger = parentLogger.createChild({
 
 const xray = Xray({
   filters: {
-    trimColon: (value) =>
+    trimColon: (value: unknown) =>
       typeof value === 'string' ? value.replace(/:$/, '') : value,
   },
 })
   .concurrency(10)
   .throttle(10, 300)
 
+type MelkwegMetadataItem = {
+  key: string
+  value: string
+}
+
+type MelkwegEvent = {
+  attributes: {
+    profile: string
+    name: string
+    url: string
+    startDate: string
+  }
+}
+
+type MelkwegNextData = {
+  props: {
+    pageProps: {
+      pageData: {
+        attributes: {
+          content: {
+            attributes: {
+              initialEvents: MelkwegEvent[]
+            }
+          }[]
+        }
+      }
+    }
+  }
+}
+
 const extractFromMoviePage = async (screening: Screening) => {
-  const data = await xray(
+  const data = (await xray(
     screening.url,
     '[class^="styles_movie-meta-data__list-item"]',
     [
@@ -33,12 +63,15 @@ const extractFromMoviePage = async (screening: Screening) => {
         value: 'dd',
       },
     ],
-  )
+  )) as MelkwegMetadataItem[]
 
-  const metadata = data.reduce((acc, { key, value }) => {
-    acc[key] = value
-    return acc
-  }, {})
+  const metadata = data.reduce<Record<string, string>>(
+    (acc, { key, value }) => {
+      acc[key] = value
+      return acc
+    },
+    {},
+  )
 
   const hasEnglishSubtitles = metadata['Subtitles'] === 'EN'
 
@@ -56,12 +89,12 @@ const cleanTitle = (title: string) => {
 const extractFromMainPage = async () => {
   const url = 'https://www.melkweg.nl/en/agenda/'
 
-  const data = JSON.parse(await xray(url, '#__NEXT_DATA__'))
+  const data = JSON.parse(await xray(url, '#__NEXT_DATA__')) as MelkwegNextData
   const events =
     data.props.pageProps.pageData.attributes.content[0].attributes.initialEvents
 
   const unfilteredScreenings = events
-    .filter((event) => event.attributes.profile === 'Film') // only movies
+    .filter((event: MelkwegEvent) => event.attributes.profile === 'Film') // only movies
     .map((event): Screening => {
       return {
         title: cleanTitle(event.attributes.name),
@@ -77,7 +110,7 @@ const extractFromMainPage = async () => {
   // the __NEXT_DATA__ of the page doesn't contain subtitle information, so we need to filter it out
   const screenings = (
     await Promise.all(unfilteredScreenings.map(extractFromMoviePage))
-  ).filter((x) => x)
+  ).filter((x): x is Screening => x !== null)
 
   logger.info('screenings', { screenings })
   return screenings

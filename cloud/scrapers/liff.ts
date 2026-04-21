@@ -20,12 +20,35 @@ const xray = Xray({
   .concurrency(10)
   .throttle(10, 300)
 
-const hasEnglishSubtitles = (movie) =>
-  movie.metadata.filter((x) => x === 'SubtitlesEnglish').length === (1).flat()
+type LiffMovie = {
+  title: string
+  url: string
+  metadata: string[]
+  firstScreening: {
+    date: string
+    time: string
+  }
+  restScreenings: {
+    date: string
+    time: string
+  }[]
+}
+
+type LiffListing = {
+  title: string
+  url: string
+}
+
+const hasEnglishSubtitles = (movie: Pick<LiffMovie, 'metadata'>) =>
+  movie.metadata.some((x) => x === 'SubtitlesEnglish')
 
 const cleanTitle = (title: string) => titleCase(title)
 
-const extractFromMoviePage = ({ url }) => {
+const extractFromMoviePage = ({
+  url,
+}: LiffListing): Promise<
+  { title: string; url: string; date: string; cinema: string }[]
+> => {
   logger.info('extracting', { url })
 
   return xray(url, 'body', {
@@ -41,26 +64,49 @@ const extractFromMoviePage = ({ url }) => {
         time: '.h4',
       },
     ]),
-  }).then((movie) => {
+  }).then((movie: LiffMovie) => {
     if (!hasEnglishSubtitles(movie)) return []
 
     const format = 'cccc d MMMM H:mm'
 
     const date = movie.firstScreening.date
-    const time = movie.firstScreening.time.match(/[\d:]*/)[0] // 17:00 - 18:35 \r\n\r\n-\r\n\r\n'
+    const time = movie.firstScreening.time.match(/[\d:]*/)?.[0]
+    if (!time) {
+      throw new Error(`Could not parse screening time for ${url}`)
+    }
+
+    const firstScreening = DateTime.fromFormat(`${date} ${time}`, format)
+      .toUTC()
+      .toISO()
+    if (!firstScreening) {
+      throw new Error(`Could not parse screening date for ${url}`)
+    }
 
     const screenings = [
-      DateTime.fromFormat(`${date} ${time}`, format).toUTC().toISO(),
+      firstScreening,
       ...movie.restScreenings.map((screening) => {
-        const time = screening.time.match(/[\d:]*/)[0] // 17:00 - 18:35 \r\n\r\n-\r\n\r\n'
+        const time = screening.time.match(/[\d:]*/)?.[0]
+        if (!time) {
+          throw new Error(`Could not parse screening time for ${url}`)
+        }
 
-        const dayIndex = screening.date.match(/\d+/).index // 'Thursday8 November'
+        const dayIndex = screening.date.match(/\d+/)?.index
+        if (dayIndex === undefined) {
+          throw new Error(`Could not parse screening date for ${url}`)
+        }
         const date = [
           screening.date.slice(0, dayIndex),
           screening.date.slice(dayIndex),
         ].join(' ')
 
-        return DateTime.fromFormat(`${date} ${time}`, format).toUTC().toISO()
+        const parsed = DateTime.fromFormat(`${date} ${time}`, format)
+          .toUTC()
+          .toISO()
+        if (!parsed) {
+          throw new Error(`Could not parse screening date for ${url}`)
+        }
+
+        return parsed
       }),
     ]
 
@@ -80,7 +126,9 @@ const extractFromMainPage = () => {
       title: 'a',
     },
   ])
-    .then((results) => Promise.all(results.map(extractFromMoviePage)))
+    .then((results: LiffListing[]) =>
+      Promise.all(results.map(extractFromMoviePage)),
+    )
     .then((results) => results.flat())
 }
 

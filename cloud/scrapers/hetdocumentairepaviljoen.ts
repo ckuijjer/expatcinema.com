@@ -20,6 +20,29 @@ type CinemaFilmDetail = {
   shows: CinemaFilmDetailShow[]
 }
 
+type SearchCinemaScheduleShow = {
+  id: string
+  fullTitle: string
+  film?: {
+    id: string
+    fullPreferredTitle: string
+  } | null
+}
+
+type DehydratedState = {
+  queries: Array<{
+    queryKey: string[]
+    state: {
+      data: {
+        film?: CinemaFilmDetail
+        searchCinemaSchedule?: {
+          hits: SearchCinemaScheduleShow[]
+        }
+      }
+    }
+  }>
+}
+
 type CinemaFilmDetailShow = {
   startOn: string
   endOn: string
@@ -50,9 +73,16 @@ const extractFromMoviePage = async (film: MainPageCinemaScheduleFilm) => {
   const { title, url, filmId } = film
   logger.info('extractFromMoviePage', { title, url, filmId })
 
-  const data = JSON.parse(await xray(url, '#__NEXT_DATA__'))
+  const data = JSON.parse(await xray(url, '#__NEXT_DATA__')) as {
+    props: {
+      pageProps: {
+        dehydratedState?: DehydratedState
+      }
+    }
+  }
 
-  if (!data.props.pageProps.dehydratedState) {
+  const dehydratedState = data.props.pageProps.dehydratedState
+  if (!dehydratedState) {
     logger.warn(
       `extractFromMoviePage: No dehydratedState: ${title} (${filmId} - ${url})`,
     )
@@ -61,10 +91,16 @@ const extractFromMoviePage = async (film: MainPageCinemaScheduleFilm) => {
 
   // logger.info('data', { data }) // uncomment to debug structure of __NEXT_DATA__
 
-  const filmDetail: CinemaFilmDetail =
-    data.props.pageProps.dehydratedState.queries.find(({ queryKey }) =>
-      queryKey.includes('CinemaFilmDetail'),
-    )?.state.data.film
+  const filmDetail = dehydratedState.queries.find(({ queryKey }) =>
+    queryKey.includes('CinemaFilmDetail'),
+  )?.state.data.film
+
+  if (!filmDetail) {
+    logger.warn(
+      `extractFromMoviePage: No film detail: ${title} (${filmId} - ${url})`,
+    )
+    return []
+  }
 
   const screenings: Screening[] = filmDetail.shows
     .filter(hasEnglishSubtitles)
@@ -96,11 +132,24 @@ const extractFromMainPage = async () => {
     'https://www.idfa.nl/en/vondelpark/agenda-het-documentaire-paviljoen/'
 
   // Use `copy(JSON.parse(document.querySelector('#__NEXT_DATA__').innerText))` to get an example of the data from Chrome DevTools
-  const data = JSON.parse(await xray(url, '#__NEXT_DATA__'))
+  const data = JSON.parse(await xray(url, '#__NEXT_DATA__')) as {
+    props: {
+      pageProps: {
+        dehydratedState?: DehydratedState
+      }
+    }
+  }
 
-  const shows = data.props.pageProps.dehydratedState.queries.find(
-    ({ queryKey }) => queryKey.includes('searchCinemaSchedule'),
-  )?.state.data.searchCinemaSchedule.hits
+  const dehydratedState = data.props.pageProps.dehydratedState
+  if (!dehydratedState) {
+    logger.warn(`extractFromMainPage: No dehydratedState: ${url}`)
+    return []
+  }
+
+  const shows =
+    dehydratedState.queries.find(({ queryKey }) =>
+      queryKey.includes('searchCinemaSchedule'),
+    )?.state.data.searchCinemaSchedule?.hits ?? []
 
   const films: MainPageCinemaScheduleFilm[] = shows
     .map((show) => {
@@ -117,7 +166,7 @@ const extractFromMainPage = async () => {
         filmId: show.film.id,
       }
     })
-    .filter((x) => x)
+    .filter((x): x is MainPageCinemaScheduleFilm => Boolean(x))
 
   // Filter out duplicate films
   const uniqueFilms = films.filter(

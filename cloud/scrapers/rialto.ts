@@ -58,9 +58,11 @@ const extractFromMoviePage = async ({
 }) => {
   // url example 'https://rialtofilm.nl/en/films/1519/a-hundred-flowers-expat-cinema'
   const regex = /\/films\/(?<movieId>\d+)\//
-  const {
-    groups: { movieId },
-  } = url.match(regex)
+  const movieMatch = url.match(regex)
+  const movieId = movieMatch?.groups?.movieId
+  if (!movieId) {
+    throw new Error(`Could not extract Rialto movie id from url: ${url}`)
+  }
 
   const data: RialtoFilmFeedResult = await got(
     `https://rialtofilm.nl/feed/en/film/${movieId}`,
