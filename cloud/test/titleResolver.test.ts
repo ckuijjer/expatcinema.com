@@ -19,6 +19,10 @@ describe('titleResolver', () => {
     expect(stripTitleNoise('The Third Man - 75th Anniversary')).toBe(
       'The Third Man',
     )
+    expect(stripTitleNoise('Bacurau - Laff')).toBe('Bacurau')
+    expect(stripTitleNoise("Movies That Matter: Soldier's Bones")).toBe(
+      "Soldier's Bones",
+    )
   })
 
   test('strips parenthetical noise consistently across repeated calls', () => {
@@ -54,6 +58,12 @@ describe('titleResolver', () => {
       'Amelie',
       'amelie (2001) 4k restoration',
       'amelie',
+    ])
+    expect(getTitleSearchVariants('Cinemasia: Linka Linka')).toEqual([
+      'Cinemasia: Linka Linka',
+      'Linka Linka',
+      'cinemasia: linka linka',
+      'linka linka',
     ])
   })
 

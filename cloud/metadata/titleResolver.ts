@@ -20,6 +20,21 @@ const NOISE_PATTERNS = [
   /\benglish\s+subtitles?\b/gi,
   /\bengels\s+ondertiteld\b/gi,
   /\ben\s+subs?\b/gi,
+  /\blaff\b/gi,
+  /\bdrank\s*&\s*drugs\b/gi,
+  /\bcinemasia\b/gi,
+  /\biqmf\b/gi,
+  /\bmovies?\s+that\s+matter\b/gi,
+  /\bframed\s+shorts\b/gi,
+  /\bthis\s+is\s+not\s+funny\b/gi,
+  /\bis\s+this\s+bruce\s+lee\b/gi,
+  /\blate\s+night\s+anime\b/gi,
+  /\bcin[ée]\s+premi[èe]re\b/gi,
+  /\beuropadag\b/gi,
+  /\bfight\s+the\s+power\b/gi,
+  /\bkaboom\s+cult\b/gi,
+  /\bafricadelic\b/gi,
+  /\bfilm\s+lovers\s+tuesday\b/gi,
 ]
 
 const cleanupWhitespace = (value: string) =>
@@ -59,6 +74,7 @@ export const stripTitleNoise = (title: string) => {
   })
 
   cleaned = cleaned.replace(/\b(18|19|20)\d{2}\b/g, ' ')
+  cleaned = cleaned.replace(/^[\s:;,-]+/, '')
   return cleanupWhitespace(cleaned)
 }
 
