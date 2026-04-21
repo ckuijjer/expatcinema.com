@@ -4,10 +4,10 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { cleanFilmhuisDenHaagTitle } from './utils/cleanFilmhuisDenHaagTitle'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
-import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -82,16 +82,6 @@ type ProgramItem = {
   starts_at_time: string
 }
 
-const cleanTitle = (title: string) =>
-  titleCase(
-    title
-      .replace(/ - EN subs$/i, '') // remove subs from the title
-      .replace(
-        /\s+\((?:4K Restoration|Re-Release)\)(?:\s+-\s+Late Night Anime)?$/i,
-        '',
-      ), // remove presentation-only suffixes
-  )
-
 const hasEnglishSubtitles = (item: ProgramItem) => {
   return (
     item.subtitle === 'Engels' ||
@@ -152,7 +142,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       const [hour, minute] = splitTime(item.starts_at_time)
 
       return {
-        title: cleanTitle(item.title),
+        title: cleanFilmhuisDenHaagTitle(item.title),
         year: releaseYearByUrl.get(`https://filmhuisdenhaag.nl${item.uri}`),
         url: `https://filmhuisdenhaag.nl${item.uri}`,
         cinema: 'Filmhuis Den Haag',
