@@ -4,7 +4,6 @@ import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import { cleanFilmhuisDenHaagTitle } from './utils/cleanFilmhuisDenHaagTitle'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
@@ -82,6 +81,39 @@ type ProgramItem = {
   starts_at_time: string
 }
 
+export const cleanTitle = (title: string) => {
+  let cleaned = title
+
+  do {
+    const previous = cleaned
+
+    cleaned = cleaned
+      .replace(/(?:\s+-\s+Laff)$/i, '')
+      .replace(/(?:\s+-\s+Drank & Drugs)$/i, '')
+      .replace(/(?:\s+-\s+This Is Not Funny)$/i, '')
+      .replace(/(?:\s+-\s+Is This Bruce Lee\?)$/i, '')
+      .replace(/(?:\s+-\s+Ciné Première)$/i, '')
+      .replace(/(?:\s+-\s+Late Night Anime)$/i, '')
+      .replace(
+        /(?:\s+-\s+En Subs(?:\s+Met\s+(?:Introductie|Inleiding|Nagesprek))?)$/i,
+        '',
+      )
+      .replace(/(?:\s+-\s+Met\s+(?:Introductie|Inleiding|Nagesprek))$/i, '')
+      .replace(/ - EN subs$/i, '')
+      .replace(
+        /\s+\((?:4K Restoration|Re-Release)\)(?:\s+-\s+Late Night Anime)?$/i,
+        '',
+      )
+      .trim()
+
+    if (cleaned === previous) {
+      break
+    }
+  } while (true)
+
+  return cleaned
+}
+
 const hasEnglishSubtitles = (item: ProgramItem) => {
   return (
     item.subtitle === 'Engels' ||
@@ -142,7 +174,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       const [hour, minute] = splitTime(item.starts_at_time)
 
       return {
-        title: cleanFilmhuisDenHaagTitle(item.title),
+        title: cleanTitle(item.title),
         year: releaseYearByUrl.get(`https://filmhuisdenhaag.nl${item.uri}`),
         url: `https://filmhuisdenhaag.nl${item.uri}`,
         cinema: 'Filmhuis Den Haag',
