@@ -88,20 +88,20 @@ export const cleanTitle = (title: string) => {
     const previous = cleaned
 
     cleaned = cleaned
-      .replace(/(?:\s+-\s+Laff)$/i, '')
-      .replace(/(?:\s+-\s+Drank & Drugs)$/i, '')
-      .replace(/(?:\s+-\s+This Is Not Funny)$/i, '')
-      .replace(/(?:\s+-\s+Is This Bruce Lee\?)$/i, '')
-      .replace(/(?:\s+-\s+Ciné Première)$/i, '')
-      .replace(/(?:\s+-\s+Late Night Anime)$/i, '')
+      .replace(/(\s+-\s+Laff)$/i, '')
+      .replace(/(\s+-\s+Drank & Drugs)$/i, '')
+      .replace(/(\s+-\s+This Is Not Funny)$/i, '')
+      .replace(/(\s+-\s+Is This Bruce Lee\?)$/i, '')
+      .replace(/(\s+-\s+Ciné Première)$/i, '')
+      .replace(/(\s+-\s+Late Night Anime)$/i, '')
       .replace(
-        /(?:\s+-\s+En Subs(?:\s+Met\s+(?:Introductie|Inleiding|Nagesprek))?)$/i,
+        /(\s+-\s+En Subs(\s+Met\s+(Introductie|Inleiding|Nagesprek))?)$/i,
         '',
       )
-      .replace(/(?:\s+-\s+Met\s+(?:Introductie|Inleiding|Nagesprek))$/i, '')
+      .replace(/(\s+-\s+Met\s+(Introductie|Inleiding|Nagesprek))$/i, '')
       .replace(/ - EN subs$/i, '')
       .replace(
-        /\s+\((?:4K Restoration|Re-Release)\)(?:\s+-\s+Late Night Anime)?$/i,
+        /\s+\((4K Restoration|Re-Release)\)(\s+-\s+Late Night Anime)?$/i,
         '',
       )
       .trim()
