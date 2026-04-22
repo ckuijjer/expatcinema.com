@@ -14,7 +14,7 @@ describe('titleResolver', () => {
     expect(normalizeMovieTitleForLookup('Amélie  ')).toBe('amelie')
   })
 
-  test('strips common cinema noise from titles', () => {
+  test('strips common presentation noise from titles', () => {
     expect(stripTitleNoise('Amelie (2001) 4K Restoration')).toBe('Amelie')
     expect(stripTitleNoise('The Third Man - 75th Anniversary')).toBe(
       'The Third Man',
