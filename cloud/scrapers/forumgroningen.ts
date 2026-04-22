@@ -17,13 +17,11 @@ const logger = parentLogger.createChild({
 })
 
 const cleanTitle = (value: string) =>
-  titleCase(
-    value
-      .replace('Movie: ', '')
-      .replace('Film: ', '')
-      .replace('Classics: ', '')
-      .replace('Cinematic Beauty: ', ''),
-  )
+  titleCase(value)
+    .replace(/^Movie:\s+/i, '')
+    .replace(/^Film:\s+/i, '')
+    .replace(/^Classics:\s+/i, '')
+    .replace(/^Cinematic Beauty:\s+/i, '')
     .replace(/^Cinemasia:\s+/i, '')
     .replace(/^Movies That Matter:\s+/i, '')
     .replace(/^Framed Shorts:\s+/i, '')
