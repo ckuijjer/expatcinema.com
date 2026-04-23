@@ -51,6 +51,24 @@ const cinemaInfoStyle = css({
   alignItems: 'center',
 })
 
+const cinemaIconFrameStyle = css({
+  width: '18px',
+  height: '18px',
+  marginRight: '6px',
+  borderRadius: '4px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: '0',
+  overflow: 'hidden',
+  backgroundColor: 'var(--text-inverse-color)',
+  border: '1px solid var(--border-color)',
+})
+
+const cinemaIconStyle = css({
+  display: 'block',
+})
+
 const posterLinkStyle = css({
   gridRow: '1 / span 2',
   alignSelf: 'start',
@@ -64,12 +82,6 @@ const screeningLinkStyle = css({
   color: 'var(--text-color)',
 })
 
-const cinemaIconStyle = css({
-  filter: 'grayscale(100%) opacity(0.5)',
-  marginRight: '4px',
-  display: 'inline',
-})
-
 type CinemaIconProps = {
   cinema: Cinema
 }
@@ -80,13 +92,15 @@ const CinemaIcon = ({ cinema }: CinemaIconProps) => {
   }
 
   return (
-    <Image
-      src={`/images/${cinema.logo}`}
-      width={16}
-      height={16}
-      alt={`Logo for ${cinema.name}`}
-      className={cinemaIconStyle}
-    />
+    <span className={cinemaIconFrameStyle}>
+      <Image
+        src={`/images/${cinema.logo}`}
+        width={14}
+        height={14}
+        alt={`Logo for ${cinema.name}`}
+        className={cinemaIconStyle}
+      />
+    </span>
   )
 }
 
