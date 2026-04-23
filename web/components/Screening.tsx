@@ -65,7 +65,7 @@ const cinemaIconFrameStyle = css({
   border: '1px solid var(--border-color)',
 })
 
-const cinemaIconStyle = css({
+const cinemaIconMaskStyle = css({
   width: '16px',
   height: '16px',
   display: 'block',
@@ -76,6 +76,11 @@ const cinemaIconStyle = css({
   maskPosition: 'center',
   WebkitMaskSize: 'contain',
   maskSize: 'contain',
+})
+
+const cinemaIconRasterStyle = css({
+  display: 'block',
+  filter: 'grayscale(100%)',
 })
 
 const posterLinkStyle = css({
@@ -95,21 +100,40 @@ type CinemaIconProps = {
   cinema: Cinema
 }
 
+const opaqueCinemaLogos = new Set([
+  'cinerama.png',
+  'concordia.png',
+  'defilmhallen.png',
+])
+
 const CinemaIcon = ({ cinema }: CinemaIconProps) => {
   if (!cinema.logo) {
     return null
   }
 
+  const useMask =
+    cinema.logo.endsWith('.svg') || !opaqueCinemaLogos.has(cinema.logo)
+
   return (
     <span className={cinemaIconFrameStyle}>
-      <span
-        aria-hidden="true"
-        className={cinemaIconStyle}
-        style={{
-          WebkitMaskImage: `url(/images/${cinema.logo})`,
-          maskImage: `url(/images/${cinema.logo})`,
-        }}
-      />
+      {useMask ? (
+        <span
+          aria-hidden="true"
+          className={cinemaIconMaskStyle}
+          style={{
+            WebkitMaskImage: `url(/images/${cinema.logo})`,
+            maskImage: `url(/images/${cinema.logo})`,
+          }}
+        />
+      ) : (
+        <Image
+          src={`/images/${cinema.logo}`}
+          width={16}
+          height={16}
+          alt={`Logo for ${cinema.name}`}
+          className={cinemaIconRasterStyle}
+        />
+      )}
     </span>
   )
 }
