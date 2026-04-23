@@ -15,7 +15,7 @@
   --background-inverse-color: var(--palette-purple-600);
   --background-highlight-color: var(--palette-purple-200);
   --border-color: color-mix(in srgb, var(--text-color) 18%, transparent);
-  --screening-year-color: color-mix(
+  --text-muted-emphasis-color: color-mix(
     in srgb,
     var(--text-color) 35%,
     transparent

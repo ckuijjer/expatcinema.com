@@ -56,5 +56,5 @@ export const listTitleStyle = css({
 })
 
 export const listYearStyle = css({
-  color: 'var(--screening-year-color)',
+  color: 'var(--text-muted-emphasis-color)',
 })
