@@ -15,6 +15,7 @@
   --background-inverse-color: var(--palette-purple-600);
   --background-highlight-color: var(--palette-purple-200);
   --border-color: color-mix(in srgb, var(--text-color) 18%, transparent);
+  --screening-year-color: var(--secondary-color);
 
   --primary-color: var(--palette-purple-300);
   --secondary-color: var(--palette-purple-400);
@@ -29,6 +30,7 @@
     --background-color: var(--palette-purple-600);
     --background-highlight-color: var(--palette-purple-500);
     --border-color: color-mix(in srgb, var(--text-color) 18%, transparent);
+    --screening-year-color: var(--palette-purple-300);
   }
 }
 
