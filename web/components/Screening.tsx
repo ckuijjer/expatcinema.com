@@ -31,12 +31,11 @@ const timeStyle = css({
   gridRow: '1 / span 2',
   alignSelf: 'start',
   paddingTop: '4px',
+  pointerEvents: 'none',
 })
 
 const contentStyle = css({
-  position: 'relative',
-  zIndex: '1',
-  pointerEvents: 'none',
+  display: 'contents',
 })
 
 const cinemaInfoStyle = css({
@@ -47,6 +46,7 @@ const cinemaInfoStyle = css({
   color: 'var(--text-muted-color)',
   display: 'flex',
   alignItems: 'center',
+  pointerEvents: 'none',
 })
 
 const cinemaIconFrameStyle = css({
@@ -150,11 +150,11 @@ export const ScreeningRow = ({
           aria-label={`Open screening for ${title}`}
           className={screeningRowLinkStyle}
         />
-        <div className={`${timeStyle} ${contentStyle}`}>
+        <div className={timeStyle}>
           <Time>{date}</Time>
         </div>
         <div className={contentStyle}>
-          <div className={listTitleStyle}>
+          <div className={listTitleStyle} style={{ pointerEvents: 'none' }}>
             {title}
             {year ? <span className={listYearStyle}> ({year})</span> : null}
           </div>
