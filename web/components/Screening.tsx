@@ -67,6 +67,7 @@ const cinemaIconFrameStyle = css({
 
 const cinemaIconStyle = css({
   display: 'block',
+  filter: 'grayscale(100%)',
 })
 
 const posterLinkStyle = css({
@@ -95,8 +96,8 @@ const CinemaIcon = ({ cinema }: CinemaIconProps) => {
     <span className={cinemaIconFrameStyle}>
       <Image
         src={`/images/${cinema.logo}`}
-        width={14}
-        height={14}
+        width={16}
+        height={16}
         alt={`Logo for ${cinema.name}`}
         className={cinemaIconStyle}
       />
