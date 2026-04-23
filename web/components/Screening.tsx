@@ -100,10 +100,30 @@ type CinemaIconProps = {
   cinema: Cinema
 }
 
-const opaqueCinemaLogos = new Set([
+// Masking only works for logos that actually use transparency to define the shape.
+// Badge-style favicons render as squares, so they stay rasterized.
+const rasterCinemaLogos = new Set([
+  'bioscopenleiden.png',
+  'cinecenter.png',
+  'cinecitta.png',
   'cinerama.png',
   'concordia.png',
   'defilmhallen.png',
+  'filmkoepel.png',
+  'focusarnhem.png',
+  'forumgroningen.png',
+  'ketelhuis.png',
+  'kino.png',
+  'kriterion.png',
+  'lantarenvenster.png',
+  'louishartloopercomplex.png',
+  'lux.png',
+  'rialto.png',
+  'schuur.png',
+  'slachtstraat.png',
+  'springhaver.png',
+  'studiok.png',
+  'themovies.png',
 ])
 
 const CinemaIcon = ({ cinema }: CinemaIconProps) => {
@@ -112,7 +132,7 @@ const CinemaIcon = ({ cinema }: CinemaIconProps) => {
   }
 
   const useMask =
-    cinema.logo.endsWith('.svg') || !opaqueCinemaLogos.has(cinema.logo)
+    cinema.logo.endsWith('.svg') || !rasterCinemaLogos.has(cinema.logo)
 
   return (
     <span className={cinemaIconFrameStyle}>
