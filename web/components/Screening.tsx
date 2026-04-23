@@ -66,7 +66,16 @@ const cinemaIconFrameStyle = css({
 })
 
 const cinemaIconStyle = css({
+  width: '16px',
+  height: '16px',
   display: 'block',
+  backgroundColor: 'var(--text-muted-color)',
+  WebkitMaskRepeat: 'no-repeat',
+  maskRepeat: 'no-repeat',
+  WebkitMaskPosition: 'center',
+  maskPosition: 'center',
+  WebkitMaskSize: 'contain',
+  maskSize: 'contain',
 })
 
 const posterLinkStyle = css({
@@ -93,12 +102,13 @@ const CinemaIcon = ({ cinema }: CinemaIconProps) => {
 
   return (
     <span className={cinemaIconFrameStyle}>
-      <Image
-        src={`/images/${cinema.logo}`}
-        width={14}
-        height={14}
-        alt={`Logo for ${cinema.name}`}
+      <span
+        aria-hidden="true"
         className={cinemaIconStyle}
+        style={{
+          WebkitMaskImage: `url(/images/${cinema.logo})`,
+          maskImage: `url(/images/${cinema.logo})`,
+        }}
       />
     </span>
   )
