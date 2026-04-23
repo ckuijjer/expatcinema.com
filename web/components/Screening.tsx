@@ -69,7 +69,7 @@ const cinemaIconMaskStyle = css({
   width: '16px',
   height: '16px',
   display: 'block',
-  backgroundColor: 'var(--text-muted-color)',
+  backgroundColor: 'var(--cinema-logo-color)',
   WebkitMaskRepeat: 'no-repeat',
   maskRepeat: 'no-repeat',
   WebkitMaskPosition: 'center',
@@ -80,7 +80,7 @@ const cinemaIconMaskStyle = css({
 
 const cinemaIconRasterStyle = css({
   display: 'block',
-  filter: 'grayscale(100%)',
+  filter: 'grayscale(100%) brightness(0.35)',
 })
 
 const posterLinkStyle = css({

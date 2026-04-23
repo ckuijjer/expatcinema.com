@@ -20,6 +20,7 @@
     var(--text-color) 35%,
     transparent
   );
+  --cinema-logo-color: var(--text-muted-emphasis-color);
 
   --primary-color: var(--palette-purple-300);
   --secondary-color: var(--palette-purple-400);
