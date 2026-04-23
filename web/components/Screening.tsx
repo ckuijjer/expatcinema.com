@@ -15,14 +15,10 @@ import {
   listYearStyle,
 } from './listStyles'
 
-const aStyle = css({
-  textDecoration: 'none',
-  color: 'var(--text-color)',
-})
-
 const containerStyle = cx(
   listRowBaseStyle,
   css({
+    position: 'relative',
     display: 'grid',
     gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
     gridTemplateRows: 'auto auto',
@@ -38,7 +34,9 @@ const timeStyle = css({
 })
 
 const contentStyle = css({
-  display: 'contents',
+  position: 'relative',
+  zIndex: '1',
+  pointerEvents: 'none',
 })
 
 const cinemaInfoStyle = css({
@@ -75,9 +73,15 @@ const posterLinkStyle = css({
   display: 'block',
   width: '48px',
   height: '72px',
+  position: 'relative',
+  zIndex: '2',
 })
 
-const screeningLinkStyle = css({
+const screeningRowLinkStyle = css({
+  position: 'absolute',
+  inset: '0',
+  zIndex: '0',
+  display: 'block',
   textDecoration: 'none',
   color: 'var(--text-color)',
 })
@@ -143,14 +147,13 @@ export const ScreeningRow = ({
       <div className={containerStyle}>
         <a
           href={url}
-          className={`${aStyle} ${screeningLinkStyle} ${timeStyle}`}
-        >
+          aria-label={`Open screening for ${title}`}
+          className={screeningRowLinkStyle}
+        />
+        <div className={`${timeStyle} ${contentStyle}`}>
           <Time>{date}</Time>
-        </a>
-        <a
-          href={url}
-          className={`${aStyle} ${screeningLinkStyle} ${contentStyle}`}
-        >
+        </div>
+        <div className={contentStyle}>
           <div className={listTitleStyle}>
             {title}
             {year ? <span className={listYearStyle}> ({year})</span> : null}
@@ -160,7 +163,7 @@ export const ScreeningRow = ({
             {cinema.name}
             {showCity ? <> | {cinema.city.name}</> : null}
           </div>
-        </a>
+        </div>
         {showPoster && posterUrl && movieUrl ? (
           <a href={movieUrl} className={posterLinkStyle}>
             <Image
