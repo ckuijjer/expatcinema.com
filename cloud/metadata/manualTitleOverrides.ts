@@ -42,7 +42,7 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     addedAt: '2026-04-24',
   },
   {
-    title: 'The Great Adventure of Horus, Prince of the Sun',
+    title: 'The Great Adventure of Horus, Prince of the Sun (1968)',
     year: 1968,
     tmdbId: 52686,
     note: 'Slachtstraat returns a slightly different title',
