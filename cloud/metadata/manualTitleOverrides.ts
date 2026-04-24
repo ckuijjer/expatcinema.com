@@ -6,6 +6,7 @@ type ManualTitleOverrideInput = {
   tmdbId?: number
   imdbId?: string
   note?: string
+  addedAt: string
 }
 
 export type ManualTitleOverride = ManualTitleOverrideInput & {
@@ -18,11 +19,13 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     year: 2024,
     tmdbId: 1359694,
     note: 'Kino returns the wrong release year for A Family; force the 2026 TMDB match.',
+    addedAt: '2026-04-24',
   },
   {
     title: 'The Exit 8',
     tmdbId: 1408208,
     note: 'Forum Groningen returns the wrong title for Exit 8; force the correct TMDB match.',
+    addedAt: '2026-04-24',
   },
 ]
 
