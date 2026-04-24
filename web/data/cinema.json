@@ -587,5 +587,11 @@
       "addressLocality": "Amstelveen",
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinema%20Amstelveen%2C%20Stadsplein%20100%2C%201181%20ZM%20Amstelveen%2C%20Netherlands"
     }
+  },
+  {
+    "name": "Filmhuis Cavia",
+    "slug": "filmhuis-cavia",
+    "city": "amsterdam",
+    "url": "https://filmhuiscavia.nl/"
   }
 ]
