@@ -25,6 +25,7 @@ const xray = Xray({
               .replace(/\s+\(.*\)$/, '') // e.g. (English subtitles), (+English subtitles // Expat Cinema)
               .replace(/\s+\[.*\]$/, '') // e.g. EL SUSPIRO DEL SILENCIO [THE WHISPER OF SILENCE] => EL SUSPIRO DEL SILENCIO
               .replace(/\s+\|\|.*$/, '') // e.g. TAMPOPO || A TASTE OF ASIA || + ENGLISH SUBTITLES => TAMPOPO
+              .replace(/\s+–\s+25th anniversary/i, '') // e.g. Legally Blonde – 25th anniversary => Legally Blonde
               .replace(/^.*:/, '') // e.g. Expat Cinema:
               .replace(/ \+ English Subtitles/i, ''), // e.g.  + English Subtitles
           )
