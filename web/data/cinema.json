@@ -304,5 +304,11 @@
     "city": "rotterdam",
     "url": "https://dokhuis.org/",
     "logo": "dokhuis.png"
+  },
+  {
+    "name": "Cinema The Pulse",
+    "slug": "cinema-the-pulse",
+    "city": "amsterdam",
+    "url": "https://www.cinemathepulse.com/"
   }
 ]
