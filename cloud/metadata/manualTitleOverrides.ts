@@ -19,6 +19,11 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     tmdbId: 1359694,
     note: 'Kino returns the wrong release year for A Family; force the 2026 TMDB match.',
   },
+  {
+    title: 'The Exit 8',
+    tmdbId: 1408208,
+    note: 'Forum Groningen returns the wrong title for Exit 8; force the correct TMDB match.',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
