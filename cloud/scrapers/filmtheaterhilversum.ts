@@ -50,12 +50,10 @@ type DetailPageResult = {
 
 const cleanTitle = (title: string) =>
   titleCase(
-    removeYearSuffix(title)
-      .replace(
-        /\s+\|\s+(?:movies that matter on tour|rainbow night|royal opera(?:\s+\d{2}\/\d{2})?|mamoru hosoda retrospectief|klassieker|ontbijt\s*&\s*film|senver|met .*|laatste kans|voorpremi[eè]re)$/i,
-        '',
-      )
-      .replace(/\s+-\s+Laatste kans$/i, ''),
+    removeYearSuffix(title).replace(
+      /\s+\|\s+(?:movies that matter on tour|rainbow night|royal opera(?:\s+\d{2}\/\d{2})?|mamoru hosoda retrospectief|klassieker|ontbijt\s*&\s*film|senver|met .*|laatste kans|voorpremi[eè]re)|europadag$/i,
+      '',
+    ),
   )
 
 const extractTime = (time: string) => {
