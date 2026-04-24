@@ -61,12 +61,12 @@ const cleanTitle = (title: string) =>
       .replace(/^Klassieker:/i, '') // Remove the classics programme prefix
       .replace(/^Tapis Rouge Classiques X De Uitkijk:/i, '') // Remove the Tapis Rouge collaboration prefix
       .replace(/^Deutsches Kino:/i, '') // Remove the Deutsches Kino programme prefix
-      .replace(/^Drift X De Uitkijk:/i, '') // Remove the Drift collaboration prefix
+      .replace(/^.* X De Uitkijk:/i, '') // Remove the collaboration prefix
       .replace(/^Film070 Presents:/i, '') // Remove the Film070 guest-programme prefix
       .replace(/^Fight the Power:/i, '') // Remove the Fight the Power programme prefix
       .replace(/\s+incl\.\s+introduction$/i, '') // Remove trailing introduction labels
       .replace(/(?:\s*\([^)]*\))+$/g, '') // Remove one or more trailing parenthetical labels like years or subtitle markers
-      .replace(/\s*\|\s*Tapis Rouge Classiques X De Uitkijk$/i, '') // Remove the trailing Tapis Rouge collaboration suffix
+      .replace(/\s*\|\s*.* X De Uitkijk$/i, '') // Remove the trailing collaboration suffix
       .replace(/\s*\|.*$/, '')
       .replace(/ \(.*?\)/g, '')
       .trim(),
