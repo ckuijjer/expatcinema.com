@@ -310,5 +310,12 @@
     "slug": "filmhuis-botanique-filmhuis-breda",
     "city": "breda",
     "url": "https://www.filmhuisbreda.nl/"
+  },
+  {
+    "name": "Bioscopen Leiden",
+    "slug": "bioscopen-leiden",
+    "city": "leiden",
+    "url": "https://bioscopenleiden.nl/",
+    "logo": "bioscopenleiden.png"
   }
 ]
