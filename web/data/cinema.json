@@ -304,5 +304,11 @@
     "city": "rotterdam",
     "url": "https://dokhuis.org/",
     "logo": "dokhuis.png"
+  },
+  {
+    "name": "Filmhuis Cavia",
+    "slug": "filmhuis-cavia",
+    "city": "amsterdam",
+    "url": "https://filmhuiscavia.nl/"
   }
 ]
