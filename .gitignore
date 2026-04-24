@@ -29,7 +29,6 @@ web/tsconfig.tsbuildinfo
 backup/
 .env.*
 
-data
 .claude/settings.local.json
 .claude/worktrees/
 output/expatcinema-dev-scrapers.json
