@@ -27,6 +27,13 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: 'Forum Groningen returns the wrong title for Exit 8; force the correct TMDB match.',
     addedAt: '2026-04-24',
   },
+  {
+    title: 'Kill Bill: the Whole Bloody Affair',
+    year: 2006,
+    tmdbId: 414419,
+    note: 'Kino returns the release year for Kill Bill: Vol. 1 instead of the correct year for the combined Kill Bill: the Whole Bloody Affair; force the correct TMDB match.',
+    addedAt: '2026-04-24',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
