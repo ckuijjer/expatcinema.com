@@ -34,6 +34,20 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: 'Kino returns the release year for Kill Bill: Vol. 1 instead of the correct year for the combined Kill Bill: the Whole Bloody Affair; force the correct TMDB match.',
     addedAt: '2026-04-24',
   },
+  {
+    title: 'The Great Adventure of Horus Prince of the Sun',
+    year: 1968,
+    tmdbId: 52686,
+    note: 'Kino returns a slightly different title',
+    addedAt: '2026-04-24',
+  },
+  {
+    title: 'The Great Adventure of Horus, Prince of the Sun',
+    year: 1968,
+    tmdbId: 52686,
+    note: 'Slachtstraat returns a slightly different title',
+    addedAt: '2026-04-24',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
