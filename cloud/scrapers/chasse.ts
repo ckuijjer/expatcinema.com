@@ -50,6 +50,7 @@ const cleanTitle = (title: string) =>
   titleCase(
     title
       .replace(/^Internationals Cinema:\s*/i, '')
+      .replace(/^Internationals Cinema Breda:\s*/i, '')
       .replace(/\s*\(EN subs\)$/i, ''),
   )
 
