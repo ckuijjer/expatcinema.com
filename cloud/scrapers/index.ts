@@ -10,6 +10,7 @@ import documentClient from '../documentClient'
 import getMetadata from '../metadata'
 import { logger } from '../powertools'
 import { Screening } from '../types'
+import amstelveen from './amstelveen'
 import bioscopenleiden from './bioscopenleiden'
 import chasse from './chasse'
 import cinecenter from './cinecenter'
@@ -62,6 +63,7 @@ import {
 import type { Metadata } from '../metadata/types'
 
 const SCRAPERS = {
+  amstelveen,
   bioscopenleiden,
   chasse,
   cinecenter,
