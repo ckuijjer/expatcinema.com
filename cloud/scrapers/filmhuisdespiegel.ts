@@ -1,16 +1,25 @@
 import got from 'got'
-import { decode } from 'html-entities'
 import { DateTime } from 'luxon'
+import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
     scraper: 'filmhuisdespiegel',
+  },
+})
+
+const xray = Xray({
+  filters: {
+    trim,
+    normalizeWhitespace: (value) =>
+      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
 
@@ -23,23 +32,28 @@ const extractUrlsFromSitemap = (xml: string) =>
 
 const hasEnglishSubtitles = (html: string) => /English subtitles/i.test(html)
 
-const isDeSpiegel = (html: string) => /Filmhuis De Spiegel/i.test(html)
+const isDeSpiegel = (text: string) => /Filmhuis De Spiegel/i.test(text)
 
-const extractTitle = (html: string) => {
-  const match = html.match(/<h1[^>]*><span>(.*?)<\/span><\/h1>/i)
-  if (match?.[1]) {
-    return titleCase(decode(match[1]).replace(/^Film:\s*/i, '').trim())
-  }
-
-  const titleTagMatch = html.match(
-    /<title>Filmhouse De Spiegel presents &#x27;(.*?)&#x27;/i,
-  )
-  return titleTagMatch?.[1] ? titleCase(decode(titleTagMatch[1].trim())) : null
+type XRayDetailPage = {
+  bodyText: string
+  h1Title: string
+  pageTitle: string
 }
 
-const extractDate = (html: string) => {
-  const dateMatches = Array.from(html.matchAll(/"(\d{4}-\d{2}-\d{2})"/g))
-  const timeMatches = Array.from(html.matchAll(/"(\d{2}:\d{2}:\d{2})"/g))
+const extractTitle = (page: XRayDetailPage) => {
+  if (page.h1Title) {
+    return titleCase(page.h1Title.replace(/^Film:\s*/i, '').trim())
+  }
+
+  const titleTagMatch = page.pageTitle.match(
+    /Filmhouse De Spiegel presents '(.*?)'/i,
+  )
+  return titleTagMatch?.[1] ? titleCase(titleTagMatch[1].trim()) : null
+}
+
+const extractDate = (text: string) => {
+  const dateMatches = Array.from(text.matchAll(/"(\d{4}-\d{2}-\d{2})"/g))
+  const timeMatches = Array.from(text.matchAll(/"(\d{2}:\d{2}:\d{2})"/g))
   const date = dateMatches.at(-1)?.[1]
   const time = timeMatches[0]?.[1]
 
@@ -50,20 +64,25 @@ const extractDate = (html: string) => {
   }).toJSDate()
 }
 
-const extractReleaseYear = (html: string) => {
-  const match = html.match(/<p>[^<]*<br>[^<]*,\s*((?:19|20)\d{2}),/i)
+const extractReleaseYear = (text: string) => {
+  const match = text.match(/[^,]\s*((?:19|20)\d{2}),/)
   return match?.[1] ? Number(match[1]) : undefined
 }
 
 const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
   const html = await got(url).text()
+  const page: XRayDetailPage = await xray(html, {
+    bodyText: 'body@text | normalizeWhitespace | trim',
+    h1Title: 'h1 span | trim',
+    pageTitle: 'title | trim',
+  })
 
-  if (!isDeSpiegel(html) || !hasEnglishSubtitles(html)) {
+  if (!isDeSpiegel(page.bodyText) || !hasEnglishSubtitles(page.bodyText)) {
     return []
   }
 
-  const title = extractTitle(html)
-  const date = extractDate(html)
+  const title = extractTitle(page)
+  const date = extractDate(page.bodyText)
 
   if (!title || !date) {
     logger.warn('skipping page with missing title or date', { url })
@@ -73,7 +92,7 @@ const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
   return [
     {
       title,
-      year: extractReleaseYear(html),
+      year: extractReleaseYear(page.bodyText),
       url,
       cinema: 'Filmhuis De Spiegel',
       date,
