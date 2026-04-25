@@ -9,6 +9,7 @@ import { monthToNumber } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
+import { useLLM } from './utils/useLLM'
 import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
@@ -33,9 +34,6 @@ const extractDetailUrlsFromSitemap = (xml: string) =>
       ).map((match) => match[1]),
     ),
   )
-
-const hasEnglishSubtitles = (html: string) =>
-  /with English subtitles|NL,\s*ENG/i.test(html)
 
 const extractTitle = (title: string) => {
   const match = title.match(/(.*?)(?:,\s*een film in De Balie|\s*-\s*De Balie)?$/i)
@@ -76,12 +74,23 @@ const parseTicketDateFromSelectorDay = (selectorDay: string, time: string) => {
 
 type XRayDetailPage = {
   bodyText: string
+  markTexts: string[]
+  subtitleInfoItems: string[]
   tickets: {
     selectorDay?: string
     url: string
     time: string
   }[]
   title: string
+}
+
+type SubtitleDecision = {
+  englishSubtitles: boolean
+  index: number
+}
+
+type ScreeningCandidate = Screening & {
+  index: number
 }
 
 const extractTicketLinks = (page: XRayDetailPage) =>
@@ -109,6 +118,82 @@ const extractScreeningDate = (
     ? parseTicketDateFromSelectorDay(selectorDay, time)
     : parseTicketDateFromTicketUrl(url, time, year)
 
+const hasUniversalEnglishSubtitles = (page: XRayDetailPage) =>
+  page.subtitleInfoItems.some((text) =>
+    /ondertitels?.*english|english.*ondertitels?|with english subtitles|engels/i.test(
+      text,
+    ),
+  )
+
+const extractSubtitleNotes = (page: XRayDetailPage) =>
+  Array.from(
+    new Set(
+      [...page.subtitleInfoItems, ...page.markTexts, page.bodyText].filter(
+        (text) => /subtitles?|ondertitels?|english|engels/i.test(text),
+      ),
+    ),
+  )
+
+const parseSubtitleDecisions = (response: string) => {
+  const match = response.match(/\[[\s\S]*\]/)
+  if (!match?.[0]) return null
+
+  try {
+    const parsed = JSON.parse(match[0]) as SubtitleDecision[]
+    return new Set(
+      parsed
+        .filter(
+          (item): item is SubtitleDecision =>
+            typeof item?.index === 'number' && item.englishSubtitles === true,
+        )
+        .map((item) => item.index),
+    )
+  } catch {
+    return null
+  }
+}
+
+const filterScreeningsWithLLM = async (
+  subtitleNotes: string[],
+  screenings: ScreeningCandidate[],
+) => {
+  const prompt = [
+    'You are filtering cinema screenings for English subtitles.',
+    '',
+    'Subtitle notes from the page:',
+    ...subtitleNotes.map((note) => `- ${note}`),
+    '',
+    'Screenings:',
+    ...screenings.map((screening) => {
+      const localDate = DateTime.fromJSDate(screening.date, {
+        zone: 'Europe/Amsterdam',
+      })
+
+      return `${screening.index}. ${screening.title} | ${localDate.toFormat(
+        'cccc yyyy-LL-dd HH:mm',
+      )}`
+    }),
+    '',
+    'Return only valid JSON in this exact shape:',
+    '[{"index":1,"englishSubtitles":true}]',
+    'Include one object per screening that has English subtitles.',
+    'Use the screening list order above.',
+  ].join('\n')
+
+  const response = await useLLM(prompt)
+  const indices = parseSubtitleDecisions(response)
+
+  if (!indices) {
+    logger.warn('could not parse subtitle decisions from LLM', {
+      response,
+      subtitleNotes,
+    })
+    return new Set<number>()
+  }
+
+  return indices
+}
+
 const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
   let html: string
   try {
@@ -120,6 +205,10 @@ const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
 
   const page: XRayDetailPage = await xray(html, {
     bodyText: 'body@text | normalizeWhitespace | trim',
+    markTexts: xray('mark', ['@text | normalizeWhitespace | trim']),
+    subtitleInfoItems: xray('.wp-block-vo-info-item', [
+      '@text | normalizeWhitespace | trim',
+    ]),
     tickets: xray('[data-ticket-selector-day]', [
       {
         selectorDay: '@data-ticket-selector-day | trim',
@@ -130,10 +219,6 @@ const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
     title: 'title | trim',
   })
 
-  if (!hasEnglishSubtitles(page.bodyText)) {
-    return []
-  }
-
   const title = extractTitle(page.title)
   if (!title) return []
   const year = extractPageYear(html)
@@ -143,7 +228,7 @@ const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
     return []
   }
 
-  return ticketLinks
+  const screenings = ticketLinks
     .map(({ url: ticketUrl, selectorDay, time }) => ({
       title,
       url,
@@ -151,6 +236,35 @@ const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
       date: extractScreeningDate(ticketUrl, selectorDay, time, year),
     }))
     .filter((screening): screening is Screening => screening.date !== null)
+
+  if (hasUniversalEnglishSubtitles(page)) {
+    return screenings
+  }
+
+  const subtitleNotes = extractSubtitleNotes(page)
+  if (subtitleNotes.length === 0) {
+    return []
+  }
+
+  const screeningCandidates: ScreeningCandidate[] = screenings.map(
+    (screening, index) => ({
+      ...screening,
+      index: index + 1,
+    }),
+  )
+
+  const englishSubtitleIndices = await filterScreeningsWithLLM(
+    subtitleNotes,
+    screeningCandidates,
+  )
+
+  if (englishSubtitleIndices.size === 0) {
+    return []
+  }
+
+  return screeningCandidates
+    .filter(({ index }) => englishSubtitleIndices.has(index))
+    .map(({ index: _index, ...screening }) => screening)
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
