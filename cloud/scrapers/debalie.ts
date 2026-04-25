@@ -1,6 +1,6 @@
 import got from 'got'
-import { decode } from 'html-entities'
 import { DateTime } from 'luxon'
+import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -9,10 +9,19 @@ import { monthToNumber } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
     scraper: 'debalie',
+  },
+})
+
+const xray = Xray({
+  filters: {
+    trim,
+    normalizeWhitespace: (value) =>
+      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
 
@@ -28,9 +37,9 @@ const extractDetailUrlsFromSitemap = (xml: string) =>
 const hasEnglishSubtitles = (html: string) =>
   /with English subtitles|NL,\s*ENG/i.test(html)
 
-const extractTitle = (html: string) => {
-  const match = html.match(/<title>(.*?)(?:,\s*een film in De Balie|\s*-\s*De Balie)<\/title>/i)
-  return match?.[1] ? titleCase(decode(match[1].trim())) : null
+const extractTitle = (title: string) => {
+  const match = title.match(/(.*?)(?:,\s*een film in De Balie|\s*-\s*De Balie)?$/i)
+  return match?.[1] ? titleCase(match[1].trim()) : null
 }
 
 const extractPageYear = (html: string) => {
@@ -65,27 +74,30 @@ const parseTicketDateFromSelectorDay = (selectorDay: string, time: string) => {
   ).toJSDate()
 }
 
-const extractTicketLinks = (html: string) =>
-  [
-    ...Array.from(
-      html.matchAll(
-        /data-ticket-selector-day="(\d{8})"[\s\S]*?<a href="([^"]+)"\s+class="button button--tertiary button--ticket-icon banner-bar__link">\s*(\d{1,2}:\d{2})\s*<\/a>/gi,
-      ),
-    ).map((match) => ({
-      url: new URL(match[2], 'https://debalie.nl').toString(),
-      selectorDay: match[1],
-      time: match[3],
-    })),
-    ...Array.from(
-      html.matchAll(
-        /<a href="(https:\/\/tickets\.debalie\.nl\/[^"]+)"\s+target="_blank"\s+class="button button--tertiary button--ticket-icon banner-bar__link">\s*(\d{1,2}:\d{2})\s*<\/a>/gi,
-      ),
-    ).map((match) => ({
-      url: match[1],
-      selectorDay: null,
-      time: match[2],
-    })),
-  ]
+type XRayDetailPage = {
+  bodyText: string
+  tickets: {
+    selectorDay?: string
+    url: string
+    time: string
+  }[]
+  title: string
+}
+
+const extractTicketLinks = (page: XRayDetailPage) =>
+  page.tickets.flatMap(({ url, selectorDay, time }) => {
+    if (!url || !time) {
+      return []
+    }
+
+    return [
+      {
+        url: new URL(url, 'https://debalie.nl').toString(),
+        selectorDay: selectorDay ?? null,
+        time,
+      },
+    ]
+  })
 
 const extractScreeningDate = (
   url: string,
@@ -106,15 +118,32 @@ const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
     return []
   }
 
-  if (!hasEnglishSubtitles(html)) {
+  const page: XRayDetailPage = await xray(html, {
+    bodyText: 'body@text | normalizeWhitespace | trim',
+    tickets: xray('[data-ticket-selector-day]', [
+      {
+        selectorDay: '@data-ticket-selector-day | trim',
+        url: '.banner-bar__link@href | trim',
+        time: '.banner-bar__link | trim',
+      },
+    ]),
+    title: 'title | trim',
+  })
+
+  if (!hasEnglishSubtitles(page.bodyText)) {
     return []
   }
 
-  const title = extractTitle(html)
+  const title = extractTitle(page.title)
   if (!title) return []
   const year = extractPageYear(html)
 
-  return extractTicketLinks(html)
+  const ticketLinks = extractTicketLinks(page)
+  if (ticketLinks.length === 0) {
+    return []
+  }
+
+  return ticketLinks
     .map(({ url: ticketUrl, selectorDay, time }) => ({
       title,
       url,
