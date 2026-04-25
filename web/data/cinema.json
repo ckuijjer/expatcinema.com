@@ -304,5 +304,11 @@
     "city": "rotterdam",
     "url": "https://dokhuis.org/",
     "logo": "dokhuis.png"
+  },
+  {
+    "name": "Cinema Amstelveen / Schouwburg Amstelveen",
+    "slug": "cinema-amstelveen",
+    "city": "amstelveen",
+    "url": "https://schouwburgamstelveen.nl/nl/cinema/"
   }
 ]
