@@ -1,24 +1,89 @@
 [
   {
-    "name": "Kijkhuis",
-    "slug": "kijkhuis",
-    "city": "leiden",
-    "url": "https://bioscopenleiden.nl/kijkhuis/",
-    "logo": "bioscopenleiden.png"
+    "name": "Castellum Theater & Film",
+    "slug": "castellum-theater-film",
+    "city": "alphen-aan-den-rijn",
+    "url": "https://castellum.nl/film"
   },
   {
-    "name": "Trianon",
-    "slug": "trianon",
-    "city": "leiden",
-    "url": "https://bioscopenleiden.nl/trianon/",
-    "logo": "bioscopenleiden.png"
+    "name": "Chassé Cinema",
+    "slug": "chasse-cinema",
+    "city": "breda",
+    "url": "https://www.chasse.nl"
   },
   {
-    "name": "Lido",
-    "slug": "lido",
-    "city": "leiden",
-    "url": "https://bioscopenleiden.nl/lido/",
-    "logo": "bioscopenleiden.png"
+    "name": "Cinecenter",
+    "slug": "cinecenter",
+    "city": "amsterdam",
+    "url": "https://cinecenter.nl/",
+    "logo": "cinecenter.png"
+  },
+  {
+    "name": "Cinecitta",
+    "slug": "cinecitta",
+    "city": "tilburg",
+    "url": "https://cinecitta.nl/",
+    "logo": "cinecitta.png"
+  },
+  {
+    "name": "Cinema de Vlugt",
+    "slug": "cinema-de-vlugt",
+    "city": "amsterdam",
+    "url": "https://www.cinemadevlugt.nl/"
+  },
+  {
+    "name": "Cinerama",
+    "slug": "cinerama",
+    "city": "rotterdam",
+    "url": "https://cineramabios.nl/",
+    "logo": "cinerama.png"
+  },
+  {
+    "name": "Concordia",
+    "slug": "concordia",
+    "city": "enschede",
+    "url": "https://www.concordia.nl/",
+    "logo": "concordia.png"
+  },
+  {
+    "name": "De Filmhallen",
+    "slug": "de-filmhallen",
+    "city": "amsterdam",
+    "url": "https://www.filmhallen.nl/",
+    "logo": "defilmhallen.png"
+  },
+  {
+    "name": "De Sien",
+    "slug": "de-sien",
+    "city": "utrecht",
+    "url": "https://desienfilm.nl"
+  },
+  {
+    "name": "De Uitkijk",
+    "slug": "de-uitkijk",
+    "city": "amsterdam",
+    "url": "https://www.uitkijk.nl/",
+    "logo": "deuitkijk.png"
+  },
+  {
+    "name": "Dokhuis",
+    "slug": "dokhuis",
+    "city": "rotterdam",
+    "url": "https://dokhuis.org/",
+    "logo": "dokhuis.png"
+  },
+  {
+    "name": "Eye",
+    "slug": "eye",
+    "city": "amsterdam",
+    "url": "https://www.eyefilm.nl/en",
+    "logo": "eye.png"
+  },
+  {
+    "name": "FC Hyena",
+    "slug": "fc-hyena",
+    "city": "amsterdam",
+    "url": "https://fchyena.nl/"
   },
   {
     "name": "Filmhuis Den Haag",
@@ -28,22 +93,78 @@
     "logo": "filmhuisdenhaag.png"
   },
   {
-    "name": "Filmtheater Hilversum",
-    "slug": "filmtheater-hilversum",
-    "city": "hilversum",
-    "url": "https://filmtheaterhilversum.nl/"
+    "name": "Filmhuis Lumen",
+    "slug": "filmhuis-lumen",
+    "city": "delft",
+    "url": "https://www.filmhuis-lumen.nl/",
+    "logo": "filmhuislumen.png"
   },
   {
-    "name": "Chassé Cinema",
-    "slug": "chasse-cinema",
-    "city": "breda",
-    "url": "https://www.chasse.nl"
+    "name": "Filmkoepel",
+    "slug": "filmkoepel",
+    "city": "haarlem",
+    "url": "https://www.filmkoepel.nl/",
+    "logo": "defilmhallen.png"
   },
   {
     "name": "Filmtheater De Witt",
     "slug": "filmtheater-de-witt",
     "city": "dordrecht",
     "url": "https://www.dewittdordrecht.nl/filmtheater/"
+  },
+  {
+    "name": "Filmtheater Hilversum",
+    "slug": "filmtheater-hilversum",
+    "city": "hilversum",
+    "url": "https://filmtheaterhilversum.nl/"
+  },
+  {
+    "name": "Flora Filmtheater",
+    "slug": "flora-filmtheater",
+    "city": "den-haag",
+    "url": "https://florafilmtheater.nl/",
+    "logo": "florafilmtheater.png"
+  },
+  {
+    "name": "Focus Arnhem",
+    "slug": "focus-arnhem",
+    "city": "arnhem",
+    "url": "https://www.focusarnhem.nl/",
+    "logo": "focusarnhem.png"
+  },
+  {
+    "name": "Forum Groningen",
+    "slug": "forum-groningen",
+    "city": "groningen",
+    "url": "https://www.forum.nl/",
+    "logo": "forumgroningen.png"
+  },
+  {
+    "name": "Heerenstraat Theater",
+    "slug": "heerenstraat-theater",
+    "city": "wageningen",
+    "url": "https://www.heerenstraattheater.nl/"
+  },
+  {
+    "name": "Het Documentaire Paviljoen",
+    "slug": "het-documentaire-paviljoen",
+    "city": "amsterdam",
+    "url": "https://www.idfa.nl/en/vondelpark/",
+    "logo": "idfa.png"
+  },
+  {
+    "name": "Ketelhuis",
+    "slug": "ketelhuis",
+    "city": "amsterdam",
+    "url": "https://www.ketelhuis.nl/",
+    "logo": "ketelhuis.png"
+  },
+  {
+    "name": "Kijkhuis",
+    "slug": "kijkhuis",
+    "city": "leiden",
+    "url": "https://bioscopenleiden.nl/kijkhuis/",
+    "logo": "bioscopenleiden.png"
   },
   {
     "name": "Kino",
@@ -53,11 +174,11 @@
     "logo": "kino.png"
   },
   {
-    "name": "Lantarenvenster",
-    "slug": "lantarenvenster",
-    "city": "rotterdam",
-    "url": "https://www.lantarenvenster.nl/",
-    "logo": "lantarenvenster.png"
+    "name": "Kriterion",
+    "slug": "kriterion",
+    "city": "amsterdam",
+    "url": "https://kriterion.nl",
+    "logo": "kriterion.png"
   },
   {
     "name": "Lab-1",
@@ -74,31 +195,18 @@
     "logo": "lab111.png"
   },
   {
-    "name": "Eye",
-    "slug": "eye",
-    "city": "amsterdam",
-    "url": "https://www.eyefilm.nl/en",
-    "logo": "eye.png"
+    "name": "Lantarenvenster",
+    "slug": "lantarenvenster",
+    "city": "rotterdam",
+    "url": "https://www.lantarenvenster.nl/",
+    "logo": "lantarenvenster.png"
   },
   {
-    "name": "FC Hyena",
-    "slug": "fc-hyena",
-    "city": "amsterdam",
-    "url": "https://fchyena.nl/"
-  },
-  {
-    "name": "Kriterion",
-    "slug": "kriterion",
-    "city": "amsterdam",
-    "url": "https://kriterion.nl",
-    "logo": "kriterion.png"
-  },
-  {
-    "name": "Springhaver",
-    "slug": "springhaver",
-    "city": "utrecht",
-    "url": "https://www.springhaver.nl",
-    "logo": "springhaver.png"
+    "name": "Lido",
+    "slug": "lido",
+    "city": "leiden",
+    "url": "https://bioscopenleiden.nl/lido/",
+    "logo": "bioscopenleiden.png"
   },
   {
     "name": "Louis Hartlooper Complex",
@@ -108,79 +216,6 @@
     "logo": "louishartloopercomplex.png"
   },
   {
-    "name": "Slachtstraat",
-    "slug": "slachtstraat",
-    "city": "utrecht",
-    "url": "https://www.slachtstraat.nl",
-    "logo": "slachtstraat.png"
-  },
-  {
-    "name": "De Sien",
-    "slug": "de-sien",
-    "city": "utrecht",
-    "url": "https://desienfilm.nl"
-  },
-  {
-    "name": "Slieker Film",
-    "slug": "slieker-film",
-    "city": "leeuwarden",
-    "url": "https://sliekerfilm.nl/"
-  },
-  {
-    "name": "Rialto De Pijp",
-    "slug": "rialto-de-pijp",
-    "city": "amsterdam",
-    "url": "https://rialtofilm.nl/",
-    "logo": "rialto.png"
-  },
-  {
-    "name": "Rialto VU",
-    "slug": "rialto-vu",
-    "city": "amsterdam",
-    "url": "https://rialtofilm.nl/",
-    "logo": "rialto.png"
-  },
-  {
-    "name": "Cinecenter",
-    "slug": "cinecenter",
-    "city": "amsterdam",
-    "url": "https://cinecenter.nl/",
-    "logo": "cinecenter.png"
-  },
-  {
-    "name": "Cinema de Vlugt",
-    "slug": "cinema-de-vlugt",
-    "city": "amsterdam",
-    "url": "https://www.cinemadevlugt.nl/"
-  },
-  {
-    "name": "Forum Groningen",
-    "slug": "forum-groningen",
-    "city": "groningen",
-    "url": "https://www.forum.nl/",
-    "logo": "forumgroningen.png"
-  },
-  {
-    "name": "Heerenstraat Theater",
-    "slug": "heerenstraat-theater",
-    "city": "wageningen",
-    "url": "https://www.heerenstraattheater.nl/"
-  },
-  {
-    "name": "Filmhuis Lumen",
-    "slug": "filmhuis-lumen",
-    "city": "delft",
-    "url": "https://www.filmhuis-lumen.nl/",
-    "logo": "filmhuislumen.png"
-  },
-  {
-    "name": "Ketelhuis",
-    "slug": "ketelhuis",
-    "city": "amsterdam",
-    "url": "https://www.ketelhuis.nl/",
-    "logo": "ketelhuis.png"
-  },
-  {
     "name": "Lumière",
     "slug": "lumiere",
     "city": "maastricht",
@@ -188,73 +223,11 @@
     "logo": "lumiere.png"
   },
   {
-    "name": "Studio/K",
-    "slug": "studio-k",
-    "city": "amsterdam",
-    "url": "https://www.studio-k.nu/",
-    "logo": "studiok.png"
-  },
-  {
-    "name": "De Uitkijk",
-    "slug": "de-uitkijk",
-    "city": "amsterdam",
-    "url": "https://www.uitkijk.nl/",
-    "logo": "deuitkijk.png"
-  },
-  {
-    "name": "The Movies",
-    "slug": "the-movies",
-    "city": "amsterdam",
-    "url": "https://www.themovies.nl/",
-    "logo": "themovies.png"
-  },
-  {
-    "name": "Cinecitta",
-    "slug": "cinecitta",
-    "city": "tilburg",
-    "url": "https://cinecitta.nl/",
-    "logo": "cinecitta.png"
-  },
-  {
-    "name": "Schuur",
-    "slug": "schuur",
-    "city": "haarlem",
-    "url": "https://schuur.nl/",
-    "logo": "schuur.png"
-  },
-  {
     "name": "Lux",
     "slug": "lux",
     "city": "nijmegen",
     "url": "https://www.lux-nijmegen.nl",
     "logo": "lux.png"
-  },
-  {
-    "name": "De Filmhallen",
-    "slug": "de-filmhallen",
-    "city": "amsterdam",
-    "url": "https://www.filmhallen.nl/",
-    "logo": "defilmhallen.png"
-  },
-  {
-    "name": "Filmkoepel",
-    "slug": "filmkoepel",
-    "city": "haarlem",
-    "url": "https://www.filmkoepel.nl/",
-    "logo": "defilmhallen.png"
-  },
-  {
-    "name": "Cinerama",
-    "slug": "cinerama",
-    "city": "rotterdam",
-    "url": "https://cineramabios.nl/",
-    "logo": "cinerama.png"
-  },
-  {
-    "name": "WORM",
-    "slug": "worm",
-    "city": "rotterdam",
-    "url": "https://worm.org/"
   },
   {
     "name": "Melkweg",
@@ -271,38 +244,71 @@
     "logo": "natlab.png"
   },
   {
-    "name": "Focus Arnhem",
-    "slug": "focus-arnhem",
-    "city": "arnhem",
-    "url": "https://www.focusarnhem.nl/",
-    "logo": "focusarnhem.png"
-  },
-  {
-    "name": "Het Documentaire Paviljoen",
-    "slug": "het-documentaire-paviljoen",
+    "name": "Rialto De Pijp",
+    "slug": "rialto-de-pijp",
     "city": "amsterdam",
-    "url": "https://www.idfa.nl/en/vondelpark/",
-    "logo": "idfa.png"
+    "url": "https://rialtofilm.nl/",
+    "logo": "rialto.png"
   },
   {
-    "name": "Concordia",
-    "slug": "concordia",
-    "city": "enschede",
-    "url": "https://www.concordia.nl/",
-    "logo": "concordia.png"
+    "name": "Rialto VU",
+    "slug": "rialto-vu",
+    "city": "amsterdam",
+    "url": "https://rialtofilm.nl/",
+    "logo": "rialto.png"
   },
   {
-    "name": "Flora Filmtheater",
-    "slug": "flora-filmtheater",
-    "city": "den-haag",
-    "url": "https://florafilmtheater.nl/",
-    "logo": "florafilmtheater.png"
+    "name": "Schuur",
+    "slug": "schuur",
+    "city": "haarlem",
+    "url": "https://schuur.nl/",
+    "logo": "schuur.png"
   },
   {
-    "name": "Dokhuis",
-    "slug": "dokhuis",
+    "name": "Slachtstraat",
+    "slug": "slachtstraat",
+    "city": "utrecht",
+    "url": "https://www.slachtstraat.nl",
+    "logo": "slachtstraat.png"
+  },
+  {
+    "name": "Slieker Film",
+    "slug": "slieker-film",
+    "city": "leeuwarden",
+    "url": "https://sliekerfilm.nl/"
+  },
+  {
+    "name": "Springhaver",
+    "slug": "springhaver",
+    "city": "utrecht",
+    "url": "https://www.springhaver.nl",
+    "logo": "springhaver.png"
+  },
+  {
+    "name": "Studio/K",
+    "slug": "studio-k",
+    "city": "amsterdam",
+    "url": "https://www.studio-k.nu/",
+    "logo": "studiok.png"
+  },
+  {
+    "name": "The Movies",
+    "slug": "the-movies",
+    "city": "amsterdam",
+    "url": "https://www.themovies.nl/",
+    "logo": "themovies.png"
+  },
+  {
+    "name": "Trianon",
+    "slug": "trianon",
+    "city": "leiden",
+    "url": "https://bioscopenleiden.nl/trianon/",
+    "logo": "bioscopenleiden.png"
+  },
+  {
+    "name": "WORM",
+    "slug": "worm",
     "city": "rotterdam",
-    "url": "https://dokhuis.org/",
-    "logo": "dokhuis.png"
+    "url": "https://worm.org/"
   }
 ]
