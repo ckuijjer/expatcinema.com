@@ -304,5 +304,11 @@
     "city": "rotterdam",
     "url": "https://dokhuis.org/",
     "logo": "dokhuis.png"
+  },
+  {
+    "name": "Filmhuis De Spiegel",
+    "slug": "filmhuis-de-spiegel",
+    "city": "heerlen",
+    "url": "https://schunck.nl/en/museum/agenda/film-spira-mirabilis"
   }
 ]
