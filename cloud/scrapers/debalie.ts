@@ -193,6 +193,7 @@ const filterScreeningsWithLLM = async (
     'Return only valid JSON in this exact shape:',
     '[{"index":1,"englishSubtitles":true}]',
     'Include one object per screening that has English subtitles.',
+    'It is valid to return an empty array if none of the screenings have English subtitles.',
     'Use the screening list order above.',
   ].join('\n')
 
