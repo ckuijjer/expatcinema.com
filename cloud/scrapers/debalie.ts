@@ -61,7 +61,11 @@ const extractPageYear = (html: string) => {
   return match?.[1] ? Number(match[1]) : DateTime.now().year
 }
 
-const parseTicketDateFromTicketUrl = (url: string, time: string, year: number) => {
+const parseTicketDateFromTicketUrl = (
+  url: string,
+  time: string,
+  year: number,
+) => {
   const match = url.match(/-(\d{1,2})-([a-z]{3})-\d+\/?$/i)
   if (!match) return null
 
@@ -81,11 +85,9 @@ const parseTicketDateFromTicketUrl = (url: string, time: string, year: number) =
 const parseTicketDateFromSelectorDay = (selectorDay: string, time: string) => {
   if (!/^\d{8}$/.test(selectorDay)) return null
 
-  return DateTime.fromFormat(
-    `${selectorDay} ${time}`,
-    'yyyyLLdd HH:mm',
-    { zone: 'Europe/Amsterdam' },
-  ).toJSDate()
+  return DateTime.fromFormat(`${selectorDay} ${time}`, 'yyyyLLdd HH:mm', {
+    zone: 'Europe/Amsterdam',
+  }).toJSDate()
 }
 
 type XRayDetailPage = {
@@ -198,6 +200,10 @@ const filterScreeningsWithLLM = async (
   ].join('\n')
 
   const response = await useLLM(prompt)
+  logger.info('LLM response for subtitle filtering', {
+    subtitleNotes,
+    response,
+  })
   const indices = parseSubtitleDecisions(response)
 
   if (!indices) {
@@ -221,7 +227,7 @@ const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
   }
 
   const page: XRayDetailPage = await xray(html, {
-    bodyText: 'body@text | normalizeWhitespace | trim',
+    bodyText: '.entry__content@text | normalizeWhitespace | trim',
     markTexts: xray('mark', ['@text | normalizeWhitespace | trim']),
     subtitleInfoItems: xray('.wp-block-vo-info-item', [
       '@text | normalizeWhitespace | trim',
