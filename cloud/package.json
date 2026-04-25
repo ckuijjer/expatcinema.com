@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.ts",
   "scripts": {
-    "tsx": "IS_LOCAL=true node --inspect --no-warnings --import tsx",
+    "tsx": "AWS_PROFILE=casper IS_LOCAL=true node --inspect --no-warnings --import tsx",
     "type-check": "tsc --noEmit",
     "tail-cloudwatch-logs": "AWS_PROFILE=casper aws logs tail /aws/lambda/expatcinema-dev --follow --region eu-west-1",
     "prettify-log": "awk -F'\\t' '{if ($5 && $5 ~ /^{/ && !system(\"echo \\x27\" $5 \"\\x27 | jq -e > /dev/null 2>&1\")) { print $1\"\\t\"$2\"\\t\"$3\"\\t\"$4 system(\"echo \\x27\" $5 \"\\x27 | jq\") } else { print $0 }}'",
