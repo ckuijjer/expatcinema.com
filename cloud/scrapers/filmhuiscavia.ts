@@ -1,6 +1,6 @@
 import got from 'got'
-import { decode } from 'html-entities'
 import { DateTime } from 'luxon'
+import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -9,10 +9,19 @@ import { fullMonthToNumberDutch } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
     scraper: 'filmhuiscavia',
+  },
+})
+
+const xray = Xray({
+  filters: {
+    trim,
+    normalizeWhitespace: (value) =>
+      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
 
@@ -36,21 +45,25 @@ const extractDetailUrls = (html: string) =>
 
 const hasEnglishSubtitles = (html: string) => /English subtitles/i.test(html)
 
-const extractTitle = (html: string) => {
-  const match = html.match(
-    /<h2[^>]*>\s*The Adventures of Prince Achmed[\s\S]*?<\/h2>|<h2[^>]*>([\s\S]*?)<\/h2>/i,
-  )
-  const rawTitle = match?.[1] ?? 'The Adventures of Prince Achmed'
+type XRayDetailPage = {
+  bodyText: string
+  h2Title: string
+}
+
+const extractTitle = (page: XRayDetailPage) => {
+  const rawTitle = page.h2Title || 'The Adventures of Prince Achmed'
 
   return titleCase(
-    decode(rawTitle.replace(/<[^>]+>/g, '').trim())
+    rawTitle
+      .replace(/[<>]/g, '')
+      .trim()
       .replace(/\s+at\s+Nassaukerk$/i, '')
       .replace(/\s+\(with live score.*$/i, ''),
   )
 }
 
-const extractDate = (html: string) => {
-  const match = html.match(
+const extractDate = (text: string) => {
+  const match = text.match(
     /(maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag|zondag)\s+(\d{1,2})\s+([a-z]+),\s+(\d{1,2}:\d{2})/i,
   )
 
@@ -59,7 +72,7 @@ const extractDate = (html: string) => {
   const day = Number(match[2])
   const month = fullMonthToNumberDutch(match[3])
   const [hour, minute] = splitTime(match[4])
-  const yearMatch = html.match(/(?:19|20)\d{2}/)
+  const yearMatch = text.match(/(?:19|20)\d{2}/)
   const inferredYear = yearMatch ? Number(yearMatch[0]) : DateTime.now().year
   const year = inferredYear >= 2025 ? inferredYear : DateTime.now().year
 
@@ -72,20 +85,24 @@ const extractDate = (html: string) => {
   }).toJSDate()
 }
 
-const extractReleaseYear = (html: string) => {
-  const match = html.match(/\|\s*((?:19|20)\d{2})\s*\|/)
+const extractReleaseYear = (text: string) => {
+  const match = text.match(/\|\s*((?:19|20)\d{2})\s*\|/)
   return match?.[1] ? Number(match[1]) : undefined
 }
 
 const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
   const html = await got(url).text()
+  const page: XRayDetailPage = await xray(html, {
+    bodyText: 'body@text | normalizeWhitespace | trim',
+    h2Title: 'h2.entry-title | trim',
+  })
 
-  if (!hasEnglishSubtitles(html)) {
+  if (!hasEnglishSubtitles(page.bodyText)) {
     return []
   }
 
-  const title = extractTitle(html)
-  const date = extractDate(html)
+  const title = extractTitle(page)
+  const date = extractDate(page.bodyText)
 
   if (!title || !date) {
     logger.warn('skipping page with missing title or date', { url })
@@ -95,7 +112,7 @@ const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
   return [
     {
       title,
-      year: extractReleaseYear(html),
+      year: extractReleaseYear(page.bodyText),
       url,
       cinema: 'Filmhuis Cavia',
       date,
