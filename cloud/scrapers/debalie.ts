@@ -1,4 +1,5 @@
 import got from 'got'
+import { decode } from 'html-entities'
 import { DateTime } from 'luxon'
 import Xray from 'x-ray'
 
@@ -26,17 +27,32 @@ const xray = Xray({
   },
 })
 
-const extractDetailUrlsFromSitemap = (xml: string) =>
-  Array.from(
+const CURRENT_MOVIES_URL =
+  'https://debalie.nl/wp-json/wp/v2/vo-cinema?page=1&per_page=100&_fields=link,title'
+
+type CurrentMovieSummary = {
+  link: string
+  title: {
+    rendered: string
+  }
+}
+
+const extractCurrentMovieUrls = async () => {
+  const movies = await got(CURRENT_MOVIES_URL).json<CurrentMovieSummary[]>()
+
+  return Array.from(
     new Set(
-      Array.from(
-        xml.matchAll(/<loc>(https:\/\/debalie\.nl\/cinema\/[^<]+)<\/loc>/g),
-      ).map((match) => match[1]),
+      movies
+        .map(({ link }) => link)
+        .filter((link): link is string => Boolean(link)),
     ),
   )
+}
 
 const extractTitle = (title: string) => {
-  const match = title.match(/(.*?)(?:,\s*een film in De Balie|\s*-\s*De Balie)?$/i)
+  const match = decode(title).match(
+    /(.*?)(?:,\s*een film in De Balie|\s*-\s*De Balie)?$/i,
+  )
   return match?.[1] ? titleCase(match[1].trim()) : null
 }
 
@@ -268,8 +284,7 @@ const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const sitemapXml = await got('https://debalie.nl/vo-cinema-sitemap.xml').text()
-  const urls = extractDetailUrlsFromSitemap(sitemapXml)
+  const urls = await extractCurrentMovieUrls()
 
   logger.info('detail urls', { numberOfUrls: urls.length })
 
