@@ -306,9 +306,10 @@
     "logo": "dokhuis.png"
   },
   {
-    "name": "Cinema Amstelveen / Schouwburg Amstelveen",
+    "name": "Cinema Amstelveen",
     "slug": "cinema-amstelveen",
     "city": "amstelveen",
-    "url": "https://schouwburgamstelveen.nl/nl/cinema/"
+    "url": "https://schouwburgamstelveen.nl/nl/cinema/",
+    "logo": "cinema-amstelveen.png"
   }
 ]

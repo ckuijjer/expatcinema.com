@@ -1,5 +1,6 @@
 [
   { "name": "Amsterdam", "slug": "amsterdam" },
+  { "name": "Amstelveen", "slug": "amstelveen" },
   { "name": "Rotterdam", "slug": "rotterdam" },
   { "name": "Den Haag", "slug": "den-haag" },
   { "name": "Utrecht", "slug": "utrecht" },
