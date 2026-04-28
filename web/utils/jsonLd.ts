@@ -107,7 +107,6 @@ export const buildScreeningEventJsonLd = (
     offers: {
       '@type': 'Offer',
       url: screening.url,
-      availability: 'https://schema.org/InStock',
     },
     organizer: {
       '@type': 'Organization',
