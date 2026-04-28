@@ -3,6 +3,7 @@ import { Settings } from 'luxon'
 import React from 'react'
 
 import '../styles/globals.css'
+import { defaultDescription } from '../utils/seoMetadata'
 import { bodyFont } from '../utils/theme'
 import { siteUrl } from '../utils/siteUrl'
 import { GoogleAnalytics } from './GoogleAnalytics'
@@ -11,11 +12,11 @@ Settings.defaultZone = 'Europe/Amsterdam'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  description: 'Foreign movies with English subtitles',
+  description: defaultDescription,
   openGraph: {
     type: 'website',
     siteName: 'Expat Cinema',
-    description: 'Foreign movies with English subtitles',
+    description: defaultDescription,
   },
   twitter: {
     card: 'summary',

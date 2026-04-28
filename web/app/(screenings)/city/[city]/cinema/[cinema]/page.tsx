@@ -4,7 +4,9 @@ import { Suspense } from 'react'
 import { App } from '../../../../../../components/App'
 import cinemas from '../../../../../../data/cinema.json'
 import { getCinema } from '../../../../../../utils/getCinema'
+import { getCity } from '../../../../../../utils/getCity'
 import { getScreenings } from '../../../../../../utils/getScreenings'
+import { buildCinemaDescription } from '../../../../../../utils/seoMetadata'
 import { getCanonicalUrl } from '../../../../../../utils/siteUrl'
 
 export const generateStaticParams = () =>
@@ -21,10 +23,11 @@ export async function generateMetadata({
   const { city, cinema } = await params
   const cinemaData = getCinema(cinema)
   const cinemaName = cinemaData?.name ?? cinema
-  const cityName = cinemaData?.city ?? city
+  const cityName = getCity(cinemaData?.city ?? city)?.name ?? city
 
   return {
-    title: `${cinemaName}, ${cityName} – Expat Cinema`,
+    title: `English-Subtitled Movies at ${cinemaName}, ${cityName} – Expat Cinema`,
+    description: buildCinemaDescription(cinemaName, cityName),
     alternates: {
       canonical: getCanonicalUrl(`/city/${city}/cinema/${cinema}`),
     },
