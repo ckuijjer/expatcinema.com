@@ -5,6 +5,7 @@ import { getCity } from './getCity'
 import { getMovieReleaseYear, getMovieSlug, Movie } from './getMovies'
 import { Screening } from './getScreenings'
 import { getMoviePagePath } from './getMoviePagePath'
+import { getCanonicalUrl } from './siteUrl'
 
 const getMovieIdScreeningCounts = (screenings: Screening[]) =>
   screenings.reduce<Record<string, number>>((counts, screening) => {
@@ -150,11 +151,7 @@ export const buildMoviePageMetadata = (
       ? `${title} in ${locationLabel} – Expat Cinema`
       : `${title} – Expat Cinema`,
     alternates: {
-      canonical: `https://expatcinema.com${getMoviePagePath(
-        movieSlug,
-        city,
-        cinema,
-      )}`,
+      canonical: getCanonicalUrl(getMoviePagePath(movieSlug, city, cinema)),
     },
   }
 }

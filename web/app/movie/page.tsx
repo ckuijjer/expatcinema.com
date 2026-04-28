@@ -5,10 +5,11 @@ import { MoviesOverview } from '../../components/MoviesOverview'
 import { NavigationBar } from '../../components/NavigationBar'
 import { Layout } from '../../components/Layout'
 import { getMovies } from '../../utils/getMovies'
+import { getCanonicalUrl } from '../../utils/siteUrl'
 
 export const metadata: Metadata = {
   title: 'Movies – Expat Cinema',
-  alternates: { canonical: 'https://expatcinema.com/movie' },
+  alternates: { canonical: getCanonicalUrl('/movie') },
 }
 
 export default async function MoviesPage() {

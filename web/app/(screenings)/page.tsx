@@ -3,10 +3,11 @@ import { Suspense } from 'react'
 
 import { App } from '../../components/App'
 import { getScreenings } from '../../utils/getScreenings'
+import { getCanonicalUrl } from '../../utils/siteUrl'
 
 export const metadata: Metadata = {
   title: 'Expat Cinema',
-  alternates: { canonical: 'https://expatcinema.com' },
+  alternates: { canonical: getCanonicalUrl() },
 }
 
 export default async function Home() {
