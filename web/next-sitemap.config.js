@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://expatcinema.com',
+  siteUrl: 'https://www.expatcinema.com',
   generateRobotsTxt: true,
   outDir: 'public',
   // ...other options

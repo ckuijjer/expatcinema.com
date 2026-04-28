@@ -4,11 +4,12 @@ import React, { Suspense } from 'react'
 import { Layout } from '../../components/Layout'
 import { NavigationBar } from '../../components/NavigationBar'
 import { PageTitle } from '../../components/PageTitle'
+import { getCanonicalUrl } from '../../utils/siteUrl'
 import { StatisticsClient } from './StatisticsClient'
 
 export const metadata: Metadata = {
   title: 'Statistics – Expat Cinema',
-  alternates: { canonical: 'https://expatcinema.com/statistics' },
+  alternates: { canonical: getCanonicalUrl('/statistics') },
 }
 
 export default async function StatisticsPage() {

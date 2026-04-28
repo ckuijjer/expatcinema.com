@@ -5,6 +5,7 @@ import { App } from '../../../../../../components/App'
 import cinemas from '../../../../../../data/cinema.json'
 import { getCinema } from '../../../../../../utils/getCinema'
 import { getScreenings } from '../../../../../../utils/getScreenings'
+import { getCanonicalUrl } from '../../../../../../utils/siteUrl'
 
 export const generateStaticParams = () =>
   cinemas.map((cinema) => ({
@@ -25,7 +26,7 @@ export async function generateMetadata({
   return {
     title: `${cinemaName}, ${cityName} – Expat Cinema`,
     alternates: {
-      canonical: `https://expatcinema.com/city/${city}/cinema/${cinema}`,
+      canonical: getCanonicalUrl(`/city/${city}/cinema/${cinema}`),
     },
   }
 }

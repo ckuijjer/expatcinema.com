@@ -5,10 +5,11 @@ import { NavigationBar } from '../../../components/NavigationBar'
 import { Layout } from '../../../components/Layout'
 import { UnmatchedMoviesOverview } from '../../../components/UnmatchedMoviesOverview'
 import { getScreenings } from '../../../utils/getScreenings'
+import { getCanonicalUrl } from '../../../utils/siteUrl'
 
 export const metadata: Metadata = {
   title: 'Unmatched movies – Expat Cinema',
-  alternates: { canonical: 'https://expatcinema.com/movie/unmatched' },
+  alternates: { canonical: getCanonicalUrl('/movie/unmatched') },
   robots: {
     index: false,
     follow: false,

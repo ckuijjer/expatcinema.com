@@ -4,11 +4,13 @@ import React from 'react'
 
 import '../styles/globals.css'
 import { bodyFont } from '../utils/theme'
+import { siteUrl } from '../utils/siteUrl'
 import { GoogleAnalytics } from './GoogleAnalytics'
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   description: 'Foreign movies with English subtitles',
   openGraph: {
     type: 'website',
