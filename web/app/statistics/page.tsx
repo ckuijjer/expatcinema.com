@@ -14,6 +14,10 @@ export const metadata: Metadata = {
     'Statistics for Expat Cinema screening coverage, showing scraper activity and collected English-subtitled movie listings.',
   ),
   alternates: { canonical: getCanonicalUrl('/statistics') },
+  robots: {
+    index: false,
+    follow: true,
+  },
 }
 
 export default async function StatisticsPage() {
