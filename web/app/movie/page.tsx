@@ -5,10 +5,12 @@ import { MoviesOverview } from '../../components/MoviesOverview'
 import { NavigationBar } from '../../components/NavigationBar'
 import { Layout } from '../../components/Layout'
 import { getMovies } from '../../utils/getMovies'
+import { defaultDescription } from '../../utils/seoMetadata'
 import { getCanonicalUrl } from '../../utils/siteUrl'
 
 export const metadata: Metadata = {
   title: 'Movies – Expat Cinema',
+  description: defaultDescription,
   alternates: { canonical: getCanonicalUrl('/movie') },
 }
 

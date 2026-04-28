@@ -28,7 +28,7 @@ export async function generateMetadata({
     return {}
   }
 
-  return buildMoviePageMetadata(data.movie, movieSlug)
+  return buildMoviePageMetadata(data.movie, movieSlug, data.screenings)
 }
 
 export default async function MoviePageRoute({

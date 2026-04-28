@@ -37,7 +37,7 @@ export async function generateMetadata({
     return {}
   }
 
-  return buildMoviePageMetadata(data.movie, movieSlug, city)
+  return buildMoviePageMetadata(data.movie, movieSlug, data.screenings, city)
 }
 
 export default async function CityMoviePage({

@@ -2,9 +2,15 @@ import type { Metadata } from 'next'
 
 import { getCinema } from './getCinema'
 import { getCity } from './getCity'
-import { getMovieReleaseYear, getMovieSlug, Movie } from './getMovies'
+import {
+  getMoviePosterUrl,
+  getMovieReleaseYear,
+  getMovieSlug,
+  Movie,
+} from './getMovies'
 import { Screening } from './getScreenings'
 import { getMoviePagePath } from './getMoviePagePath'
+import { buildMovieDescription } from './seoMetadata'
 import { getCanonicalUrl } from './siteUrl'
 
 const getMovieIdScreeningCounts = (screenings: Screening[]) =>
@@ -133,6 +139,7 @@ export const getMovieRouteSlugs = (
 export const buildMoviePageMetadata = (
   movie: Movie,
   movieSlug: string,
+  screenings: Screening[],
   city?: string,
   cinema?: string,
 ): Metadata => {
@@ -145,13 +152,43 @@ export const buildMoviePageMetadata = (
       : cinemaName
     : cityName
   const title = `${movie.title}${movieYear ? ` (${movieYear})` : ''}`
+  const description = buildMovieDescription(
+    title,
+    movie.tmdb?.overview ?? undefined,
+    screenings,
+    locationLabel,
+  )
+  const posterUrl = getMoviePosterUrl(movie.tmdb?.posterPath, 'w342')
 
   return {
     title: locationLabel
       ? `${title} in ${locationLabel} – Expat Cinema`
       : `${title} – Expat Cinema`,
+    description,
     alternates: {
       canonical: getCanonicalUrl(getMoviePagePath(movieSlug, city, cinema)),
+    },
+    openGraph: {
+      title: locationLabel
+        ? `${title} in ${locationLabel} – Expat Cinema`
+        : `${title} – Expat Cinema`,
+      description,
+      images: posterUrl
+        ? [
+            {
+              url: posterUrl,
+              alt: `Poster for ${movie.title}`,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: posterUrl ? 'summary_large_image' : 'summary',
+      title: locationLabel
+        ? `${title} in ${locationLabel} – Expat Cinema`
+        : `${title} – Expat Cinema`,
+      description,
+      images: posterUrl ? [posterUrl] : undefined,
     },
   }
 }

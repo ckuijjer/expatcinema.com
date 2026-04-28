@@ -4,11 +4,15 @@ import React, { Suspense } from 'react'
 import { Layout } from '../../components/Layout'
 import { NavigationBar } from '../../components/NavigationBar'
 import { PageTitle } from '../../components/PageTitle'
+import { truncateDescription } from '../../utils/seoMetadata'
 import { getCanonicalUrl } from '../../utils/siteUrl'
 import { StatisticsClient } from './StatisticsClient'
 
 export const metadata: Metadata = {
   title: 'Statistics – Expat Cinema',
+  description: truncateDescription(
+    'Statistics for Expat Cinema screening coverage, showing scraper activity and collected English-subtitled movie listings.',
+  ),
   alternates: { canonical: getCanonicalUrl('/statistics') },
 }
 
