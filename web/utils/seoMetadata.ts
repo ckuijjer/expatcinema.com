@@ -81,3 +81,6 @@ export const buildMovieDescription = (
     overview ? `${overview} ${availability}` : `${movieTitle}: ${availability}`,
   )
 }
+
+export const getMovieDescription = (movieTitle: string, overview?: string) =>
+  truncateDescription(overview ? overview : movieTitle)

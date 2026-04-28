@@ -10,6 +10,15 @@ import { headerFont } from '../utils/theme'
 import { getMoviePosterUrl, getMovieReleaseYear } from '../utils/getMovies'
 import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
+import {
+  buildBreadcrumbJsonLd,
+  buildMovieJsonLd,
+  buildScreeningEventJsonLd,
+  serializeJsonLd,
+} from '../utils/jsonLd'
+import { getCinema } from '../utils/getCinema'
+import { getCity } from '../utils/getCity'
+import { getMovieDescription } from '../utils/seoMetadata'
 import { Calendar } from './Calendar'
 import { Layout } from './Layout'
 import { MovieLocationFilters } from './MovieLocationFilters'
@@ -194,6 +203,12 @@ const getTrailer = (movie: Movie) => {
   )
 }
 
+const isUpcomingScreening = (screening: Screening) => {
+  const screeningTime = Date.parse(screening.date)
+
+  return Number.isFinite(screeningTime) && screeningTime >= Date.now()
+}
+
 export const MoviePage = ({
   movie,
   movieSlug,
@@ -223,9 +238,34 @@ export const MoviePage = ({
   const runtime = formatRuntime(movie.tmdb?.runtime)
   const description = movie.tmdb?.overview
   const trailer = getTrailer(movie)
+  const cityName = currentCity ? getCity(currentCity)?.name : undefined
+  const cinemaName = currentCinema ? getCinema(currentCinema)?.name : undefined
+  const upcomingScreenings = screenings.filter(isUpcomingScreening)
+  const jsonLd = [
+    buildMovieJsonLd(
+      movie,
+      movieSlug,
+      getMovieDescription(movie.title, description ?? undefined),
+    ),
+    buildBreadcrumbJsonLd(
+      movie,
+      movieSlug,
+      currentCity,
+      currentCinema,
+      cityName,
+      cinemaName,
+    ),
+    ...upcomingScreenings.map((screening) =>
+      buildScreeningEventJsonLd(movie, movieSlug, screening),
+    ),
+  ]
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+      />
       <Suspense>
         <Layout backgroundColor="var(--palette-purple-600)">
           <NavigationBar />
