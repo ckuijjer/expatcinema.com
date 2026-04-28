@@ -2,6 +2,6 @@
 module.exports = {
   siteUrl: 'https://expatcinema.com',
   generateRobotsTxt: true,
-  outDir: 'public',
+  outDir: 'out',
   // ...other options
 }
