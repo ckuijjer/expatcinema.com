@@ -63,6 +63,18 @@ export const buildCinemaDescription = (cinemaName: string, cityName: string) =>
     `Find English-subtitled movie screenings at ${cinemaName} in ${cityName}, with dates, times, and booking links.`,
   )
 
+export const buildCityIntro = (cityName: string, screenings: Screening[]) => {
+  const cinemaNames = getScreeningCinemaNames(screenings)
+  const cinemaLabel = formatList(cinemaNames)
+
+  return cinemaLabel
+    ? `Find English-subtitled movie screenings in ${cityName}, including films at ${cinemaLabel}. Use the listings below to check dates, times, and booking links for foreign-language films with English subtitles.`
+    : `Find English-subtitled movie screenings in ${cityName}. Use the listings below to check dates, times, and booking links for foreign-language films with English subtitles.`
+}
+
+export const buildCinemaIntro = (cinemaName: string, cityName: string) =>
+  `Find English-subtitled movie screenings at ${cinemaName} in ${cityName}. The schedule below lists upcoming foreign-language films with dates, times, and booking links from ${cinemaName}.`
+
 export const buildMovieDescription = (
   movieTitle: string,
   overview: string | undefined,

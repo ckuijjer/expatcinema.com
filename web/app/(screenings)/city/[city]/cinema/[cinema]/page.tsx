@@ -6,7 +6,10 @@ import cinemas from '../../../../../../data/cinema.json'
 import { getCinema } from '../../../../../../utils/getCinema'
 import { getCity } from '../../../../../../utils/getCity'
 import { getScreenings } from '../../../../../../utils/getScreenings'
-import { buildCinemaDescription } from '../../../../../../utils/seoMetadata'
+import {
+  buildCinemaDescription,
+  buildCinemaIntro,
+} from '../../../../../../utils/seoMetadata'
 import { getCanonicalUrl } from '../../../../../../utils/siteUrl'
 
 export const generateStaticParams = () =>
@@ -40,6 +43,9 @@ export default async function CinemaPage({
   params: Promise<{ city: string; cinema: string }>
 }) {
   const { city, cinema } = await params
+  const cinemaData = getCinema(cinema)
+  const cinemaName = cinemaData?.name ?? cinema
+  const cityName = getCity(cinemaData?.city ?? city)?.name ?? city
   const screenings = (await getScreenings()).filter(
     (screening) =>
       screening.cinema.city.slug === city && screening.cinema.slug === cinema,
@@ -47,7 +53,13 @@ export default async function CinemaPage({
 
   return (
     <Suspense>
-      <App screenings={screenings} currentCity={city} currentCinema={cinema} />
+      <App
+        screenings={screenings}
+        currentCity={city}
+        currentCinema={cinema}
+        title={`English-Subtitled Movies at ${cinemaName}`}
+        intro={buildCinemaIntro(cinemaName, cityName)}
+      />
     </Suspense>
   )
 }

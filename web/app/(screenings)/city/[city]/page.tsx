@@ -5,7 +5,10 @@ import { App } from '../../../../components/App'
 import cities from '../../../../data/city.json'
 import { getCity } from '../../../../utils/getCity'
 import { getScreenings } from '../../../../utils/getScreenings'
-import { buildCityDescription } from '../../../../utils/seoMetadata'
+import {
+  buildCityDescription,
+  buildCityIntro,
+} from '../../../../utils/seoMetadata'
 import { getCanonicalUrl } from '../../../../utils/siteUrl'
 
 export const generateStaticParams = () =>
@@ -35,13 +38,19 @@ export default async function CityPage({
   params: Promise<{ city: string }>
 }) {
   const { city } = await params
+  const cityName = getCity(city)?.name ?? city
   const screenings = (await getScreenings()).filter(
     (screening) => screening.cinema.city.slug === city,
   )
 
   return (
     <Suspense>
-      <App screenings={screenings} currentCity={city} />
+      <App
+        screenings={screenings}
+        currentCity={city}
+        title={`English-Subtitled Movies in ${cityName}`}
+        intro={buildCityIntro(cityName, screenings)}
+      />
     </Suspense>
   )
 }
