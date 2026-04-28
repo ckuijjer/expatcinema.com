@@ -24,6 +24,11 @@ const cityLinkStyle = css({
   textDecoration: 'none',
 })
 
+const cinemaLinkStyle = css({
+  color: 'var(--secondary-color)',
+  fontWeight: '700',
+})
+
 const textLinkStyle = css({
   color: 'var(--secondary-color)',
 })
@@ -76,6 +81,7 @@ export const About = () => {
           <br />
           {citySlugs.map((city) => {
             const href = `/city/${city}`
+            const cityName = getCity(city)?.name ?? city
             const cinemasInCity = cinemas
               .filter((cinema) => cinema.city === city)
               .sort((a, b) => compareAlphabetically(a.name, b.name))
@@ -83,16 +89,29 @@ export const About = () => {
             return (
               <React.Fragment key={city}>
                 <Link href={href} className={cityLinkStyle}>
-                  {getCity(city)?.name ?? city}
+                  English-subtitled movies in {cityName}
                 </Link>
                 :{' '}
                 {cinemasInCity.map((cinema, i, arr) => {
                   const isLast = i === arr.length - 1
                   return (
-                    <React.Fragment key={cinema.url}>
-                      <Link href={cinema.url} className={textLinkStyle}>
-                        {cinema.name}
+                    <React.Fragment key={cinema.slug}>
+                      <Link
+                        href={`/city/${city}/cinema/${cinema.slug}`}
+                        className={cinemaLinkStyle}
+                      >
+                        {cinema.name} screenings
                       </Link>
+                      {' ('}
+                      <Link
+                        href={cinema.url}
+                        className={textLinkStyle}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        cinema website
+                      </Link>
+                      {')'}
                       {isLast ? '' : ', '}
                     </React.Fragment>
                   )
