@@ -10,6 +10,7 @@ import { headerFont } from '../utils/theme'
 import { getMoviePosterUrl, getMovieReleaseYear } from '../utils/getMovies'
 import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
+import { isEnabled, STRUCTURED_DATA_FEATURE } from '../utils/featureFlags'
 import {
   buildBreadcrumbJsonLd,
   buildMovieJsonLd,
@@ -241,6 +242,7 @@ export const MoviePage = ({
   const cityName = currentCity ? getCity(currentCity)?.name : undefined
   const cinemaName = currentCinema ? getCinema(currentCinema)?.name : undefined
   const upcomingScreenings = screenings.filter(isUpcomingScreening)
+  const shouldRenderJsonLd = isEnabled(STRUCTURED_DATA_FEATURE)
   const jsonLd = [
     buildMovieJsonLd(
       movie,
@@ -262,10 +264,12 @@ export const MoviePage = ({
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
-      />
+      {shouldRenderJsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+        />
+      ) : null}
       <Suspense>
         <Layout backgroundColor="var(--palette-purple-600)">
           <NavigationBar />
