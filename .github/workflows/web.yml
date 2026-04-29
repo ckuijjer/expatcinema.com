@@ -87,6 +87,8 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}-
       - name: Install dependencies
         run: ${{ env.package-manager }} ${{ env.package-manager-command }}
+      - name: Validate cinema data
+        run: ${{ env.package-manager-runner }} validate:cinemas
       - name: Build with Next.js
         run: ${{ env.package-manager-runner }} next build
       - name: Generate a sitemap

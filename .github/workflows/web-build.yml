@@ -34,5 +34,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Install dependencies
         run: pnpm install
+      - name: Validate cinema data
+        run: pnpm validate:cinemas
       - name: Build with Next.js
         run: pnpm next build
