@@ -34,9 +34,11 @@ const rowStyle = cx(
       backgroundColor: 'var(--background-highlight-color)',
       borderRadius: '10px',
     },
+    '& .unmatched-movie-poster-placeholder': {
+      backgroundColor: 'var(--background-highlight-color)',
+    },
     '&:hover .unmatched-movie-poster-placeholder': {
-      backgroundColor: 'var(--palette-purple-500)',
-      borderColor: 'var(--palette-purple-500)',
+      backgroundColor: 'var(--palette-purple-300)',
     },
   }),
 )
