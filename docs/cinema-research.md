@@ -1,6 +1,6 @@
 # Cinema Research
 
-This file tracks which cinemas in the Netherlands have been researched for English-subtitled screenings, and their outcome. Use it to avoid re-researching the same cinemas in future sessions.
+This file tracks which cinemas in the Netherlands have been researched for screenings with English subtitles, and their outcome. Use it to avoid re-researching the same cinemas in future sessions.
 
 ---
 
@@ -50,7 +50,7 @@ The canonical list of active scrapers is the `SCRAPERS` object in `cloud/scraper
 
 ## GitHub issues filed — awaiting scrapers
 
-Cinemas confirmed to have English-subtitled screenings; GitHub issues created.
+Cinemas confirmed to have screenings with English subtitles; GitHub issues created.
 
 | Cinema                                      | City                           | Program                                              | Issue | URL                                                                           |
 | ------------------------------------------- | ------------------------------ | ---------------------------------------------------- | ----- | ----------------------------------------------------------------------------- |

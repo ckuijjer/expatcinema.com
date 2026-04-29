@@ -8,6 +8,7 @@
     "prepare": "panda codegen",
     "start": "next start",
     "lint": "eslint .",
+    "validate:cinemas": "node ../scripts/validate-cinemas.mjs",
     "clean": "rm -rf .next out",
     "serve": "pnpm build && serve out"
   },

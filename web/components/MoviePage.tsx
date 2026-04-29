@@ -10,6 +10,17 @@ import { headerFont } from '../utils/theme'
 import { getMoviePosterUrl, getMovieReleaseYear } from '../utils/getMovies'
 import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
+import { isEnabled, STRUCTURED_DATA_FEATURE } from '../utils/featureFlags'
+import { CinemaInfoBar } from './CinemaInfoBar'
+import {
+  buildBreadcrumbJsonLd,
+  buildMovieJsonLd,
+  buildScreeningEventJsonLd,
+  serializeJsonLd,
+} from '../utils/jsonLd'
+import { getCinema } from '../utils/getCinema'
+import { getCity } from '../utils/getCity'
+import { getMovieDescription } from '../utils/seoMetadata'
 import { Calendar } from './Calendar'
 import { Layout } from './Layout'
 import { MovieLocationFilters } from './MovieLocationFilters'
@@ -223,9 +234,37 @@ export const MoviePage = ({
   const runtime = formatRuntime(movie.tmdb?.runtime)
   const description = movie.tmdb?.overview
   const trailer = getTrailer(movie)
+  const cityName = currentCity ? getCity(currentCity)?.name : undefined
+  const cinemaData = currentCinema ? getCinema(currentCinema) : undefined
+  const cinemaName = cinemaData?.name
+  const shouldRenderJsonLd = isEnabled(STRUCTURED_DATA_FEATURE)
+  const jsonLd = [
+    buildMovieJsonLd(
+      movie,
+      movieSlug,
+      getMovieDescription(movie.title, description ?? undefined),
+    ),
+    buildBreadcrumbJsonLd(
+      movie,
+      movieSlug,
+      currentCity,
+      currentCinema,
+      cityName,
+      cinemaName,
+    ),
+    ...screenings.map((screening) =>
+      buildScreeningEventJsonLd(movie, movieSlug, screening),
+    ),
+  ]
 
   return (
     <>
+      {shouldRenderJsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+        />
+      ) : null}
       <Suspense>
         <Layout backgroundColor="var(--palette-purple-600)">
           <NavigationBar />
@@ -320,6 +359,11 @@ export const MoviePage = ({
               currentCinema={currentCinema}
             />
           </div>
+          {currentCity && currentCinema && cinemaData ? (
+            <div style={{ gridColumn: '1 / -1' }}>
+              <CinemaInfoBar cinema={cinemaData} />
+            </div>
+          ) : null}
           <div style={{ gridColumn: '1 / -1' }}>
             <Suspense>
               <Calendar

@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'web/**'
+      - 'scripts/validate-cinemas.mjs'
       - '.github/workflows/web-build.yml'
 
 defaults:
@@ -34,5 +35,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Install dependencies
         run: pnpm install
+      - name: Validate cinema data
+        run: pnpm validate:cinemas
       - name: Build with Next.js
         run: pnpm next build

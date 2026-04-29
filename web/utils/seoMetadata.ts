@@ -1,22 +1,31 @@
 import type { Screening } from './getScreenings'
 
 export const defaultDescription =
-  'Find foreign-language movie screenings with English subtitles at cinemas across the Netherlands.'
+  'Discover international films with English subtitles playing at cinemas across the Netherlands. Browse showtimes, venues and upcoming screenings.'
 
-const descriptionMaxLength = 155
+const DESCRIPTION_MAXIMUM_LENGTH = 155
 
-export const truncateDescription = (description: string) => {
-  const normalized = description.replace(/\s+/g, ' ').trim()
+const normalizeDescription = (description: string) =>
+  description.replace(/\s+/g, ' ').trim()
 
-  if (normalized.length <= descriptionMaxLength) {
+const truncateDescriptionToLength = (
+  description: string,
+  maximumLength: number,
+) => {
+  const normalized = normalizeDescription(description)
+
+  if (normalized.length <= maximumLength) {
     return normalized
   }
 
-  const truncated = normalized.slice(0, descriptionMaxLength - 1)
+  const truncated = normalized.slice(0, maximumLength - 3)
   const lastSpaceIndex = truncated.lastIndexOf(' ')
 
   return `${truncated.slice(0, lastSpaceIndex > 0 ? lastSpaceIndex : undefined)}...`
 }
+
+export const truncateDescription = (description: string) =>
+  truncateDescriptionToLength(description, DESCRIPTION_MAXIMUM_LENGTH)
 
 export const formatList = (items: string[]) => {
   const uniqueItems = Array.from(new Set(items)).filter(Boolean)
@@ -53,14 +62,14 @@ export const buildCityDescription = (
 
   return truncateDescription(
     cinemaLabel
-      ? `Find English-subtitled movie screenings in ${cityName}, including films at ${cinemaLabel}.`
-      : `Find English-subtitled movie screenings in ${cityName}.`,
+      ? `Discover international films with English subtitles playing at ${cinemaLabel} in ${cityName}.`
+      : `Discover international films with English subtitles playing in ${cityName}.`,
   )
 }
 
 export const buildCinemaDescription = (cinemaName: string, cityName: string) =>
   truncateDescription(
-    `Find English-subtitled movie screenings at ${cinemaName} in ${cityName}, with dates, times, and booking links.`,
+    `Discover international films with English subtitles playing at ${cinemaName} in ${cityName}.`,
   )
 
 export const buildMovieDescription = (
@@ -69,15 +78,28 @@ export const buildMovieDescription = (
   screenings: Screening[],
   locationLabel: string | null,
 ) => {
+  void overview
+
   const cityNames = getScreeningCityNames(screenings, 3)
   const cityLabel = formatList(cityNames)
-  const availability = locationLabel
-    ? `English-subtitled screenings in ${locationLabel}.`
-    : cityLabel
-      ? `English-subtitled screenings in ${cityLabel}.`
-      : 'English-subtitled screenings in the Netherlands.'
+  const location = locationLabel ?? cityLabel ?? 'the Netherlands'
+  const showtimesLabel = locationLabel?.includes(',')
+    ? 'Find showtimes.'
+    : 'Find showtimes and cinemas.'
+  const titleWithoutYear = movieTitle.replace(/\s+\(\d{4}\)$/, '')
+  const descriptions = [
+    `Watch ${movieTitle} with English subtitles in ${location}. ${showtimesLabel}`,
+    `Watch ${titleWithoutYear} with English subtitles in ${location}. ${showtimesLabel}`,
+    `${titleWithoutYear}: English-subtitled screenings in ${location}. ${showtimesLabel}`,
+  ]
+  const description = descriptions.find(
+    (candidate) => candidate.length <= DESCRIPTION_MAXIMUM_LENGTH,
+  )
 
-  return truncateDescription(
-    overview ? `${overview} ${availability}` : `${movieTitle}: ${availability}`,
+  return (
+    description ?? truncateDescription(descriptions[descriptions.length - 1])
   )
 }
+
+export const getMovieDescription = (movieTitle: string, overview?: string) =>
+  truncateDescription(overview ? overview : movieTitle)

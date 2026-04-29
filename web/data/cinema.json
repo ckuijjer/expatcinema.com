@@ -4,312 +4,588 @@
     "slug": "kijkhuis",
     "city": "leiden",
     "url": "https://bioscopenleiden.nl/kijkhuis/",
-    "logo": "bioscopenleiden.png"
+    "logo": "bioscopenleiden.png",
+    "address": {
+      "streetAddress": "Vrouwenkerksteeg 10",
+      "postalCode": "2312 WS",
+      "addressLocality": "Leiden",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kijkhuis%2C%20Vrouwenkerksteeg%2010%2C%202312%20WS%20Leiden%2C%20Netherlands"
+    }
   },
   {
     "name": "Trianon",
     "slug": "trianon",
     "city": "leiden",
     "url": "https://bioscopenleiden.nl/trianon/",
-    "logo": "bioscopenleiden.png"
+    "logo": "bioscopenleiden.png",
+    "address": {
+      "streetAddress": "Breestraat 31",
+      "postalCode": "2311 CH",
+      "addressLocality": "Leiden",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Trianon%2C%20Breestraat%2031%2C%202311%20CH%20Leiden%2C%20Netherlands"
+    }
   },
   {
     "name": "Lido",
     "slug": "lido",
     "city": "leiden",
     "url": "https://bioscopenleiden.nl/lido/",
-    "logo": "bioscopenleiden.png"
+    "logo": "bioscopenleiden.png",
+    "address": {
+      "streetAddress": "Steenstraat 39",
+      "postalCode": "2312 BV",
+      "addressLocality": "Leiden",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lido%2C%20Steenstraat%2039%2C%202312%20BV%20Leiden%2C%20Netherlands"
+    }
   },
   {
     "name": "Filmhuis Den Haag",
     "slug": "filmhuis-den-haag",
     "city": "den-haag",
     "url": "https://www.filmhuisdenhaag.nl/",
-    "logo": "filmhuisdenhaag.png"
+    "logo": "filmhuisdenhaag.png",
+    "address": {
+      "streetAddress": "Spui 191",
+      "postalCode": "2511 BN",
+      "addressLocality": "Den Haag",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Den%20Haag%2C%20Spui%20191%2C%202511%20BN%20Den%20Haag%2C%20Netherlands"
+    }
   },
   {
     "name": "Filmtheater Hilversum",
     "slug": "filmtheater-hilversum",
     "city": "hilversum",
-    "url": "https://filmtheaterhilversum.nl/"
+    "url": "https://filmtheaterhilversum.nl/",
+    "address": {
+      "streetAddress": "Herenplein 5",
+      "postalCode": "1211 DR",
+      "addressLocality": "Hilversum",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmtheater%20Hilversum%2C%20Herenplein%205%2C%201211%20DR%20Hilversum%2C%20Netherlands"
+    }
   },
   {
     "name": "Chassé Cinema",
     "slug": "chasse-cinema",
     "city": "breda",
-    "url": "https://www.chasse.nl"
+    "url": "https://www.chasse.nl",
+    "address": {
+      "streetAddress": "Claudius Prinsenlaan 8",
+      "postalCode": "4811 DK",
+      "addressLocality": "Breda",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Chass%C3%A9%20Cinema%2C%20Claudius%20Prinsenlaan%208%2C%204811%20DK%20Breda%2C%20Netherlands"
+    }
   },
   {
     "name": "Filmtheater De Witt",
     "slug": "filmtheater-de-witt",
     "city": "dordrecht",
-    "url": "https://www.dewittdordrecht.nl/filmtheater/"
+    "url": "https://www.dewittdordrecht.nl/filmtheater/",
+    "address": {
+      "streetAddress": "Nieuwstraat 60-62",
+      "postalCode": "3311 XR",
+      "addressLocality": "Dordrecht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmtheater%20De%20Witt%2C%20Nieuwstraat%2060-62%2C%203311%20XR%20Dordrecht%2C%20Netherlands"
+    }
   },
   {
     "name": "Kino",
     "slug": "kino",
     "city": "rotterdam",
     "url": "https://www.kinorotterdam.nl/",
-    "logo": "kino.png"
+    "logo": "kino.png",
+    "address": {
+      "streetAddress": "Gouvernestraat 129-133",
+      "postalCode": "3014 PM",
+      "addressLocality": "Rotterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kino%2C%20Gouvernestraat%20129-133%2C%203014%20PM%20Rotterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Lantarenvenster",
     "slug": "lantarenvenster",
     "city": "rotterdam",
     "url": "https://www.lantarenvenster.nl/",
-    "logo": "lantarenvenster.png"
+    "logo": "lantarenvenster.png",
+    "address": {
+      "streetAddress": "Otto Reuchlinweg 996",
+      "postalCode": "3072 MD",
+      "addressLocality": "Rotterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lantarenvenster%2C%20Otto%20Reuchlinweg%20996%2C%203072%20MD%20Rotterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Lab-1",
     "slug": "lab-1",
     "city": "eindhoven",
     "url": "https://www.lab-1.nl/",
-    "logo": "lab1.png"
+    "logo": "lab1.png",
+    "address": {
+      "streetAddress": "Keizersgracht 19",
+      "postalCode": "5611 GC",
+      "addressLocality": "Eindhoven",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lab-1%2C%20Keizersgracht%2019%2C%205611%20GC%20Eindhoven%2C%20Netherlands"
+    }
   },
   {
     "name": "Lab111",
     "slug": "lab111",
     "city": "amsterdam",
     "url": "https://www.lab111.nl/",
-    "logo": "lab111.png"
+    "logo": "lab111.png",
+    "address": {
+      "streetAddress": "Arie Biemondstraat 111",
+      "postalCode": "1054 PD",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lab111%2C%20Arie%20Biemondstraat%20111%2C%201054%20PD%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Eye",
     "slug": "eye",
     "city": "amsterdam",
     "url": "https://www.eyefilm.nl/en",
-    "logo": "eye.png"
+    "logo": "eye.png",
+    "address": {
+      "streetAddress": "IJpromenade 1",
+      "postalCode": "1031 KT",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Eye%2C%20IJpromenade%201%2C%201031%20KT%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "FC Hyena",
     "slug": "fc-hyena",
     "city": "amsterdam",
-    "url": "https://fchyena.nl/"
+    "url": "https://fchyena.nl/",
+    "address": {
+      "streetAddress": "Aambeeldstraat 24",
+      "postalCode": "1021 KB",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=FC%20Hyena%2C%20Aambeeldstraat%2024%2C%201021%20KB%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Kriterion",
     "slug": "kriterion",
     "city": "amsterdam",
     "url": "https://kriterion.nl",
-    "logo": "kriterion.png"
+    "logo": "kriterion.png",
+    "address": {
+      "streetAddress": "Roetersstraat 170",
+      "postalCode": "1018 WE",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kriterion%2C%20Roetersstraat%20170%2C%201018%20WE%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Springhaver",
     "slug": "springhaver",
     "city": "utrecht",
     "url": "https://www.springhaver.nl",
-    "logo": "springhaver.png"
+    "logo": "springhaver.png",
+    "address": {
+      "streetAddress": "Springweg 50",
+      "postalCode": "3511 VS",
+      "addressLocality": "Utrecht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Springhaver%2C%20Springweg%2050%2C%203511%20VS%20Utrecht%2C%20Netherlands"
+    }
   },
   {
     "name": "Louis Hartlooper Complex",
     "slug": "louis-hartlooper-complex",
     "city": "utrecht",
     "url": "https://www.hartlooper.nl",
-    "logo": "louishartloopercomplex.png"
+    "logo": "louishartloopercomplex.png",
+    "address": {
+      "streetAddress": "Tolsteegbrug 1",
+      "postalCode": "3511 ZN",
+      "addressLocality": "Utrecht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Louis%20Hartlooper%20Complex%2C%20Tolsteegbrug%201%2C%203511%20ZN%20Utrecht%2C%20Netherlands"
+    }
   },
   {
     "name": "Slachtstraat",
     "slug": "slachtstraat",
     "city": "utrecht",
     "url": "https://www.slachtstraat.nl",
-    "logo": "slachtstraat.png"
+    "logo": "slachtstraat.png",
+    "address": {
+      "streetAddress": "Slachtstraat 5",
+      "postalCode": "3512 BC",
+      "addressLocality": "Utrecht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Slachtstraat%2C%20Slachtstraat%205%2C%203512%20BC%20Utrecht%2C%20Netherlands"
+    }
   },
   {
     "name": "De Sien",
     "slug": "de-sien",
     "city": "utrecht",
-    "url": "https://desienfilm.nl"
+    "url": "https://desienfilm.nl",
+    "address": {
+      "streetAddress": "Kanaalweg 30",
+      "postalCode": "3526 KM",
+      "addressLocality": "Utrecht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=De%20Sien%2C%20Kanaalweg%2030%2C%203526%20KM%20Utrecht%2C%20Netherlands"
+    }
   },
   {
     "name": "Slieker Film",
     "slug": "slieker-film",
     "city": "leeuwarden",
-    "url": "https://sliekerfilm.nl/"
+    "url": "https://sliekerfilm.nl/",
+    "address": {
+      "streetAddress": "Wilhelminaplein 92",
+      "postalCode": "8911 BS",
+      "addressLocality": "Leeuwarden",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Slieker%20Film%2C%20Wilhelminaplein%2092%2C%208911%20BS%20Leeuwarden%2C%20Netherlands"
+    }
   },
   {
     "name": "Rialto De Pijp",
     "slug": "rialto-de-pijp",
     "city": "amsterdam",
     "url": "https://rialtofilm.nl/",
-    "logo": "rialto.png"
+    "logo": "rialto.png",
+    "address": {
+      "streetAddress": "Ceintuurbaan 338",
+      "postalCode": "1072 GN",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rialto%20De%20Pijp%2C%20Ceintuurbaan%20338%2C%201072%20GN%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Rialto VU",
     "slug": "rialto-vu",
     "city": "amsterdam",
     "url": "https://rialtofilm.nl/",
-    "logo": "rialto.png"
+    "logo": "rialto.png",
+    "address": {
+      "streetAddress": "De Boelelaan 1111",
+      "postalCode": "1081 HV",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rialto%20VU%2C%20De%20Boelelaan%201111%2C%201081%20HV%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Cinecenter",
     "slug": "cinecenter",
     "city": "amsterdam",
     "url": "https://cinecenter.nl/",
-    "logo": "cinecenter.png"
+    "logo": "cinecenter.png",
+    "address": {
+      "streetAddress": "Lijnbaansgracht 236",
+      "postalCode": "1017 PH",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinecenter%2C%20Lijnbaansgracht%20236%2C%201017%20PH%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Cinema de Vlugt",
     "slug": "cinema-de-vlugt",
     "city": "amsterdam",
-    "url": "https://www.cinemadevlugt.nl/"
+    "url": "https://www.cinemadevlugt.nl/",
+    "address": {
+      "streetAddress": "Burgemeester de Vlugtlaan 125",
+      "postalCode": "1063 BJ",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinema%20de%20Vlugt%2C%20Burgemeester%20de%20Vlugtlaan%20125%2C%201063%20BJ%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Forum Groningen",
     "slug": "forum-groningen",
     "city": "groningen",
     "url": "https://www.forum.nl/",
-    "logo": "forumgroningen.png"
+    "logo": "forumgroningen.png",
+    "address": {
+      "streetAddress": "Nieuwe Markt 1",
+      "postalCode": "9712 KN",
+      "addressLocality": "Groningen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Forum%20Groningen%2C%20Nieuwe%20Markt%201%2C%209712%20KN%20Groningen%2C%20Netherlands"
+    }
   },
   {
     "name": "Heerenstraat Theater",
     "slug": "heerenstraat-theater",
     "city": "wageningen",
-    "url": "https://www.heerenstraattheater.nl/"
+    "url": "https://www.heerenstraattheater.nl/",
+    "address": {
+      "streetAddress": "Molenstraat 1B",
+      "postalCode": "6701 DM",
+      "addressLocality": "Wageningen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Heerenstraat%20Theater%2C%20Molenstraat%201B%2C%206701%20DM%20Wageningen%2C%20Netherlands"
+    }
   },
   {
     "name": "Filmhuis Lumen",
     "slug": "filmhuis-lumen",
     "city": "delft",
     "url": "https://www.filmhuis-lumen.nl/",
-    "logo": "filmhuislumen.png"
+    "logo": "filmhuislumen.png",
+    "address": {
+      "streetAddress": "Van Leeuwenhoekpark 55",
+      "postalCode": "2611 DW",
+      "addressLocality": "Delft",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Lumen%2C%20Van%20Leeuwenhoekpark%2055%2C%202611%20DW%20Delft%2C%20Netherlands"
+    }
   },
   {
     "name": "Ketelhuis",
     "slug": "ketelhuis",
     "city": "amsterdam",
     "url": "https://www.ketelhuis.nl/",
-    "logo": "ketelhuis.png"
+    "logo": "ketelhuis.png",
+    "address": {
+      "streetAddress": "Pazzanistraat 4",
+      "postalCode": "1014 DB",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ketelhuis%2C%20Pazzanistraat%204%2C%201014%20DB%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Lumière",
     "slug": "lumiere",
     "city": "maastricht",
     "url": "https://lumiere.nl/",
-    "logo": "lumiere.png"
+    "logo": "lumiere.png",
+    "address": {
+      "streetAddress": "Bassin 88",
+      "postalCode": "6211 AK",
+      "addressLocality": "Maastricht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lumi%C3%A8re%2C%20Bassin%2088%2C%206211%20AK%20Maastricht%2C%20Netherlands"
+    }
   },
   {
     "name": "Studio/K",
     "slug": "studio-k",
     "city": "amsterdam",
     "url": "https://www.studio-k.nu/",
-    "logo": "studiok.png"
+    "logo": "studiok.png",
+    "address": {
+      "streetAddress": "Timorplein 62",
+      "postalCode": "1094 CC",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Studio%2FK%2C%20Timorplein%2062%2C%201094%20CC%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "De Uitkijk",
     "slug": "de-uitkijk",
     "city": "amsterdam",
     "url": "https://www.uitkijk.nl/",
-    "logo": "deuitkijk.png"
+    "logo": "deuitkijk.png",
+    "address": {
+      "streetAddress": "Prinsengracht 452",
+      "postalCode": "1017 KE",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=De%20Uitkijk%2C%20Prinsengracht%20452%2C%201017%20KE%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "The Movies",
     "slug": "the-movies",
     "city": "amsterdam",
     "url": "https://www.themovies.nl/",
-    "logo": "themovies.png"
+    "logo": "themovies.png",
+    "address": {
+      "streetAddress": "Haarlemmerdijk 161",
+      "postalCode": "1013 KH",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20Movies%2C%20Haarlemmerdijk%20161%2C%201013%20KH%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Cinecitta",
     "slug": "cinecitta",
     "city": "tilburg",
     "url": "https://cinecitta.nl/",
-    "logo": "cinecitta.png"
+    "logo": "cinecitta.png",
+    "address": {
+      "streetAddress": "Willem II Straat 29",
+      "postalCode": "5038 BA",
+      "addressLocality": "Tilburg",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinecitta%2C%20Willem%20II%20Straat%2029%2C%205038%20BA%20Tilburg%2C%20Netherlands"
+    }
   },
   {
     "name": "Schuur",
     "slug": "schuur",
     "city": "haarlem",
     "url": "https://schuur.nl/",
-    "logo": "schuur.png"
+    "logo": "schuur.png",
+    "address": {
+      "streetAddress": "Lange Begijnestraat 9",
+      "postalCode": "2011 HH",
+      "addressLocality": "Haarlem",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Schuur%2C%20Lange%20Begijnestraat%209%2C%202011%20HH%20Haarlem%2C%20Netherlands"
+    }
   },
   {
     "name": "Lux",
     "slug": "lux",
     "city": "nijmegen",
     "url": "https://www.lux-nijmegen.nl",
-    "logo": "lux.png"
+    "logo": "lux.png",
+    "address": {
+      "streetAddress": "Mariënburg 38-39",
+      "postalCode": "6511 PS",
+      "addressLocality": "Nijmegen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lux%2C%20Mari%C3%ABnburg%2038-39%2C%206511%20PS%20Nijmegen%2C%20Netherlands"
+    }
   },
   {
     "name": "De Filmhallen",
     "slug": "de-filmhallen",
     "city": "amsterdam",
     "url": "https://www.filmhallen.nl/",
-    "logo": "defilmhallen.png"
+    "logo": "defilmhallen.png",
+    "address": {
+      "streetAddress": "Hannie Dankbaarpassage 12",
+      "postalCode": "1053 RT",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=De%20Filmhallen%2C%20Hannie%20Dankbaarpassage%2012%2C%201053%20RT%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Filmkoepel",
     "slug": "filmkoepel",
     "city": "haarlem",
     "url": "https://www.filmkoepel.nl/",
-    "logo": "defilmhallen.png"
+    "logo": "defilmhallen.png",
+    "address": {
+      "streetAddress": "Koepelplein 1b",
+      "postalCode": "2031 WL",
+      "addressLocality": "Haarlem",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmkoepel%2C%20Koepelplein%201b%2C%202031%20WL%20Haarlem%2C%20Netherlands"
+    }
   },
   {
     "name": "Cinerama",
     "slug": "cinerama",
     "city": "rotterdam",
     "url": "https://cineramabios.nl/",
-    "logo": "cinerama.png"
+    "logo": "cinerama.png",
+    "address": {
+      "streetAddress": "Westblaak 18",
+      "postalCode": "3012 KL",
+      "addressLocality": "Rotterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinerama%2C%20Westblaak%2018%2C%203012%20KL%20Rotterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "WORM",
     "slug": "worm",
     "city": "rotterdam",
-    "url": "https://worm.org/"
+    "url": "https://worm.org/",
+    "address": {
+      "streetAddress": "Boomgaardsstraat 71",
+      "postalCode": "3012 XA",
+      "addressLocality": "Rotterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=WORM%2C%20Boomgaardsstraat%2071%2C%203012%20XA%20Rotterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Melkweg",
     "slug": "melkweg",
     "city": "amsterdam",
     "url": "https://www.melkweg.nl/en/film/",
-    "logo": "melkweg.svg"
+    "logo": "melkweg.svg",
+    "address": {
+      "streetAddress": "Lijnbaansgracht 234A",
+      "postalCode": "1017 PH",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Melkweg%2C%20Lijnbaansgracht%20234A%2C%201017%20PH%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Natlab",
     "slug": "natlab",
     "city": "eindhoven",
     "url": "https://www.natlab.nl/",
-    "logo": "natlab.png"
+    "logo": "natlab.png",
+    "address": {
+      "streetAddress": "Kastanjelaan 500",
+      "postalCode": "5616 LZ",
+      "addressLocality": "Eindhoven",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Natlab%2C%20Kastanjelaan%20500%2C%205616%20LZ%20Eindhoven%2C%20Netherlands"
+    }
   },
   {
     "name": "Focus Arnhem",
     "slug": "focus-arnhem",
     "city": "arnhem",
     "url": "https://www.focusarnhem.nl/",
-    "logo": "focusarnhem.png"
+    "logo": "focusarnhem.png",
+    "address": {
+      "streetAddress": "Audrey Hepburnplein 1",
+      "postalCode": "6811 EH",
+      "addressLocality": "Arnhem",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Focus%20Arnhem%2C%20Audrey%20Hepburnplein%201%2C%206811%20EH%20Arnhem%2C%20Netherlands"
+    }
   },
   {
     "name": "Het Documentaire Paviljoen",
     "slug": "het-documentaire-paviljoen",
     "city": "amsterdam",
     "url": "https://www.idfa.nl/en/vondelpark/",
-    "logo": "idfa.png"
+    "logo": "idfa.png",
+    "address": {
+      "streetAddress": "Vondelpark 3",
+      "postalCode": "1071 AA",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Het%20Documentaire%20Paviljoen%2C%20Vondelpark%203%2C%201071%20AA%20Amsterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Concordia",
     "slug": "concordia",
     "city": "enschede",
     "url": "https://www.concordia.nl/",
-    "logo": "concordia.png"
+    "logo": "concordia.png",
+    "address": {
+      "streetAddress": "Oude Markt 15",
+      "postalCode": "7511 GA",
+      "addressLocality": "Enschede",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Concordia%2C%20Oude%20Markt%2015%2C%207511%20GA%20Enschede%2C%20Netherlands"
+    }
   },
   {
     "name": "Flora Filmtheater",
     "slug": "flora-filmtheater",
     "city": "den-haag",
     "url": "https://florafilmtheater.nl/",
-    "logo": "florafilmtheater.png"
+    "logo": "florafilmtheater.png",
+    "address": {
+      "streetAddress": "De Constant Rebecquestraat 55",
+      "postalCode": "2518 RC",
+      "addressLocality": "Den Haag",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Flora%20Filmtheater%2C%20De%20Constant%20Rebecquestraat%2055%2C%202518%20RC%20Den%20Haag%2C%20Netherlands"
+    }
   },
   {
     "name": "Dokhuis",
     "slug": "dokhuis",
     "city": "rotterdam",
     "url": "https://dokhuis.org/",
-    "logo": "dokhuis.png"
+    "logo": "dokhuis.png",
+    "address": {
+      "streetAddress": "Doklaan 10",
+      "postalCode": "3087 CB",
+      "addressLocality": "Rotterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Dokhuis%2C%20Doklaan%2010%2C%203087%20CB%20Rotterdam%2C%20Netherlands"
+    }
   },
   {
     "name": "Cinema Amstelveen",
     "slug": "cinema-amstelveen",
     "city": "amstelveen",
     "url": "https://schouwburgamstelveen.nl/nl/cinema/",
-    "logo": "cinema-amstelveen.png"
+    "logo": "cinema-amstelveen.png",
+    "address": {
+      "streetAddress": "Stadsplein 100",
+      "postalCode": "1181 ZM",
+      "addressLocality": "Amstelveen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinema%20Amstelveen%2C%20Stadsplein%20100%2C%201181%20ZM%20Amstelveen%2C%20Netherlands"
+    }
   }
 ]
