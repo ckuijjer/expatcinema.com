@@ -8,7 +8,6 @@ import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
 import { Time } from './Time'
 import {
-  listPosterPlaceholderStyle,
   listPosterStyle,
   listRowBaseStyle,
   listTitleStyle,
@@ -200,8 +199,6 @@ export const ScreeningRow = ({
             aria-hidden
             className={listPosterStyle}
           />
-        ) : showPoster ? (
-          <div aria-hidden className={listPosterPlaceholderStyle} />
         ) : null}
       </div>
     </div>
