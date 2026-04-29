@@ -10,6 +10,7 @@ on:
       - main
     paths:
       - 'web/**'
+      - 'scripts/validate-cinemas.mjs'
       - '.github/workflows/web.yml'
   schedule:
     - cron: '30 3 * * *' # daily at 3.30 UTC.

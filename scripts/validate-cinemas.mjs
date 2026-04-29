@@ -4,7 +4,7 @@ import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url))
-const webDirectory = path.resolve(scriptDirectory, '..')
+const webDirectory = path.resolve(scriptDirectory, '..', 'web')
 const cinemasPath = path.join(webDirectory, 'data', 'cinema.json')
 const citiesPath = path.join(webDirectory, 'data', 'city.json')
 

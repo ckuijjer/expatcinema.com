@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'web/**'
+      - 'scripts/validate-cinemas.mjs'
       - '.github/workflows/web-build.yml'
 
 defaults:

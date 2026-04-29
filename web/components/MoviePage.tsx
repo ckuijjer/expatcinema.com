@@ -205,12 +205,6 @@ const getTrailer = (movie: Movie) => {
   )
 }
 
-const isUpcomingScreening = (screening: Screening) => {
-  const screeningTime = Date.parse(screening.date)
-
-  return Number.isFinite(screeningTime) && screeningTime >= Date.now()
-}
-
 export const MoviePage = ({
   movie,
   movieSlug,
@@ -243,7 +237,6 @@ export const MoviePage = ({
   const cityName = currentCity ? getCity(currentCity)?.name : undefined
   const cinemaData = currentCinema ? getCinema(currentCinema) : undefined
   const cinemaName = cinemaData?.name
-  const upcomingScreenings = screenings.filter(isUpcomingScreening)
   const shouldRenderJsonLd = isEnabled(STRUCTURED_DATA_FEATURE)
   const jsonLd = [
     buildMovieJsonLd(
@@ -259,7 +252,7 @@ export const MoviePage = ({
       cityName,
       cinemaName,
     ),
-    ...upcomingScreenings.map((screening) =>
+    ...screenings.map((screening) =>
       buildScreeningEventJsonLd(movie, movieSlug, screening),
     ),
   ]
