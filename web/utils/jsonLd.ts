@@ -81,6 +81,7 @@ export const buildScreeningEventJsonLd = (
       screening.cinema.slug,
     ),
   )
+  const address = screening.cinema.address
 
   return compactJsonLd({
     '@context': 'https://schema.org',
@@ -97,7 +98,9 @@ export const buildScreeningEventJsonLd = (
       url: screening.cinema.url,
       address: {
         '@type': 'PostalAddress',
-        addressLocality: screening.cinema.city.name,
+        streetAddress: address.streetAddress,
+        postalCode: address.postalCode,
+        addressLocality: address.addressLocality,
         addressCountry: 'NL',
       },
     },

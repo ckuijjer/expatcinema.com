@@ -16,11 +16,18 @@ export type City = {
   slug: string
 }
 
+export type Address = {
+  streetAddress: string
+  postalCode: string
+  addressLocality: string
+}
+
 export type Cinema = {
   name: string
   slug: string
   url: string
   city: City
+  address: Address
   logo?: string
 }
 
