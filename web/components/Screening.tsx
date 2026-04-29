@@ -1,14 +1,13 @@
 import { DateTime } from 'luxon'
 import Image from 'next/image'
-import React from 'react'
 
 import { css, cx } from 'styled-system/css'
 
 import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
+import { PosterPlaceholder } from './PosterPlaceholder'
 import { Time } from './Time'
 import {
-  listPosterPlaceholderStyle,
   listPosterStyle,
   listRowBaseStyle,
   listTitleStyle,
@@ -23,12 +22,6 @@ const containerStyle = cx(
     gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
     gridTemplateRows: 'auto auto',
     gridColumnGap: '12px',
-    '&:hover .screening-poster-placeholder--matched': {
-      backgroundColor: 'var(--palette-purple-300)',
-    },
-    '&:hover .screening-poster-placeholder--unmatched': {
-      backgroundColor: 'var(--background-highlight-color)',
-    },
   }),
 )
 
@@ -92,10 +85,6 @@ const screeningRowLinkStyle = css({
   color: 'var(--text-color)',
 })
 
-const matchedPosterPlaceholderStyle = css({
-  backgroundColor: 'var(--background-highlight-color)',
-})
-
 const unmatchedPosterPlaceholderStyle = css({
   backgroundColor: 'transparent',
 })
@@ -147,105 +136,63 @@ export const ScreeningRow = ({
   showCity?: boolean
   showPoster?: boolean
 }) => {
-  const movieIdClassName = movieId
-    ? `movie-id-${movieId.replace(/[^a-zA-Z0-9_-]/g, '-')}`
-    : undefined
-  const tmdbUrl = movieId?.startsWith('tmdb:')
-    ? `https://www.themoviedb.org/movie/${movieId.slice(5)}`
-    : undefined
   const movieUrl =
     movieHref ?? (movieSlug ? getMoviePagePath(movieSlug) : undefined)
-  const hasMovieMetadata = Boolean(movieId)
-  const posterPlaceholder = (
-    <div
-      aria-hidden
-      className={cx(
-        listPosterPlaceholderStyle,
-        hasMovieMetadata
-          ? matchedPosterPlaceholderStyle
-          : unmatchedPosterPlaceholderStyle,
-        hasMovieMetadata
-          ? 'screening-poster-placeholder--matched'
-          : 'screening-poster-placeholder--unmatched',
-      )}
-    />
-  )
 
   return (
-    <div className={movieIdClassName}>
-      <div className={containerStyle}>
-        <a
-          href={url}
-          aria-label={`Open screening for ${title}`}
-          className={screeningRowLinkStyle}
-        />
-        <div className={timeStyle}>
-          <Time>{date}</Time>
-        </div>
-        <div className={contentStyle}>
-          <div className={listTitleStyle} style={{ pointerEvents: 'none' }}>
-            {title}
-            {year ? <span className={listYearStyle}> ({year})</span> : null}
-          </div>
-          <div className={cinemaInfoStyle}>
-            <CinemaIcon cinema={cinema} />
-            {cinema.name}
-            {showCity ? <> | {cinema.city.name}</> : null}
-          </div>
-        </div>
-        {showPoster && posterUrl && movieUrl ? (
-          <a href={movieUrl} className={posterLinkStyle}>
-            <Image
-              src={posterUrl}
-              width={48}
-              height={72}
-              alt=""
-              aria-hidden
-              className={listPosterStyle}
-            />
-          </a>
-        ) : showPoster && posterUrl && tmdbUrl ? (
-          <a
-            href={tmdbUrl}
-            target="_blank"
-            rel="noreferrer"
-            className={posterLinkStyle}
-          >
-            <Image
-              src={posterUrl}
-              width={48}
-              height={72}
-              alt=""
-              aria-hidden
-              className={listPosterStyle}
-            />
-          </a>
-        ) : showPoster && posterUrl ? (
-          <Image
-            src={posterUrl}
-            width={48}
-            height={72}
-            alt=""
-            aria-hidden
-            className={listPosterStyle}
-          />
-        ) : showPoster && movieUrl ? (
-          <a href={movieUrl} className={posterLinkStyle}>
-            {posterPlaceholder}
-          </a>
-        ) : showPoster && tmdbUrl ? (
-          <a
-            href={tmdbUrl}
-            target="_blank"
-            rel="noreferrer"
-            className={posterLinkStyle}
-          >
-            {posterPlaceholder}
-          </a>
-        ) : showPoster ? (
-          posterPlaceholder
-        ) : null}
+    <div className={containerStyle}>
+      <a
+        href={url}
+        aria-label={`Open screening for ${title}`}
+        className={screeningRowLinkStyle}
+      />
+      <div className={timeStyle}>
+        <Time>{date}</Time>
       </div>
+      <div className={contentStyle}>
+        <div className={listTitleStyle} style={{ pointerEvents: 'none' }}>
+          {title}
+          {year ? <span className={listYearStyle}> ({year})</span> : null}
+        </div>
+        <div className={cinemaInfoStyle}>
+          <CinemaIcon cinema={cinema} />
+          {cinema.name}
+          {showCity ? <> | {cinema.city.name}</> : null}
+        </div>
+      </div>
+      {showPoster ? (
+        posterUrl ? (
+          movieUrl ? (
+            <a href={movieUrl} className={posterLinkStyle}>
+              <Image
+                src={posterUrl}
+                width={48}
+                height={72}
+                alt=""
+                aria-hidden
+                className={listPosterStyle}
+              />
+            </a>
+          ) : (
+            <Image
+              src={posterUrl}
+              width={48}
+              height={72}
+              alt=""
+              aria-hidden
+              className={listPosterStyle}
+            />
+          )
+        ) : movieUrl ? (
+          <a href={movieUrl} className={posterLinkStyle}>
+            <PosterPlaceholder
+              className={
+                movieId ? undefined : unmatchedPosterPlaceholderStyle
+              }
+            />
+          </a>
+        ) : null
+      ) : null}
     </div>
   )
 }

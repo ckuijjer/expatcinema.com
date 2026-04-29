@@ -14,9 +14,9 @@ import {
 } from '../utils/getMovies'
 import { matchesMovieSearch } from '../utils/searchMatches'
 import { Layout } from './Layout'
+import { PosterPlaceholder } from './PosterPlaceholder'
 import {
   listContainerStyle,
-  listPosterPlaceholderStyle,
   listPosterStyle,
   listRowBaseStyle,
   listSectionHeadingStyle,
@@ -90,10 +90,7 @@ export const MovieOverviewRow = ({
           className={listPosterStyle}
         />
       ) : (
-        <div
-          aria-hidden
-          className={cx(listPosterPlaceholderStyle, posterPlaceholderClassName)}
-        />
+        <PosterPlaceholder className={posterPlaceholderClassName} />
       )}
       <div className={listTitleStyle}>
         {movie.title}
