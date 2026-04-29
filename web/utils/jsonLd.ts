@@ -96,6 +96,7 @@ export const buildScreeningEventJsonLd = (
       '@type': 'MovieTheater',
       name: screening.cinema.name,
       url: screening.cinema.url,
+      hasMap: address.googleMapsUrl,
       address: {
         '@type': 'PostalAddress',
         streetAddress: address.streetAddress,

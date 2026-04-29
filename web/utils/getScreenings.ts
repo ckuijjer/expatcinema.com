@@ -20,6 +20,7 @@ export type Address = {
   streetAddress: string
   postalCode: string
   addressLocality: string
+  googleMapsUrl: string
 }
 
 export type Cinema = {

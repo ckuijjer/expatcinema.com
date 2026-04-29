@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Suspense } from 'react'
 
 import { App } from '../../../../../../components/App'
+import { CinemaInfoBar } from '../../../../../../components/CinemaInfoBar'
+import { Layout } from '../../../../../../components/Layout'
 import cinemas from '../../../../../../data/cinema.json'
 import { getCinema } from '../../../../../../utils/getCinema'
 import { getCity } from '../../../../../../utils/getCity'
@@ -40,6 +42,7 @@ export default async function CinemaPage({
   params: Promise<{ city: string; cinema: string }>
 }) {
   const { city, cinema } = await params
+  const cinemaData = getCinema(cinema)
   const screenings = (await getScreenings()).filter(
     (screening) =>
       screening.cinema.city.slug === city && screening.cinema.slug === cinema,
@@ -47,6 +50,11 @@ export default async function CinemaPage({
 
   return (
     <Suspense>
+      {cinemaData ? (
+        <Layout>
+          <CinemaInfoBar cinema={cinemaData} />
+        </Layout>
+      ) : null}
       <App screenings={screenings} currentCity={city} currentCinema={cinema} />
     </Suspense>
   )

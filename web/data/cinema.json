@@ -8,7 +8,8 @@
     "address": {
       "streetAddress": "Vrouwenkerksteeg 10",
       "postalCode": "2312 WS",
-      "addressLocality": "Leiden"
+      "addressLocality": "Leiden",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kijkhuis%2C%20Vrouwenkerksteeg%2010%2C%202312%20WS%20Leiden%2C%20Netherlands"
     }
   },
   {
@@ -20,7 +21,8 @@
     "address": {
       "streetAddress": "Breestraat 31",
       "postalCode": "2311 CH",
-      "addressLocality": "Leiden"
+      "addressLocality": "Leiden",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Trianon%2C%20Breestraat%2031%2C%202311%20CH%20Leiden%2C%20Netherlands"
     }
   },
   {
@@ -32,7 +34,8 @@
     "address": {
       "streetAddress": "Steenstraat 39",
       "postalCode": "2312 BV",
-      "addressLocality": "Leiden"
+      "addressLocality": "Leiden",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lido%2C%20Steenstraat%2039%2C%202312%20BV%20Leiden%2C%20Netherlands"
     }
   },
   {
@@ -44,7 +47,8 @@
     "address": {
       "streetAddress": "Spui 191",
       "postalCode": "2511 BN",
-      "addressLocality": "Den Haag"
+      "addressLocality": "Den Haag",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Den%20Haag%2C%20Spui%20191%2C%202511%20BN%20Den%20Haag%2C%20Netherlands"
     }
   },
   {
@@ -55,7 +59,8 @@
     "address": {
       "streetAddress": "Herenplein 5",
       "postalCode": "1211 DR",
-      "addressLocality": "Hilversum"
+      "addressLocality": "Hilversum",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmtheater%20Hilversum%2C%20Herenplein%205%2C%201211%20DR%20Hilversum%2C%20Netherlands"
     }
   },
   {
@@ -66,7 +71,8 @@
     "address": {
       "streetAddress": "Claudius Prinsenlaan 8",
       "postalCode": "4811 DK",
-      "addressLocality": "Breda"
+      "addressLocality": "Breda",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Chass%C3%A9%20Cinema%2C%20Claudius%20Prinsenlaan%208%2C%204811%20DK%20Breda%2C%20Netherlands"
     }
   },
   {
@@ -77,7 +83,8 @@
     "address": {
       "streetAddress": "Nieuwstraat 60-62",
       "postalCode": "3311 XR",
-      "addressLocality": "Dordrecht"
+      "addressLocality": "Dordrecht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmtheater%20De%20Witt%2C%20Nieuwstraat%2060-62%2C%203311%20XR%20Dordrecht%2C%20Netherlands"
     }
   },
   {
@@ -89,7 +96,8 @@
     "address": {
       "streetAddress": "Gouvernestraat 129-133",
       "postalCode": "3014 PM",
-      "addressLocality": "Rotterdam"
+      "addressLocality": "Rotterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kino%2C%20Gouvernestraat%20129-133%2C%203014%20PM%20Rotterdam%2C%20Netherlands"
     }
   },
   {
@@ -101,7 +109,8 @@
     "address": {
       "streetAddress": "Otto Reuchlinweg 996",
       "postalCode": "3072 MD",
-      "addressLocality": "Rotterdam"
+      "addressLocality": "Rotterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lantarenvenster%2C%20Otto%20Reuchlinweg%20996%2C%203072%20MD%20Rotterdam%2C%20Netherlands"
     }
   },
   {
@@ -113,7 +122,8 @@
     "address": {
       "streetAddress": "Keizersgracht 19",
       "postalCode": "5611 GC",
-      "addressLocality": "Eindhoven"
+      "addressLocality": "Eindhoven",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lab-1%2C%20Keizersgracht%2019%2C%205611%20GC%20Eindhoven%2C%20Netherlands"
     }
   },
   {
@@ -125,7 +135,8 @@
     "address": {
       "streetAddress": "Arie Biemondstraat 111",
       "postalCode": "1054 PD",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lab111%2C%20Arie%20Biemondstraat%20111%2C%201054%20PD%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -137,7 +148,8 @@
     "address": {
       "streetAddress": "IJpromenade 1",
       "postalCode": "1031 KT",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Eye%2C%20IJpromenade%201%2C%201031%20KT%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -148,7 +160,8 @@
     "address": {
       "streetAddress": "Aambeeldstraat 24",
       "postalCode": "1021 KB",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=FC%20Hyena%2C%20Aambeeldstraat%2024%2C%201021%20KB%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -160,7 +173,8 @@
     "address": {
       "streetAddress": "Roetersstraat 170",
       "postalCode": "1018 WE",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Kriterion%2C%20Roetersstraat%20170%2C%201018%20WE%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -172,7 +186,8 @@
     "address": {
       "streetAddress": "Springweg 50",
       "postalCode": "3511 VS",
-      "addressLocality": "Utrecht"
+      "addressLocality": "Utrecht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Springhaver%2C%20Springweg%2050%2C%203511%20VS%20Utrecht%2C%20Netherlands"
     }
   },
   {
@@ -184,7 +199,8 @@
     "address": {
       "streetAddress": "Tolsteegbrug 1",
       "postalCode": "3511 ZN",
-      "addressLocality": "Utrecht"
+      "addressLocality": "Utrecht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Louis%20Hartlooper%20Complex%2C%20Tolsteegbrug%201%2C%203511%20ZN%20Utrecht%2C%20Netherlands"
     }
   },
   {
@@ -196,7 +212,8 @@
     "address": {
       "streetAddress": "Slachtstraat 5",
       "postalCode": "3512 BC",
-      "addressLocality": "Utrecht"
+      "addressLocality": "Utrecht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Slachtstraat%2C%20Slachtstraat%205%2C%203512%20BC%20Utrecht%2C%20Netherlands"
     }
   },
   {
@@ -207,7 +224,8 @@
     "address": {
       "streetAddress": "Kanaalweg 30",
       "postalCode": "3526 KM",
-      "addressLocality": "Utrecht"
+      "addressLocality": "Utrecht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=De%20Sien%2C%20Kanaalweg%2030%2C%203526%20KM%20Utrecht%2C%20Netherlands"
     }
   },
   {
@@ -218,7 +236,8 @@
     "address": {
       "streetAddress": "Wilhelminaplein 92",
       "postalCode": "8911 BS",
-      "addressLocality": "Leeuwarden"
+      "addressLocality": "Leeuwarden",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Slieker%20Film%2C%20Wilhelminaplein%2092%2C%208911%20BS%20Leeuwarden%2C%20Netherlands"
     }
   },
   {
@@ -230,7 +249,8 @@
     "address": {
       "streetAddress": "Ceintuurbaan 338",
       "postalCode": "1072 GN",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rialto%20De%20Pijp%2C%20Ceintuurbaan%20338%2C%201072%20GN%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -242,7 +262,8 @@
     "address": {
       "streetAddress": "De Boelelaan 1111",
       "postalCode": "1081 HV",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Rialto%20VU%2C%20De%20Boelelaan%201111%2C%201081%20HV%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -254,7 +275,8 @@
     "address": {
       "streetAddress": "Lijnbaansgracht 236",
       "postalCode": "1017 PH",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinecenter%2C%20Lijnbaansgracht%20236%2C%201017%20PH%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -265,7 +287,8 @@
     "address": {
       "streetAddress": "Burgemeester de Vlugtlaan 125",
       "postalCode": "1063 BJ",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinema%20de%20Vlugt%2C%20Burgemeester%20de%20Vlugtlaan%20125%2C%201063%20BJ%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -277,7 +300,8 @@
     "address": {
       "streetAddress": "Nieuwe Markt 1",
       "postalCode": "9712 KN",
-      "addressLocality": "Groningen"
+      "addressLocality": "Groningen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Forum%20Groningen%2C%20Nieuwe%20Markt%201%2C%209712%20KN%20Groningen%2C%20Netherlands"
     }
   },
   {
@@ -288,7 +312,8 @@
     "address": {
       "streetAddress": "Molenstraat 1B",
       "postalCode": "6701 DM",
-      "addressLocality": "Wageningen"
+      "addressLocality": "Wageningen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Heerenstraat%20Theater%2C%20Molenstraat%201B%2C%206701%20DM%20Wageningen%2C%20Netherlands"
     }
   },
   {
@@ -300,7 +325,8 @@
     "address": {
       "streetAddress": "Van Leeuwenhoekpark 55",
       "postalCode": "2611 DW",
-      "addressLocality": "Delft"
+      "addressLocality": "Delft",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Lumen%2C%20Van%20Leeuwenhoekpark%2055%2C%202611%20DW%20Delft%2C%20Netherlands"
     }
   },
   {
@@ -312,7 +338,8 @@
     "address": {
       "streetAddress": "Pazzanistraat 4",
       "postalCode": "1014 DB",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ketelhuis%2C%20Pazzanistraat%204%2C%201014%20DB%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -324,7 +351,8 @@
     "address": {
       "streetAddress": "Bassin 88",
       "postalCode": "6211 AK",
-      "addressLocality": "Maastricht"
+      "addressLocality": "Maastricht",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lumi%C3%A8re%2C%20Bassin%2088%2C%206211%20AK%20Maastricht%2C%20Netherlands"
     }
   },
   {
@@ -336,7 +364,8 @@
     "address": {
       "streetAddress": "Timorplein 62",
       "postalCode": "1094 CC",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Studio%2FK%2C%20Timorplein%2062%2C%201094%20CC%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -348,7 +377,8 @@
     "address": {
       "streetAddress": "Prinsengracht 452",
       "postalCode": "1017 KE",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=De%20Uitkijk%2C%20Prinsengracht%20452%2C%201017%20KE%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -360,7 +390,8 @@
     "address": {
       "streetAddress": "Haarlemmerdijk 161",
       "postalCode": "1013 KH",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=The%20Movies%2C%20Haarlemmerdijk%20161%2C%201013%20KH%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -372,7 +403,8 @@
     "address": {
       "streetAddress": "Willem II Straat 29",
       "postalCode": "5038 BA",
-      "addressLocality": "Tilburg"
+      "addressLocality": "Tilburg",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinecitta%2C%20Willem%20II%20Straat%2029%2C%205038%20BA%20Tilburg%2C%20Netherlands"
     }
   },
   {
@@ -384,7 +416,8 @@
     "address": {
       "streetAddress": "Lange Begijnestraat 9",
       "postalCode": "2011 HH",
-      "addressLocality": "Haarlem"
+      "addressLocality": "Haarlem",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Schuur%2C%20Lange%20Begijnestraat%209%2C%202011%20HH%20Haarlem%2C%20Netherlands"
     }
   },
   {
@@ -396,7 +429,8 @@
     "address": {
       "streetAddress": "Mariënburg 38-39",
       "postalCode": "6511 PS",
-      "addressLocality": "Nijmegen"
+      "addressLocality": "Nijmegen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Lux%2C%20Mari%C3%ABnburg%2038-39%2C%206511%20PS%20Nijmegen%2C%20Netherlands"
     }
   },
   {
@@ -408,7 +442,8 @@
     "address": {
       "streetAddress": "Hannie Dankbaarpassage 12",
       "postalCode": "1053 RT",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=De%20Filmhallen%2C%20Hannie%20Dankbaarpassage%2012%2C%201053%20RT%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -420,7 +455,8 @@
     "address": {
       "streetAddress": "Koepelplein 1b",
       "postalCode": "2031 WL",
-      "addressLocality": "Haarlem"
+      "addressLocality": "Haarlem",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmkoepel%2C%20Koepelplein%201b%2C%202031%20WL%20Haarlem%2C%20Netherlands"
     }
   },
   {
@@ -432,7 +468,8 @@
     "address": {
       "streetAddress": "Westblaak 18",
       "postalCode": "3012 KL",
-      "addressLocality": "Rotterdam"
+      "addressLocality": "Rotterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinerama%2C%20Westblaak%2018%2C%203012%20KL%20Rotterdam%2C%20Netherlands"
     }
   },
   {
@@ -443,7 +480,8 @@
     "address": {
       "streetAddress": "Boomgaardsstraat 71",
       "postalCode": "3012 XA",
-      "addressLocality": "Rotterdam"
+      "addressLocality": "Rotterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=WORM%2C%20Boomgaardsstraat%2071%2C%203012%20XA%20Rotterdam%2C%20Netherlands"
     }
   },
   {
@@ -455,7 +493,8 @@
     "address": {
       "streetAddress": "Lijnbaansgracht 234A",
       "postalCode": "1017 PH",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Melkweg%2C%20Lijnbaansgracht%20234A%2C%201017%20PH%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -467,7 +506,8 @@
     "address": {
       "streetAddress": "Kastanjelaan 500",
       "postalCode": "5616 LZ",
-      "addressLocality": "Eindhoven"
+      "addressLocality": "Eindhoven",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Natlab%2C%20Kastanjelaan%20500%2C%205616%20LZ%20Eindhoven%2C%20Netherlands"
     }
   },
   {
@@ -479,7 +519,8 @@
     "address": {
       "streetAddress": "Audrey Hepburnplein 1",
       "postalCode": "6811 EH",
-      "addressLocality": "Arnhem"
+      "addressLocality": "Arnhem",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Focus%20Arnhem%2C%20Audrey%20Hepburnplein%201%2C%206811%20EH%20Arnhem%2C%20Netherlands"
     }
   },
   {
@@ -491,7 +532,8 @@
     "address": {
       "streetAddress": "Vondelpark 3",
       "postalCode": "1071 AA",
-      "addressLocality": "Amsterdam"
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Het%20Documentaire%20Paviljoen%2C%20Vondelpark%203%2C%201071%20AA%20Amsterdam%2C%20Netherlands"
     }
   },
   {
@@ -503,7 +545,8 @@
     "address": {
       "streetAddress": "Oude Markt 15",
       "postalCode": "7511 GA",
-      "addressLocality": "Enschede"
+      "addressLocality": "Enschede",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Concordia%2C%20Oude%20Markt%2015%2C%207511%20GA%20Enschede%2C%20Netherlands"
     }
   },
   {
@@ -515,7 +558,8 @@
     "address": {
       "streetAddress": "De Constant Rebecquestraat 55",
       "postalCode": "2518 RC",
-      "addressLocality": "Den Haag"
+      "addressLocality": "Den Haag",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Flora%20Filmtheater%2C%20De%20Constant%20Rebecquestraat%2055%2C%202518%20RC%20Den%20Haag%2C%20Netherlands"
     }
   },
   {
@@ -527,7 +571,8 @@
     "address": {
       "streetAddress": "Doklaan 10",
       "postalCode": "3087 CB",
-      "addressLocality": "Rotterdam"
+      "addressLocality": "Rotterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Dokhuis%2C%20Doklaan%2010%2C%203087%20CB%20Rotterdam%2C%20Netherlands"
     }
   },
   {
@@ -539,7 +584,8 @@
     "address": {
       "streetAddress": "Stadsplein 100",
       "postalCode": "1181 ZM",
-      "addressLocality": "Amstelveen"
+      "addressLocality": "Amstelveen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinema%20Amstelveen%2C%20Stadsplein%20100%2C%201181%20ZM%20Amstelveen%2C%20Netherlands"
     }
   }
 ]

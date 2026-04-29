@@ -11,6 +11,7 @@ import { getMoviePosterUrl, getMovieReleaseYear } from '../utils/getMovies'
 import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
 import { isEnabled, STRUCTURED_DATA_FEATURE } from '../utils/featureFlags'
+import { CinemaInfoBar } from './CinemaInfoBar'
 import {
   buildBreadcrumbJsonLd,
   buildMovieJsonLd,
@@ -240,7 +241,8 @@ export const MoviePage = ({
   const description = movie.tmdb?.overview
   const trailer = getTrailer(movie)
   const cityName = currentCity ? getCity(currentCity)?.name : undefined
-  const cinemaName = currentCinema ? getCinema(currentCinema)?.name : undefined
+  const cinemaData = currentCinema ? getCinema(currentCinema) : undefined
+  const cinemaName = cinemaData?.name
   const upcomingScreenings = screenings.filter(isUpcomingScreening)
   const shouldRenderJsonLd = isEnabled(STRUCTURED_DATA_FEATURE)
   const jsonLd = [
@@ -364,6 +366,11 @@ export const MoviePage = ({
               currentCinema={currentCinema}
             />
           </div>
+          {currentCity && currentCinema && cinemaData ? (
+            <div style={{ gridColumn: '1 / -1' }}>
+              <CinemaInfoBar cinema={cinemaData} />
+            </div>
+          ) : null}
           <div style={{ gridColumn: '1 / -1' }}>
             <Suspense>
               <Calendar
