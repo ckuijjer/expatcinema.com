@@ -8,6 +8,7 @@ import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
 import { Time } from './Time'
 import {
+  listPosterPlaceholderStyle,
   listPosterStyle,
   listRowBaseStyle,
   listTitleStyle,
@@ -22,6 +23,12 @@ const containerStyle = cx(
     gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
     gridTemplateRows: 'auto auto',
     gridColumnGap: '12px',
+    '&:hover .screening-poster-placeholder--matched': {
+      backgroundColor: 'var(--palette-purple-300)',
+    },
+    '&:hover .screening-poster-placeholder--unmatched': {
+      backgroundColor: 'var(--background-highlight-color)',
+    },
   }),
 )
 
@@ -85,6 +92,14 @@ const screeningRowLinkStyle = css({
   color: 'var(--text-color)',
 })
 
+const matchedPosterPlaceholderStyle = css({
+  backgroundColor: 'var(--background-highlight-color)',
+})
+
+const unmatchedPosterPlaceholderStyle = css({
+  backgroundColor: 'transparent',
+})
+
 type CinemaIconProps = {
   cinema: Cinema
 }
@@ -140,6 +155,21 @@ export const ScreeningRow = ({
     : undefined
   const movieUrl =
     movieHref ?? (movieSlug ? getMoviePagePath(movieSlug) : undefined)
+  const hasMovieMetadata = Boolean(movieId)
+  const posterPlaceholder = (
+    <div
+      aria-hidden
+      className={cx(
+        listPosterPlaceholderStyle,
+        hasMovieMetadata
+          ? matchedPosterPlaceholderStyle
+          : unmatchedPosterPlaceholderStyle,
+        hasMovieMetadata
+          ? 'screening-poster-placeholder--matched'
+          : 'screening-poster-placeholder--unmatched',
+      )}
+    />
+  )
 
   return (
     <div className={movieIdClassName}>
@@ -199,6 +229,21 @@ export const ScreeningRow = ({
             aria-hidden
             className={listPosterStyle}
           />
+        ) : showPoster && movieUrl ? (
+          <a href={movieUrl} className={posterLinkStyle}>
+            {posterPlaceholder}
+          </a>
+        ) : showPoster && tmdbUrl ? (
+          <a
+            href={tmdbUrl}
+            target="_blank"
+            rel="noreferrer"
+            className={posterLinkStyle}
+          >
+            {posterPlaceholder}
+          </a>
+        ) : showPoster ? (
+          posterPlaceholder
         ) : null}
       </div>
     </div>
