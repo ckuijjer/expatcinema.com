@@ -200,7 +200,7 @@ export const ScreeningRow = ({
             aria-hidden
             className={listPosterStyle}
           />
-        ) : showPoster && movieId ? (
+        ) : showPoster ? (
           <div aria-hidden className={listPosterPlaceholderStyle} />
         ) : null}
       </div>
