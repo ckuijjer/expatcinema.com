@@ -89,7 +89,7 @@ export const About = () => {
                 {cinemasInCity.map((cinema, i, arr) => {
                   const isLast = i === arr.length - 1
                   return (
-                    <React.Fragment key={cinema.url}>
+                    <React.Fragment key={cinema.name}>
                       <Link href={cinema.url} className={textLinkStyle}>
                         {cinema.name}
                       </Link>
