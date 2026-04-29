@@ -26,7 +26,7 @@ export async function generateMetadata({
   const cityName = getCity(cinemaData?.city ?? city)?.name ?? city
 
   return {
-    title: `English-Subtitled Movies at ${cinemaName}, ${cityName} – Expat Cinema`,
+    title: `Foreign movies with English subtitles at ${cinemaName}, ${cityName} – Expat Cinema`,
     description: buildCinemaDescription(cinemaName, cityName),
     alternates: {
       canonical: getCanonicalUrl(`/city/${city}/cinema/${cinema}`),

@@ -23,7 +23,7 @@ export async function generateMetadata({
   )
 
   return {
-    title: `English-Subtitled Movies in ${cityName} – Expat Cinema`,
+    title: `Foreign movies with English subtitles in ${cityName} – Expat Cinema`,
     description: buildCityDescription(cityName, screenings),
     alternates: { canonical: getCanonicalUrl(`/city/${city}`) },
   }
