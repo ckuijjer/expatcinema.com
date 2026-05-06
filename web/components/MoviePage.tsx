@@ -155,16 +155,52 @@ const trailerFrameStyle = css({
   border: '0',
 })
 
-const originalLanguageNames = new Intl.DisplayNames(['en'], {
-  type: 'language',
-})
+const TMDB_GENRES: Record<number, string> = {
+  28: 'Action',
+  12: 'Adventure',
+  16: 'Animation',
+  35: 'Comedy',
+  80: 'Crime',
+  99: 'Documentary',
+  18: 'Drama',
+  10751: 'Family',
+  14: 'Fantasy',
+  36: 'History',
+  27: 'Horror',
+  10402: 'Music',
+  9648: 'Mystery',
+  10749: 'Romance',
+  878: 'Science Fiction',
+  10770: 'TV Movie',
+  53: 'Thriller',
+  10752: 'War',
+  37: 'Western',
+}
 
-const formatOriginalLanguage = (language?: string | null) => {
-  if (!language) {
-    return undefined
-  }
+// TMDB uses some non-standard language codes not covered by Intl.DisplayNames
+const TMDB_LANGUAGE_OVERRIDES: Record<string, string> = {
+  cn: 'Cantonese',
+  sh: 'Serbo-Croatian',
+  xx: 'No Language',
+}
 
-  return originalLanguageNames.of(language) ?? language
+const languageDisplayNames = new Intl.DisplayNames(['en'], { type: 'language' })
+
+const formatLanguage = (language?: string | null) => {
+  if (!language) return undefined
+  if (TMDB_LANGUAGE_OVERRIDES[language]) return TMDB_LANGUAGE_OVERRIDES[language]
+  return languageDisplayNames.of(language) ?? language
+}
+
+const formatVoteAverage = (voteAverage?: number | null) => {
+  if (!voteAverage) return undefined
+  return voteAverage.toFixed(1)
+}
+
+const formatGenres = (genreIds?: number[]) => {
+  if (!genreIds?.length) return undefined
+  const names = genreIds.map((id) => TMDB_GENRES[id]).filter(Boolean)
+  return names.length ? names.join(', ') : undefined
 }
 
 const formatRuntime = (runtime?: number | null) => {
@@ -230,8 +266,13 @@ export const MoviePage = ({
   const imdbHref = movie.imdbId
     ? `https://www.imdb.com/title/${movie.imdbId}/`
     : undefined
-  const originalLanguage = formatOriginalLanguage(movie.tmdb?.originalLanguage)
+  const originalLanguage = formatLanguage(movie.tmdb?.originalLanguage)
   const runtime = formatRuntime(movie.tmdb?.runtime)
+  const genres = formatGenres(movie.tmdb?.genreIds)
+  const voteAverage = formatVoteAverage(movie.tmdb?.voteAverage)
+  const director = movie.tmdb?.director
+  const originalTitle = movie.tmdb?.originalTitle
+  const showOriginalTitle = originalTitle && originalTitle !== movie.title
   const description = movie.tmdb?.overview
   const trailer = getTrailer(movie)
   const cityName = currentCity ? getCity(currentCity)?.name : undefined
@@ -290,17 +331,32 @@ export const MoviePage = ({
               {movie.title}
               {year ? <span className={yearStyle}> ({year})</span> : null}
             </h1>
-            {description || originalLanguage || runtime ? (
+            {showOriginalTitle ? (
+              <p className={css({ margin: '0', fontSize: '20px', color: 'var(--text-muted-color)' })}>
+                {originalTitle}
+              </p>
+            ) : null}
+            {description || originalLanguage || runtime || genres || voteAverage || director ? (
               <div className={detailsStyle}>
                 {description ? (
                   <p className={descriptionStyle}>{description}</p>
                 ) : null}
                 <div className={metadataStyle}>
+                  {director ? (
+                    <div className={metadataItemStyle}>
+                      <span className={metadataLabelStyle}>Director:</span>
+                      <span>{director}</span>
+                    </div>
+                  ) : null}
+                  {genres ? (
+                    <div className={metadataItemStyle}>
+                      <span className={metadataLabelStyle}>Genre:</span>
+                      <span>{genres}</span>
+                    </div>
+                  ) : null}
                   {originalLanguage ? (
                     <div className={metadataItemStyle}>
-                      <span className={metadataLabelStyle}>
-                        Original language:
-                      </span>
+                      <span className={metadataLabelStyle}>Language:</span>
                       <span>{originalLanguage}</span>
                     </div>
                   ) : null}
@@ -308,6 +364,12 @@ export const MoviePage = ({
                     <div className={metadataItemStyle}>
                       <span className={metadataLabelStyle}>Runtime:</span>
                       <span>{runtime}</span>
+                    </div>
+                  ) : null}
+                  {voteAverage ? (
+                    <div className={metadataItemStyle}>
+                      <span className={metadataLabelStyle}>Rating:</span>
+                      <span>{voteAverage}/10</span>
                     </div>
                   ) : null}
                 </div>

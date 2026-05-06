@@ -21,6 +21,7 @@ export type TmdbMovie = {
   id: number
   adult?: boolean
   backdropPath?: string
+  director?: string
   genreIds?: number[]
   imdbId?: string
   mediaType?: string

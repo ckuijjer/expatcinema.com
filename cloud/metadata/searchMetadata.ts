@@ -20,7 +20,11 @@ import { Metadata, TmdbMovie } from './types'
 
 type TmdbSearchResponse = { results: TmdbMovieResult[] }
 type TmdbFindResponse = { movieResults: TmdbMovieResult[] }
-type TmdbMovieAppendResponse = Omit<TmdbMovieResult, 'alternativeTitles'> & {
+type TmdbMovieAppendResponse = Omit<TmdbMovieResult, 'alternativeTitles' | 'genreIds'> & {
+  genres?: Array<{ id: number; name?: string }>
+  credits?: {
+    crew?: Array<{ job?: string; name?: string }>
+  }
   alternativeTitles?: {
     titles?: Array<{ title?: string }>
   }
@@ -66,12 +70,16 @@ const getTmdbMovie = async (tmdbId: number) => {
   const tmdb = getTmdb()
   const movie = (await tmdb.get(`movie/${tmdbId}`, {
     searchParams: {
-      append_to_response: 'videos,alternative_titles,external_ids',
+      append_to_response: 'videos,alternative_titles,external_ids,credits',
     },
   })) as unknown as TmdbMovieAppendResponse
 
+  const director = movie.credits?.crew?.find((member) => member.job === 'Director')?.name
+
   const normalizedMovie = {
     ...movie,
+    genreIds: movie.genres?.map((g) => g.id) ?? [],
+    director,
     imdbId: movie.externalIds?.imdbId,
     alternativeTitles:
       movie.alternativeTitles?.titles

@@ -44,6 +44,13 @@ export const listPosterPlaceholderStyle = css({
   borderRadius: '4px',
   backgroundColor: 'var(--background-highlight-color)',
   border: '1px solid var(--border-color)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '16px',
+  fontWeight: '700',
+  color: 'color-mix(in srgb, var(--text-color) 30%, transparent)',
+  userSelect: 'none',
 })
 
 export const listTitleStyle = css({

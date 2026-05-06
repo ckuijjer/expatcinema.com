@@ -108,6 +108,14 @@ export const About = () => {
               info@expatcinema.com
             </Link>
           </p>
+          <PageSection>Statistics</PageSection>
+          <p>
+            View{' '}
+            <Link href="/statistics" className={textLinkStyle}>
+              screening coverage statistics
+            </Link>{' '}
+            for an overview of scraper activity.
+          </p>
           <PageSection>Attribution</PageSection>
           <div className={tmdbAttributionStyle}>
             <Link

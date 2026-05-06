@@ -7,6 +7,7 @@ export type MovieData = {
   imdbId?: string
   tmdb?: {
     backdropPath?: string | null
+    director?: string | null
     genreIds?: number[]
     id?: number
     originalLanguage?: string | null

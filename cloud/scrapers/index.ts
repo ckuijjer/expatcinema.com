@@ -367,6 +367,7 @@ export const scrapers = async () => {
                 videos: metadata.tmdb?.videos,
                 voteAverage: metadata.tmdb?.voteAverage,
                 genreIds: metadata.tmdb?.genreIds ?? [],
+                director: metadata.tmdb?.director,
               },
             },
           ]),

@@ -13,6 +13,24 @@ const scrollerStyle = css({
   paddingLeft: '10px',
   whiteSpace: 'nowrap',
   overflowX: 'auto',
+  // hide scrollbar visually while keeping scroll functionality
+  scrollbarWidth: 'none',
+  '&::-webkit-scrollbar': { display: 'none' },
+})
+
+const wrapperStyle = css({
+  position: 'relative',
+  overflow: 'hidden',
+  _after: {
+    content: '""',
+    position: 'absolute',
+    top: '0',
+    right: '0',
+    bottom: '0',
+    width: '48px',
+    background: 'linear-gradient(to right, transparent, var(--secondary-color))',
+    pointerEvents: 'none',
+  },
 })
 
 export const Container = React.forwardRef<
@@ -46,29 +64,31 @@ export const CityFilter = ({ links }: { links: FilterLink[] }) => {
   }, [city])
 
   return (
-    <Container
-      className={css({
-        display: 'flex',
-        backgroundColor: 'var(--secondary-color)',
-        gap: '12px',
-      })}
-    >
-      {links.map(({ text, slug }) => (
-        <ActiveLink
-          ref={(el) => {
-            if (slug === null) return
-            if (el) linkRefs.current.set(slug, el)
-            else linkRefs.current.delete(slug)
-          }}
-          href={
-            slug === null ? `/${searchQuery}` : `/city/${slug}${searchQuery}`
-          }
-          key={slug ?? text}
-          matchPrefix
-        >
-          {text}
-        </ActiveLink>
-      ))}
-    </Container>
+    <div className={wrapperStyle}>
+      <Container
+        className={css({
+          display: 'flex',
+          backgroundColor: 'var(--secondary-color)',
+          gap: '12px',
+        })}
+      >
+        {links.map(({ text, slug }) => (
+          <ActiveLink
+            ref={(el) => {
+              if (slug === null) return
+              if (el) linkRefs.current.set(slug, el)
+              else linkRefs.current.delete(slug)
+            }}
+            href={
+              slug === null ? `/${searchQuery}` : `/city/${slug}${searchQuery}`
+            }
+            key={slug ?? text}
+            matchPrefix
+          >
+            {text}
+          </ActiveLink>
+        ))}
+      </Container>
+    </div>
   )
 }

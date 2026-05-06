@@ -98,12 +98,6 @@ export const Menu = () => {
       >
         About
       </Link>
-      <Link
-        href="/statistics"
-        className={cx(menuTextItemStyle, headerFont.className)}
-      >
-        Statistics
-      </Link>
       <div className={menuButtonStyle} onClick={openMenu}>
         <MenuIcon />
       </div>
@@ -131,12 +125,6 @@ export const Menu = () => {
                 className={cx(menuItemStyle, headerFont.className)}
               >
                 About
-              </Link>
-              <Link
-                href="/statistics"
-                className={cx(menuItemStyle, headerFont.className)}
-              >
-                Statistics
               </Link>
             </div>
           </Layout>
