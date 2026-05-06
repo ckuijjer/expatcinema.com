@@ -20,7 +20,7 @@ import { Metadata, TmdbMovie } from './types'
 
 type TmdbSearchResponse = { results: TmdbMovieResult[] }
 type TmdbFindResponse = { movieResults: TmdbMovieResult[] }
-type TmdbMovieAppendResponse = Omit<TmdbMovieResult, 'alternativeTitles' | 'genreIds'> & {
+type TmdbMovieAppendResponse = Omit<TmdbMovieResult, 'alternativeTitles'> & {
   genres?: Array<{ id: number; name?: string }>
   credits?: {
     crew?: Array<{ job?: string; name?: string }>
