@@ -90,6 +90,8 @@ jobs:
         run: ${{ env.package-manager }} ${{ env.package-manager-command }}
       - name: Validate cinema data
         run: ${{ env.package-manager-runner }} validate:cinemas
+      - name: Test
+        run: pnpm test
       - name: Build with Next.js
         run: ${{ env.package-manager-runner }} next build
       - name: Generate a sitemap
