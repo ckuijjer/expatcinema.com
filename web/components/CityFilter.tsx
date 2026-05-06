@@ -43,7 +43,7 @@ export const FilterBarWrapper = ({
     {children}
     <div
       className={fadeOverlayStyle}
-      style={{ background: `linear-gradient(to right, transparent, ${fadeColor})` }}
+      style={{ background: `linear-gradient(to right, transparent, rgba(0,0,0,0.10) 50%, ${fadeColor})` }}
     />
   </div>
 )
