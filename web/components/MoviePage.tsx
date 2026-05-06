@@ -319,20 +319,19 @@ export const MoviePage = ({
                 {originalTitle}
               </p>
             ) : null}
-            {description || originalLanguage || runtime || genres || voteAverage || directors ? (
-              <div className={detailsStyle}>
-                {description ? (
-                  <p className={descriptionStyle}>{description}</p>
-                ) : null}
-                <div className={metadataStyle}>
-                  <MetadataRow label="Director" value={directors} />
-                  <MetadataRow label="Genre" value={genres} />
-                  <MetadataRow label="Language" value={originalLanguage} />
-                  <MetadataRow label="Runtime" value={runtime} />
-                  <MetadataRow label="Rating" value={voteAverage ? `${voteAverage}/10` : undefined} />
-                </div>
+            <div className={detailsStyle}>
+              {description ? (
+                <p className={descriptionStyle}>{description}</p>
+              ) : null}
+              <div className={metadataStyle}>
+                <MetadataRow label="Director" value={directors} />
+                <MetadataRow label="Genre" value={genres} />
+                <MetadataRow label="Language" value={originalLanguage} />
+                <MetadataRow label="Subtitles" value="English" />
+                <MetadataRow label="Runtime" value={runtime} />
+                <MetadataRow label="Rating" value={voteAverage ? `${voteAverage}/10` : undefined} />
               </div>
-            ) : null}
+            </div>
             <div className={linkRowStyle}>
               {tmdbHref ? (
                 <a
