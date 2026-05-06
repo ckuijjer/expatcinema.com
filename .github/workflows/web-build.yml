@@ -37,5 +37,7 @@ jobs:
         run: pnpm install
       - name: Validate cinema data
         run: pnpm validate:cinemas
+      - name: Test
+        run: pnpm test
       - name: Build with Next.js
         run: pnpm next build
