@@ -21,6 +21,10 @@ import { Metadata, TmdbMovie } from './types'
 type TmdbSearchResponse = { results: TmdbMovieResult[] }
 type TmdbFindResponse = { movieResults: TmdbMovieResult[] }
 type TmdbMovieAppendResponse = Omit<TmdbMovieResult, 'alternativeTitles'> & {
+  genres?: Array<{ id: number; name?: string }>
+  credits?: {
+    crew?: Array<{ job?: string; name?: string }>
+  }
   alternativeTitles?: {
     titles?: Array<{ title?: string }>
   }
@@ -66,12 +70,21 @@ const getTmdbMovie = async (tmdbId: number) => {
   const tmdb = getTmdb()
   const movie = (await tmdb.get(`movie/${tmdbId}`, {
     searchParams: {
-      append_to_response: 'videos,alternative_titles,external_ids',
+      append_to_response: 'videos,alternative_titles,external_ids,credits',
     },
   })) as unknown as TmdbMovieAppendResponse
 
+  const directors = (movie.credits?.crew ?? [])
+    .filter((member) => member.job === 'Director')
+    .map((member) => member.name)
+    .filter((name): name is string => Boolean(name))
+
   const normalizedMovie = {
     ...movie,
+    genres: (movie.genres ?? [])
+      .map((g) => g.name)
+      .filter((name): name is string => Boolean(name)),
+    directors,
     imdbId: movie.externalIds?.imdbId,
     alternativeTitles:
       movie.alternativeTitles?.titles

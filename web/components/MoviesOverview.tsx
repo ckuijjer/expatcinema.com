@@ -90,7 +90,7 @@ export const MovieOverviewRow = ({
           className={listPosterStyle}
         />
       ) : (
-        <PosterPlaceholder className={posterPlaceholderClassName} />
+        <PosterPlaceholder title={movie.title} className={posterPlaceholderClassName} />
       )}
       <div className={listTitleStyle}>
         {movie.title}

@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useLayoutEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { removeDiacritics } from './removeDiacritics'
 
@@ -41,6 +41,33 @@ export const useSearch = (): UseSearch => {
     searchQuery,
     setSearch,
   }
+}
+
+export const useScrollFade = (ref: React.RefObject<HTMLElement | null>) => {
+  const [showFade, setShowFade] = useState(true)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const update = () => {
+      const hasOverflow = el.scrollWidth > el.clientWidth
+      const isAtEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1
+      setShowFade(hasOverflow && !isAtEnd)
+    }
+
+    const observer = new ResizeObserver(update)
+    observer.observe(el)
+    el.addEventListener('scroll', update)
+    update()
+
+    return () => {
+      observer.disconnect()
+      el.removeEventListener('scroll', update)
+    }
+  }, [ref])
+
+  return showFade
 }
 
 export const useKeypress = (key: string, action: () => void) => {

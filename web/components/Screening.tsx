@@ -186,6 +186,7 @@ export const ScreeningRow = ({
         ) : movieUrl ? (
           <a href={movieUrl} className={posterLinkStyle}>
             <PosterPlaceholder
+              title={movieId ? title : undefined}
               className={
                 movieId ? undefined : unmatchedPosterPlaceholderStyle
               }

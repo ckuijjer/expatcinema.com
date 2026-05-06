@@ -10,7 +10,15 @@
     "lint": "eslint .",
     "validate:cinemas": "node ../scripts/validate-cinemas.mjs",
     "clean": "rm -rf .next out",
-    "serve": "pnpm build && serve out"
+    "serve": "pnpm build && serve out",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^styled-system/(.*)$": "<rootDir>/styled-system/$1"
+    }
   },
   "dependencies": {
     "@observablehq/plot": "0.6.17",
@@ -22,14 +30,17 @@
   },
   "devDependencies": {
     "@pandacss/dev": "^1.9.1",
+    "@types/jest": "^30.0.0",
     "@types/luxon": "^3.7.1",
     "@types/node": "24.0.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "16.2.1",
+    "jest": "^30.3.0",
     "prettier": "^3.8.1",
     "serve": "^14.2.6",
+    "ts-jest": "^29.4.6",
     "typescript": "5.9.3"
   }
 }
