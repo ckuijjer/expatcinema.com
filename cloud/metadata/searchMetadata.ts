@@ -74,12 +74,17 @@ const getTmdbMovie = async (tmdbId: number) => {
     },
   })) as unknown as TmdbMovieAppendResponse
 
-  const director = movie.credits?.crew?.find((member) => member.job === 'Director')?.name
+  const directors = (movie.credits?.crew ?? [])
+    .filter((member) => member.job === 'Director')
+    .map((member) => member.name)
+    .filter((name): name is string => Boolean(name))
 
   const normalizedMovie = {
     ...movie,
-    genreIds: movie.genres?.map((g) => g.id) ?? [],
-    director,
+    genres: (movie.genres ?? [])
+      .map((g) => g.name)
+      .filter((name): name is string => Boolean(name)),
+    directors,
     imdbId: movie.externalIds?.imdbId,
     alternativeTitles:
       movie.alternativeTitles?.titles

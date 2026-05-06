@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import { css } from 'styled-system/css'
 
-import { useSearch } from '../utils/hooks'
+import { useSearch, useScrollFade } from '../utils/hooks'
 import { ActiveLink } from './ActiveLink'
 import { Container, FilterBarWrapper, FilterLink } from './CityFilter'
 
@@ -18,6 +18,8 @@ export const CinemaFilter = ({ links }: { links: FilterLink[] }) => {
   const { searchQuery } = useSearch()
   const { city, cinema } = useParams<{ city: string; cinema?: string }>()
   const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
+  const containerRef = useRef<HTMLDivElement>(null)
+  const showFade = useScrollFade(containerRef)
 
   useEffect(() => {
     if (!cinema) return
@@ -32,8 +34,9 @@ export const CinemaFilter = ({ links }: { links: FilterLink[] }) => {
   }, [cinema])
 
   return (
-    <FilterBarWrapper fadeColor="var(--palette-purple-300)">
+    <FilterBarWrapper fadeColor="var(--palette-purple-300)" showFade={showFade}>
       <Container
+        ref={containerRef}
         className={containerOverrideStyle}
         style={{ backgroundColor: 'var(--palette-purple-300)' }}
       >

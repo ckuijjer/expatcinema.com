@@ -155,29 +155,10 @@ const trailerFrameStyle = css({
   border: '0',
 })
 
-const TMDB_GENRES: Record<number, string> = {
-  28: 'Action',
-  12: 'Adventure',
-  16: 'Animation',
-  35: 'Comedy',
-  80: 'Crime',
-  99: 'Documentary',
-  18: 'Drama',
-  10751: 'Family',
-  14: 'Fantasy',
-  36: 'History',
-  27: 'Horror',
-  10402: 'Music',
-  9648: 'Mystery',
-  10749: 'Romance',
-  878: 'Science Fiction',
-  10770: 'TV Movie',
-  53: 'Thriller',
-  10752: 'War',
-  37: 'Western',
-}
-
-// TMDB uses some non-standard language codes not covered by Intl.DisplayNames
+// TMDB returns original_language as an ISO 639-1 code, but uses some non-standard
+// codes that Intl.DisplayNames (which requires valid BCP 47 tags) doesn't recognise:
+// "cn" for Cantonese (BCP 47: "yue"), "sh" for Serbo-Croatian (no ISO 639-1 code),
+// "xx" for intentionally absent dialogue. TMDB only returns the code, not a display name.
 const TMDB_LANGUAGE_OVERRIDES: Record<string, string> = {
   cn: 'Cantonese',
   sh: 'Serbo-Croatian',
@@ -195,12 +176,6 @@ const formatLanguage = (language?: string | null) => {
 const formatVoteAverage = (voteAverage?: number | null) => {
   if (!voteAverage) return undefined
   return voteAverage.toFixed(1)
-}
-
-const formatGenres = (genreIds?: number[]) => {
-  if (!genreIds?.length) return undefined
-  const names = genreIds.map((id) => TMDB_GENRES[id]).filter(Boolean)
-  return names.length ? names.join(', ') : undefined
 }
 
 const formatRuntime = (runtime?: number | null) => {
@@ -223,6 +198,14 @@ const formatRuntime = (runtime?: number | null) => {
 
   return parts.join('')
 }
+
+const MetadataRow = ({ label, value }: { label: string; value?: string | null }) =>
+  value ? (
+    <div className={metadataItemStyle}>
+      <span className={metadataLabelStyle}>{label}:</span>
+      <span>{value}</span>
+    </div>
+  ) : null
 
 const getTrailer = (movie: Movie) => {
   const videos = movie.tmdb?.videos?.results?.filter(
@@ -268,9 +251,9 @@ export const MoviePage = ({
     : undefined
   const originalLanguage = formatLanguage(movie.tmdb?.originalLanguage)
   const runtime = formatRuntime(movie.tmdb?.runtime)
-  const genres = formatGenres(movie.tmdb?.genreIds)
+  const genres = movie.tmdb?.genres?.join(', ') || undefined
   const voteAverage = formatVoteAverage(movie.tmdb?.voteAverage)
-  const director = movie.tmdb?.director
+  const directors = movie.tmdb?.directors?.join(', ') || undefined
   const originalTitle = movie.tmdb?.originalTitle
   const showOriginalTitle = originalTitle && originalTitle !== movie.title
   const description = movie.tmdb?.overview
@@ -336,42 +319,17 @@ export const MoviePage = ({
                 {originalTitle}
               </p>
             ) : null}
-            {description || originalLanguage || runtime || genres || voteAverage || director ? (
+            {description || originalLanguage || runtime || genres || voteAverage || directors ? (
               <div className={detailsStyle}>
                 {description ? (
                   <p className={descriptionStyle}>{description}</p>
                 ) : null}
                 <div className={metadataStyle}>
-                  {director ? (
-                    <div className={metadataItemStyle}>
-                      <span className={metadataLabelStyle}>Director:</span>
-                      <span>{director}</span>
-                    </div>
-                  ) : null}
-                  {genres ? (
-                    <div className={metadataItemStyle}>
-                      <span className={metadataLabelStyle}>Genre:</span>
-                      <span>{genres}</span>
-                    </div>
-                  ) : null}
-                  {originalLanguage ? (
-                    <div className={metadataItemStyle}>
-                      <span className={metadataLabelStyle}>Language:</span>
-                      <span>{originalLanguage}</span>
-                    </div>
-                  ) : null}
-                  {runtime ? (
-                    <div className={metadataItemStyle}>
-                      <span className={metadataLabelStyle}>Runtime:</span>
-                      <span>{runtime}</span>
-                    </div>
-                  ) : null}
-                  {voteAverage ? (
-                    <div className={metadataItemStyle}>
-                      <span className={metadataLabelStyle}>Rating:</span>
-                      <span>{voteAverage}/10</span>
-                    </div>
-                  ) : null}
+                  <MetadataRow label="Director" value={directors} />
+                  <MetadataRow label="Genre" value={genres} />
+                  <MetadataRow label="Language" value={originalLanguage} />
+                  <MetadataRow label="Runtime" value={runtime} />
+                  <MetadataRow label="Rating" value={voteAverage ? `${voteAverage}/10` : undefined} />
                 </div>
               </div>
             ) : null}

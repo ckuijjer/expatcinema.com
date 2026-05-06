@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 
 import { css, cx } from 'styled-system/css'
 
-import { useSearch } from '../utils/hooks'
+import { useSearch, useScrollFade } from '../utils/hooks'
 import { ActiveLink } from './ActiveLink'
 
 const scrollerStyle = css({
@@ -30,21 +30,33 @@ const fadeOverlayStyle = css({
   bottom: '0',
   width: '48px',
   pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  paddingRight: '10px',
+  fontSize: '22px',
+  color: 'rgba(255,255,255,0.6)',
 })
 
 export const FilterBarWrapper = ({
   children,
   fadeColor,
+  showFade,
 }: {
   children: React.ReactNode
   fadeColor: string
+  showFade: boolean
 }) => (
   <div className={wrapperStyle}>
     {children}
-    <div
-      className={fadeOverlayStyle}
-      style={{ background: `linear-gradient(to right, transparent, rgba(0,0,0,0.10) 50%, ${fadeColor})` }}
-    />
+    {showFade && (
+      <div
+        className={fadeOverlayStyle}
+        style={{ background: `linear-gradient(to right, transparent, ${fadeColor})` }}
+      >
+        ›
+      </div>
+    )}
   </div>
 )
 
@@ -65,6 +77,8 @@ export const CityFilter = ({ links }: { links: FilterLink[] }) => {
   const { searchQuery } = useSearch()
   const { city } = useParams<{ city?: string }>()
   const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
+  const containerRef = useRef<HTMLDivElement>(null)
+  const showFade = useScrollFade(containerRef)
 
   useEffect(() => {
     if (!city) return
@@ -79,8 +93,9 @@ export const CityFilter = ({ links }: { links: FilterLink[] }) => {
   }, [city])
 
   return (
-    <FilterBarWrapper fadeColor="var(--secondary-color)">
+    <FilterBarWrapper fadeColor="var(--secondary-color)" showFade={showFade}>
       <Container
+        ref={containerRef}
         className={css({
           display: 'flex',
           backgroundColor: 'var(--secondary-color)',
