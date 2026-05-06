@@ -11,11 +11,12 @@ export const RelativeDate = ({ children }: { children: string }) => {
 
   const diff = date.diff(today, 'days').days
 
-  let relativeDate = date.toFormat('EEEE d MMMM')
+  const fullDate = date.toFormat('EEEE d MMMM')
+  let relativeDate = fullDate
   if (diff === 0) {
-    relativeDate = 'Today'
+    relativeDate = `Today \u2013 ${fullDate}`
   } else if (diff === 1) {
-    relativeDate = 'Tomorrow'
+    relativeDate = `Tomorrow \u2013 ${fullDate}`
   }
 
   return <h3 className={listSectionHeadingStyle}>{relativeDate}</h3>
