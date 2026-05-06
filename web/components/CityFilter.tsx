@@ -21,17 +21,32 @@ const scrollerStyle = css({
 const wrapperStyle = css({
   position: 'relative',
   overflow: 'hidden',
-  _after: {
-    content: '""',
-    position: 'absolute',
-    top: '0',
-    right: '0',
-    bottom: '0',
-    width: '48px',
-    background: 'linear-gradient(to right, transparent, var(--secondary-color))',
-    pointerEvents: 'none',
-  },
 })
+
+const fadeOverlayStyle = css({
+  position: 'absolute',
+  top: '0',
+  right: '0',
+  bottom: '0',
+  width: '48px',
+  pointerEvents: 'none',
+})
+
+export const FilterBarWrapper = ({
+  children,
+  fadeColor,
+}: {
+  children: React.ReactNode
+  fadeColor: string
+}) => (
+  <div className={wrapperStyle}>
+    {children}
+    <div
+      className={fadeOverlayStyle}
+      style={{ background: `linear-gradient(to right, transparent, ${fadeColor})` }}
+    />
+  </div>
+)
 
 export const Container = React.forwardRef<
   HTMLDivElement,
@@ -64,7 +79,7 @@ export const CityFilter = ({ links }: { links: FilterLink[] }) => {
   }, [city])
 
   return (
-    <div className={wrapperStyle}>
+    <FilterBarWrapper fadeColor="var(--secondary-color)">
       <Container
         className={css({
           display: 'flex',
@@ -89,6 +104,6 @@ export const CityFilter = ({ links }: { links: FilterLink[] }) => {
           </ActiveLink>
         ))}
       </Container>
-    </div>
+    </FilterBarWrapper>
   )
 }

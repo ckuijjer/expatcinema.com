@@ -7,7 +7,7 @@ import { css } from 'styled-system/css'
 
 import { useSearch } from '../utils/hooks'
 import { ActiveLink } from './ActiveLink'
-import { Container, FilterLink } from './CityFilter'
+import { Container, FilterBarWrapper, FilterLink } from './CityFilter'
 
 const containerOverrideStyle = css({
   display: 'flex',
@@ -32,28 +32,30 @@ export const CinemaFilter = ({ links }: { links: FilterLink[] }) => {
   }, [cinema])
 
   return (
-    <Container
-      className={containerOverrideStyle}
-      style={{ backgroundColor: 'var(--palette-purple-300)' }}
-    >
-      {links.map(({ text, slug }) => (
-        <ActiveLink
-          ref={(el) => {
-            if (slug === null) return
-            if (el) linkRefs.current.set(slug, el)
-            else linkRefs.current.delete(slug)
-          }}
-          href={
-            slug === null
-              ? `/city/${city}${searchQuery}`
-              : `/city/${city}/cinema/${slug}${searchQuery}`
-          }
-          key={slug ?? text}
-          tone="dark"
-        >
-          {text}
-        </ActiveLink>
-      ))}
-    </Container>
+    <FilterBarWrapper fadeColor="var(--palette-purple-300)">
+      <Container
+        className={containerOverrideStyle}
+        style={{ backgroundColor: 'var(--palette-purple-300)' }}
+      >
+        {links.map(({ text, slug }) => (
+          <ActiveLink
+            ref={(el) => {
+              if (slug === null) return
+              if (el) linkRefs.current.set(slug, el)
+              else linkRefs.current.delete(slug)
+            }}
+            href={
+              slug === null
+                ? `/city/${city}${searchQuery}`
+                : `/city/${city}/cinema/${slug}${searchQuery}`
+            }
+            key={slug ?? text}
+            tone="dark"
+          >
+            {text}
+          </ActiveLink>
+        ))}
+      </Container>
+    </FilterBarWrapper>
   )
 }
