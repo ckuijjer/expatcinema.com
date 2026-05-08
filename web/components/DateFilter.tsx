@@ -8,10 +8,10 @@ import { getToday } from '../utils/getToday'
 
 const gridStyle = css({
   display: 'grid',
-  gridTemplateColumns: 'repeat(8, 1fr)',
+  gridTemplateColumns: 'repeat(8, minmax(0, 1fr))',
   backgroundColor: 'var(--palette-purple-200)',
-  gap: '8px 6px',
-  padding: '8px 3px',
+  gap: '8px 4px',
+  padding: '8px 2px',
 })
 
 const linkStyle = css({
@@ -19,7 +19,7 @@ const linkStyle = css({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '4px 4px',
+  padding: '4px 2px',
   cursor: 'pointer',
   textDecoration: 'none',
   color: 'var(--palette-purple-500)',
@@ -27,6 +27,7 @@ const linkStyle = css({
   backgroundColor: 'white',
   border: '1px solid var(--palette-purple-300)',
   borderRadius: '6px',
+  overflow: 'hidden',
   '&:hover': {
     opacity: '0.75',
   },
@@ -40,6 +41,10 @@ const disabledStyle = css({
 
 const labelStyle = css({
   fontSize: '10px',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  width: '100%',
+  textAlign: 'center',
 })
 
 const dayStyle = css({
@@ -50,7 +55,7 @@ const MAX_DAYS = 7
 
 const getDateParts = (date: DateTime, today: DateTime) => {
   const diff = date.diff(today, 'days').days
-  const label = diff === 0 ? 'Today' : diff === 1 ? 'Tmrw' : date.toFormat('EEE')
+  const label = diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : date.toFormat('EEE')
   return { label, day: date.toFormat('d') }
 }
 
