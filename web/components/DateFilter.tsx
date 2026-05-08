@@ -10,16 +10,40 @@ import { useScrollFade } from '../utils/hooks'
 import { Container, FilterBarWrapper } from './CityFilter'
 
 const linkStyle = css({
-  display: 'inline-block',
-  fontSize: '18px',
-  padding: '10px',
-  marginTop: '8px',
-  marginBottom: '8px',
+  display: 'inline-flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '8px 10px',
+  marginTop: '6px',
+  marginBottom: '6px',
   cursor: 'pointer',
   textDecoration: 'none',
   borderRadius: '4px',
   color: 'var(--palette-purple-500)',
-  whiteSpace: 'nowrap',
+  lineHeight: '1.2',
+  '&:hover': {
+    opacity: '0.75',
+  },
+})
+
+const labelStyle = css({
+  fontSize: '12px',
+})
+
+const dayStyle = css({
+  fontSize: '20px',
+})
+
+const ellipsisStyle = css({
+  fontSize: '20px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  padding: '8px 10px',
+  marginTop: '6px',
+  marginBottom: '6px',
+  cursor: 'pointer',
+  textDecoration: 'none',
+  color: 'var(--palette-purple-500)',
   '&:hover': {
     opacity: '0.75',
   },
@@ -27,12 +51,13 @@ const linkStyle = css({
 
 const MAX_DAYS = 7
 
-const getLabel = (isoDate: string, today: DateTime): string => {
+type DateParts = { top: string; day: string; month: string }
+
+const getDateParts = (isoDate: string, today: DateTime): DateParts => {
   const date = DateTime.fromISO(isoDate, { zone: 'Europe/Amsterdam' })
   const diff = date.diff(today, 'days').days
-  if (diff === 0) return 'Today'
-  if (diff === 1) return 'Tomorrow'
-  return date.toFormat('d MMM')
+  const top = diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : date.toFormat('EEEE')
+  return { top, day: date.toFormat('d'), month: date.toFormat('MMM') }
 }
 
 export const DateFilter = ({ dates }: { dates: string[] }) => {
@@ -57,16 +82,21 @@ export const DateFilter = ({ dates }: { dates: string[] }) => {
         className={css({
           display: 'flex',
           backgroundColor: 'var(--palette-purple-200)',
-          gap: '12px',
+          gap: '4px',
         })}
       >
-        {visibleDates.map((isoDate) => (
-          <a key={isoDate} href={`#${isoDate}`} className={linkStyle}>
-            {getLabel(isoDate, today)}
-          </a>
-        ))}
+        {visibleDates.map((isoDate) => {
+          const { top, day, month } = getDateParts(isoDate, today)
+          return (
+            <a key={isoDate} href={`#${isoDate}`} className={linkStyle}>
+              <span className={labelStyle}>{top}</span>
+              <span className={dayStyle}>{day}</span>
+              <span className={labelStyle}>{month}</span>
+            </a>
+          )
+        })}
         {firstExtraDate && (
-          <a href={`#${firstExtraDate}`} className={linkStyle}>
+          <a href={`#${firstExtraDate}`} className={ellipsisStyle}>
             …
           </a>
         )}
