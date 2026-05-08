@@ -1,26 +1,27 @@
 'use client'
 
 import { DateTime } from 'luxon'
-import { useRef } from 'react'
 
 import { css } from 'styled-system/css'
 
 import { getToday } from '../utils/getToday'
-import { useScrollFade } from '../utils/hooks'
-import { Container, FilterBarWrapper } from './CityFilter'
+
+const gridStyle = css({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(8, 1fr)',
+  backgroundColor: 'var(--palette-purple-200)',
+})
 
 const linkStyle = css({
-  display: 'inline-flex',
+  display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: '3px 8px',
-  marginTop: '3px',
-  marginBottom: '3px',
+  justifyContent: 'center',
+  padding: '4px 0',
   cursor: 'pointer',
   textDecoration: 'none',
-  borderRadius: '4px',
   color: 'var(--palette-purple-500)',
-  lineHeight: '1.1',
+  lineHeight: '1.2',
   '&:hover': {
     opacity: '0.75',
   },
@@ -34,35 +35,16 @@ const dayStyle = css({
   fontSize: '15px',
 })
 
-const ellipsisStyle = css({
-  fontSize: '15px',
-  display: 'inline-flex',
-  alignItems: 'center',
-  padding: '3px 8px',
-  marginTop: '3px',
-  marginBottom: '3px',
-  cursor: 'pointer',
-  textDecoration: 'none',
-  color: 'var(--palette-purple-500)',
-  '&:hover': {
-    opacity: '0.75',
-  },
-})
-
 const MAX_DAYS = 7
 
-type DateParts = { top: string; day: string; month: string }
-
-const getDateParts = (isoDate: string, today: DateTime): DateParts => {
+const getDateParts = (isoDate: string, today: DateTime) => {
   const date = DateTime.fromISO(isoDate, { zone: 'Europe/Amsterdam' })
   const diff = date.diff(today, 'days').days
-  const top = diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : date.toFormat('EEEE')
-  return { top, day: date.toFormat('d'), month: date.toFormat('MMM') }
+  const label = diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : date.toFormat('EEE')
+  return { label, day: date.toFormat('d') }
 }
 
 export const DateFilter = ({ dates }: { dates: string[] }) => {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const showFade = useScrollFade(containerRef)
   const today = getToday()
 
   const visibleDates = dates.filter((d) => {
@@ -72,35 +54,23 @@ export const DateFilter = ({ dates }: { dates: string[] }) => {
   const firstExtraDate = dates[visibleDates.length]
 
   return (
-    <FilterBarWrapper
-      fadeColor="var(--palette-purple-200)"
-      textColor="var(--palette-purple-500)"
-      showFade={showFade}
-    >
-      <Container
-        ref={containerRef}
-        className={css({
-          display: 'flex',
-          backgroundColor: 'var(--palette-purple-200)',
-          gap: '4px',
-        })}
-      >
-        {visibleDates.map((isoDate) => {
-          const { top, day, month } = getDateParts(isoDate, today)
-          return (
-            <a key={isoDate} href={`#${isoDate}`} className={linkStyle}>
-              <span className={labelStyle}>{top}</span>
-              <span className={dayStyle}>{day}</span>
-              <span className={labelStyle}>{month}</span>
-            </a>
-          )
-        })}
-        {firstExtraDate && (
-          <a href={`#${firstExtraDate}`} className={ellipsisStyle}>
-            …
+    <div className={gridStyle}>
+      {visibleDates.map((isoDate) => {
+        const { label, day } = getDateParts(isoDate, today)
+        return (
+          <a key={isoDate} href={`#${isoDate}`} className={linkStyle}>
+            <span className={labelStyle}>{label}</span>
+            <span className={dayStyle}>{day}</span>
           </a>
-        )}
-      </Container>
-    </FilterBarWrapper>
+        )
+      })}
+      {firstExtraDate ? (
+        <a href={`#${firstExtraDate}`} className={linkStyle}>
+          <span className={dayStyle}>…</span>
+        </a>
+      ) : (
+        <div />
+      )}
+    </div>
   )
 }

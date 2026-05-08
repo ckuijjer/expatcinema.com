@@ -20,7 +20,7 @@ export default async function Home() {
   const dates = getScreeningDates(screenings)
   return (
     <>
-      <Layout noPadding>
+      <Layout backgroundColor="var(--palette-purple-200)" noPadding>
         <Suspense>
           <DateFilter dates={dates} />
         </Suspense>

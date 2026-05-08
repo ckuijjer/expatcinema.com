@@ -54,7 +54,7 @@ export default async function CityLayout({
           <CinemaFilter links={links} />
         </Suspense>
       </Layout>
-      <Layout noPadding>
+      <Layout backgroundColor="var(--palette-purple-200)" noPadding>
         <Suspense>
           <DateFilter dates={dates} />
         </Suspense>
