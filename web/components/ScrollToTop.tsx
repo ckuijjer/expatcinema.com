@@ -20,7 +20,7 @@ const buttonStyle = css({
   alignItems: 'center',
   justifyContent: 'center',
   opacity: '0.85',
-  zIndex: '100',
+  zIndex: '101',
   boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
   transition: 'opacity 0.2s',
   '&:hover': {
