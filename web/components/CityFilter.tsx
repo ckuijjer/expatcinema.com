@@ -34,17 +34,18 @@ const fadeOverlayStyle = css({
   alignItems: 'center',
   justifyContent: 'flex-end',
   paddingRight: '10px',
-  fontSize: '22px',
-  color: 'rgba(255,255,255,0.6)',
+  fontSize: '18px',
 })
 
 export const FilterBarWrapper = ({
   children,
   fadeColor,
+  textColor = 'var(--text-inverse-color)',
   showFade,
 }: {
   children: React.ReactNode
   fadeColor: string
+  textColor?: string
   showFade: boolean
 }) => (
   <div className={wrapperStyle}>
@@ -52,9 +53,12 @@ export const FilterBarWrapper = ({
     {showFade && (
       <div
         className={fadeOverlayStyle}
-        style={{ background: `linear-gradient(to right, transparent, ${fadeColor})` }}
+        style={{
+          background: `linear-gradient(to right, transparent, ${fadeColor})`,
+          color: textColor,
+        }}
       >
-        ›
+        ❯
       </div>
     )}
   </div>

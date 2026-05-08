@@ -1,6 +1,6 @@
-import React from 'react'
-
 import { css } from 'styled-system/css'
+
+import { ExternalLink } from './ExternalLink'
 
 type CinemaInfo = {
   name: string
@@ -35,16 +35,6 @@ const addressStyle = css({
   color: 'var(--text-muted-color)',
 })
 
-const linkStyle = css({
-  color: 'var(--secondary-color)',
-  fontWeight: '700',
-  textDecoration: 'none',
-  whiteSpace: 'nowrap',
-  '&:hover': {
-    textDecoration: 'underline',
-  },
-})
-
 export const CinemaInfoBar = ({ cinema }: { cinema: CinemaInfo }) => {
   const { address } = cinema
   const addressLabel = `${address.streetAddress}, ${address.postalCode} ${address.addressLocality}`
@@ -53,22 +43,8 @@ export const CinemaInfoBar = ({ cinema }: { cinema: CinemaInfo }) => {
     <aside className={barStyle} aria-label={`${cinema.name} information`}>
       <span className={nameStyle}>{cinema.name}</span>
       <span className={addressStyle}>{addressLabel}</span>
-      <a
-        className={linkStyle}
-        href={cinema.url}
-        target="_blank"
-        rel="noreferrer"
-      >
-        Website
-      </a>
-      <a
-        className={linkStyle}
-        href={address.googleMapsUrl}
-        target="_blank"
-        rel="noreferrer"
-      >
-        Google Maps
-      </a>
+      <ExternalLink href={cinema.url}>Website</ExternalLink>
+      <ExternalLink href={address.googleMapsUrl}>Google Maps</ExternalLink>
     </aside>
   )
 }

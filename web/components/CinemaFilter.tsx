@@ -34,7 +34,7 @@ export const CinemaFilter = ({ links }: { links: FilterLink[] }) => {
   }, [cinema])
 
   return (
-    <FilterBarWrapper fadeColor="var(--palette-purple-300)" showFade={showFade}>
+    <FilterBarWrapper fadeColor="var(--palette-purple-300)" textColor="var(--palette-purple-500)" showFade={showFade}>
       <Container
         ref={containerRef}
         className={containerOverrideStyle}
