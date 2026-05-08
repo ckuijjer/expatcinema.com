@@ -50,7 +50,7 @@ const MAX_DAYS = 7
 
 const getDateParts = (date: DateTime, today: DateTime) => {
   const diff = date.diff(today, 'days').days
-  const label = diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : date.toFormat('EEE')
+  const label = diff === 0 ? 'Today' : diff === 1 ? 'Tmrw' : date.toFormat('EEE')
   return { label, day: date.toFormat('d') }
 }
 
