@@ -1,7 +1,10 @@
 import React, { Suspense } from 'react'
 
+import { DateTime } from 'luxon'
+
 import cities from '../../data/city.json'
 import { CityFilter, FilterLink } from '../../components/CityFilter'
+import { DateFilter } from '../../components/DateFilter'
 import { Layout } from '../../components/Layout'
 import { NavigationBar } from '../../components/NavigationBar'
 import { getScreenings } from '../../utils/getScreenings'
@@ -20,6 +23,16 @@ export default async function ScreeningsLayout({
     },
     {},
   )
+
+  const dates = [
+    ...new Set(
+      screenings.map((s) =>
+        DateTime.fromISO(s.date, { setZone: true })
+          .setZone('Europe/Amsterdam')
+          .toISODate() ?? '',
+      ),
+    ),
+  ].sort()
 
   const links: FilterLink[] = [
     { text: 'All', slug: null },
@@ -46,6 +59,11 @@ export default async function ScreeningsLayout({
       <Layout backgroundColor="var(--palette-purple-400)" noPadding>
         <Suspense>
           <CityFilter links={links} />
+        </Suspense>
+      </Layout>
+      <Layout backgroundColor="var(--palette-purple-200)" noPadding>
+        <Suspense>
+          <DateFilter dates={dates} />
         </Suspense>
       </Layout>
       {children}
