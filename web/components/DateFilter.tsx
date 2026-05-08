@@ -10,6 +10,8 @@ const gridStyle = css({
   display: 'grid',
   gridTemplateColumns: 'repeat(8, 1fr)',
   backgroundColor: 'var(--palette-purple-200)',
+  gap: '8px 6px',
+  padding: '8px 3px',
 })
 
 const linkStyle = css({
@@ -18,7 +20,6 @@ const linkStyle = css({
   alignItems: 'center',
   justifyContent: 'center',
   padding: '4px 4px',
-  margin: '8px 3px',
   cursor: 'pointer',
   textDecoration: 'none',
   color: 'var(--palette-purple-500)',
