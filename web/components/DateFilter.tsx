@@ -2,7 +2,7 @@
 
 import { DateTime } from 'luxon'
 
-import { css } from 'styled-system/css'
+import { css, cx } from 'styled-system/css'
 
 import { getToday } from '../utils/getToday'
 
@@ -31,6 +31,12 @@ const linkStyle = css({
   },
 })
 
+const disabledStyle = css({
+  opacity: '0.35',
+  cursor: 'default',
+  pointerEvents: 'none',
+})
+
 const labelStyle = css({
   fontSize: '10px',
 })
@@ -41,8 +47,7 @@ const dayStyle = css({
 
 const MAX_DAYS = 7
 
-const getDateParts = (isoDate: string, today: DateTime) => {
-  const date = DateTime.fromISO(isoDate, { zone: 'Europe/Amsterdam' })
+const getDateParts = (date: DateTime, today: DateTime) => {
   const diff = date.diff(today, 'days').days
   const label = diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : date.toFormat('EEE')
   return { label, day: date.toFormat('d') }
@@ -50,22 +55,31 @@ const getDateParts = (isoDate: string, today: DateTime) => {
 
 export const DateFilter = ({ dates }: { dates: string[] }) => {
   const today = getToday()
+  const activeDates = new Set(dates)
 
-  const visibleDates = dates.filter((d) => {
+  const window = Array.from({ length: MAX_DAYS }, (_, i) => today.plus({ days: i }))
+
+  const firstExtraDate = dates.find((d) => {
     const diff = DateTime.fromISO(d, { zone: 'Europe/Amsterdam' }).diff(today, 'days').days
-    return diff >= 0 && diff < MAX_DAYS
+    return diff >= MAX_DAYS
   })
-  const firstExtraDate = dates[visibleDates.length]
 
   return (
     <div className={gridStyle}>
-      {visibleDates.map((isoDate) => {
-        const { label, day } = getDateParts(isoDate, today)
-        return (
+      {window.map((date) => {
+        const isoDate = date.toISODate()!
+        const { label, day } = getDateParts(date, today)
+        const active = activeDates.has(isoDate)
+        return active ? (
           <a key={isoDate} href={`#${isoDate}`} className={linkStyle}>
             <span className={labelStyle}>{label}</span>
             <span className={dayStyle}>{day}</span>
           </a>
+        ) : (
+          <div key={isoDate} className={cx(linkStyle, disabledStyle)}>
+            <span className={labelStyle}>{label}</span>
+            <span className={dayStyle}>{day}</span>
+          </div>
         )
       })}
       {firstExtraDate ? (
@@ -73,7 +87,9 @@ export const DateFilter = ({ dates }: { dates: string[] }) => {
           <span className={dayStyle}>…</span>
         </a>
       ) : (
-        <div />
+        <div className={cx(linkStyle, disabledStyle)}>
+          <span className={dayStyle}>…</span>
+        </div>
       )}
     </div>
   )
