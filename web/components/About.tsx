@@ -9,7 +9,7 @@ import { Layout } from './Layout'
 import { NavigationBar } from './NavigationBar'
 import { PageTitle } from './PageTitle'
 import { PageSection } from './PageSection'
-import { ExternalLinkIcon } from './ExternalLinkIcon'
+import { ExternalLink } from './ExternalLink'
 import { TmdbLogo } from './TmdbLogo'
 
 const containerStyle = css({
@@ -33,7 +33,6 @@ const textLinkStyle = css({
     opacity: '0.75',
   },
 })
-
 
 const tmdbAttributionStyle = css({
   display: 'flex',
@@ -97,9 +96,7 @@ export const About = () => {
                   const isLast = i === arr.length - 1
                   return (
                     <React.Fragment key={cinema.name}>
-                      <Link href={cinema.url} className={textLinkStyle} target="_blank" rel="noreferrer">
-                        {cinema.name}<ExternalLinkIcon />
-                      </Link>
+                      <ExternalLink href={cinema.url}>{cinema.name}</ExternalLink>
                       {isLast ? '' : ', '}
                     </React.Fragment>
                   )
@@ -135,14 +132,7 @@ export const About = () => {
             </Link>
             <p>
               Movie metadata and poster images are provided by{' '}
-              <Link
-                href="https://www.themoviedb.org/"
-                target="_blank"
-                rel="noreferrer"
-                className={textLinkStyle}
-              >
-                TMDB<ExternalLinkIcon />
-              </Link>
+              <ExternalLink href="https://www.themoviedb.org/">TMDB</ExternalLink>
               . This product uses the TMDB API but is not endorsed or certified
               by TMDB.
             </p>

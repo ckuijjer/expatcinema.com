@@ -12,7 +12,7 @@ import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
 import { isEnabled, STRUCTURED_DATA_FEATURE } from '../utils/featureFlags'
 import { CinemaInfoBar } from './CinemaInfoBar'
-import { ExternalLinkIcon } from './ExternalLinkIcon'
+import { ExternalLink } from './ExternalLink'
 import {
   buildBreadcrumbJsonLd,
   buildMovieJsonLd,
@@ -123,15 +123,6 @@ const linkRowStyle = css({
   flexWrap: 'wrap',
 })
 
-const externalLinkStyle = css({
-  fontSize: '14px',
-  color: 'var(--secondary-color)',
-  textDecoration: 'underline',
-  textUnderlineOffset: '2px',
-  '&:hover': {
-    opacity: '0.75',
-  },
-})
 
 
 const trailerSectionStyle = css({
@@ -336,26 +327,8 @@ export const MoviePage = ({
               </div>
             </div>
             <div className={linkRowStyle}>
-              {tmdbHref ? (
-                <a
-                  href={tmdbHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={externalLinkStyle}
-                >
-                  TMDB <ExternalLinkIcon />
-                </a>
-              ) : null}
-              {imdbHref ? (
-                <a
-                  href={imdbHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={externalLinkStyle}
-                >
-                  IMDb <ExternalLinkIcon />
-                </a>
-              ) : null}
+              {tmdbHref ? <ExternalLink href={tmdbHref}>TMDB</ExternalLink> : null}
+              {imdbHref ? <ExternalLink href={imdbHref}>IMDb</ExternalLink> : null}
             </div>
             {trailer?.key ? (
               <div className={trailerSectionStyle}>
