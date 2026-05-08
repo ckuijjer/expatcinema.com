@@ -90,11 +90,11 @@ export const DateFilter = ({ dates }: { dates: string[] }) => {
       })}
       {firstExtraDate ? (
         <a href={`#${firstExtraDate}`} className={linkStyle}>
-          <span className={dayStyle}>…</span>
+          <span className={dayStyle}>›</span>
         </a>
       ) : (
         <div className={cx(linkStyle, disabledStyle)}>
-          <span className={dayStyle}>…</span>
+          <span className={dayStyle}>›</span>
         </div>
       )}
     </div>
