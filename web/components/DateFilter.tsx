@@ -13,34 +13,34 @@ const linkStyle = css({
   display: 'inline-flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: '8px 10px',
-  marginTop: '6px',
-  marginBottom: '6px',
+  padding: '3px 8px',
+  marginTop: '3px',
+  marginBottom: '3px',
   cursor: 'pointer',
   textDecoration: 'none',
   borderRadius: '4px',
   color: 'var(--palette-purple-500)',
-  lineHeight: '1.2',
+  lineHeight: '1.1',
   '&:hover': {
     opacity: '0.75',
   },
 })
 
 const labelStyle = css({
-  fontSize: '12px',
+  fontSize: '10px',
 })
 
 const dayStyle = css({
-  fontSize: '20px',
+  fontSize: '15px',
 })
 
 const ellipsisStyle = css({
-  fontSize: '20px',
+  fontSize: '15px',
   display: 'inline-flex',
   alignItems: 'center',
-  padding: '8px 10px',
-  marginTop: '6px',
-  marginBottom: '6px',
+  padding: '3px 8px',
+  marginTop: '3px',
+  marginBottom: '3px',
   cursor: 'pointer',
   textDecoration: 'none',
   color: 'var(--palette-purple-500)',
