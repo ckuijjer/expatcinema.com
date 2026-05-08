@@ -17,7 +17,7 @@ const linkStyle = css({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '4px 2px',
+  padding: '8px 4px',
   margin: '4px 3px',
   cursor: 'pointer',
   textDecoration: 'none',
@@ -36,7 +36,7 @@ const labelStyle = css({
 })
 
 const dayStyle = css({
-  fontSize: '15px',
+  fontSize: '18px',
 })
 
 const MAX_DAYS = 7
