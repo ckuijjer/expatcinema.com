@@ -78,7 +78,7 @@ const extractFromMoviePage = async ({
     ]),
   })
 
-  logger.info('movie page', { url, movie })
+  logger.debug('movie page', { url, movie })
 
   return makeScreeningsUniqueAndSorted(
     movie.screenings.flatMap(({ date, times }) =>
@@ -104,7 +104,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ],
   )
 
-  logger.info('main page', { results })
+  logger.debug('main page', { results })
 
   const expatCinemaPages = results
     .filter(({ title }) => title?.toLowerCase().includes('expat cinema'))

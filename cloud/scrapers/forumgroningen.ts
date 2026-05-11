@@ -75,7 +75,7 @@ const extractFromMoviePage = async ({
     ]),
   })
 
-  logger.info('scrapeResult', { scrapeResult })
+  logger.debug('scrapeResult', { scrapeResult })
 
   const screenings: Screening[] = scrapeResult.screenings.flatMap(
     ({ date, times }) => {
@@ -112,7 +112,7 @@ const extractFromMoviePage = async ({
   )
 
   const uniqueSortedScreenings = makeScreeningsUniqueAndSorted(screenings)
-  logger.info('screenings', { screenings: uniqueSortedScreenings })
+  logger.debug('screenings', { screenings: uniqueSortedScreenings })
   return uniqueSortedScreenings
 }
 
@@ -140,13 +140,13 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ...new Map(scrapedMovies.map((obj) => [obj.url, obj])).values(),
   ]
 
-  logger.info('extracted', { movies })
+  logger.debug('extracted', { movies })
 
   const screenings = (
     await Promise.all(movies.map(extractFromMoviePage))
   ).flat()
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
 
   return screenings
 }

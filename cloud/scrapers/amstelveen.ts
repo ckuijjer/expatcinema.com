@@ -41,7 +41,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     },
   ).json()
 
-  logger.info('api response', { numberOfShows: apiResponse.Data.length })
+  logger.debug('api response', { numberOfShows: apiResponse.Data.length })
 
   const screenings = apiResponse.Data.filter(hasEnglishSubtitles).map((show) => ({
     title: titleCase(show.Production.Title),

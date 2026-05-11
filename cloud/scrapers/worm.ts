@@ -90,7 +90,7 @@ const getProductionResults = async (): Promise<SearchResult[]> => {
       url.startsWith(`${BASE_URL}/production/`),
   )
 
-  logger.info('search results', {
+  logger.debug('search results', {
     searchTerm: SEARCH_TERM,
     count: productions.length,
     productions,
@@ -152,7 +152,7 @@ const extractFromProductionPage = async ({
     ]),
   })
 
-  logger.info('production page', { title, url, page })
+  logger.debug('production page', { title, url, page })
 
   if (!hasEnglishSubtitles(page.detailParagraphs)) {
     return []
@@ -161,7 +161,7 @@ const extractFromProductionPage = async ({
   const titleAndYear = parseTitleAndYear(page)
 
   if (!titleAndYear) {
-    logger.info('skipping ambiguous multi-film production', {
+    logger.debug('skipping ambiguous multi-film production', {
       title,
       url,
       page,

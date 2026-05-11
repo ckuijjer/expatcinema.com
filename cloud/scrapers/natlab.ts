@@ -71,7 +71,7 @@ const extractFromMoviePage = async ({
     genres: ['.meta .genres li | normalizeWhitespace | trim'],
   })) as NatlabMoviePage
 
-  logger.info('movie page', { scrapeResult })
+  logger.debug('movie page', { scrapeResult })
 
   // example
   // {"title":"The Zone of Interest | Expat Cinema","screenings":[{"date":"zo 14 apr","times":["14:30"]}]}}
@@ -81,7 +81,7 @@ const extractFromMoviePage = async ({
       scrapeResult.metadata.value[index],
     ]),
   )
-  logger.info('metadata', { metadata })
+  logger.debug('metadata', { metadata })
 
   if (
     !(
@@ -90,11 +90,11 @@ const extractFromMoviePage = async ({
       scrapeResult.title.includes('[Eng Subs]')
     )
   ) {
-    logger.info('no English subtitles', { url, title })
+    logger.debug('no English subtitles', { url, title })
     return []
   }
 
-  logger.info('screenings', { screenings: scrapeResult.screenings })
+  logger.debug('screenings', { screenings: scrapeResult.screenings })
 
   const screenings: Screening[] = scrapeResult.screenings.flatMap(
     (screening: NatlabMoviePage['screenings'][number]) => {
@@ -130,7 +130,7 @@ const extractFromMoviePage = async ({
     },
   )
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
   return screenings
 }
 
@@ -149,13 +149,13 @@ const extractFromMainPage = async () => {
     ],
   )
 
-  logger.info('main page', { scrapeResult })
+  logger.debug('main page', { scrapeResult })
 
   const screenings = (
     await Promise.all(scrapeResult.map(extractFromMoviePage))
   ).flat()
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
 
   return screenings
 }

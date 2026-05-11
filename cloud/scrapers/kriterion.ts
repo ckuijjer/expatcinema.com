@@ -141,7 +141,7 @@ const extractFromMainPage = async () => {
       'https://www.kriterion.nl/data/films.json',
     ).json()
 
-    logger.info('extracted api responses', {
+    logger.debug('extracted api responses', {
       showsApiResponse,
       filmsApiResponse,
     })
@@ -201,7 +201,7 @@ const extractFromMainPage = async () => {
         return true
       })
 
-    logger.info('extracted screenings', { screenings })
+    logger.debug('extracted screenings', { screenings })
     return screenings
   } catch (error) {
     logger.error('error scraping kriterion', { error })

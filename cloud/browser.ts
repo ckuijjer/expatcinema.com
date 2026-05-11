@@ -16,7 +16,7 @@ const createBrowserSingleton = () => {
 
   const initializeBrowser = async ({ logger }: { logger?: Logger }) => {
     try {
-      logger?.info('running locally?', { isLocal: process.env.IS_LOCAL })
+      logger?.debug('running locally?', { isLocal: process.env.IS_LOCAL })
 
       const chromiumOptions = chromium as typeof chromium & {
         defaultViewport?: LaunchOptions['defaultViewport']
@@ -33,9 +33,9 @@ const createBrowserSingleton = () => {
         acceptInsecureCerts: true,
       }
 
-      logger?.info('launching browser', { options })
+      logger?.debug('launching browser', { options })
       instance = await puppeteer.launch(options)
-      logger?.info('browser launched')
+      logger?.debug('browser launched')
     } catch (error) {
       instance = undefined
       throw error
@@ -44,7 +44,7 @@ const createBrowserSingleton = () => {
 
       const pendingRequests = initializationQueue.splice(0)
       pendingRequests.forEach(({ resolve, reject }, index) => {
-        logger?.info('settling pending browser initialization request', {
+        logger?.debug('settling pending browser initialization request', {
           index,
           hasInstance: Boolean(instance),
         })
@@ -60,19 +60,19 @@ const createBrowserSingleton = () => {
 
   return async ({ logger }: { logger?: Logger }): Promise<Browser> => {
     if (!instance && !isInitializing) {
-      logger?.info('initializing browser')
+      logger?.debug('initializing browser')
       isInitializing = true
       await initializeBrowser({ logger })
     }
 
     if (isInitializing) {
-      logger?.info('browser is initializing')
+      logger?.debug('browser is initializing')
       // If initialization is in progress, return a promise that settles when it's done
       return new Promise<Browser>((resolve, reject) => {
         initializationQueue.push({ resolve, reject })
       })
     } else {
-      logger?.info('browser is initialized')
+      logger?.debug('browser is initialized')
       // If instance is available, return it
       if (!instance) {
         throw new Error('browser failed to initialize')
@@ -98,21 +98,21 @@ const closePagesAndBrowser = async ({
   logger?: Logger
 }) => {
   const pages = await browser.pages()
-  logger?.info('closing pages', { numberOfPages: pages.length })
+  logger?.debug('closing pages', { numberOfPages: pages.length })
   await Promise.all(pages.map((p) => p.close()))
 
-  logger?.info('closing browser')
+  logger?.debug('closing browser')
   await browser.close()
-  logger?.info('done closing browser')
+  logger?.debug('done closing browser')
 }
 
 export const closeBrowser = async ({ logger }: { logger?: Logger }) => {
   const browser = await getBrowser({ logger })
 
   const connected = browser.isConnected()
-  logger?.info('is browser connected', { connected })
+  logger?.debug('is browser connected', { connected })
   if (connected) {
-    logger?.info('closing pages and browser')
+    logger?.debug('closing pages and browser')
 
     try {
       await Promise.race([

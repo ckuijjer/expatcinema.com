@@ -49,7 +49,7 @@ const extractFromMoviePage = ({
 }: LiffListing): Promise<
   { title: string; url: string; date: string; cinema: string }[]
 > => {
-  logger.info('extracting', { url })
+  logger.debug('extracting', { url })
 
   return xray(url, 'body', {
     title: '.film-title span | trim',

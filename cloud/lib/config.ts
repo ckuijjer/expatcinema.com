@@ -14,7 +14,5 @@ export const getConfig = (): ConfigProps => {
     SCRAPERS: process.env.SCRAPERS || '',
     SCRAPEOPS_API_KEY: process.env.SCRAPEOPS_API_KEY || '',
   }
-  // console.log('⚙️', { config })
-
   return config
 }

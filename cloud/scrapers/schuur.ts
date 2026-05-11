@@ -45,7 +45,7 @@ type XRayFromMainPage = {
 
 const extractFromMainPage = async () => {
   try {
-    logger.info('main page')
+    logger.debug('main page')
 
     const scrapeResult: XRayFromMainPage[] = await xray(
       'https://www.schuur.nl/expat-cinema',
@@ -60,7 +60,7 @@ const extractFromMainPage = async () => {
       ],
     )
 
-    logger.info('scrape result', { scrapeResult })
+    logger.debug('scrape result', { scrapeResult })
 
     const screenings: Screening[] = scrapeResult.map(
       ({ title, url, date, time }) => {
@@ -91,7 +91,7 @@ const extractFromMainPage = async () => {
       },
     )
 
-    logger.info('screenings found', { screenings })
+    logger.debug('screenings found', { screenings })
 
     return screenings
   } catch (error) {

@@ -41,7 +41,7 @@ const parseDate = (date: string) => {
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  logger.info('extracting main page')
+  logger.debug('extracting main page')
 
   const results: XRayScreening[] = await xray(
     'https://www.concordia.nl/eng-subs',
@@ -56,7 +56,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ],
   )
 
-  logger.info('main page', { results })
+  logger.debug('main page', { results })
 
   if (results.length === 0) {
     logger.error('No screenings found on main page, scraper is probably broken')
@@ -86,7 +86,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       })
     })
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
 
   return screenings
 }

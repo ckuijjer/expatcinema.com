@@ -76,7 +76,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     await got('https://kinorotterdam.nl/fk-feed/agenda').json(),
   )
 
-  logger.info('main page', { movies })
+  logger.debug('main page', { movies })
 
   const screenings: Screening[][] = movies
     .map((movie) => {
@@ -95,7 +95,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     })
     .filter((x) => x)
 
-  logger.info('before flatten', { screenings })
+  logger.debug('before flatten', { screenings })
 
   return screenings.flat()
 }

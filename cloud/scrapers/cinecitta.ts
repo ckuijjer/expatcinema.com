@@ -67,11 +67,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       },
     ).json()
 
-    logger.info('movies found', { movies })
+    logger.debug('movies found', { movies })
 
     const moviesWithEnglishSubtitles = movies.filter(hasEnglishSubtitles)
 
-    logger.info('movies with english subtitles', { moviesWithEnglishSubtitles })
+    logger.debug('movies with english subtitles', { moviesWithEnglishSubtitles })
 
     const screenings: Screening[][] = (
       await Promise.all(
@@ -98,7 +98,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       )
     ).filter((x) => x)
 
-    logger.info('before flatten', { screenings })
+    logger.debug('before flatten', { screenings })
 
     return screenings.flat()
   } catch (error) {

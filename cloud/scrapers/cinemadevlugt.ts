@@ -75,7 +75,7 @@ const extractFromMoviePage = async ({
     ]),
   })
 
-  logger.info('extractFromMoviePage', { url, movie })
+  logger.debug('extractFromMoviePage', { url, movie })
 
   return makeScreeningsUniqueAndSorted(
     (movie.screenings ?? []).map(({ date, time }) => ({
@@ -99,13 +99,13 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ],
   )
 
-  logger.info('main page', { movies })
+  logger.debug('main page', { movies })
 
   const screenings = (
     await Promise.all(movies.map(extractFromMoviePage))
   ).flat()
 
-  logger.info('screenings found', { count: screenings.length, screenings })
+  logger.debug('screenings found', { count: screenings.length, screenings })
 
   return screenings
 }

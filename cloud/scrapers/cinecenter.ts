@@ -49,7 +49,7 @@ type CinecenterProduction = {
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  logger.info('extracting main page')
+  logger.debug('extracting main page')
 
   const html = await got('https://cinecenter.nl/films/').text()
 
@@ -63,7 +63,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const props = JSON.parse(propsStr)
   const productions = decodeAstro(props.productions) as CinecenterProduction[]
 
-  logger.info('productions found', { count: productions.length })
+  logger.debug('productions found', { count: productions.length })
 
   const screenings: Screening[] = productions
     .filter((p) => p.tags.some((t) => t.name === ENG_SUBS_TAG_NAME))
@@ -81,7 +81,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       }))
     })
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
 
   return screenings
 }

@@ -39,7 +39,7 @@ const extractFromMoviePage = async ({
     time: '.information-container .time',
   })
 
-  logger.info('scrapeResult', { scrapeResult })
+  logger.debug('scrapeResult', { scrapeResult })
 
   const { content, date, time } = scrapeResult
 
@@ -73,7 +73,7 @@ const extractFromMoviePage = async ({
     }).toJSDate(),
   }
 
-  logger.info('extracted screening', { screening })
+  logger.debug('extracted screening', { screening })
 
   return [screening]
 }
@@ -98,13 +98,13 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       title.toLowerCase().includes('movie night: acts of care'),
     ) // only events with "Movie Night: Acts of care" in the title have English subtitles
 
-  logger.info('extracted', { movies })
+  logger.debug('extracted', { movies })
 
   const screenings = (
     await Promise.all(movies.map(extractFromMoviePage))
   ).flat()
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
 
   return screenings
 }

@@ -130,7 +130,7 @@ const extractFromMoviePage = async ({
   url: string
   title: string
 }) => {
-  logger.info('movie page', { url })
+  logger.debug('movie page', { url })
 
   // #content so we get the 2nd JSON-LD script tag
   // const scrapeResult: XRayFromMoviePage = await xray(url, '#content', {
@@ -148,7 +148,7 @@ const extractFromMoviePage = async ({
     ]),
   })
 
-  logger.info('scrape result', { scrapeResult })
+  logger.debug('scrape result', { scrapeResult })
 
   const year = extractMetadataYear(scrapeResult.metadata ?? [])
 
@@ -164,13 +164,13 @@ const extractFromMoviePage = async ({
       }
     })
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
   return screenings
 }
 
 const extractFromMainPage = async () => {
   try {
-    logger.info('main page')
+    logger.debug('main page')
 
     const scrapeResult: XRayFromMainPage[] = await xray(
       'https://www.lab-1.nl/expats/',
@@ -183,13 +183,13 @@ const extractFromMainPage = async () => {
       ],
     )
 
-    logger.info('scrape result', { scrapeResult })
+    logger.debug('scrape result', { scrapeResult })
 
     const screenings: Screening[] = (
       await Promise.all(scrapeResult.map(extractFromMoviePage))
     ).flat()
 
-    logger.info('screenings found', { screenings })
+    logger.debug('screenings found', { screenings })
 
     return screenings
   } catch (error) {

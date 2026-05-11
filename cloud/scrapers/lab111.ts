@@ -80,7 +80,7 @@ const parseReleaseYear = (detailPage: XRayFromDetailPage) => {
 
 const extractFromMainPage = async () => {
   try {
-    logger.info('main page')
+    logger.debug('main page')
 
     const scrapeResult: XRayFromMainPage[] = await xray(
       // 'http://webcache.googleusercontent.com/search?q=cache:https://www.lab111.nl/programma/',
@@ -96,7 +96,7 @@ const extractFromMainPage = async () => {
       ],
     )
 
-    logger.info('scrape result', { scrapeResult })
+    logger.debug('scrape result', { scrapeResult })
 
     const releaseYearByUrl = new Map(
       await Promise.all(
@@ -165,7 +165,7 @@ const extractFromMainPage = async () => {
         })
       })
 
-    logger.info('screenings found', { screenings })
+    logger.debug('screenings found', { screenings })
 
     return screenings
   } catch (error) {

@@ -138,7 +138,7 @@ cd cloud
 pnpm tsx scrapers/<name>.ts
 ```
 
-If needed, add `LOG_LEVEL=debug` to inspect the upstream payload and returned screenings.
+Add `POWERTOOLS_LOG_LEVEL=DEBUG` to see intermediate scraping data (raw page contents, per-URL extraction steps, etc.).
 
 ### FK-feed year notes
 
