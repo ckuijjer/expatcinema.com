@@ -68,7 +68,7 @@ type XRayFromMainPage = {
 }
 
 const hasEnglishSubtitles = (movie: XRayFromMoviePage) => {
-  return /ondertiteling: english/i.test(movie.metadata)
+  return /ondertiteling: (english|engels)/i.test(movie.metadata)
 }
 
 const splitDate = (date: string) => {
