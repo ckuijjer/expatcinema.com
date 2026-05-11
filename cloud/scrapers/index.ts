@@ -188,13 +188,10 @@ export const scrapers = async () => {
   try {
     const ENABLED_SCRAPERS = getEnabledScrapers()
 
-    logger.info('available scrapers', { SCRAPERS: Object.keys(SCRAPERS) })
-    logger.info('enabled scrapers', {
-      ENABLED_SCRAPERS: Object.keys(ENABLED_SCRAPERS),
-    })
-    logger.info('number of scrapers', {
-      numberOfAvailableScrapers: Object.keys(SCRAPERS).length,
-      numberOfEnabledScrapers: Object.keys(ENABLED_SCRAPERS).length,
+    logger.info('starting scrapers', {
+      availableScrapers: Object.keys(SCRAPERS).length,
+      enabledScrapers: Object.keys(ENABLED_SCRAPERS).length,
+      enabled: Object.keys(ENABLED_SCRAPERS),
     })
 
     const results = Object.fromEntries(
@@ -202,7 +199,7 @@ export const scrapers = async () => {
         Object.entries(ENABLED_SCRAPERS).map(async ([name, fn]) => {
           logger.info('start scraping', { scraper: name })
 
-          // call the scraper function
+          const start = Date.now()
           let result: Screening[] = []
           try {
             result = await fn()
@@ -216,6 +213,7 @@ export const scrapers = async () => {
           logger.info('done scraping', {
             scraper: name,
             numberOfResults: result?.length,
+            durationMs: Date.now() - start,
           })
 
           return [name, makeScreeningsUniqueAndSorted(result)]
