@@ -72,7 +72,7 @@ Use the `SCRAPERS` environment variable in `.env.local` to define a comma separa
 
 ### Single scraper
 
-And to call a single scraper, e.g. `LOG_LEVEL=debug pnpm tsx scrapers/kinorotterdam.ts` and then have e.g.
+And to call a single scraper, e.g. `pnpm tsx scrapers/kinorotterdam.ts` and then have e.g.
 
 ```
 if (require.main === module) {
@@ -82,7 +82,7 @@ if (require.main === module) {
 }
 ```
 
-with the LOG_LEVEL=debug used to have debug output from the scrapers show up in the console
+Add `POWERTOOLS_LOG_LEVEL=DEBUG` to see intermediate scraping data (raw page contents, per-URL extraction steps, etc.)
 
 ## Quick local backup
 
