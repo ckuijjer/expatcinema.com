@@ -82,7 +82,13 @@ if (require.main === module) {
 }
 ```
 
-Add `POWERTOOLS_LOG_LEVEL=DEBUG` to see intermediate scraping data (raw page contents, per-URL extraction steps, etc.)
+To see intermediate scraping data (raw page contents, per-URL extraction steps, etc.), add `POWERTOOLS_LOG_LEVEL=DEBUG` on the command line:
+
+```sh
+POWERTOOLS_LOG_LEVEL=DEBUG pnpm tsx scrapers/kinorotterdam.ts
+```
+
+Or set it in `.env.local` when using `pnpm run scrapers:local`.
 
 ## Quick local backup
 
