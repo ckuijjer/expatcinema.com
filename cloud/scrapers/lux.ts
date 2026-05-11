@@ -117,7 +117,7 @@ const extractFromMoviePage = async ({
     })
   })
 
-  logger.info('extracted screenings', { screenings })
+  logger.debug('extracted screenings', { screenings })
   return screenings
 }
 
@@ -141,13 +141,13 @@ const extractFromMainPage = async () => {
     },
   ).json()
 
-  logger.info('main page', { response })
+  logger.debug('main page', { response })
 
   const screenings = (
     await Promise.all(response.items.map(extractFromMoviePage))
   ).flat()
 
-  logger.info('main page', { screenings })
+  logger.debug('main page', { screenings })
 
   return screenings
 }

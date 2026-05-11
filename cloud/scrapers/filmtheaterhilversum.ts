@@ -144,7 +144,7 @@ const extractFromMoviePage = async ({
     ]),
   })
 
-  logger.info('movie page', { title, url, detailPage })
+  logger.debug('movie page', { title, url, detailPage })
 
   if (!hasEnglishSubtitles(detailPage)) {
     return []
@@ -177,7 +177,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     },
   ])
 
-  logger.info('main page', { movies })
+  logger.debug('main page', { movies })
 
   const screenings = (
     await Promise.all(

@@ -96,7 +96,7 @@ const splitDate = (date: string) => {
 }
 
 const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
-  logger.info('extracting', { url })
+  logger.debug('extracting', { url })
 
   const movie: XRayFromMoviePage = await xray(url, {
     title: 'h1 | trim | cleanTitle',
@@ -109,7 +109,7 @@ const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
     ]),
   })
 
-  logger.info('extractFromMoviePage', { movie })
+  logger.debug('extractFromMoviePage', { movie })
 
   if (!hasEnglishSubtitles(movie)) {
     logger.warn('extractFromMoviePage without english subtitles', {
@@ -159,13 +159,13 @@ const extractFromMainPage = async () => {
     ],
   )
 
-  logger.info('movies', { movies })
+  logger.debug('movies', { movies })
 
   const screenings = (
     await Promise.all(movies.map(({ url }) => extractFromMoviePage(url)))
   ).flat()
 
-  logger.info('extractFromMainPage', { screenings })
+  logger.debug('extractFromMainPage', { screenings })
 
   return screenings
 }

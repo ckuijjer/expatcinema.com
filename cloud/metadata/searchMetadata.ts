@@ -188,7 +188,7 @@ const searchMetadata = async (
   const bestCandidate = bestCandidateSelection?.winner
   const secondCandidate = scoredCandidates[1]
 
-  logger.info('searchMetadata scored candidates', {
+  logger.debug('searchMetadata scored candidates', {
     normalizedTitle,
     year,
     siblingYearHints,

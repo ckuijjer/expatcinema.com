@@ -68,7 +68,7 @@ const extractFromMoviePage = async (url: string) => {
     ]),
   })
 
-  logger.info('movie', { movie })
+  logger.debug('movie', { movie })
 
   const screenings: Screening[] = movie.timetable
     .flatMap(({ date, times, subtitles }) => {
@@ -117,7 +117,7 @@ const extractFromMoviePage = async (url: string) => {
     })
     .flat()
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
   return screenings
 }
 
@@ -138,11 +138,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ],
   )
 
-  logger.info('main page', { scrapeResult })
+  logger.debug('main page', { scrapeResult })
 
   const uniqueUrls = Array.from(new Set(scrapeResult.map((x) => x.url)))
 
-  logger.info('uniqueUrls', { uniqueUrls, length: uniqueUrls.length })
+  logger.debug('uniqueUrls', { uniqueUrls, length: uniqueUrls.length })
 
   const screenings = await (
     await Promise.all(

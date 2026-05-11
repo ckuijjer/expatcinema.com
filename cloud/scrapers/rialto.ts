@@ -117,7 +117,7 @@ const extractFromMainPage = async () => {
     await Promise.all(movies.map(extractFromMoviePage))
   ).flat()
 
-  logger.info('main page', { screenings })
+  logger.debug('main page', { screenings })
 
   return screenings
 }

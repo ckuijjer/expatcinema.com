@@ -68,7 +68,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     },
   ])
 
-  logger.info('main page', { results })
+  logger.debug('main page', { results })
 
   const screenings = results
     .filter(({ title }) => title?.toLowerCase().includes('en subs'))

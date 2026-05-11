@@ -135,7 +135,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     'https://filmhuisdenhaag.nl/api/program',
   ).json()
 
-  logger.info('extracted api response', { apiResponse })
+  logger.debug('extracted api response', { apiResponse })
 
   // make a flat list of all screenings
   const programs = Object.values(apiResponse)
@@ -190,7 +190,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   const uniqueSortedScreenings = makeScreeningsUniqueAndSorted(screenings)
 
-  logger.info('extracted screenings', { screenings: uniqueSortedScreenings })
+  logger.debug('extracted screenings', { screenings: uniqueSortedScreenings })
   return uniqueSortedScreenings
 }
 

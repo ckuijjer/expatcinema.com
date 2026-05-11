@@ -103,7 +103,7 @@ const extractFromTicketPage = async ({
     },
   ])
 
-  logger.info('ticket page', { title, productionId, screenings })
+  logger.debug('ticket page', { title, productionId, screenings })
 
   return screenings.map(({ date }) => ({
     title,
@@ -121,7 +121,7 @@ const extractFromMoviePage = async (
     credits: ['.film-detail__credits div | normalizeWhitespace | trim'],
   })
 
-  logger.info('detail page', { movie, detailPage })
+  logger.debug('detail page', { movie, detailPage })
 
   if (!hasEnglishSubtitles(detailPage)) {
     return []
@@ -148,7 +148,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ],
   )
 
-  logger.info('main page', { results })
+  logger.debug('main page', { results })
 
   const screenings = (
     await Promise.all(

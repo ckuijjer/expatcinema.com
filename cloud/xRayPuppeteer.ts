@@ -20,7 +20,7 @@ const xRayPuppeteer = ({
     try {
       const browser = await getBrowser({ logger })
 
-      logger?.info('opening page', { url: ctx.url })
+      logger?.debug('opening page', { url: ctx.url })
       let page = await browser.newPage()
       await page.goto(String(ctx.url), waitForOptions)
 
@@ -31,11 +31,11 @@ const xRayPuppeteer = ({
       if (!ctx.body) {
         ctx.body = await page.content()
       }
-      logger?.info('done retrieving content', { url: ctx.url })
+      logger?.debug('done retrieving content', { url: ctx.url })
 
-      logger?.info('closing page', { url: ctx.url })
+      logger?.debug('closing page', { url: ctx.url })
       await page.close()
-      logger?.info('closed page', { url: ctx.url })
+      logger?.debug('closed page', { url: ctx.url })
 
       done(null, ctx)
     } catch (error) {

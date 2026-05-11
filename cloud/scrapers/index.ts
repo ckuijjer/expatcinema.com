@@ -434,7 +434,7 @@ export const scrapers = async () => {
       ).length,
     }
 
-    logger.warn('writing to analytics json', { countPerScraper })
+    logger.info('writing to analytics', { countPerScraper })
     await writeToAnalytics('count')(countPerScraper)
   } catch (error) {
     logger.error('error scraping (main loop)', { error })

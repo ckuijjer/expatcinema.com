@@ -111,7 +111,7 @@ const extractFromMoviePage = async ({
     }) as unknown as Promise<MovieDetailPage>,
   ])
 
-  logger.info('movie page', { id, link, movie, detailPage })
+  logger.debug('movie page', { id, link, movie, detailPage })
 
   if (movie.status !== 'available' || !hasEnglishSubtitles(detailPage)) {
     return []
@@ -133,7 +133,7 @@ const extractFromMoviePage = async ({
     }))
     .filter(({ date }) => date >= DateTime.now().minus({ hours: 1 }).toJSDate())
 
-  logger.info('screenings found for movie', { id, link, screenings })
+  logger.debug('screenings found for movie', { id, link, screenings })
 
   return screenings
 }
@@ -141,7 +141,7 @@ const extractFromMoviePage = async ({
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const movies = await got(CURRENT_MOVIES_URL).json<ProductionSummary[]>()
 
-  logger.info('main page', { count: movies.length, movies })
+  logger.debug('main page', { count: movies.length, movies })
 
   const screenings = (
     await Promise.all(
@@ -151,7 +151,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     )
   ).flat()
 
-  logger.info('screenings found', { count: screenings.length, screenings })
+  logger.debug('screenings found', { count: screenings.length, screenings })
 
   return makeScreeningsUniqueAndSorted(screenings)
 }

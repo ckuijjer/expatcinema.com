@@ -63,7 +63,7 @@ type XRayFromMoviePage = {
 }
 
 const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
-  logger.info('extracting', { url })
+  logger.debug('extracting', { url })
 
   const movie: XRayFromMoviePage = await xray(url, {
     title: '.movie-intro h1 | cleanTitle | trim',
@@ -76,7 +76,7 @@ const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
     ]),
   })
 
-  logger.info('extractFromMoviePage', { movie })
+  logger.debug('extractFromMoviePage', { movie })
 
   if (!movie?.metadata?.includes('engels ondertiteld')) {
     logger.warn('extractFromMoviePage without english subtitles', {
@@ -135,13 +135,13 @@ const extractFromProgrammaPage = async () => {
     },
   ])
 
-  logger.info('extractFromProgrammaPage', { movies })
+  logger.debug('extractFromProgrammaPage', { movies })
 
   const filteredMovies = movies.filter(({ title, metadata }) => {
     return metadata?.includes('engels ondertiteld')
   })
 
-  logger.info('extractFromProgrammaPage', { filteredMovies })
+  logger.debug('extractFromProgrammaPage', { filteredMovies })
   return filteredMovies
 }
 
@@ -159,7 +159,7 @@ const extractFromEnglishSubtitledPage = async () => {
     ],
   )
 
-  logger.info('extractFromEnglishSubtitledPage', { movies })
+  logger.debug('extractFromEnglishSubtitledPage', { movies })
 
   return movies
 }
@@ -179,7 +179,7 @@ const extractFromMainPage = async () => {
 
   const screenings = (await Promise.all(urls.map(extractFromMoviePage))).flat()
 
-  logger.info('extractFromMainPage', { screenings })
+  logger.debug('extractFromMainPage', { screenings })
 
   return screenings
 }

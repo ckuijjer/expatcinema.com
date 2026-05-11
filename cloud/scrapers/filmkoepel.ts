@@ -48,7 +48,7 @@ const extractFromSpecialExpatCinemaPage = async () => {
     },
   ])
 
-  logger.info('special expat cinema page', { movies })
+  logger.debug('special expat cinema page', { movies })
 
   const screenings: Screening[] = movies.flatMap(
     ({ title, url, screenings }) => {
@@ -108,7 +108,7 @@ const extractFromSpecialExpatCinemaPage = async () => {
     },
   )
 
-  logger.info('main page', { screenings })
+  logger.debug('main page', { screenings })
 
   return screenings
 }
@@ -144,7 +144,7 @@ const extractFromMainPage = async () => {
     await got('https://filmkoepel.nl/fk-feed/agenda').json(),
   )
 
-  logger.info('main page', { movies })
+  logger.debug('main page', { movies })
 
   const screenings: Screening[][] = movies
     .map((movie) => {
@@ -162,7 +162,7 @@ const extractFromMainPage = async () => {
     })
     .filter((x) => x)
 
-  logger.info('before flatten', { screenings })
+  logger.debug('before flatten', { screenings })
 
   const allScreenings = [...specialExpatScreenings, ...screenings.flat()]
 

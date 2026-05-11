@@ -105,14 +105,14 @@ const extractFromMainPage = async () => {
       }
     })
 
-  logger.info('unfilteredScreenings', { unfilteredScreenings })
+  logger.debug('unfilteredScreenings', { unfilteredScreenings })
 
   // the __NEXT_DATA__ of the page doesn't contain subtitle information, so we need to filter it out
   const screenings = (
     await Promise.all(unfilteredScreenings.map(extractFromMoviePage))
   ).filter((x): x is Screening => x !== null)
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
   return screenings
 }
 

@@ -106,7 +106,7 @@ const extractFromMoviePage = async ({
     ]),
   })
 
-  logger.info('extractFromMoviePage', { movie })
+  logger.debug('extractFromMoviePage', { movie })
 
   if (!hasEnglishSubtitles(movie)) {
     return []
@@ -177,13 +177,13 @@ const extractFromMainPage = async () => {
       item.url && index === self.findIndex((t) => t.url === item.url),
   )
 
-  logger.info('scrape result', { scrapeResult })
+  logger.debug('scrape result', { scrapeResult })
 
   const screenings: Screening[] = (
     await Promise.all(scrapeResult.map(extractFromMoviePage))
   ).flat()
 
-  logger.info('screenings found', { screenings })
+  logger.debug('screenings found', { screenings })
 
   return makeScreeningsUniqueAndSorted(screenings)
 }

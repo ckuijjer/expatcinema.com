@@ -73,7 +73,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     const moviesWithEnglishSubtitles =
       programmation.films.filter(hasEnglishSubtitles)
 
-    logger.info('movies with english subtitles', { moviesWithEnglishSubtitles })
+    logger.debug('movies with english subtitles', { moviesWithEnglishSubtitles })
 
     const screenings: Screening[][] = moviesWithEnglishSubtitles.map((movie) =>
       programmation.sessions
@@ -86,7 +86,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         })),
     )
 
-    logger.info('before flatten', { screenings })
+    logger.debug('before flatten', { screenings })
 
     return screenings.flat()
   } catch (error) {

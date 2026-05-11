@@ -82,13 +82,13 @@ const extractFromMainPage = async () => {
       retries: 5,
     },
   )
-  logger.info('scraped /expat-cinema', { expatCinemaResults })
+  logger.debug('scraped /expat-cinema', { expatCinemaResults })
 
   const results = [...expatCinemaResults]
   const uniqueResults = uniq(results)
 
-  logger.info('results', { results })
-  logger.info('uniqueResults', { uniqueResults })
+  logger.debug('results', { results })
+  logger.debug('uniqueResults', { uniqueResults })
 
   const screenings = await (
     await Promise.all(
@@ -163,7 +163,7 @@ const extractFromMoviePage = async ({
   url,
   title,
 }: KetelhuisListing): Promise<Screening[]> => {
-  logger.info('extracting', { url })
+  logger.debug('extracting', { url })
 
   const scrapeResult = (await xray(url, {
     title: '.c-filmheader__content h1 > span', // not using cleanTitle because we want to keep the "English subs" part here
@@ -179,10 +179,10 @@ const extractFromMoviePage = async ({
     ]),
   })) as KetelhuisMoviePage
 
-  logger.info('extracted', { url, scrapeResult })
+  logger.debug('extracted', { url, scrapeResult })
 
   if (!hasEnglishSubtitles(scrapeResult)) {
-    logger.info('hasEnglishSubtitles false', { url })
+    logger.debug('hasEnglishSubtitles false', { url })
 
     return []
   }
@@ -238,7 +238,7 @@ const extractFromMoviePage = async ({
     year: releaseYear,
   }))
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
   return screenings
 }
 

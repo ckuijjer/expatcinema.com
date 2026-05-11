@@ -74,7 +74,7 @@ const extractFromMoviePage = async ({
     details: ['.detailinfo p | normalizeWhitespace | trim'],
   })
 
-  logger.info('movie page', { url, movie })
+  logger.debug('movie page', { url, movie })
 
   const year = parseReleaseYear(movie.details)
 
@@ -101,7 +101,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ],
   )
 
-  logger.info('main page', { results })
+  logger.debug('main page', { results })
 
   const screenings = (
     await Promise.all(

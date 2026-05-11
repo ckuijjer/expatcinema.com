@@ -89,7 +89,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
 
   const shows = results.data?.shows ?? []
 
-  logger.info('number of shows', { count: shows.length })
+  logger.debug('number of shows', { count: shows.length })
 
   const screenings = shows
     .filter(hasEnglishSubtitles)

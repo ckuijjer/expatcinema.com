@@ -71,7 +71,7 @@ const isTodayOrLater = (show: CinemaFilmDetailShow) => {
 
 const extractFromMoviePage = async (film: MainPageCinemaScheduleFilm) => {
   const { title, url, filmId } = film
-  logger.info('extractFromMoviePage', { title, url, filmId })
+  logger.debug('extractFromMoviePage', { title, url, filmId })
 
   const data = JSON.parse(await xray(url, '#__NEXT_DATA__')) as {
     props: {
@@ -89,7 +89,7 @@ const extractFromMoviePage = async (film: MainPageCinemaScheduleFilm) => {
     return []
   }
 
-  // logger.info('data', { data }) // uncomment to debug structure of __NEXT_DATA__
+  // logger.debug('data', { data }) // uncomment to debug structure of __NEXT_DATA__
 
   const filmDetail = dehydratedState.queries.find(({ queryKey }) =>
     queryKey.includes('CinemaFilmDetail'),
@@ -114,7 +114,7 @@ const extractFromMoviePage = async (film: MainPageCinemaScheduleFilm) => {
       }
     })
 
-  logger.info('moviepage screenings', { url, screenings })
+  logger.debug('moviepage screenings', { url, screenings })
 
   return screenings
 }
@@ -174,14 +174,14 @@ const extractFromMainPage = async () => {
       index === self.findIndex((t) => t.filmId === film.filmId),
   )
 
-  logger.info('mainpage films', { uniqueFilms })
+  logger.debug('mainpage films', { uniqueFilms })
 
   // the __NEXT_DATA__ of the page doesn't contain subtitle information, so we need to filter it out
   const screenings = await (
     await Promise.all(uniqueFilms.map(extractFromMoviePage))
   ).flat()
 
-  logger.info('screenings', { screenings })
+  logger.debug('screenings', { screenings })
   return screenings
 }
 

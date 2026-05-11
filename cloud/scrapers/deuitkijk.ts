@@ -81,7 +81,7 @@ type XRayFromMoviePage = {
 export const extractFromMoviePage = async (
   url: string,
 ): Promise<Screening[]> => {
-  logger.info('extracting', { url })
+  logger.debug('extracting', { url })
 
   const movie: XRayFromMoviePage = await xray(url, {
     title: 'h1.title',
@@ -89,7 +89,7 @@ export const extractFromMoviePage = async (
     screenings: ['.film-tickets a@data-date'],
   })
 
-  logger.info('extracted xray', { url, movie })
+  logger.debug('extracted xray', { url, movie })
 
   if (!hasEnglishSubtitles(movie)) return []
 
@@ -104,7 +104,7 @@ export const extractFromMoviePage = async (
     }
   })
 
-  logger.info('extracting done', { url, screenings })
+  logger.debug('extracting done', { url, screenings })
 
   return screenings
 }
@@ -115,7 +115,7 @@ type XRayFromMainPage = {
 }
 
 const extractFromMainPage = async () => {
-  logger.info('extracting main page')
+  logger.debug('extracting main page')
 
   const xrayResult: XRayFromMainPage[] = await xray(
     'https://uitkijk.nl/',
@@ -130,11 +130,11 @@ const extractFromMainPage = async () => {
 
   const uniqueUrls = Array.from(new Set(xrayResult.map((x) => x.url)))
 
-  logger.info('main page', { uniqueUrls })
+  logger.debug('main page', { uniqueUrls })
 
   const screenings = await Promise.all(uniqueUrls.map(extractFromMoviePage))
 
-  logger.info('before flatten', { screenings })
+  logger.debug('before flatten', { screenings })
 
   return screenings.flat()
 }
