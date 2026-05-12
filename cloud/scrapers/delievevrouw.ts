@@ -61,7 +61,7 @@ const inferYear = (month: number, day: number) => {
 const extractScreeningDates = (text: string): Date[] =>
   Array.from(
     text.matchAll(
-      /\b(ma|di|wo|do|vr|za|zo)\s+(\d{1,2})\s+(jan|feb|mrt|apr|mei|jun|jul|aug|sep|okt|nov|dec)\s+\[(\d{1,2}:\d{2})\]/gi,
+      /\b(ma|di|wo|do|vr|za|zo)\s+(\d{1,2})\s+(jan|feb|mrt|apr|mei|jun|jul|aug|sep|okt|nov|dec)\s+(\d{1,2}:\d{2})/gi,
     ),
   )
     .map(([, , dayStr, monthStr, timeStr]) => {
