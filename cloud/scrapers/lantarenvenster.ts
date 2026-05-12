@@ -61,7 +61,13 @@ export const extractFromMoviePage = async (
 
   logger.debug('extracted xray', { url, movie })
 
-  if (!hasEnglishSubtitles(movie)) return []
+  if (!hasEnglishSubtitles(movie)) {
+    logger.warn('extractFromMoviePage without english subtitles', {
+      url,
+      title: movie.title,
+    })
+    return []
+  }
 
   const screenings: Screening[] = movie.screenings
     .map(({ date, times }) => {

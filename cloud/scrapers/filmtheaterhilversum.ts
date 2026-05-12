@@ -147,6 +147,10 @@ const extractFromMoviePage = async ({
   logger.debug('movie page', { title, url, detailPage })
 
   if (!hasEnglishSubtitles(detailPage)) {
+    logger.warn('extractFromMoviePage without english subtitles', {
+      url,
+      title,
+    })
     return []
   }
 

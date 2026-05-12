@@ -90,7 +90,7 @@ const extractFromMoviePage = async ({
       scrapeResult.title.includes('[Eng Subs]')
     )
   ) {
-    logger.debug('no English subtitles', { url, title })
+    logger.warn('extractFromMoviePage without english subtitles', { url, title })
     return []
   }
 
