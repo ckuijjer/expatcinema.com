@@ -73,13 +73,6 @@ const extractFromNewsPage = async (url: string): Promise<Screening[]> => {
   const screenings = page.paragraphs
     .map(({ text }) => text)
     .flatMap((text) => {
-      if (
-        !/English subtitles|Engelse ondertiteling/i.test(text) &&
-        !/Spirited Away/i.test(text)
-      ) {
-        return []
-      }
-
       const match = Array.from(extractMatches(text)).at(0)
       if (!match) {
         return []
