@@ -44,7 +44,7 @@ const extractProgrammaUrls = (xml: string) =>
     ),
   )
 
-const hasEnglishSubtitles = (text: string) => /Ondertiteling:\s*English/i.test(text)
+const hasEnglishSubtitles = (text: string) => /Ondertiteling\s+(English|Engels)/i.test(text)
 
 type XRayPage = {
   bodyText: string
@@ -61,7 +61,7 @@ const extractTitle = (page: XRayPage) => {
 const extractScreeningDates = (text: string): Date[] =>
   Array.from(
     text.matchAll(
-      /(maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag|zondag)\s+(\d{1,2}-\d{2}-\d{4})[^0-9]*?(\d{2}:\d{2})/gi,
+      /(maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag|zondag)\s+(\d{1,2}-\d{2}-\d{4}).*?(\d{2}:\d{2})/gi,
     ),
   )
     .map(([, , dateStr, timeStr]) => {
@@ -83,7 +83,7 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
 
   const page: XRayPage = await xray(html, {
     bodyText: 'body@text | normalizeWhitespace | trim',
-    h1Title: 'h1 | trim',
+    h1Title: 'h2.title | trim',
   })
 
   if (!hasEnglishSubtitles(page.bodyText)) {
