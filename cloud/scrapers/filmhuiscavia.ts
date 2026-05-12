@@ -25,23 +25,24 @@ const xray = Xray({
   },
 })
 
+const DUTCH_MONTH_NAMES =
+  'januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december'
+
+const MONTH_PAGE_REGEX = new RegExp(
+  `https://filmhuiscavia\\.nl/programma/(${DUTCH_MONTH_NAMES})-\\d{4}`,
+  'gi',
+)
+
+const DETAIL_URL_REGEX = new RegExp(
+  `https://filmhuiscavia\\.nl/programma/(?!(${DUTCH_MONTH_NAMES})-\\d{4}|brazil-unfiltered)[^"'?#\\s<]+`,
+  'gi',
+)
+
 const extractMonthPageUrls = (html: string) =>
-  Array.from(
-    new Set(
-      Array.from(
-        html.matchAll(/https:\/\/filmhuiscavia\.nl\/programma\/(?:april|mei)-\d{4}/gi),
-      ).map((match) => match[0]),
-    ),
-  )
+  Array.from(new Set(Array.from(html.matchAll(MONTH_PAGE_REGEX)).map((match) => match[0])))
 
 const extractDetailUrls = (html: string) =>
-  Array.from(
-    new Set(
-      Array.from(
-        html.matchAll(/https:\/\/filmhuiscavia\.nl\/programma\/(?!april-\d{4}|mei-\d{4}|brazil-unfiltered)[^"'?#\s<]+/gi),
-      ).map((match) => match[0]),
-    ),
-  )
+  Array.from(new Set(Array.from(html.matchAll(DETAIL_URL_REGEX)).map((match) => match[0])))
 
 const hasEnglishSubtitles = (html: string) => /English subtitles/i.test(html)
 
@@ -55,7 +56,6 @@ const extractTitle = (page: XRayDetailPage) => {
 
   return titleCase(
     rawTitle
-      .replace(/[<>]/g, '')
       .trim()
       .replace(/\s+at\s+Nassaukerk$/i, '')
       .replace(/\s+\(with live score.*$/i, ''),
