@@ -1,18 +1,21 @@
 import got from 'got'
-import { decode } from 'html-entities'
 import { DateTime } from 'luxon'
+import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
+import { trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
     scraper: 'castellum',
   },
 })
+
+const xray = Xray({ filters: { trim } })
 
 const extractUrlsFromSitemap = (xml: string) =>
   Array.from(xml.matchAll(/<loc>(https:\/\/www\.alphens\.nl\/evenement\/[^<]+)<\/loc>/g))
@@ -24,11 +27,6 @@ const hasEnglishSubtitles = (html: string) =>
 
 const isCastellumVenue = (html: string) =>
   /Castellum Theater & Film/i.test(html)
-
-const extractTitle = (html: string) => {
-  const match = html.match(/<h1 class="h2">([\s\S]*?)<\/h1>/i)
-  return match?.[1] ? titleCase(decode(match[1].replace(/<[^>]+>/g, '').trim())) : null
-}
 
 const extractStartDate = (html: string) => {
   const match = html.match(/"startDate":\s*"([^"]+)"/)
@@ -50,7 +48,8 @@ const extractFromEventPage = async (url: string): Promise<Screening[]> => {
     return []
   }
 
-  const title = extractTitle(html)
+  const { h1Title } = await xray(html, { h1Title: 'h1.h2 | trim' })
+  const title = h1Title ? titleCase(h1Title) : null
   const date = extractStartDate(html)
 
   if (!title || !date) {
