@@ -18,39 +18,24 @@ const logger = parentLogger.createChild({
 const xray = Xray({
   filters: {
     trim,
-    normalizeWhitespace: (value) =>
-      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
 
-const extractFilmUrls = (xml: string) =>
+// Only pages with withEngsubtitles in the URL are English subtitle screenings.
+// These are separate Webflow CMS items for the same film.
+const extractEngFilmUrls = (xml: string) =>
   Array.from(
     new Set(
       Array.from(
-        xml.matchAll(/<loc>(https:\/\/www\.cinemathepulse\.com\/films\/[^<]+)<\/loc>/g),
+        xml.matchAll(/<loc>(https:\/\/www\.cinemathepulse\.com\/films\/[^<]*withEngsubtitles[^<]*)<\/loc>/g),
       ).map((match) => match[1]),
     ),
   )
 
-const hasEnglishSubtitles = (text: string) =>
-  /We show this film also with English subtitles/i.test(text)
-
 type XRayPage = {
-  bodyText: string
   h1Title: string
+  dateSyncs: string[]
 }
-
-const extractScreeningDates = (text: string): Date[] =>
-  Array.from(
-    text.matchAll(/(\d{1,2}\/\d{1,2}\/\d{4})\s+(\d{1,2}:\d{2}\s+(?:AM|PM))/gi),
-  )
-    .map(([, dateStr, timeStr]) => {
-      const dt = DateTime.fromFormat(`${dateStr} ${timeStr}`, 'M/d/yyyy h:mm a', {
-        zone: 'Europe/Amsterdam',
-      })
-      return dt.isValid ? dt.toJSDate() : null
-    })
-    .filter((d): d is Date => d !== null)
 
 const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
   let html: string
@@ -62,13 +47,9 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
   }
 
   const page: XRayPage = await xray(html, {
-    bodyText: 'body@text | normalizeWhitespace | trim',
-    h1Title: 'h1 | trim',
+    h1Title: 'h1.heading-style-film-titles | trim',
+    dateSyncs: ['.shows_date_sync | trim'],
   })
-
-  if (!hasEnglishSubtitles(page.bodyText)) {
-    return []
-  }
 
   const title = page.h1Title ? titleCase(page.h1Title) : null
   if (!title) {
@@ -76,7 +57,15 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
     return []
   }
 
-  const dates = extractScreeningDates(page.bodyText)
+  const dates = page.dateSyncs
+    .map((dateSync) => {
+      const dt = DateTime.fromFormat(dateSync, 'M/d/yyyy h:mm a', {
+        zone: 'Europe/Amsterdam',
+      })
+      return dt.isValid ? dt.toJSDate() : null
+    })
+    .filter((d): d is Date => d !== null)
+
   if (dates.length === 0) {
     logger.warn('skipping page with no screening dates', { url })
     return []
@@ -92,9 +81,9 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const sitemapXml = await got('https://www.cinemathepulse.com/sitemap.xml').text()
-  const urls = extractFilmUrls(sitemapXml)
+  const urls = extractEngFilmUrls(sitemapXml)
 
-  logger.info('film urls', { numberOfUrls: urls.length })
+  logger.info('english subtitle film urls', { numberOfUrls: urls.length })
 
   const screenings = (await Promise.all(urls.map(extractFromFilmPage))).flat()
 
