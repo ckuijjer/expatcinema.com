@@ -587,5 +587,18 @@
       "addressLocality": "Amstelveen",
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinema%20Amstelveen%2C%20Stadsplein%20100%2C%201181%20ZM%20Amstelveen%2C%20Netherlands"
     }
+  },
+  {
+    "name": "Filmhuis Emmen",
+    "slug": "filmhuis-emmen",
+    "city": "emmen",
+    "url": "https://www.filmhuisemmen.nl/",
+    "address": {
+      "streetAddress": "Westeind 70",
+      "postalCode": "7811 ME",
+      "addressLocality": "Emmen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Emmen%2C%20Westeind%2070%2C%207811%20ME%2C%20Emmen%2C%20Netherlands"
+    },
+    "logo": "filmhuis-emmen.png"
   }
 ]
