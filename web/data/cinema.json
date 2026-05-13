@@ -592,6 +592,13 @@
     "name": "Filmhuis Cavia",
     "slug": "filmhuis-cavia",
     "city": "amsterdam",
-    "url": "https://filmhuiscavia.nl/"
+    "url": "https://filmhuiscavia.nl/",
+    "address": {
+      "streetAddress": "Van Hallstraat 52-1",
+      "postalCode": "1051 HH",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Cavia%2C%20Van%20Hallstraat%2052-1%2C%201051%20HH%2C%20Amsterdam%2C%20Netherlands"
+    },
+    "logo": "filmhuis-cavia.png"
   }
 ]
