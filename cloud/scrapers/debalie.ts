@@ -2,6 +2,7 @@ import got from 'got'
 import { decode } from 'html-entities'
 import { DateTime } from 'luxon'
 import Xray from 'x-ray'
+import { type Driver } from 'x-ray-crawler'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -19,13 +20,24 @@ const logger = parentLogger.createChild({
   },
 })
 
+// De Balie blocks x-ray's default HTTP client; use got as a custom driver
+const driver: Driver = (context, callback) => {
+  const { url } = context
+  got(String(url))
+    .then((response) => callback(null, response.body as never))
+    .catch((err) => callback(err, null as never))
+}
+
 const xray = Xray({
   filters: {
     trim,
-    normalizeWhitespace: (value) =>
+    normalizeWhitespace: (value: unknown) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
+  .concurrency(10)
+  .throttle(10, 300)
+  .driver(driver)
 
 const CURRENT_MOVIES_URL =
   'https://debalie.nl/wp-json/wp/v2/vo-cinema?page=1&per_page=100&_fields=link,title'
@@ -56,9 +68,9 @@ const extractTitle = (title: string) => {
   return match?.[1] ? titleCase(match[1].trim()) : null
 }
 
-const extractPageYear = (html: string) => {
-  const match = html.match(/"datePublished":"(\d{4})-\d{2}-\d{2}/)
-  return match?.[1] ? Number(match[1]) : DateTime.now().year
+const extractYearFromSelectorDay = (selectorDay: string) => {
+  if (!/^\d{8}$/.test(selectorDay)) return null
+  return Number(selectorDay.slice(0, 4))
 }
 
 const parseTicketDateFromTicketUrl = (
@@ -138,7 +150,7 @@ const extractScreeningDate = (
 
 const hasUniversalEnglishSubtitles = (page: XRayDetailPage) =>
   page.subtitleInfoItems.some((text) =>
-    /ondertitels?.*english|english.*ondertitels?|with english subtitles|engels/i.test(
+    /ondertitels?.*english|english.*ondertitels?|with english subtitles/i.test(
       text,
     ),
   )
@@ -232,33 +244,36 @@ const filterScreeningsWithLLM = async (
 }
 
 const extractFromDetailPage = async (url: string): Promise<Screening[]> => {
-  let html: string
+  let page: XRayDetailPage
   try {
-    html = await got(url).text()
+    page = await xray(url, {
+      bodyText: '.entry__content@text | normalizeWhitespace | trim',
+      markTexts: xray('mark', ['@text | normalizeWhitespace | trim']),
+      subtitleInfoItems: xray('.wp-block-vo-info-item', [
+        '@text | normalizeWhitespace | trim',
+      ]),
+      tickets: xray('[data-ticket-selector-day]', [
+        {
+          selectorDay: '@data-ticket-selector-day | trim',
+          url: '.banner-bar__link@href | trim',
+          time: '.banner-bar__link | trim',
+        },
+      ]),
+      title: 'title | trim',
+    })
   } catch (error) {
     logger.warn('skipping page that could not be fetched', { url, error })
     return []
   }
 
-  const page: XRayDetailPage = await xray(html, {
-    bodyText: '.entry__content@text | normalizeWhitespace | trim',
-    markTexts: xray('mark', ['@text | normalizeWhitespace | trim']),
-    subtitleInfoItems: xray('.wp-block-vo-info-item', [
-      '@text | normalizeWhitespace | trim',
-    ]),
-    tickets: xray('[data-ticket-selector-day]', [
-      {
-        selectorDay: '@data-ticket-selector-day | trim',
-        url: '.banner-bar__link@href | trim',
-        time: '.banner-bar__link | trim',
-      },
-    ]),
-    title: 'title | trim',
-  })
-
   const title = extractTitle(page.title)
   if (!title) return []
-  const year = extractPageYear(html)
+  const year =
+    page.tickets
+      .map((t) => t.selectorDay)
+      .filter((d): d is string => Boolean(d))
+      .map(extractYearFromSelectorDay)
+      .find((y): y is number => y !== null) ?? DateTime.now().year
 
   const ticketLinks = extractTicketLinks(page)
   if (ticketLinks.length === 0) {
