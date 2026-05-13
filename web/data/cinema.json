@@ -592,6 +592,13 @@
     "name": "Filmhuis Bussum",
     "slug": "filmhuis-bussum",
     "city": "bussum",
-    "url": "https://www.filmhuisbussum.nl/"
+    "url": "https://www.filmhuisbussum.nl/",
+    "address": {
+      "streetAddress": "Brediusweg 1",
+      "postalCode": "1401 AA",
+      "addressLocality": "Bussum",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Bussum%2C%20Brediusweg%201%2C%201401%20AA%2C%20Bussum%2C%20Netherlands"
+    },
+    "logo": "filmhuis-bussum.png"
   }
 ]
