@@ -1,11 +1,9 @@
-import got from 'got'
 import { DateTime } from 'luxon'
 import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
-import { monthToNumber } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { trim } from './utils/xrayFilters'
@@ -19,93 +17,90 @@ const logger = parentLogger.createChild({
 const xray = Xray({
   filters: {
     trim,
-    normalizeWhitespace: (value) =>
+    normalizeWhitespace: (value: unknown) =>
       typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
   },
 })
+  .concurrency(10)
+  .throttle(10, 300)
 
-const extractNewsUrls = (xml: string) =>
-  Array.from(
-    new Set(
-      Array.from(
-        xml.matchAll(/<loc>(https:\/\/www\.filmhuisbreda\.nl\/nieuws\/[^<]+)<\/loc>/g),
-      ).map((match) => match[1]),
-    ),
-  )
+const hasEnglishSubtitles = (bodyText: string) =>
+  /ondertitelde taal\s+engels/i.test(bodyText)
 
-const hasEnglishSubtitles = (html: string) =>
-  /with English subtitles|met Engelse ondertiteling/i.test(html)
-
-type XRayNewsPage = {
+type XRayFilmPage = {
   bodyText: string
-  paragraphs: {
-    text: string
-  }[]
   title: string
+  timestamps: string[]
 }
 
-const extractMatches = (text: string) =>
-  Array.from(
-    text.matchAll(
-      /•\s*(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun|Ma|Di|Wo|Do|Vr|Za|Zo)\s+(\d{1,2})\s+([A-Za-z]{3})\s*\|\s*(\d{1,2})[h.:](\d{2})\s*[-–]\s*(.*?)$/g,
-    ),
-  )
-
-const extractFromNewsPage = async (url: string): Promise<Screening[]> => {
-  const html = await got(url).text()
-  const page: XRayNewsPage = await xray(html, {
-    bodyText: 'body@text | normalizeWhitespace | trim',
-    paragraphs: xray('p', [
-      {
-        text: '@text | normalizeWhitespace | trim',
-      },
-    ]),
-    title: 'title | trim',
-  })
+const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
+  let page: XRayFilmPage
+  try {
+    page = await xray(url, {
+      bodyText: 'body@text | normalizeWhitespace | trim',
+      title: 'h1 | trim',
+      timestamps: ['[data-timestamp]@data-timestamp'],
+    })
+  } catch (error) {
+    logger.warn('skipping film page that could not be fetched', { url, error })
+    return []
+  }
 
   if (!hasEnglishSubtitles(page.bodyText)) {
     return []
   }
 
-  const yearMatch = page.bodyText.match(/\b(20\d{2})\b/)
-  const year = yearMatch ? Number(yearMatch[1]) : DateTime.now().year
+  const title = page.title ? titleCase(page.title) : null
+  if (!title) {
+    logger.warn('skipping film page with missing title', { url })
+    return []
+  }
 
-  const screenings = page.paragraphs
-    .map(({ text }) => text)
-    .flatMap((text) => {
-      const match = Array.from(extractMatches(text)).at(0)
-      if (!match) {
-        return []
-      }
+  const dates = page.timestamps
+    .filter(Boolean)
+    .map((ts) =>
+      DateTime.fromSeconds(Number(ts), { zone: 'Europe/Amsterdam' }).toJSDate(),
+    )
 
-      const [, dayString, monthString, hourString, minuteString, title] = match
+  if (dates.length === 0) {
+    logger.warn('skipping film page with no screening times', { url })
+    return []
+  }
 
-      return [
-        {
-          title: titleCase(title),
-          url,
-          cinema: 'Filmhuis Botanique Breda',
-          date: DateTime.fromObject({
-            year,
-            month: monthToNumber(monthString),
-            day: Number(dayString),
-            hour: Number(hourString),
-            minute: Number(minuteString),
-          }).toJSDate(),
-        },
-      ]
-    })
-
-  return screenings
+  return dates.map((date) => ({
+    title,
+    url,
+    cinema: 'Filmhuis Botanique Breda',
+    date,
+  }))
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const sitemapXml = await got('https://www.filmhuisbreda.nl/sitemap-nieuws.xml').text()
-  const urls = extractNewsUrls(sitemapXml)
+  const allLinks: string[] = await xray(
+    'https://www.filmhuisbreda.nl/film-overzicht/alle-films',
+    'a',
+    ['@href'],
+  )
 
-  logger.info('news urls', { numberOfUrls: urls.length })
+  // Deduplicate by film ID (same film appears with different hall IDs, same film
+  // appears for different cinemas like hall 17 and 202)
+  const uniqueUrls = Array.from(
+    new Map(
+      allLinks
+        .filter(Boolean)
+        .map((href) => {
+          const match = href.match(/\/movies\/(\d+)\//)
+          return match ? ([match[1], href] as const) : null
+        })
+        .filter((x): x is [string, string] => x !== null),
+    ).values(),
+  )
 
-  const screenings = (await Promise.all(urls.map(extractFromNewsPage))).flat()
+  logger.info('film urls', { numberOfUrls: uniqueUrls.length })
+
+  const screenings = (
+    await Promise.all(uniqueUrls.map(extractFromFilmPage))
+  ).flat()
 
   return makeScreeningsUniqueAndSorted(screenings)
 }
