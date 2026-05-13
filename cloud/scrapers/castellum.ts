@@ -15,65 +15,102 @@ const logger = parentLogger.createChild({
   },
 })
 
-const xray = Xray({ filters: { trim } })
+const xray = Xray({
+  filters: {
+    trim,
+    normalizeWhitespace: (value: unknown) =>
+      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+  },
+})
+  .concurrency(10)
+  .throttle(10, 300)
 
-const extractUrlsFromSitemap = (xml: string) =>
-  Array.from(xml.matchAll(/<loc>(https:\/\/www\.alphens\.nl\/evenement\/[^<]+)<\/loc>/g))
+const hasEnglishSubtitles = (bodyText: string) =>
+  /Engelse ondertitels|English subtitles/i.test(bodyText)
+
+const extractStartDates = (html: string): Date[] =>
+  Array.from(html.matchAll(/"startDate":"([^"]+)"/g))
     .map((match) => match[1])
-    .filter(Boolean)
+    .map((isoDate) =>
+      DateTime.fromISO(isoDate, { zone: 'Europe/Amsterdam' }).toJSDate(),
+    )
 
-const hasEnglishSubtitles = (html: string) =>
-  /Engelse ondertitels|English subtitles/i.test(html)
-
-const isCastellumVenue = (html: string) =>
-  /Castellum Theater & Film/i.test(html)
-
-const extractStartDate = (html: string) => {
-  const match = html.match(/"startDate":\s*"([^"]+)"/)
-  if (!match?.[1]) return null
-
-  return DateTime.fromISO(match[1], { zone: 'Europe/Amsterdam' }).toJSDate()
+type XRayFilmPage = {
+  bodyText: string
+  title: string
 }
 
-const extractFromEventPage = async (url: string): Promise<Screening[]> => {
+const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
   let html: string
   try {
     html = await got(url).text()
   } catch (error) {
-    logger.warn('skipping page that could not be fetched', { url, error })
+    logger.warn('skipping film page that could not be fetched', { url, error })
     return []
   }
 
-  if (!isCastellumVenue(html) || !hasEnglishSubtitles(html)) {
+  if (!hasEnglishSubtitles(html)) {
     return []
   }
 
-  const { h1Title } = await xray(html, { h1Title: 'h1.h2 | trim' })
-  const title = h1Title ? titleCase(h1Title) : null
-  const date = extractStartDate(html)
+  const page: XRayFilmPage = await xray(html, {
+    bodyText: 'body@text | normalizeWhitespace | trim',
+    title: 'h1 span | trim',
+  })
 
-  if (!title || !date) {
-    logger.warn('skipping page with missing title or date', { url })
+  const title = page.title ? titleCase(page.title) : null
+  if (!title) {
+    logger.warn('skipping film page with missing title', { url })
     return []
   }
 
-  return [
-    {
-      title,
-      url,
-      cinema: 'Castellum Theater & Film',
-      date,
-    },
-  ]
+  const dates = extractStartDates(html)
+  if (dates.length === 0) {
+    logger.warn('skipping film page with no screening dates', { url })
+    return []
+  }
+
+  return dates.map((date) => ({
+    title,
+    url,
+    cinema: 'Castellum Theater & Film',
+    date,
+  }))
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const sitemapXml = await got('https://www.alphens.nl/rss/google.agenda.rss').text()
-  const urls = extractUrlsFromSitemap(sitemapXml)
+  const allLinks: string[] = await xray(
+    'https://castellum.nl/film',
+    'a',
+    ['@href'],
+  )
 
-  logger.info('sitemap urls', { numberOfUrls: urls.length })
+  // Keep unique film detail URLs only (exclude /bestel/ ticket links and other pages)
+  const filmUrls = Array.from(
+    new Set(
+      allLinks
+        .filter(Boolean)
+        .filter((href) => {
+          try {
+            const url = new URL(href)
+            const parts = url.pathname.split('/').filter(Boolean)
+            return (
+              url.hostname === 'castellum.nl' &&
+              parts[0] === 'film' &&
+              parts.length === 2
+            )
+          } catch {
+            return false
+          }
+        }),
+    ),
+  )
 
-  const screenings = (await Promise.all(urls.map(extractFromEventPage))).flat()
+  logger.info('film urls', { numberOfUrls: filmUrls.length })
+
+  const screenings = (
+    await Promise.all(filmUrls.map(extractFromFilmPage))
+  ).flat()
 
   return makeScreeningsUniqueAndSorted(screenings)
 }
