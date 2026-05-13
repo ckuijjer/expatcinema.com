@@ -592,6 +592,13 @@
     "name": "De Balie",
     "slug": "de-balie",
     "city": "amsterdam",
-    "url": "https://debalie.nl/cinema/"
+    "url": "https://debalie.nl/cinema/",
+    "address": {
+      "streetAddress": "Kleine-Gartmanplantsoen 10",
+      "postalCode": "1017 RR",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=De%20Balie%2C%20Kleine-Gartmanplantsoen%2010%2C%201017%20RR%2C%20Amsterdam%2C%20Netherlands"
+    },
+    "logo": "de-balie.png"
   }
 ]
