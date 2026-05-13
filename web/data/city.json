@@ -1,22 +1,86 @@
 [
-  { "name": "Amsterdam", "slug": "amsterdam" },
-  { "name": "Amstelveen", "slug": "amstelveen" },
-  { "name": "Rotterdam", "slug": "rotterdam" },
-  { "name": "Den Haag", "slug": "den-haag" },
-  { "name": "Utrecht", "slug": "utrecht" },
-  { "name": "Arnhem", "slug": "arnhem" },
-  { "name": "Breda", "slug": "breda" },
-  { "name": "Delft", "slug": "delft" },
-  { "name": "Dordrecht", "slug": "dordrecht" },
-  { "name": "Eindhoven", "slug": "eindhoven" },
-  { "name": "Enschede", "slug": "enschede" },
-  { "name": "Groningen", "slug": "groningen" },
-  { "name": "Haarlem", "slug": "haarlem" },
-  { "name": "Hilversum", "slug": "hilversum" },
-  { "name": "Leiden", "slug": "leiden" },
-  { "name": "Leeuwarden", "slug": "leeuwarden" },
-  { "name": "Maastricht", "slug": "maastricht" },
-  { "name": "Nijmegen", "slug": "nijmegen" },
-  { "name": "Tilburg", "slug": "tilburg" },
-  { "name": "Wageningen", "slug": "wageningen" }
+  {
+    "name": "Amstelveen",
+    "slug": "amstelveen"
+  },
+  {
+    "name": "Amsterdam",
+    "slug": "amsterdam"
+  },
+  {
+    "name": "Arnhem",
+    "slug": "arnhem"
+  },
+  {
+    "name": "Breda",
+    "slug": "breda"
+  },
+  {
+    "name": "Delft",
+    "slug": "delft"
+  },
+  {
+    "name": "Den Haag",
+    "slug": "den-haag"
+  },
+  {
+    "name": "Dordrecht",
+    "slug": "dordrecht"
+  },
+  {
+    "name": "Eindhoven",
+    "slug": "eindhoven"
+  },
+  {
+    "name": "Enschede",
+    "slug": "enschede"
+  },
+  {
+    "name": "Groningen",
+    "slug": "groningen"
+  },
+  {
+    "name": "Haarlem",
+    "slug": "haarlem"
+  },
+  {
+    "name": "Heerlen",
+    "slug": "heerlen"
+  },
+  {
+    "name": "Hilversum",
+    "slug": "hilversum"
+  },
+  {
+    "name": "Leeuwarden",
+    "slug": "leeuwarden"
+  },
+  {
+    "name": "Leiden",
+    "slug": "leiden"
+  },
+  {
+    "name": "Maastricht",
+    "slug": "maastricht"
+  },
+  {
+    "name": "Nijmegen",
+    "slug": "nijmegen"
+  },
+  {
+    "name": "Rotterdam",
+    "slug": "rotterdam"
+  },
+  {
+    "name": "Tilburg",
+    "slug": "tilburg"
+  },
+  {
+    "name": "Utrecht",
+    "slug": "utrecht"
+  },
+  {
+    "name": "Wageningen",
+    "slug": "wageningen"
+  }
 ]
