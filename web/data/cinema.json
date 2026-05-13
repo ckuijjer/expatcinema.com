@@ -592,6 +592,13 @@
     "name": "Cinema The Pulse",
     "slug": "cinema-the-pulse",
     "city": "amsterdam",
-    "url": "https://www.cinemathepulse.com/"
+    "url": "https://www.cinemathepulse.com/",
+    "address": {
+      "streetAddress": "Hildegard von Bingenstraat 4",
+      "postalCode": "1081 LH",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinema%20The%20Pulse%2C%20Hildegard%20von%20Bingenstraat%204%2C%201081%20LH%2C%20Amsterdam%2C%20Netherlands"
+    },
+    "logo": "cinema-the-pulse.jpg"
   }
 ]
