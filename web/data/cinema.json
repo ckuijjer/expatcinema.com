@@ -589,9 +589,16 @@
     }
   },
   {
-    "name": "Filmhuis Botanique / Filmhuis Breda",
-    "slug": "filmhuis-botanique-filmhuis-breda",
+    "name": "Filmhuis Botanique Breda",
+    "slug": "filmhuis-botanique-breda",
     "city": "breda",
-    "url": "https://www.filmhuisbreda.nl/"
+    "url": "https://www.filmhuisbreda.nl/",
+    "address": {
+      "streetAddress": "Keizerstraat 19F",
+      "postalCode": "4811 HL",
+      "addressLocality": "Breda",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Botanique%20Breda%2C%20Keizerstraat%2019F%2C%204811%20HL%2C%20Breda%2C%20Netherlands"
+    },
+    "logo": "filmhuis-botanique-breda.png"
   }
 ]
