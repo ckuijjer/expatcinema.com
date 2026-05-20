@@ -10,7 +10,7 @@ import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
-import { trim } from './utils/xrayFilters'
+import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -21,8 +21,7 @@ const logger = parentLogger.createChild({
 const xray = Xray({
   filters: {
     trim,
-    normalizeWhitespace: (value) =>
-      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+    normalizeWhitespace,
   },
 })
   .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 60_000 } }))
@@ -32,8 +31,7 @@ const xray = Xray({
 const detailPageXray = Xray({
   filters: {
     trim,
-    normalizeWhitespace: (value) =>
-      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+    normalizeWhitespace,
   },
 })
 
