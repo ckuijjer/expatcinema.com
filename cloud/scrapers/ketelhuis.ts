@@ -13,7 +13,7 @@ import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 import { uniq } from './utils/uniq'
-import { trim } from './utils/xrayFilters'
+import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -32,8 +32,7 @@ const xray = Xray({
               .replace(/ \(English subs\)$/i, ''),
           )
         : value,
-    normalizeWhitespace: (value: unknown) =>
-      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+    normalizeWhitespace,
   },
 })
   .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 40_000 } }))
