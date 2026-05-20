@@ -7,6 +7,7 @@ import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
+import { normalizeWhitespace } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -16,8 +17,7 @@ const logger = parentLogger.createChild({
 
 const xray = Xray({
   filters: {
-    normalizeWhitespace: (value) =>
-      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+    normalizeWhitespace,
   },
 })
 
