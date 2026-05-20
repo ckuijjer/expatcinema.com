@@ -72,7 +72,7 @@ Use the `SCRAPERS` environment variable in `.env.local` to define a comma separa
 
 ### Single scraper
 
-And to call a single scraper, e.g. `pnpm tsx scrapers/kinorotterdam.ts` and then have e.g.
+And to call a single scraper, e.g. `pnpm scraper scrapers/kinorotterdam.ts` and then have e.g.
 
 ```
 if (require.main === module) {

@@ -600,5 +600,57 @@
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=De%20Balie%2C%20Kleine-Gartmanplantsoen%2010%2C%201017%20RR%2C%20Amsterdam%2C%20Netherlands"
     },
     "logo": "de-balie.png"
+  },
+  {
+    "name": "Cinema The Pulse",
+    "slug": "cinema-the-pulse",
+    "city": "amsterdam",
+    "url": "https://www.cinemathepulse.com/",
+    "address": {
+      "streetAddress": "Hildegard von Bingenstraat 4",
+      "postalCode": "1081 LH",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Cinema%20The%20Pulse%2C%20Hildegard%20von%20Bingenstraat%204%2C%201081%20LH%2C%20Amsterdam%2C%20Netherlands"
+    },
+    "logo": "cinema-the-pulse.jpg"
+  },
+  {
+    "name": "Filmhuis Bussum",
+    "slug": "filmhuis-bussum",
+    "city": "bussum",
+    "url": "https://www.filmhuisbussum.nl/",
+    "address": {
+      "streetAddress": "Brediusweg 1",
+      "postalCode": "1401 AA",
+      "addressLocality": "Bussum",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Bussum%2C%20Brediusweg%201%2C%201401%20AA%2C%20Bussum%2C%20Netherlands"
+    },
+    "logo": "filmhuis-bussum.png"
+  },
+  {
+    "name": "Castellum Theater & Film",
+    "slug": "castellum-theater-film",
+    "city": "alphen-aan-den-rijn",
+    "url": "https://castellum.nl/film",
+    "address": {
+      "streetAddress": "Rijnplein 1-3",
+      "postalCode": "2405 DB",
+      "addressLocality": "Alphen aan den Rijn",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Castellum%20Theater%20%26%20Film%2C%20Rijnplein%201-3%2C%202405%20DB%2C%20Alphen%20aan%20den%20Rijn%2C%20Netherlands"
+    },
+    "logo": "castellum-theater-film.png"
+  },
+  {
+    "name": "Filmhuis Botanique Breda",
+    "slug": "filmhuis-botanique-breda",
+    "city": "breda",
+    "url": "https://www.filmhuisbreda.nl/",
+    "address": {
+      "streetAddress": "Keizerstraat 19F",
+      "postalCode": "4811 HL",
+      "addressLocality": "Breda",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Botanique%20Breda%2C%20Keizerstraat%2019F%2C%204811%20HL%2C%20Breda%2C%20Netherlands"
+    },
+    "logo": "filmhuis-botanique-breda.png"
   }
 ]

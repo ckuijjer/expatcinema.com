@@ -7,7 +7,7 @@ import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSo
 import { fullMonthToNumberDutch } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
-import { trim } from './utils/xrayFilters'
+import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -30,8 +30,7 @@ const xray = Xray({
               .replace(/ \+ English Subtitles/i, ''), // e.g.  + English Subtitles
           )
         : value,
-    normalizeWhitespace: (value) =>
-      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+    normalizeWhitespace,
   },
 })
   .concurrency(10)
