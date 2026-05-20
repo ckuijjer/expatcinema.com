@@ -589,6 +589,19 @@
     }
   },
   {
+    "name": "De Lieve Vrouw",
+    "slug": "de-lieve-vrouw",
+    "city": "amersfoort",
+    "url": "https://lievevrouw.nl/",
+    "address": {
+      "streetAddress": "Lieve Vrouwestraat 13",
+      "postalCode": "3811 BP",
+      "addressLocality": "Amersfoort",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=De%20Lieve%20Vrouw%2C%20Lieve%20Vrouwestraat%2013%2C%203811%20BP%2C%20Amersfoort%2C%20Netherlands"
+    },
+    "logo": "de-lieve-vrouw.png"
+  },
+  {
     "name": "Filmhuis Bussum",
     "slug": "filmhuis-bussum",
     "city": "bussum",
