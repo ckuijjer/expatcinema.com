@@ -6,7 +6,7 @@ import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
-import { trim } from './utils/xrayFilters'
+import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -17,8 +17,7 @@ const logger = parentLogger.createChild({
 const xray = Xray({
   filters: {
     trim,
-    normalizeWhitespace: (value: unknown) =>
-      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+    normalizeWhitespace,
   },
 })
   .concurrency(10)

@@ -11,7 +11,7 @@ import { removeYearSuffix } from './utils/removeYearSuffix'
 import { runIfMain } from './utils/runIfMain'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { titleCase } from './utils/titleCase'
-import { trim } from './utils/xrayFilters'
+import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -25,8 +25,7 @@ const PROGRAMME_URL =
 const xray = Xray({
   filters: {
     trim,
-    normalizeWhitespace: (value) =>
-      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+    normalizeWhitespace,
   },
 })
   .concurrency(10)

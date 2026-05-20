@@ -135,7 +135,7 @@ For scraper-level validation, prefer a direct run under Node 24:
 ```bash
 nvm use
 cd cloud
-pnpm tsx scrapers/<name>.ts
+pnpm scraper scrapers/<name>.ts
 ```
 
 Add `POWERTOOLS_LOG_LEVEL=DEBUG` to see intermediate scraping data (raw page contents, per-URL extraction steps, etc.).

@@ -6,7 +6,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { runIfMain } from './utils/runIfMain'
-import { trim } from './utils/xrayFilters'
+import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -20,8 +20,7 @@ const TICKETS_BASE_URL = 'https://tickets.fchyena.nl'
 const xray = Xray({
   filters: {
     trim,
-    normalizeWhitespace: (value) =>
-      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+    normalizeWhitespace,
   },
 })
   .concurrency(10)
