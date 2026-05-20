@@ -11,6 +11,7 @@ import { removeYearSuffix } from './utils/removeYearSuffix'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
+import { normalizeWhitespace } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -29,9 +30,6 @@ const cleanTitle = (value: unknown) =>
         removeYearSuffix(value.replace(/\s*-\s*en subs$/i, '').trim()).trim(),
       )
     : value
-
-const normalizeWhitespace = (value: unknown) =>
-  typeof value === 'string' ? value.replace(/\s+/g, ' ') : value
 
 const xray = Xray({
   filters: {

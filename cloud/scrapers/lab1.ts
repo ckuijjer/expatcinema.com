@@ -6,7 +6,7 @@ import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
-import { trim } from './utils/xrayFilters'
+import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -19,8 +19,7 @@ const xray = Xray({
     trim,
     cleanTitle: (value) =>
       typeof value === 'string' ? value.replace(/\(.*\)\s+$/, '') : value,
-    normalizeWhitespace: (value) =>
-      typeof value === 'string' ? value.replace(/\s+/g, ' ') : value,
+    normalizeWhitespace,
   },
 })
   .concurrency(10)
