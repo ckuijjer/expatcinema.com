@@ -12,10 +12,12 @@ import { logger } from '../powertools'
 import { Screening } from '../types'
 import amstelveen from './amstelveen'
 import bioscopenleiden from './bioscopenleiden'
+import castellum from './castellum'
 import chasse from './chasse'
 import cinecenter from './cinecenter'
 import cinecitta from './cinecitta'
 import cinemadevlugt from './cinemadevlugt'
+import cinemathepulse from './cinemathepulse'
 import cinerama from './cinerama'
 import concordia from './concordia'
 import desien from './desien'
@@ -25,6 +27,8 @@ import deuitkijk from './deuitkijk'
 import dokhuis from './dokhuis'
 import eyefilm from './eyefilm'
 import fchyena from './fchyena'
+import filmhuisbussum from './filmhuisbussum'
+import filmhuisbreda from './filmhuisbreda'
 import filmhuisdenhaag from './filmhuisdenhaag'
 import filmhuisdespiegel from './filmhuisdespiegel'
 import filmtheaterhilversum from './filmtheaterhilversum'
@@ -66,10 +70,12 @@ import type { Metadata } from '../metadata/types'
 const SCRAPERS = {
   amstelveen,
   bioscopenleiden,
+  castellum,
   chasse,
   cinecenter,
   cinecitta,
   cinemadevlugt,
+  cinemathepulse,
   cinerama,
   concordia,
   desien,
@@ -79,6 +85,8 @@ const SCRAPERS = {
   dokhuis,
   eyefilm,
   fchyena,
+  filmhuisbussum,
+  filmhuisbreda,
   filmhuisdenhaag,
   filmhuisdespiegel,
   filmtheaterhilversum,

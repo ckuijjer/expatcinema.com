@@ -1,5 +1,9 @@
 [
   {
+    "name": "Alphen aan den Rijn",
+    "slug": "alphen-aan-den-rijn"
+  },
+  {
     "name": "Amstelveen",
     "slug": "amstelveen"
   },
@@ -14,6 +18,10 @@
   {
     "name": "Breda",
     "slug": "breda"
+  },
+  {
+    "name": "Bussum",
+    "slug": "bussum"
   },
   {
     "name": "Delft",
