@@ -85,7 +85,8 @@ export class BackendStack extends cdk.Stack {
         environment: {
           ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
 
-          SLACK_WEBHOOK: config.SLACK_WEBHOOK,
+          SLACK_BOT_TOKEN: config.SLACK_BOT_TOKEN,
+          SLACK_CHANNEL: config.SLACK_CHANNEL,
         },
       },
     )
