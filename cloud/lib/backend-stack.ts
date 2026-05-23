@@ -112,7 +112,6 @@ export class BackendStack extends cdk.Stack {
           TMDB_API_KEY: config.TMDB_API_KEY,
           OMDB_API_KEY: config.OMDB_API_KEY,
           SCRAPERS: config.SCRAPERS,
-          SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
         },
       },
     )
@@ -156,7 +155,6 @@ export class BackendStack extends cdk.Stack {
           TMDB_API_KEY: config.TMDB_API_KEY,
           OMDB_API_KEY: config.OMDB_API_KEY,
           SCRAPERS: config.SCRAPERS,
-          SCRAPEOPS_API_KEY: config.SCRAPEOPS_API_KEY,
         },
       },
     )
