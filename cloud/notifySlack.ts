@@ -36,6 +36,11 @@ type SlackBlock = {
   }
 }
 
+type SlackMessage = {
+  mainBlock: SlackBlock
+  threadBlock: SlackBlock | null
+}
+
 const notifySlack = async ({ awslogs }: CloudWatchLogsEvent) => {
   const payload = Buffer.from(awslogs.data, 'base64')
 
@@ -49,9 +54,9 @@ const notifySlack = async ({ awslogs }: CloudWatchLogsEvent) => {
     filters.some((f) => f.test(message)),
   )
 
-  const slackBlocks = filteredLogEvents.map(getSlackBlocks)
+  const slackMessages = filteredLogEvents.map(getSlackMessage)
 
-  await Promise.all(slackBlocks.map(postToSlack))
+  await Promise.all(slackMessages.map(postToSlack))
 }
 
 const levelsToEmoji = {
@@ -61,51 +66,79 @@ const levelsToEmoji = {
   DEBUG: ':information_source:',
 }
 
-const getSlackBlocks = (logEvent: LogEvent): SlackBlock[] => {
+const getSlackMessage = (logEvent: LogEvent): SlackMessage => {
   try {
     const json = JSON.parse(logEvent.message) as {
       level?: keyof typeof levelsToEmoji
       message: string
     }
 
-    const blocks = [
-      {
+    return {
+      mainBlock: {
         type: 'section',
         text: {
           type: 'plain_text',
           text: `${levelsToEmoji[json.level ?? 'INFO']} ${json.message}`,
         },
       },
-      {
+      threadBlock: {
         type: 'section',
         text: {
           type: 'mrkdwn',
           text: '```' + JSON.stringify(json, null, 2) + '```',
         },
       },
-    ]
-    return blocks
+    }
   } catch (error) {
     console.info('couldnt parse logEvent', {
       logEvent,
       error,
     })
 
-    return [
-      { type: 'section', text: { type: 'plain_text', text: logEvent.message } },
-    ]
+    return {
+      mainBlock: {
+        type: 'section',
+        text: { type: 'plain_text', text: logEvent.message },
+      },
+      threadBlock: null,
+    }
   }
 }
 
-const postToSlack = (blocks: SlackBlock[]) => {
-  const slackWebhook = process.env.SLACK_WEBHOOK
-  if (!slackWebhook) {
-    throw new Error('SLACK_WEBHOOK is required')
+const postToSlack = async ({ mainBlock, threadBlock }: SlackMessage) => {
+  const slackBotToken = process.env.SLACK_BOT_TOKEN
+  if (!slackBotToken) {
+    throw new Error('SLACK_BOT_TOKEN is required')
   }
 
-  return got.post(slackWebhook, {
-    json: { blocks },
-  })
+  const channel = process.env.SLACK_CHANNEL
+  if (!channel) {
+    throw new Error('SLACK_CHANNEL is required')
+  }
+
+  const response = await got
+    .post('https://slack.com/api/chat.postMessage', {
+      headers: { Authorization: `Bearer ${slackBotToken}` },
+      json: { channel, blocks: [mainBlock] },
+    })
+    .json<{ ok: boolean; ts: string; error?: string }>()
+
+  if (!response.ok) {
+    throw new Error(`Slack API error: ${response.error}`)
+  }
+
+  if (threadBlock) {
+    const threadResponse = await got
+      .post('https://slack.com/api/chat.postMessage', {
+        headers: { Authorization: `Bearer ${slackBotToken}` },
+        json: { channel, thread_ts: response.ts, blocks: [threadBlock] },
+      })
+      .json<{ ok: boolean; error?: string }>()
+
+    if (!threadResponse.ok) {
+      throw new Error(`Slack API error posting thread: ${threadResponse.error}`)
+    }
+  }
 }
 
 export const handler = notifySlack
