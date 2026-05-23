@@ -71,14 +71,17 @@ const getSlackMessage = (logEvent: LogEvent): SlackMessage => {
     const json = JSON.parse(logEvent.message) as {
       level?: keyof typeof levelsToEmoji
       message: string
+      scraper?: string
     }
+
+    const scraperPrefix = json.scraper ? `*${json.scraper}*: ` : ''
 
     return {
       mainBlock: {
         type: 'section',
         text: {
-          type: 'plain_text',
-          text: `${levelsToEmoji[json.level ?? 'INFO']} ${json.message}`,
+          type: 'mrkdwn',
+          text: `${levelsToEmoji[json.level ?? 'INFO']} ${scraperPrefix}${json.message}`,
         },
       },
       threadBlock: {
