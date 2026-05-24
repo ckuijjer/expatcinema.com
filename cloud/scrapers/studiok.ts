@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon'
 import pRetry from 'p-retry'
-import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -12,7 +11,7 @@ import { removeYearSuffix } from './utils/removeYearSuffix'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
-import { normalizeWhitespace, trim } from './utils/xrayFilters'
+import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -34,15 +33,7 @@ const cleanTitle = (title: string) => {
   )
 }
 
-const xray = Xray({
-  filters: {
-    trim,
-    normalizeWhitespace,
-  },
-})
-  .concurrency(3)
-  .throttle(3, 600)
-  .timeout('5s')
+const xray = createXray({ logger }).concurrency(3).throttle(3, 600).timeout('5s')
 
 type XRayFromMoviePage = {
   title: string

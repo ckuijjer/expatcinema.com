@@ -1,5 +1,4 @@
 import { DateTime } from 'luxon'
-import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -8,7 +7,7 @@ import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSo
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
-import { normalizeWhitespace, trim } from './utils/xrayFilters'
+import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -27,16 +26,13 @@ const cleanTitle = (value: string) =>
     .replace(/^Framed Shorts:\s+/i, '')
     .replace(/^Film Lovers Tuesday:\s+/i, '')
 
-const xray = Xray({
+const xray = createXray({
   filters: {
-    trim,
     cleanTitle: (value) =>
       typeof value === 'string' ? cleanTitle(value) : value,
-    normalizeWhitespace,
   },
+  logger,
 })
-  .concurrency(10)
-  .throttle(10, 300)
 
 type XRayFromMoviePage = {
   title: string

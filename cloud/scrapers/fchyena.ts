@@ -1,12 +1,11 @@
 import got from 'got'
 import { DateTime } from 'luxon'
-import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { runIfMain } from './utils/runIfMain'
-import { normalizeWhitespace, trim } from './utils/xrayFilters'
+import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -14,17 +13,10 @@ const logger = parentLogger.createChild({
   },
 })
 
+const xray = createXray({ logger })
+
 const BASE_URL = 'https://fchyena.nl'
 const TICKETS_BASE_URL = 'https://tickets.fchyena.nl'
-
-const xray = Xray({
-  filters: {
-    trim,
-    normalizeWhitespace,
-  },
-})
-  .concurrency(10)
-  .throttle(10, 300)
 
 type MainPageResult = {
   title: string

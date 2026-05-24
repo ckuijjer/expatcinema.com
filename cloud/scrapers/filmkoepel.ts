@@ -1,6 +1,5 @@
 import got from 'got'
 import { DateTime } from 'luxon'
-import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -9,7 +8,7 @@ import { guessYear } from './utils/guessYear'
 import { monthToNumber } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
-import { trim } from './utils/xrayFilters'
+import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -17,11 +16,7 @@ const logger = parentLogger.createChild({
   },
 })
 
-const xray = Xray({
-  filters: {
-    trim,
-  },
-})
+const xray = createXray({ logger })
 
 type XRayFromMainPage = {
   title: string

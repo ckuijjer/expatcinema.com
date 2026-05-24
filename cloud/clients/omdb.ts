@@ -12,7 +12,7 @@ const getClient = (apiKey: string) => {
     resolveBodyOnly: true, // to have the response only contain the body, not the entire response, got internal things etc
     hooks: {
       afterResponse: [camelcaseKeysHook],
-      beforeError: [logErrorHook],
+      beforeError: [logErrorHook()],
     },
   })
 }

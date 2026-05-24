@@ -1,5 +1,4 @@
 import { DateTime } from 'luxon'
-import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -7,6 +6,7 @@ import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
+import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -14,14 +14,13 @@ const logger = parentLogger.createChild({
   },
 })
 
-const xray = Xray({
+const xray = createXray({
   filters: {
     trimColon: (value: unknown) =>
       typeof value === 'string' ? value.replace(/:$/, '') : value,
   },
+  logger,
 })
-  .concurrency(10)
-  .throttle(10, 300)
 
 type MelkwegMetadataItem = {
   key: string

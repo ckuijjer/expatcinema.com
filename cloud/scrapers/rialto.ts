@@ -1,6 +1,5 @@
 import got from 'got'
 import { DateTime } from 'luxon'
-import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
@@ -9,7 +8,7 @@ import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
-import { trim } from './utils/xrayFilters'
+import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -17,17 +16,15 @@ const logger = parentLogger.createChild({
   },
 })
 
-const xray = Xray({
+const xray = createXray({
   filters: {
-    trim,
     cleanTitle: (value) =>
       typeof value === 'string'
         ? titleCase(value.replace(/ - (Expat Cinema|Eng Subs)/i, ''))
         : value,
   },
+  logger,
 })
-  .concurrency(10)
-  .throttle(10, 300)
 
 type RialtoFilmFeedResult = {
   [cinema: string]: {

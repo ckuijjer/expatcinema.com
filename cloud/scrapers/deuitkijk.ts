@@ -8,6 +8,7 @@ import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
+import { USER_AGENT } from '../xRay'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
@@ -22,7 +23,10 @@ const logger = parentLogger.createChild({
 const driver: Driver = (context, callback) => {
   const { url } = context
 
-  got(String(url), { https: { rejectUnauthorized: false } })
+  got(String(url), {
+    https: { rejectUnauthorized: false },
+    headers: { 'user-agent': USER_AGENT },
+  })
     .then((response) => callback(null, response.body as never))
     .catch((err) => callback(err, null as never))
 }

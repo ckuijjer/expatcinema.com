@@ -1,20 +1,21 @@
 import got from 'got'
 import { decode } from 'html-entities'
 import { DateTime } from 'luxon'
-import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { runIfMain } from './utils/runIfMain'
-import { normalizeWhitespace, trim } from './utils/xrayFilters'
+import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
     scraper: 'sliekerfilm',
   },
 })
+
+const xray = createXray({ logger })
 
 const CURRENT_MOVIES_URL =
   'https://sliekerfilm.nl/wp-json/wp/v2/wp_theatre_prod?per_page=100&_fields=id,link,title'
@@ -23,15 +24,6 @@ const MOVIE_API_URL = (id: number) =>
   `https://sliekerfilm.nl/wp-json/lvc/v1/movie/${id}`
 const EVENT_API_URL = (id: number) =>
   `https://sliekerfilm.nl/wp-json/lvc/v1/movie_event/${id}`
-
-const xray = Xray({
-  filters: {
-    trim,
-    normalizeWhitespace,
-  },
-})
-  .concurrency(10)
-  .throttle(10, 300)
 
 type ProductionSummary = {
   id: number
