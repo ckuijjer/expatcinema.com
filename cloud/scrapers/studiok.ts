@@ -33,7 +33,10 @@ const cleanTitle = (title: string) => {
   )
 }
 
-const xray = createXray({ logger }).concurrency(3).throttle(3, 600).timeout('5s')
+const xray = createXray({ logger })
+  .concurrency(3)
+  .throttle(3, 600)
+  .timeout('5s')
 
 type XRayFromMoviePage = {
   title: string
@@ -144,7 +147,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
           },
           {
             onFailedAttempt: ({ attemptNumber, retriesLeft }) => {
-              logger.warn(
+              const logLevel = retriesLeft > 0 ? 'info' : 'warn'
+              logger[logLevel](
                 `Scraping ${i} ${url}, attempt ${attemptNumber} failed. There are ${retriesLeft} retries left.`,
               )
             },

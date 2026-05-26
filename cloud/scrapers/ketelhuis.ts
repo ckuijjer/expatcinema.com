@@ -74,7 +74,8 @@ const extractFromMainPage = async () => {
       ),
     {
       onFailedAttempt: ({ attemptNumber, retriesLeft }) => {
-        logger.warn(
+        const logLevel = retriesLeft > 0 ? 'info' : 'warn'
+        logger[logLevel](
           `Scraping https://www.ketelhuis.nl/specials/expat-cinema/, attempt ${attemptNumber} failed. There are ${retriesLeft} retries left.`,
         )
       },
@@ -99,7 +100,8 @@ const extractFromMainPage = async () => {
           },
           {
             onFailedAttempt: ({ attemptNumber, retriesLeft }) => {
-              logger.warn(
+              const logLevel = retriesLeft > 0 ? 'info' : 'warn'
+              logger[logLevel](
                 `Scraping ${i} ${url}, attempt ${attemptNumber} failed. There are ${retriesLeft} retries left.`,
               )
             },
