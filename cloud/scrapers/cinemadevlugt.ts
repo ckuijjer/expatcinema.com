@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
@@ -96,9 +97,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.debug('main page', { movies })
 
-  const screenings = (
-    await Promise.all(movies.map(extractFromMoviePage))
-  ).flat()
+  const screenings = await extractScreeningsFromPages(
+    movies,
+    extractFromMoviePage,
+    { logger, url: ({ url }) => url },
+  )
 
   logger.debug('screenings found', { count: screenings.length, screenings })
 

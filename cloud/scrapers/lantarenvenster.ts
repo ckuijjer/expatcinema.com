@@ -6,6 +6,7 @@ import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
@@ -119,11 +120,13 @@ const extractFromMainPage = async () => {
 
   logger.debug('main page', { uniqueUrls })
 
-  const screenings = await Promise.all(uniqueUrls.map(extractFromMoviePage))
+  const screenings = await extractScreeningsFromPages(
+    uniqueUrls,
+    extractFromMoviePage,
+    { logger },
+  )
 
-  logger.debug('before flatten', { screenings })
-
-  return screenings.flat()
+  return screenings
 }
 
 runIfMain(extractFromMainPage, import.meta.url)

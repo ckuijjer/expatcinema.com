@@ -5,6 +5,7 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
@@ -104,9 +105,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       url: new URL(url, BASE_URL).toString(),
     }))
 
-  const screenings = (
-    await Promise.all(expatCinemaPages.map(extractFromMoviePage))
-  ).flat()
+  const screenings = await extractScreeningsFromPages(
+    expatCinemaPages,
+    extractFromMoviePage,
+    { logger, url: ({ url }) => url },
+  )
 
   return makeScreeningsUniqueAndSorted(screenings)
 }

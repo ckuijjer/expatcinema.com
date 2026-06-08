@@ -4,6 +4,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { useLLM } from './utils/useLLM'
@@ -100,9 +101,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.debug('extracted', { movies })
 
-  const screenings = (
-    await Promise.all(movies.map(extractFromMoviePage))
-  ).flat()
+  const screenings = await extractScreeningsFromPages(
+    movies,
+    extractFromMoviePage,
+    { logger, url: ({ url }) => url },
+  )
 
   logger.debug('screenings', { screenings })
 
