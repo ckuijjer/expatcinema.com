@@ -163,7 +163,7 @@ const extractFromMainPage = async () => {
   const screenings = await extractScreeningsFromPages(
     movies,
     ({ url }) => extractFromMoviePage(url),
-    { logger },
+    { logger, url: ({ url }) => url },
   )
 
   logger.debug('extractFromMainPage', { screenings })

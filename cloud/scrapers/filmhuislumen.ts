@@ -178,7 +178,7 @@ const extractFromMainPage = async () => {
   const screenings: Screening[] = await extractScreeningsFromPages(
     scrapeResult,
     extractFromMoviePage,
-    { logger, describe: ({ url }) => url },
+    { logger, url: ({ url }) => url },
   )
 
   logger.debug('screenings found', { screenings })

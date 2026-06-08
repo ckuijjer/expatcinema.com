@@ -108,7 +108,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings = await extractScreeningsFromPages(
     expatCinemaPages,
     extractFromMoviePage,
-    { logger },
+    { logger, url: ({ url }) => url },
   )
 
   return makeScreeningsUniqueAndSorted(screenings)

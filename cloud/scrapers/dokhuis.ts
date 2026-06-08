@@ -104,7 +104,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings = await extractScreeningsFromPages(
     movies,
     extractFromMoviePage,
-    { logger },
+    { logger, url: ({ url }) => url },
   )
 
   logger.debug('screenings', { screenings })

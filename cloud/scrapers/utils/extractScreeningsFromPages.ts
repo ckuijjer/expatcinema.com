@@ -6,9 +6,9 @@ type ExtractFromPage<Item> = (item: Item) => Promise<Screening[]>
 
 type Options<Item> = {
   logger: Logger
-  // Describe an item in the warning log when its page fails. Defaults to the
-  // item itself (objects like `{ title, url }` log fine; URLs log as-is).
-  describe?: (item: Item) => unknown
+  // Extract the page URL from an item for the failure log. Defaults to the
+  // item itself, which is correct when items are already URL strings.
+  url?: (item: Item) => unknown
 }
 
 /**
@@ -25,7 +25,7 @@ type Options<Item> = {
 export const extractScreeningsFromPages = async <Item>(
   items: Item[],
   extract: ExtractFromPage<Item>,
-  { logger, describe = (item) => item }: Options<Item>,
+  { logger, url = (item) => item }: Options<Item>,
 ): Promise<Screening[]> => {
   const results = await Promise.allSettled(
     // pRetry seam: wrap this call to retry an individual film page.
@@ -38,7 +38,7 @@ export const extractScreeningsFromPages = async <Item>(
     }
 
     logger.warn('failed to extract screenings from page', {
-      item: describe(items[index]),
+      url: url(items[index]),
       error: result.reason,
     })
 

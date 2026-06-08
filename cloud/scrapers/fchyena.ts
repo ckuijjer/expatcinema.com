@@ -150,7 +150,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         url: new URL(url, BASE_URL).toString(),
         productionId,
       }),
-    { logger },
+    { logger, url: ({ url }) => url },
   )
 
   return makeScreeningsUniqueAndSorted(screenings)

@@ -42,12 +42,12 @@ describe('extractScreeningsFromPages', () => {
     expect(result.map((s) => s.title)).toEqual(['ok-1', 'ok-2'])
   })
 
-  test('logs each failed page as a warning with the item and error', async () => {
+  test('logs each failed page as a warning with the url and error', async () => {
     const logger = makeLogger()
     const error = new Error('network blip')
 
     await extractScreeningsFromPages(
-      [{ url: 'https://example.com/boom' }],
+      ['https://example.com/boom'],
       async () => {
         throw error
       },
@@ -57,11 +57,11 @@ describe('extractScreeningsFromPages', () => {
     expect(logger.warn).toHaveBeenCalledTimes(1)
     expect(logger.warn).toHaveBeenCalledWith(
       'failed to extract screenings from page',
-      { item: { url: 'https://example.com/boom' }, error },
+      { url: 'https://example.com/boom', error },
     )
   })
 
-  test('describe customizes what is logged for a failed item', async () => {
+  test('url selector extracts the page url from an object item', async () => {
     const logger = makeLogger()
 
     await extractScreeningsFromPages(
@@ -69,12 +69,12 @@ describe('extractScreeningsFromPages', () => {
       async () => {
         throw new Error('boom')
       },
-      { logger, describe: (item) => item.url },
+      { logger, url: (item) => item.url },
     )
 
     expect(logger.warn).toHaveBeenCalledWith(
       'failed to extract screenings from page',
-      expect.objectContaining({ item: 'https://example.com/x' }),
+      expect.objectContaining({ url: 'https://example.com/x' }),
     )
   })
 })

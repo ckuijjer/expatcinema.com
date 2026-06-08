@@ -181,7 +181,7 @@ const extractFromMainPage = async () => {
   const screenings = await extractScreeningsFromPages(
     uniqueFilms,
     extractFromMoviePage,
-    { logger },
+    { logger, url: ({ url }) => url },
   )
 
   logger.debug('screenings', { screenings })
