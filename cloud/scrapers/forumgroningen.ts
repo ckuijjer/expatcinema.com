@@ -5,6 +5,7 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
@@ -137,9 +138,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.debug('extracted', { movies })
 
-  const screenings = (
-    await Promise.all(movies.map(extractFromMoviePage))
-  ).flat()
+  const screenings = await extractScreeningsFromPages(
+    movies,
+    extractFromMoviePage,
+    { logger },
+  )
 
   logger.debug('screenings', { screenings })
 

@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberDutch } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
@@ -174,9 +175,11 @@ const extractFromMainPage = async () => {
 
   logger.debug('scrape result', { scrapeResult })
 
-  const screenings: Screening[] = (
-    await Promise.all(scrapeResult.map(extractFromMoviePage))
-  ).flat()
+  const screenings: Screening[] = await extractScreeningsFromPages(
+    scrapeResult,
+    extractFromMoviePage,
+    { logger, describe: ({ url }) => url },
+  )
 
   logger.debug('screenings found', { screenings })
 

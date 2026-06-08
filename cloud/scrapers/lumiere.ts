@@ -6,6 +6,7 @@ import { Screening } from '../types'
 import xRayPuppeteer from '../xRayPuppeteer'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
@@ -177,7 +178,11 @@ const extractFromMainPage = async () => {
     ),
   ]
 
-  const screenings = (await Promise.all(urls.map(extractFromMoviePage))).flat()
+  const screenings = await extractScreeningsFromPages(
+    urls,
+    extractFromMoviePage,
+    { logger },
+  )
 
   logger.debug('extractFromMainPage', { screenings })
 

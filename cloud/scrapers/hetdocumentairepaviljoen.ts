@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
@@ -177,9 +178,11 @@ const extractFromMainPage = async () => {
   logger.debug('mainpage films', { uniqueFilms })
 
   // the __NEXT_DATA__ of the page doesn't contain subtitle information, so we need to filter it out
-  const screenings = await (
-    await Promise.all(uniqueFilms.map(extractFromMoviePage))
-  ).flat()
+  const screenings = await extractScreeningsFromPages(
+    uniqueFilms,
+    extractFromMoviePage,
+    { logger },
+  )
 
   logger.debug('screenings', { screenings })
   return screenings

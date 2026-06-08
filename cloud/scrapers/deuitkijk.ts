@@ -6,6 +6,7 @@ import { type Driver } from 'x-ray-crawler'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { USER_AGENT } from '../xRay'
@@ -135,11 +136,13 @@ const extractFromMainPage = async () => {
 
   logger.debug('main page', { uniqueUrls })
 
-  const screenings = await Promise.all(uniqueUrls.map(extractFromMoviePage))
+  const screenings = await extractScreeningsFromPages(
+    uniqueUrls,
+    extractFromMoviePage,
+    { logger },
+  )
 
-  logger.debug('before flatten', { screenings })
-
-  return screenings.flat()
+  return screenings
 }
 
 runIfMain(extractFromMainPage, import.meta.url)

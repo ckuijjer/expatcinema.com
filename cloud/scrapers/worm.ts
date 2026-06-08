@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
@@ -175,9 +176,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const productions = await getProductionResults()
 
   const now = DateTime.now().minus({ hours: 1 }).toJSDate()
-  const screenings = (
-    await Promise.all(productions.map(extractFromProductionPage))
-  ).flat()
+  const screenings = await extractScreeningsFromPages(
+    productions,
+    extractFromProductionPage,
+    { logger },
+  )
 
   return makeScreeningsUniqueAndSorted(
     screenings.filter(({ date }) => date >= now),
