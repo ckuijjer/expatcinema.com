@@ -639,5 +639,18 @@
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Botanique%20Breda%2C%20Keizerstraat%2019F%2C%204811%20HL%2C%20Breda%2C%20Netherlands"
     },
     "logo": "filmhuis-botanique-breda.png"
+  },
+  {
+    "name": "Filmhuis De Spiegel",
+    "slug": "filmhuis-de-spiegel",
+    "city": "heerlen",
+    "url": "https://filmhuisdespiegel.nl/",
+    "address": {
+      "streetAddress": "Stationsplein 5",
+      "postalCode": "6411 NE",
+      "addressLocality": "Heerlen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20De%20Spiegel%2C%20Stationsplein%205%2C%206411%20NE%2C%20Heerlen%2C%20Netherlands"
+    },
+    "logo": "filmhuis-de-spiegel.jpg"
   }
 ]
