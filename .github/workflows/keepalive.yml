@@ -1,0 +1,49 @@
+name: Keepalive
+
+# GitHub automatically disables `schedule:` triggers (e.g. in web.yml) after
+# 60 days with no repository activity. The scrapers run on an AWS EventBridge
+# schedule and are unaffected, but the daily site rebuild in web.yml is not —
+# if it gets disabled, fresh data keeps landing in S3 while the published site
+# goes stale (see the Aug 2026 incident).
+#
+# This job runs weekly and pushes a single empty commit *only* when the repo
+# has been quiet for a while, resetting the 60-day clock. Normal development
+# activity keeps everything alive for free and this never fires.
+
+on:
+  schedule:
+    - cron: '17 4 * * 1' # Mondays 04:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Never pile keepalive commits on top of each other.
+concurrency:
+  group: keepalive
+  cancel-in-progress: false
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Push empty commit if the repo has been quiet
+        env:
+          QUIET_DAYS_THRESHOLD: '45' # fire with ~15 days of margin before the 60-day cutoff
+        run: |
+          last_commit_ts=$(git log -1 --format=%ct)
+          age_days=$(( ( $(date +%s) - last_commit_ts ) / 86400 ))
+          echo "Last commit was ${age_days} day(s) ago (threshold: ${QUIET_DAYS_THRESHOLD})."
+
+          if [ "$age_days" -lt "$QUIET_DAYS_THRESHOLD" ]; then
+            echo "Recent activity — no keepalive commit needed."
+            exit 0
+          fi
+
+          echo "Repo has been quiet — pushing a keepalive commit."
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --allow-empty -m 'chore: keepalive to keep scheduled workflows enabled [skip ci]'
+          git push
