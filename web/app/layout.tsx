@@ -7,6 +7,7 @@ import { defaultDescription } from '../utils/seoMetadata'
 import { bodyFont } from '../utils/theme'
 import { siteUrl } from '../utils/siteUrl'
 import { GoogleAnalytics } from './GoogleAnalytics'
+import { ScrollToTop } from '../components/ScrollToTop'
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
@@ -41,6 +42,7 @@ export default function RootLayout({
       <body className={bodyFont.className}>
         <GoogleAnalytics />
         {children}
+        <ScrollToTop />
       </body>
     </html>
   )
