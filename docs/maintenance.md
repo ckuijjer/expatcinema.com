@@ -94,7 +94,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | cinecenter               | ok     |                                                 |
 | cinecitta                | broken | 0 on all runs                                   |
 | cinemadevlugt            | broken | 0 on all runs                                   |
-| cinemathepulse           | broken | 0 on all runs                                   |
+| cinemathepulse           | ok     | fixed 2026-09-28 (URL marker changed)           |
 | cinerama                 | broken | 0 on all runs, errors every run                 |
 | concordia                | ok     |                                                 |
 | defilmhallen             | ok     |                                                 |
