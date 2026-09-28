@@ -140,6 +140,8 @@ cd cloud
 pnpm scraper scrapers/<name>.ts
 ```
 
+To run a puppeteer-based scraper without a local Chromium or a display (CI, cloud agents), use `pnpm scraper:headless scrapers/<name>.ts`. It runs the scraper like the Lambda does, with the headless `@sparticuz/chromium` browser from `node_modules`.
+
 Add `POWERTOOLS_LOG_LEVEL=DEBUG` to see intermediate scraping data (raw page contents, per-URL extraction steps, etc.).
 
 ### FK-feed year notes
