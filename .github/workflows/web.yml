@@ -12,8 +12,8 @@ on:
       - 'web/**'
       - 'scripts/validate-cinemas.mjs'
       - '.github/workflows/web.yml'
-  schedule:
-    - cron: '30 3 * * *' # daily at 3.30 UTC.
+  # Also dispatched by the scrapers Lambda (cloud/triggerWebDeploy.ts) right
+  # after it writes fresh screenings to S3, which replaces a daily schedule.
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages

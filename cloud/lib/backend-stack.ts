@@ -112,6 +112,7 @@ export class BackendStack extends cdk.Stack {
           TMDB_API_KEY: config.TMDB_API_KEY,
           OMDB_API_KEY: config.OMDB_API_KEY,
           SCRAPERS: config.SCRAPERS,
+          WEB_DEPLOY_TOKEN: config.WEB_DEPLOY_TOKEN,
         },
       },
     )

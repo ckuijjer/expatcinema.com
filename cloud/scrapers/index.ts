@@ -9,6 +9,7 @@ import { closeBrowser } from '../browser'
 import documentClient from '../documentClient'
 import getMetadata from '../metadata'
 import { logger } from '../powertools'
+import { triggerWebDeploy } from '../triggerWebDeploy'
 import { Screening } from '../types'
 import amstelveen from './amstelveen'
 import bioscopenleiden from './bioscopenleiden'
@@ -442,6 +443,10 @@ export const scrapers = async () => {
 
     logger.info('writing to analytics', { countPerScraper })
     await writeToAnalytics('count')(countPerScraper)
+
+    if (!process.env.IS_LOCAL) {
+      await triggerWebDeploy()
+    }
   } catch (error) {
     logger.error('error scraping (main loop)', { error })
   }
