@@ -1,15 +1,9 @@
+import got from 'got'
 import { DateTime } from 'luxon'
-import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import xRayPuppeteer from '../xRayPuppeteer'
-import { guessYear } from './utils/guessYear'
-import { shortMonthToNumberDutch } from './utils/monthToNumber'
-import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
-import { splitTime } from './utils/splitTime'
-import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -17,174 +11,124 @@ const logger = parentLogger.createChild({
   },
 })
 
-const trim = (value: unknown) =>
-  typeof value === 'string' ? value.trim() : value
+// lumiere.nl is a Next.js front end on a WordPress backend with WPGraphQL.
+// Every movie has its Ticketworks performances, and each performance has tags
+// such as "engels ondertiteld". Movies exist once per language (NL and EN),
+// sharing the same performance ids.
+const GRAPHQL_URL = 'https://backend.lumiere.nl/wp/graphql'
 
-const cleanTitle = (value: unknown) =>
-  typeof value === 'string'
-    ? titleCase(value.replace(/ - Engels ondertiteld/g, ''))
-    : value
+const MOVIES_QUERY = `
+  query Movies($after: String) {
+    movies(first: 100, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        title
+        link
+        language {
+          code
+        }
+        eventData {
+          year
+        }
+        performances {
+          id
+          startAt
+          status
+          tags
+        }
+      }
+    }
+  }
+`
 
-const toLowerCase = (value: unknown) =>
-  typeof value === 'string' ? value.toLowerCase() : value
-
-const replaceNoBreakSpace = (value: unknown) =>
-  typeof value === 'string' ? value.replace(/\u00a0/g, ' ') : value
-
-const xray = Xray({
-  filters: {
-    cleanTitle,
-    replaceNoBreakSpace,
-    toLowerCase,
-    trim,
-  },
-})
-  .driver(xRayPuppeteer({ logger, waitForOptions: { timeout: 60_000 } }))
-  .concurrency(3)
-  .throttle(10, 300)
-
-type XRayFromProgrammaPage = {
-  title: string
-  url: string
-  metadata: string
+type LumierePerformance = {
+  id: string
+  startAt: string // local time, e.g. "2026-10-09 20:20:00"
+  status: string
+  tags: string[] | null
 }
 
-type XRayFromEnglishSubtitledPage = {
+type LumiereMovie = {
   title: string
-  url: string
+  link: string
+  language: { code: string } | null
+  eventData: { year: number | null } | null
+  performances: LumierePerformance[] | null
 }
 
-type XRayFromMoviePage = {
-  title: string
-  metadata: string
-  screenings: {
-    date: string
-    times: string[]
-  }[]
+type MoviesResponse = {
+  data: {
+    movies: {
+      pageInfo: { hasNextPage: boolean; endCursor: string }
+      nodes: LumiereMovie[]
+    }
+  }
 }
 
-const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
-  logger.debug('extracting', { url })
+const fetchAllMovies = async () => {
+  const movies: LumiereMovie[] = []
+  let after: string | undefined
 
-  const movie: XRayFromMoviePage = await xray(url, {
-    title: '.movie-intro h1 | cleanTitle | trim',
-    metadata: '.movie-info | replaceNoBreakSpace | toLowerCase | trim',
-    screenings: xray('.time-tickets .item', [
-      {
-        date: '.date | trim',
-        times: ['.time | trim'],
-      },
-    ]),
-  })
+  // Guard against a pagination bug turning into an endless loop
+  for (let page = 0; page < 20; page++) {
+    const response = await got
+      .post(GRAPHQL_URL, {
+        json: { query: MOVIES_QUERY, variables: { after } },
+      })
+      .json<MoviesResponse>()
 
-  logger.debug('extractFromMoviePage', { movie })
+    const { pageInfo, nodes } = response.data.movies
+    movies.push(...nodes)
 
-  if (!movie?.metadata?.includes('engels ondertiteld')) {
-    logger.warn('extractFromMoviePage without english subtitles', {
-      url,
-      title: movie.title,
-    })
-    return []
+    if (!pageInfo.hasNextPage) return movies
+    after = pageInfo.endCursor
   }
 
-  const screenings: Screening[] = movie.screenings.flatMap(
-    ({ date, times }) => {
-      const [dayString, monthString] = date
-        .replace(/\./g, '') // ['za. 2 sep.'] => ['za 2 sep']
-        .split(/\s+/) // ['za 2 sep'] => ['za', '2', 'sep']
-        .slice(1) // ['za', '2', 'sep'] => ['2', 'sep']
-
-      const day = Number(dayString)
-      const month = shortMonthToNumberDutch(monthString)
-
-      const year = guessYear({
-        day,
-        month,
-      })
-
-      return times.map((time) => {
-        const [hour, minute] = splitTime(time)
-
-        return {
-          title: movie.title,
-          url,
-          cinema: 'Lumière',
-          date: DateTime.fromObject({
-            day,
-            month,
-            year,
-            hour,
-            minute,
-          }).toJSDate(),
-        }
-      })
-    },
-  )
-
-  return screenings
-}
-
-const extractFromProgrammaPage = async () => {
-  const url = 'https://lumiere.nl/programma?sort=now'
-
-  const movies: XRayFromProgrammaPage[] = await xray(url, '.item', [
-    {
-      title: '.info-wrapper h2 | cleanTitle | trim',
-      url: '.info-wrapper a@href',
-      metadata:
-        '.info-wrapper .movie-info | replaceNoBreakSpace | toLowerCase | trim',
-    },
-  ])
-
-  logger.debug('extractFromProgrammaPage', { movies })
-
-  const filteredMovies = movies.filter(({ title, metadata }) => {
-    return metadata?.includes('engels ondertiteld')
-  })
-
-  logger.debug('extractFromProgrammaPage', { filteredMovies })
-  return filteredMovies
-}
-
-const extractFromEnglishSubtitledPage = async () => {
-  const url = 'https://lumiere.nl/reeksen/english-subtitled-screenings'
-
-  const movies: XRayFromEnglishSubtitledPage[] = await xray(
-    url,
-    '.movies-in-series a.article-block',
-    [
-      {
-        title: 'h2 | cleanTitle | trim',
-        url: '@href',
-      },
-    ],
-  )
-
-  logger.debug('extractFromEnglishSubtitledPage', { movies })
-
+  logger.warn('stopped paginating movies after 20 pages')
   return movies
 }
 
-const extractFromMainPage = async () => {
-  const moviesFromProgram = await extractFromProgrammaPage()
-  const moviesFromEnglishSubtitled = await extractFromEnglishSubtitledPage()
+const hasEnglishSubtitles = ({ tags }: LumierePerformance) =>
+  (tags ?? []).some((tag) => /engels ondertiteld|english subtitles/i.test(tag))
 
-  // get the unique urls
-  const urls = [
-    ...new Set(
-      [...moviesFromProgram, ...moviesFromEnglishSubtitled].map(
-        ({ url }) => url,
-      ),
-    ),
-  ]
+const extractFromMainPage = async (): Promise<Screening[]> => {
+  const movies = await fetchAllMovies()
 
-  const screenings = await extractScreeningsFromPages(
-    urls,
-    extractFromMoviePage,
-    { logger },
+  // A performance appears once per language version of its movie; keep one,
+  // preferring the English version for the title and link.
+  const performances = new Map<
+    string,
+    { movie: LumiereMovie; performance: LumierePerformance }
+  >()
+
+  for (const movie of movies) {
+    for (const performance of movie.performances ?? []) {
+      if (!hasEnglishSubtitles(performance)) continue
+      if (performance.status === 'CANCELLED') continue
+
+      const existing = performances.get(performance.id)
+      if (!existing || movie.language?.code === 'EN') {
+        performances.set(performance.id, { movie, performance })
+      }
+    }
+  }
+
+  const screenings: Screening[] = [...performances.values()].map(
+    ({ movie, performance }) => ({
+      title: movie.title,
+      year: movie.eventData?.year ?? undefined,
+      url: movie.link,
+      cinema: 'Lumière',
+      date: DateTime.fromFormat(performance.startAt, 'yyyy-MM-dd HH:mm:ss', {
+        zone: 'Europe/Amsterdam',
+      }).toJSDate(),
+    }),
   )
 
-  logger.debug('extractFromMainPage', { screenings })
+  logger.debug('screenings', { screenings })
 
   return screenings
 }
