@@ -59,10 +59,11 @@ const cleanTitle = (title: string) => titleCase(title)
 const hasEnglishSubtitles = (show: CinemaFilmDetailShow) => {
   if (!show.accessibility) return false
 
-  return show.accessibility.some(
-    ({ translation }) =>
-      translation === 'Subtitled in English' ||
-      translation === 'Engels ondertiteld',
+  // e.g. "Film is Engels ondertiteld", "Subtitled in English"
+  return show.accessibility.some(({ translation }) =>
+    /engels ondertiteld|subtitled in english|english subtitles/i.test(
+      translation ?? '',
+    ),
   )
 }
 
