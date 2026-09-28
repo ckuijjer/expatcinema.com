@@ -126,7 +126,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | lux                      | broken | slid 9 → 1; source URL is a single film page    |
 | melkweg                  | ok     |                                                 |
 | natlab                   | ok     |                                                 |
-| rialto                   | broken | 0 on all runs; source URL is a single film page |
+| rialto                   | ok     | fixed 2026-09-28 via JSON API; De Pijp only now |
 | schuur                   | ok     |                                                 |
 | slachtstraat             | ok     |                                                 |
 | sliekerfilm              | ok     | 0 until 2026-09-15                              |
