@@ -186,18 +186,20 @@ Run the following command to install Chromium locally:
 pnpm run install-chromium
 ```
 
+It downloads Chromium into `cloud/.chromium` (gitignored) and prints a `LOCAL_CHROMIUM_EXECUTABLE_PATH=...` line, add that line to `cloud/.env.local`.
+
 To see if it's correctly installed, open it with `pnpm run open-chromium`
 
 or see https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for how
 
 ## Troubleshooting
 
-When running a puppeteer based scraper locally, e.g. `AWS_PROFILE=casper pnpm tsx scrapers/ketelhuis.ts` and getting an error like
+When running a puppeteer based scraper locally, e.g. `pnpm scraper scrapers/ketelhuis.ts` and getting an error like
 
 ```
 Error: Failed to launch the browser process! spawn /tmp/localChromium/chromium/mac_arm-1205129/chrome-mac/Chromium.app/Contents/MacOS/Chromium ENOENT
 ```
 
-you need to install Chromium locally, run `pnpm run install-chromium` which installs Chromium locally and then updates the `LOCAL_CHROMIUM_EXECUTABLE_PATH` in `browser-local-constants.ts` to point to the Chromium executable. See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for more information about how to install a locally running chromium.
+you need to install Chromium locally, run `pnpm run install-chromium` which installs Chromium locally and prints the `LOCAL_CHROMIUM_EXECUTABLE_PATH` to add to `cloud/.env.local`. See https://github.com/Sparticuz/chromium#running-locally--headlessheadful-mode for more information about how to install a locally running chromium.
 
 To see if it's correctly installed, open it with `pnpm run open-chromium`

@@ -112,6 +112,8 @@ cd cloud
 pnpm run install-chromium
 ```
 
+This downloads Chromium into `cloud/.chromium` (gitignored) and prints a `LOCAL_CHROMIUM_EXECUTABLE_PATH=...` line; add it to `cloud/.env.local`. Local runs (`IS_LOCAL=true`, set by `scrapers:local` and `scraper`) launch that browser non-headless.
+
 ### Run scrapers locally
 
 Use `cloud/.env.local`.
