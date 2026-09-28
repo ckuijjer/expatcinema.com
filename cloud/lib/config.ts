@@ -4,6 +4,7 @@ export type ConfigProps = {
   TMDB_API_KEY: string
   OMDB_API_KEY: string
   SCRAPERS: string
+  WEB_DEPLOY_TOKEN: string
 }
 
 export const getConfig = (): ConfigProps => {
@@ -13,6 +14,7 @@ export const getConfig = (): ConfigProps => {
     TMDB_API_KEY: process.env.TMDB_API_KEY || '',
     OMDB_API_KEY: process.env.OMDB_API_KEY || '',
     SCRAPERS: process.env.SCRAPERS || '',
+    WEB_DEPLOY_TOKEN: process.env.WEB_DEPLOY_TOKEN || '',
   }
   return config
 }

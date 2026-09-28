@@ -206,7 +206,7 @@ Workflows:
 - `.github/workflows/web.yml`
 - `.github/workflows/web-build.yml`
 
-`web.yml` deploys on `main`.
+`web.yml` deploys on `main`, and is dispatched by the prod scrapers Lambda after every successful run (`cloud/triggerWebDeploy.ts`, token in the `WEB_DEPLOY_TOKEN` secret). There is intentionally no `schedule:` trigger: GitHub delayed it by 5+ hours and disables schedules after 60 days of repo inactivity.
 `web-build.yml` builds PRs without deploying.
 
 ### Prod rollout sequence
@@ -215,9 +215,8 @@ After merging cloud changes that affect scraper output:
 
 1. wait for the `Cloud` workflow on `main` to succeed
 2. run `cd cloud && pnpm run scrapers:prod`
-3. validate the affected cinema or scraper output in production `screenings.json` in S3 before rebuilding the site
-4. trigger `Web`
-5. validate the refreshed site data after the `Web` workflow finishes
+3. the scrapers Lambda dispatches `Web` automatically when it finishes; validate the affected cinema or scraper output in production `screenings.json` in S3
+4. validate the refreshed site data after the `Web` workflow finishes
 
 Notes:
 

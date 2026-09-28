@@ -48,7 +48,7 @@ Or as `cdk watch` doesn't trigger on _.env_ file changes, when running `pnpm run
 
 ### Scheduled Prod
 
-The web is deployed on a daily schedule using GitHub Actions. The schedule is defined in `.github/workflows/web.yml`. The schedule is needed to have the SSG (static site generator) get the latest data from the scrapers.
+The web is deployed by the scrapers Lambda: after writing fresh data to S3 it dispatches the `Web` workflow (`.github/workflows/web.yml`) via the GitHub API, so the SSG (static site generator) picks up the latest data from the scrapers. See `cloud/triggerWebDeploy.ts`; it needs a fine-grained GitHub token with _Actions: Read and write_ on this repo, stored as the `WEB_DEPLOY_TOKEN` repository secret.
 
 GitHub actions is used, `web/` uses JamesIves/github-pages-deploy-action to deploy to the _gh-pages_ branch, and the GitHub settings has Pages take the source branch _gh-pages_ which triggers the GitHub built in _pages-build-deployment_
 
