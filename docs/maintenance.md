@@ -88,7 +88,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | Scraper                  | Status | Notes (as of 2026-09-28)                        |
 | ------------------------ | ------ | ----------------------------------------------- |
 | amstelveen               | idle   | subs now in Production.Other; all NL (09-28)    |
-| bioscopenleiden          | broken | 0 on most runs, 1 on a few                      |
+| bioscopenleiden          | ok     | fixed 2026-09-28 ("ENGLISH SUBS" tag)           |
 | castellum                | idle   | no English-subtitled films (2026-09-28)         |
 | chasse                   | broken | BunnyCDN bot wall, blocks Chromium too; ask     |
 | cinecenter               | ok     |                                                 |
@@ -132,5 +132,5 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | sliekerfilm              | ok     | 0 until 2026-09-15                              |
 | springhaver              | ok     |                                                 |
 | studiok                  | ok     |                                                 |
-| themovies                | broken | 0 or 1 on all runs                              |
+| themovies                | ok     | low but correct: 1 English-subtitled film       |
 | worm                     | ok     |                                                 |
