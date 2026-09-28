@@ -123,7 +123,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | lab111                   | ok     |                                                 |
 | lantarenvenster          | ok     | dropped 121 → 45 over 2026-09-24..28, watch     |
 | lumiere                  | broken | 0 on all runs                                   |
-| lux                      | broken | slid 9 → 1; source URL is a single film page    |
+| lux                      | ok     | fixed 2026-09-28 (3 English markers)            |
 | melkweg                  | ok     |                                                 |
 | natlab                   | ok     |                                                 |
 | rialto                   | broken | 0 on all runs; source URL is a single film page |
