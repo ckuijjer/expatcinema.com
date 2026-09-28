@@ -270,6 +270,10 @@ pnpm format
 - Resolver/match details belong in `title-matches.json` and review artifacts, not in public screenings rows.
 - Manual corrections should go in `cloud/metadata/manualTitleOverrides.ts`.
 
+## Maintenance and monitoring
+
+Scheduled health checks, quality audits and the per-cinema status table are described in [`docs/maintenance.md`](./docs/maintenance.md). This repo is public: run reports go to Slack, never into the repo.
+
 ## Security
 
 GitHub repo security is currently configured with:
