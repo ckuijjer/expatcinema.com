@@ -17,10 +17,6 @@ jest.mock('@sparticuz/chromium', () => ({
   },
 }))
 
-jest.mock('../browser-local-constants', () => ({
-  LOCAL_CHROMIUM_EXECUTABLE_PATH: '/tmp/chromium',
-}))
-
 describe('browser singleton', () => {
   beforeEach(() => {
     jest.resetModules()

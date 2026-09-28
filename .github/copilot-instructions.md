@@ -52,7 +52,7 @@ SCRAPERS=kinorotterdam,eyefilm pnpm run scrapers
 ### Local Development Setup
 
 ```bash
-# Install Chromium for Puppeteer-based scrapers
+# Install Chromium for Puppeteer-based scrapers, add the printed line to cloud/.env.local
 cd cloud && pnpm run install-chromium
 
 # Web development

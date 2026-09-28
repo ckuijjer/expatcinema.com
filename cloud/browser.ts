@@ -2,11 +2,20 @@ import { Logger } from '@aws-lambda-powertools/logger'
 import chromium from '@sparticuz/chromium'
 import puppeteer, { Browser, LaunchOptions } from 'puppeteer-core'
 
-import { LOCAL_CHROMIUM_EXECUTABLE_PATH } from './browser-local-constants'
-
 type InitializationEntry = {
   resolve: (browser: Browser) => void
   reject: (error: unknown) => void
+}
+
+// Set in .env.local, see `pnpm run install-chromium`
+const getLocalChromiumExecutablePath = () => {
+  const executablePath = process.env.LOCAL_CHROMIUM_EXECUTABLE_PATH
+  if (!executablePath) {
+    throw new Error(
+      'LOCAL_CHROMIUM_EXECUTABLE_PATH is not set, run `pnpm run install-chromium` and add its output to .env.local',
+    )
+  }
+  return executablePath
 }
 
 const createBrowserSingleton = () => {
@@ -27,7 +36,7 @@ const createBrowserSingleton = () => {
         args: process.env.IS_LOCAL ? [] : chromiumOptions.args,
         defaultViewport: chromiumOptions.defaultViewport,
         executablePath: process.env.IS_LOCAL
-          ? LOCAL_CHROMIUM_EXECUTABLE_PATH
+          ? getLocalChromiumExecutablePath()
           : await chromiumOptions.executablePath(),
         headless: process.env.IS_LOCAL ? false : chromiumOptions.headless,
         acceptInsecureCerts: true,

@@ -20,6 +20,7 @@ yarn-debug.log*
 yarn-error.log*
 
 cloud/output
+cloud/.chromium
 web/public/robots.txt
 web/public/sitemap*
 web/.next
