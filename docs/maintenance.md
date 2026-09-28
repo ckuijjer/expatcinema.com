@@ -72,7 +72,7 @@ With AWS access (local sessions, read-only profile `casper-readonly`):
 
 ## Routine 3: Quarterly cinema discovery
 
-**When:** first Monday of January, April, July and October.
+**When:** 1 January, April, July and October, 09:00 UTC.
 
 Look for cinemas in the Netherlands that show films with English subtitles but aren't scraped yet: search for "English subtitles" / "Engelse ondertiteling" / "expat cinema" programmes, Cineville cinemas, and film festivals. Skip cinemas already listed in `docs/cinema-research.md`. Report candidates in Slack, and open a PR adding the outcome to `docs/cinema-research.md`.
 
