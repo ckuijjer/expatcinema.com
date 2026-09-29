@@ -31,6 +31,8 @@ type MainPageItem = {
   id: number
   title: string
   permalink: string
+  subTitleLanguage?: string
+  genre?: { terms?: { id: number }[] }
   releaseDate?: {
     date?: string
     dateTime?: {
@@ -119,26 +121,47 @@ type MainPageResponse = {
   items: MainPageItem[]
 }
 
+const ENGLISH_SUBS_GENRE_ID = 122
+
+// Lux marks English-subtitled films inconsistently: some have the "English
+// subs" genre, some an "English Subs - " title prefix, some only
+// subTitleLanguage "Engels". Accept any of them.
+const hasEnglishSubtitles = (item: MainPageItem) =>
+  (item.genre?.terms ?? []).some(({ id }) => id === ENGLISH_SUBS_GENRE_ID) ||
+  /^English Subs\b/i.test(item.title) ||
+  item.subTitleLanguage?.toLowerCase() === 'engels'
+
 const extractFromMainPage = async () => {
+  // The discover endpoint rejects requests without a cache-key header matching
+  // the body. An empty filter returns the whole programme.
+  const body = JSON.stringify({
+    types: [],
+    genres: [],
+    tags: [],
+    search: '',
+    isVerwacht: false,
+  })
+
   const response: MainPageResponse = await got(
     'https://www.lux-nijmegen.nl/wp-json/lux/v1/discover',
     {
       headers: {
         accept: '*/*',
         'accept-language': 'en-US,en;q=0.9',
-        'cache-key':
-          '{"types":[],"genres":[122],"tags":[],"search":"","isVerwacht":false}',
+        'cache-key': body,
         'content-type': 'application/json',
       },
-      body: '{"types":[],"genres":[122],"tags":[],"search":"","isVerwacht":false}',
+      body,
       method: 'POST',
     },
   ).json()
 
-  logger.debug('main page', { response })
+  const items = response.items.filter(hasEnglishSubtitles)
+
+  logger.debug('main page', { items })
 
   const screenings = await extractScreeningsFromPages(
-    response.items,
+    items,
     extractFromMoviePage,
     { logger, url: ({ permalink }) => permalink },
   )
