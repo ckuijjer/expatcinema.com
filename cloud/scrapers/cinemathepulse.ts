@@ -16,13 +16,16 @@ const logger = parentLogger.createChild({
 
 const xray = createXray({ logger })
 
-// Only pages with withEngsubtitles in the URL are English subtitle screenings.
-// These are separate Webflow CMS items for the same film.
+// Only pages with "englishsubtitles" (formerly "withEngsubtitles") in the URL
+// are English subtitle screenings. These are separate Webflow CMS items for
+// the same film.
 const extractEngFilmUrls = (xml: string) =>
   Array.from(
     new Set(
       Array.from(
-        xml.matchAll(/<loc>(https:\/\/www\.cinemathepulse\.com\/films\/[^<]*withEngsubtitles[^<]*)<\/loc>/g),
+        xml.matchAll(
+          /<loc>(https:\/\/www\.cinemathepulse\.com\/films\/[^<]*(?:withEng|english)subtitles[^<]*)<\/loc>/gi,
+        ),
       ).map((match) => match[1]),
     ),
   )
@@ -46,7 +49,9 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
     dateSyncs: ['.shows_date_sync | trim'],
   })
 
-  const title = page.h1Title ? titleCase(page.h1Title) : null
+  const title = page.h1Title
+    ? titleCase(page.h1Title.replace(/\s*\(english subtitles\)$/i, ''))
+    : null
   if (!title) {
     logger.warn('skipping page with missing title', { url })
     return []
@@ -75,7 +80,9 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const sitemapXml = await got('https://www.cinemathepulse.com/sitemap.xml').text()
+  const sitemapXml = await got(
+    'https://www.cinemathepulse.com/sitemap.xml',
+  ).text()
   const urls = extractEngFilmUrls(sitemapXml)
 
   logger.info('english subtitle film urls', { numberOfUrls: urls.length })
