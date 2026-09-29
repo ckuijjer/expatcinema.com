@@ -108,7 +108,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)         |
 | filmhuisdenhaag          | ok     |                                                 |
 | filmhuislumen            | ok     |                                                 |
-| filmkoepel               | ok     |                                                 |
+| filmkoepel               | idle   | Expat page redesigned; selectors need update    |
 | filmtheaterhilversum     | broken | 0 on all runs, errors every run                 |
 | florafilmtheater         | ok     |                                                 |
 | focusarnhem              | ok     | small (1–4)                                     |
