@@ -32,6 +32,7 @@ const MOVIES_QUERY = `
         }
         eventData {
           year
+          director
         }
         performances {
           id
@@ -55,7 +56,7 @@ type LumiereMovie = {
   title: string
   link: string
   language: { code: string } | null
-  eventData: { year: number | null } | null
+  eventData: { year: number | null; director: string | null } | null
   performances: LumierePerformance[] | null
 }
 
@@ -91,6 +92,12 @@ const fetchAllMovies = async () => {
   return movies
 }
 
+// Lumière also sells non-film events through the same system (e.g. "The
+// Lumière Film Pub Quiz", with year 1900 and no director). Every film has a
+// director, so use that to tell them apart.
+const isFilm = (movie: LumiereMovie) =>
+  Boolean(movie.eventData?.director?.trim())
+
 const hasEnglishSubtitles = ({ tags }: LumierePerformance) =>
   (tags ?? []).some((tag) => /engels ondertiteld|english subtitles/i.test(tag))
 
@@ -105,6 +112,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   >()
 
   for (const movie of movies) {
+    if (!isFilm(movie)) continue
+
     for (const performance of movie.performances ?? []) {
       if (!hasEnglishSubtitles(performance)) continue
       if (performance.status === 'CANCELLED') continue
