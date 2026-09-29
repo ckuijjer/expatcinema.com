@@ -1,6 +1,6 @@
 // Shared English-subtitle check for cinemas using the /fk-feed/agenda format
 // (Kino, Hartlooper, Slachtstraat, Springhaver, De Filmhallen, The Movies,
-// Bioscopen Leiden).
+// Bioscopen Leiden, Filmkoepel).
 //
 // A screening has English subtitles when either
 // - its movie is labelled `{ label: 'Ondertitels', value: 'Engels' }`, or
