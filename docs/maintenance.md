@@ -115,7 +115,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | forumgroningen           | ok     |                                                 |
 | hartlooper               | ok     |                                                 |
 | heerenstraattheater      | broken | 0 on all runs, HTTP 403 (likely bot blocking)   |
-| hetdocumentairepaviljoen | broken | 0 on all runs; check whether this is seasonal   |
+| hetdocumentairepaviljoen | ok     | fixed 2026-09-28 (subtitle label changed)       |
 | ketelhuis                | ok     | small (1–6)                                     |
 | kinorotterdam            | ok     |                                                 |
 | kriterion                | ok     |                                                 |
