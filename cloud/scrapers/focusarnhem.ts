@@ -1,16 +1,10 @@
+import got from 'got'
 import { DateTime } from 'luxon'
-import Xray from 'x-ray'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import xRayPuppeteer from '../xRayPuppeteer'
-import { guessYear } from './utils/guessYear'
-import { monthToNumber } from './utils/monthToNumber'
-import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
-import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
-import { normalizeWhitespace } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -18,155 +12,134 @@ const logger = parentLogger.createChild({
   },
 })
 
-const trim = (value: unknown) =>
-  typeof value === 'string' ? value.trim() : value
+// focusarnhem.nl is a Next.js front end on a WordPress backend with
+// WPGraphQL (the same setup as lumiere.nl, but selling tickets through
+// Ticketlab). Focus lists its English-subtitled screenings (Expat Cinema,
+// Wednesdays) as separate movies titled "English subs: <film>", each with
+// its own performances. Movies exist once per language (NL and EN), sharing
+// the same performance ids.
+const GRAPHQL_URL = 'https://backend.focusarnhem.nl/wp/graphql'
 
-const cleanTitle = (value: unknown): string =>
-  typeof value === 'string'
-    ? titleCase(
-        value.replace(/^Expat Cinema: /gi, '').replace(/^English Subs: /gi, ''),
-      )
-    : ''
+const MOVIES_QUERY = `
+  query Movies($after: String) {
+    movies(first: 100, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        title
+        link
+        language {
+          code
+        }
+        performances {
+          id
+          startAt
+          status
+          tags {
+            name
+          }
+        }
+      }
+    }
+  }
+`
 
-const toLowerCase = (value: unknown) =>
-  typeof value === 'string' ? value.toLowerCase() : value
+type FocusPerformance = {
+  id: string
+  startAt: string // local time, e.g. "202610071900"
+  status: string
+  tags: { name: string }[] | null
+}
 
-const replaceNoBreakSpace = (value: unknown) =>
-  typeof value === 'string' ? value.replace(/\u00a0/g, ' ') : value
+type FocusMovie = {
+  title: string | null
+  link: string
+  language: { code: string } | null
+  performances: FocusPerformance[] | null
+}
 
-const xray = Xray({
-  filters: {
-    cleanTitle,
-    replaceNoBreakSpace,
-    toLowerCase,
-    trim,
-    normalizeWhitespace,
-  },
-})
-  .driver(
-    xRayPuppeteer({
-      logger,
-      waitForOptions: { timeout: 60_000, waitUntil: 'networkidle2' },
+type MoviesResponse = {
+  data: {
+    movies: {
+      pageInfo: { hasNextPage: boolean; endCursor: string }
+      nodes: FocusMovie[]
+    }
+  }
+}
+
+const fetchAllMovies = async () => {
+  const movies: FocusMovie[] = []
+  let after: string | undefined
+
+  // Guard against a pagination bug turning into an endless loop
+  for (let page = 0; page < 20; page++) {
+    const response = await got
+      .post(GRAPHQL_URL, {
+        json: { query: MOVIES_QUERY, variables: { after } },
+      })
+      .json<MoviesResponse>()
+
+    const { pageInfo, nodes } = response.data.movies
+    movies.push(...nodes)
+
+    if (!pageInfo.hasNextPage) return movies
+    after = pageInfo.endCursor
+  }
+
+  logger.warn('stopped paginating movies after 20 pages')
+  return movies
+}
+
+const ENGLISH_SUBS_TITLE_PREFIX = /^(english subs|expat cinema):\s*/i
+
+// Not used by Focus today, but accept a per-screening tag too, as Lumière does
+const hasEnglishSubtitlesTag = ({ tags }: FocusPerformance) =>
+  (tags ?? []).some(({ name }) =>
+    /engels ondertiteld|english subtitles|english subs/i.test(name),
+  )
+
+const extractFromMainPage = async (): Promise<Screening[]> => {
+  const movies = await fetchAllMovies()
+
+  // A performance appears once per language version of its movie; keep one,
+  // preferring the English version for the link.
+  const performances = new Map<
+    string,
+    { movie: FocusMovie; performance: FocusPerformance }
+  >()
+
+  for (const movie of movies) {
+    const titleMarksEnglish = ENGLISH_SUBS_TITLE_PREFIX.test(movie.title ?? '')
+
+    for (const performance of movie.performances ?? []) {
+      if (!titleMarksEnglish && !hasEnglishSubtitlesTag(performance)) continue
+      if (performance.status === 'CANCELLED') continue
+
+      const existing = performances.get(performance.id)
+      if (!existing || movie.language?.code === 'EN') {
+        performances.set(performance.id, { movie, performance })
+      }
+    }
+  }
+
+  const screenings: Screening[] = [...performances.values()].map(
+    ({ movie, performance }) => ({
+      title: titleCase(
+        (movie.title ?? '').replace(ENGLISH_SUBS_TITLE_PREFIX, '').trim(),
+      ),
+      // No year: Focus's eventData.year looks like the Dutch release year
+      // (2026 for Palestine 36 and Downtown, both 2025 films)
+      url: movie.link,
+      cinema: 'Focus Arnhem',
+      date: DateTime.fromFormat(performance.startAt, 'yyyyMMddHHmm', {
+        zone: 'Europe/Amsterdam',
+      }).toJSDate(),
     }),
   )
-  .concurrency(3)
-  .throttle(10, 300)
 
-type XRayFromMoviePage = {
-  title: string
-  metadata: string
-  screenings: {
-    date: string
-    times: string[]
-  }[]
-}
-
-type XRayFromMainPage = {
-  title: string
-  url: string
-}
-
-const hasEnglishSubtitles = (movie: XRayFromMoviePage) => {
-  return /ondertiteling: (english|engels)/i.test(movie.metadata)
-}
-
-const splitDate = (date: string) => {
-  if (date === 'Vandaag') {
-    const { day, month, year } = DateTime.now()
-    return { day, month, year }
-  } else if (date === 'Morgen') {
-    const { day, month, year } = DateTime.now().plus({ days: 1 })
-    return { day, month, year }
-  } else {
-    const [dayString, monthString] = date
-      .split(/\s+/) // ['Woensdag 8 mei'] => ['Woensdag', '8', 'mei']
-      .slice(1) // ['Woensdag', '8', 'mei'] => ['8', 'mei']
-
-    const day = Number(dayString)
-    const month = monthToNumber(monthString)
-
-    const year = guessYear({
-      day,
-      month,
-    })
-
-    return { day, month, year }
-  }
-}
-
-const extractFromMoviePage = async (url: string): Promise<Screening[]> => {
-  logger.debug('extracting', { url })
-
-  const movie: XRayFromMoviePage = await xray(url, {
-    title: 'h1 | trim | cleanTitle',
-    metadata: '#credits | normalizeWhitespace | trim',
-    screenings: xray('#movie-times li', [
-      {
-        date: '.date | trim',
-        times: ['a .text | trim'],
-      },
-    ]),
-  })
-
-  logger.debug('extractFromMoviePage', { movie })
-
-  if (!hasEnglishSubtitles(movie)) {
-    logger.warn('extractFromMoviePage without english subtitles', {
-      url,
-      title: movie.title,
-    })
-    return []
-  }
-
-  const screenings: Screening[] = movie.screenings.flatMap(
-    ({ date, times }) => {
-      const { day, month, year } = splitDate(date)
-
-      return times.map((time) => {
-        const [hour, minute] = splitTime(time)
-
-        return {
-          title: cleanTitle(movie.title),
-          url,
-          cinema: 'Focus Arnhem',
-          date: DateTime.fromObject({
-            day,
-            month,
-            year,
-            hour,
-            minute,
-          }).toJSDate(),
-        }
-      })
-    },
-  )
-
-  return screenings
-}
-
-const extractFromMainPage = async () => {
-  const url = 'https://www.focusarnhem.nl/special/focus-expat-cinema/'
-
-  const movies: XRayFromMainPage[] = await xray(
-    url,
-    '#special-films .movie-block',
-    [
-      {
-        title: '@title | trim | cleanTitle',
-        url: '@href',
-      },
-    ],
-  )
-
-  logger.debug('movies', { movies })
-
-  const screenings = await extractScreeningsFromPages(
-    movies,
-    ({ url }) => extractFromMoviePage(url),
-    { logger, url: ({ url }) => url },
-  )
-
-  logger.debug('extractFromMainPage', { screenings })
+  logger.debug('screenings', { screenings })
 
   return screenings
 }

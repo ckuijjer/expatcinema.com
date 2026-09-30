@@ -111,7 +111,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | filmkoepel               | idle   | Expat page redesigned; selectors need update    |
 | filmtheaterhilversum     | ok     | fixed 2026-09-28 (time parsing)                 |
 | florafilmtheater         | ok     |                                                 |
-| focusarnhem              | ok     | small (1–4)                                     |
+| focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)        |
 | forumgroningen           | ok     |                                                 |
 | hartlooper               | ok     |                                                 |
 | heerenstraattheater      | broken | works locally; 403 in prod, AWS IP blocked?     |
