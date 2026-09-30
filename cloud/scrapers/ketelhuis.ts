@@ -12,6 +12,7 @@ import {
 } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
+import { removeYearSuffix } from './utils/removeYearSuffix'
 import { titleCase } from './utils/titleCase'
 import { uniq } from './utils/uniq'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
@@ -22,17 +23,24 @@ const logger = parentLogger.createChild({
   },
 })
 
+// e.g. "Coward (English Subs) | Paff" -> "Coward": drop the series after
+// " | ", the English-subtitles marker wherever it is, and a trailing year.
+const cleanTitle = (title: string) =>
+  titleCase(
+    removeYearSuffix(
+      title
+        .split(' | ')[0]
+        .replace(/\s*[–-]\s*English subtitles/i, '')
+        .replace(/\s*\(English subs\)/i, '')
+        .trim(),
+    ),
+  )
+
 const xray = Xray({
   filters: {
     trim,
     cleanTitle: (value: unknown) =>
-      typeof value === 'string'
-        ? titleCase(
-            value
-              .replace(/ – English subtitles$/i, '')
-              .replace(/ \(English subs\)$/i, ''),
-          )
-        : value,
+      typeof value === 'string' ? cleanTitle(value) : value,
     normalizeWhitespace,
   },
 })
