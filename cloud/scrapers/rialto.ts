@@ -3,13 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import { guessYear } from './utils/guessYear'
-import { fullMonthToNumberEnglish } from './utils/monthToNumber'
-import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
-import { splitTime } from './utils/splitTime'
-import { titleCase } from './utils/titleCase'
-import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -17,107 +11,76 @@ const logger = parentLogger.createChild({
   },
 })
 
-const xray = createXray({
-  filters: {
-    cleanTitle: (value) =>
-      typeof value === 'string'
-        ? titleCase(value.replace(/ - (Expat Cinema|Eng Subs)/i, ''))
-        : value,
-  },
-  logger,
-})
+// Rialto De Pijp's site (depijp.rialtofilm.nl) is a Nuxt app backed by a JSON
+// API. POSTing to /events returns every film with all its screenings
+// ("programs"), and each screening carries attributes such as "Eng subs".
+const BASE_URL = 'https://depijp.rialtofilm.nl'
+const EVENTS_API_URL = `${BASE_URL}/prod/en/api/events`
 
-type RialtoFilmFeedResult = {
-  [cinema: string]: {
-    [date: string]: {
-      time: string
-      link: string
-      text: string
-    }[]
-  }
+type RialtoProgram = {
+  startAt: string // local time without offset, e.g. 2026-10-05T21:15:00
+  isCanceled: boolean
+  attributes?: { name: string }[]
 }
 
-const extractReleaseYear = (html: string) => {
-  const labelledCellMatch = html.match(
-    /<dt[^>]*>\s*(?:Jaar|Release date)\s*<\/dt>\s*<dd[^>]*>\s*([^<]+)\s*<\/dd>/i,
-  )
-
-  const match = labelledCellMatch?.[1]?.match(/\b((?:19|20)\d{2})\b/)
-
-  return match?.[1] ? Number(match[1]) : undefined
-}
-
-const extractFromMoviePage = async ({
-  url,
-  title,
-}: {
-  url: string
+type RialtoEvent = {
+  url: string // e.g. /en/films/coward
   title: string
-}) => {
-  // url example 'https://rialtofilm.nl/en/films/1519/a-hundred-flowers-expat-cinema'
-  const regex = /\/films\/(?<movieId>\d+)\//
-  const movieMatch = url.match(regex)
-  const movieId = movieMatch?.groups?.movieId
-  if (!movieId) {
-    throw new Error(`Could not extract Rialto movie id from url: ${url}`)
-  }
-
-  const data: RialtoFilmFeedResult = await got(
-    `https://rialtofilm.nl/feed/en/film/${movieId}`,
-  ).json()
-  const releaseYear = extractReleaseYear(await got(url).text())
-
-  const screenings: Screening[] = Object.entries(data).flatMap(
-    ([cinema, dates]) => {
-      return Object.entries(dates).flatMap(([dateString, times]) => {
-        return times.map(({ time, link, text }) => {
-          const [dayOfWeek, dayString, monthString] = dateString.split(/\s+/)
-          const day = Number(dayString)
-          const month = fullMonthToNumberEnglish(monthString)
-          const [hour, minute] = splitTime(time)
-
-          const year = guessYear({ day, month, hour, minute })
-
-          const date = DateTime.fromObject({
-            year,
-            day,
-            month,
-            hour,
-            minute,
-          })
-
-          return {
-            title,
-            year: releaseYear,
-            url,
-            cinema,
-            date: date.toJSDate(),
-          }
-        })
-      })
-    },
-  )
-
-  return screenings
+  fields?: { productionYear?: string }
+  programs?: RialtoProgram[]
 }
 
-const extractFromMainPage = async () => {
-  const url = 'https://rialtofilm.nl/en/english-subtitles'
+type RialtoEventsResponse = {
+  events: RialtoEvent[]
+  pagination: { count: number; pages: number }
+}
 
-  const movies = await xray(url, '.card', [
-    {
-      title: '.card__title | trim | cleanTitle',
-      url: '@href',
-    },
-  ])
+const hasEnglishSubtitles = ({ attributes }: RialtoProgram) =>
+  (attributes ?? []).some(({ name }) => /^eng(lish)? sub/i.test(name))
 
-  const screenings = await extractScreeningsFromPages(
-    movies,
-    extractFromMoviePage,
-    { logger, url: ({ url }) => url },
+const parseYear = (year?: string) => {
+  const parsed = Number(year)
+  return Number.isInteger(parsed) && parsed > 1880 ? parsed : undefined
+}
+
+const PAGE_SIZE = 100 // the API rejects larger pages with a 400
+
+const fetchEventsPage = (page: number) =>
+  got
+    .post(EVENTS_API_URL, {
+      json: { pagination: { page, pageSize: PAGE_SIZE } },
+    })
+    .json<RialtoEventsResponse>()
+
+const fetchAllEvents = async () => {
+  const firstPage = await fetchEventsPage(1)
+  const events = [...firstPage.events]
+
+  for (let page = 2; page <= firstPage.pagination.pages; page++) {
+    events.push(...(await fetchEventsPage(page)).events)
+  }
+
+  return events
+}
+
+const extractFromMainPage = async (): Promise<Screening[]> => {
+  const events = await fetchAllEvents()
+
+  const screenings: Screening[] = events.flatMap((event) =>
+    (event.programs ?? [])
+      .filter((program) => !program.isCanceled && hasEnglishSubtitles(program))
+      .map((program) => ({
+        title: event.title,
+        year: parseYear(event.fields?.productionYear),
+        url: new URL(event.url, BASE_URL).toString(),
+        cinema: 'Rialto De Pijp',
+        date: DateTime.fromISO(program.startAt, {
+          zone: 'Europe/Amsterdam',
+        }).toJSDate(),
+      })),
   )
 
-  logger.debug('main page', { screenings })
+  logger.debug('screenings', { screenings })
 
   return screenings
 }
