@@ -5,6 +5,8 @@ export type ConfigProps = {
   OMDB_API_KEY: string
   SCRAPERS: string
   WEB_DEPLOY_TOKEN: string
+  SCRAPE_RELAY_URL: string
+  SCRAPE_RELAY_TOKEN: string
 }
 
 export const getConfig = (): ConfigProps => {
@@ -15,6 +17,8 @@ export const getConfig = (): ConfigProps => {
     OMDB_API_KEY: process.env.OMDB_API_KEY || '',
     SCRAPERS: process.env.SCRAPERS || '',
     WEB_DEPLOY_TOKEN: process.env.WEB_DEPLOY_TOKEN || '',
+    SCRAPE_RELAY_URL: process.env.SCRAPE_RELAY_URL || '',
+    SCRAPE_RELAY_TOKEN: process.env.SCRAPE_RELAY_TOKEN || '',
   }
   return config
 }
