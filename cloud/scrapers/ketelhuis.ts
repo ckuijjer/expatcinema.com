@@ -5,12 +5,14 @@ import Xray from 'x-ray'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import xRayPuppeteer from '../xRayPuppeteer'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import {
   fullMonthToNumberDutch,
   shortMonthToNumberDutch,
 } from './utils/monthToNumber'
 import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
+import { removeYearSuffix } from './utils/removeYearSuffix'
 import { titleCase } from './utils/titleCase'
 import { uniq } from './utils/uniq'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
@@ -21,17 +23,24 @@ const logger = parentLogger.createChild({
   },
 })
 
+// e.g. "Coward (English Subs) | Paff" -> "Coward": drop the series after
+// " | ", the English-subtitles marker wherever it is, and a trailing year.
+const cleanTitle = (title: string) =>
+  titleCase(
+    removeYearSuffix(
+      title
+        .split(' | ')[0]
+        .replace(/\s*[–-]\s*English subtitles/i, '')
+        .replace(/\s*\(English subs\)/i, '')
+        .trim(),
+    ),
+  )
+
 const xray = Xray({
   filters: {
     trim,
     cleanTitle: (value: unknown) =>
-      typeof value === 'string'
-        ? titleCase(
-            value
-              .replace(/ – English subtitles$/i, '')
-              .replace(/ \(English subs\)$/i, ''),
-          )
-        : value,
+      typeof value === 'string' ? cleanTitle(value) : value,
     normalizeWhitespace,
   },
 })
@@ -90,27 +99,20 @@ const extractFromMainPage = async () => {
   logger.debug('results', { results })
   logger.debug('uniqueResults', { uniqueResults })
 
-  const screenings = await (
-    await Promise.all(
-      uniqueResults.map(async ({ url, title }: KetelhuisListing, i) => {
-        return pRetry(
-          async () => {
-            const result = await extractFromMoviePage({ url, title })
-            return result
-          },
-          {
-            onFailedAttempt: ({ attemptNumber, retriesLeft }) => {
-              const logLevel = retriesLeft > 0 ? 'info' : 'warn'
-              logger[logLevel](
-                `Scraping ${i} ${url}, attempt ${attemptNumber} failed. There are ${retriesLeft} retries left.`,
-              )
-            },
-            retries: 5,
-          },
-        )
+  const screenings = await extractScreeningsFromPages(
+    uniqueResults,
+    ({ url, title }) =>
+      pRetry(() => extractFromMoviePage({ url, title }), {
+        onFailedAttempt: ({ attemptNumber, retriesLeft }) => {
+          const logLevel = retriesLeft > 0 ? 'info' : 'warn'
+          logger[logLevel](
+            `Scraping ${url}, attempt ${attemptNumber} failed. There are ${retriesLeft} retries left.`,
+          )
+        },
+        retries: 5,
       }),
-    )
-  ).flat()
+    { logger, url: ({ url }) => url },
+  )
 
   return screenings
 }
@@ -167,7 +169,7 @@ const extractFromMoviePage = async ({
   logger.debug('extracting', { url })
 
   const scrapeResult = (await xray(url, {
-    title: '.c-filmheader__content h1 > span', // not using cleanTitle because we want to keep the "English subs" part here
+    title: '.c-filmheader-title__content h1 > span', // not using cleanTitle because we want to keep the "English subs" part here
     metadata: '.c-detail-info__filminfo | normalizeWhitespace',
     mainContent: '.c-main-content | normalizeWhitespace',
     firstDate: '.c-detail-schedule__firstday div:first-of-type | trim',
@@ -181,6 +183,16 @@ const extractFromMoviePage = async ({
   })) as KetelhuisMoviePage
 
   logger.debug('extracted', { url, scrapeResult })
+
+  // The site intermittently serves film pages with an empty body. Throw so the
+  // page is retried, instead of treating it as a film without English subs.
+  if (
+    !scrapeResult.title &&
+    !scrapeResult.metadata &&
+    !scrapeResult.firstDate
+  ) {
+    throw new Error(`Empty film page for ${url}`)
+  }
 
   if (!hasEnglishSubtitles(scrapeResult)) {
     logger.debug('hasEnglishSubtitles false', { url })

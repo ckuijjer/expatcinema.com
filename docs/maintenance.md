@@ -116,12 +116,12 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | hartlooper               | ok     |                                                 |
 | heerenstraattheater      | broken | works locally; 403 in prod, AWS IP blocked?     |
 | hetdocumentairepaviljoen | ok     | fixed 2026-09-28 (subtitle label changed)       |
-| ketelhuis                | ok     | small (1–6)                                     |
+| ketelhuis                | ok     | small (1–6); empty pages retried, then WARN     |
 | kinorotterdam            | ok     |                                                 |
 | kriterion                | ok     |                                                 |
 | lab1                     | ok     |                                                 |
 | lab111                   | ok     |                                                 |
-| lantarenvenster          | ok     | dropped 121 → 45 over 2026-09-24..28, watch     |
+| lantarenvenster          | ok     | festival spikes, e.g. 24–27 Sep 2026; not a bug |
 | lumiere                  | ok     | fixed 2026-09-28 (GraphQL API)                  |
 | lux                      | ok     | fixed 2026-09-28 (3 English markers)            |
 | melkweg                  | ok     |                                                 |
