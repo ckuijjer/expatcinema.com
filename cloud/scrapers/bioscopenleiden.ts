@@ -57,7 +57,12 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings: Screening[][] = movies
     .map((movie) => {
       return movie.times
-        ?.filter((time) => fkFeedHasEnglishSubtitles(movie, time))
+        ?.filter((time) =>
+          fkFeedHasEnglishSubtitles(movie, time, {
+            // Leiden also tags these screenings "Expat Cinema"
+            extraTags: ['Expat Cinema'],
+          }),
+        )
         .map((time) => {
           const cinema = capitalize(extractLocation(time.location))
 

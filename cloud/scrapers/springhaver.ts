@@ -44,7 +44,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings: Screening[][] = movies
     .map((movie) => {
       return movie.times
-        ?.filter((time) => fkFeedHasEnglishSubtitles(movie, time))
+        ?.filter((time) =>
+          fkFeedHasEnglishSubtitles(movie, time, { venues: ['Springhaver'] }),
+        )
         .map((time) => {
           return {
             title: cleanTitle(decode(movie.title)),
