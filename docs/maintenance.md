@@ -98,7 +98,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | cinerama                 | broken | works locally (13); fails in prod, AWS IP?      |
 | concordia                | ok     |                                                 |
 | defilmhallen             | ok     |                                                 |
-| desien                   | broken | 0 since 2026-09-25                              |
+| desien                   | ok     | fixed 2026-09-28 (new English marker)           |
 | deuitkijk                | ok     |                                                 |
 | dewittdordrecht          | idle   | no Expat Cinema; all films NL subs (09-28)      |
 | dokhuis                  | broken | 0 on all runs                                   |

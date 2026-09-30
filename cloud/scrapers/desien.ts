@@ -38,7 +38,32 @@ const parseScreeningDate = (date: string, time: string) => {
   return parsed.toJSDate()
 }
 
-const cleanTitle = (title: string) => titleCase(removeYearSuffix(title))
+const ENGLISH_SUBS_TITLE_SUFFIX = /\s*\|\s*eng(lish)? subs$/i
+
+// De Sien prefixes titles with a series or partner, e.g. "UQCF | Rebel Dykes"
+// or "Centraal Museum | News From Home (1977)"; keep only the film title.
+const cleanTitle = (title: string) =>
+  titleCase(
+    removeYearSuffix(
+      title.replace(ENGLISH_SUBS_TITLE_SUFFIX, '').split(' | ').pop() ?? title,
+    ),
+  )
+
+// Film page slugs sometimes end in the release year, e.g. /uqcf-rebel-dykes-2021/
+const extractYearFromUrl = (url: string) => {
+  const year = url.match(/-((?:19|20)\d{2})\/?$/)?.[1]
+  return year ? Number(year) : undefined
+}
+
+// De Sien marks English-subtitled screenings with the "English No Problem"
+// selection and/or an "| Eng subs" title suffix. The data-genre "englishsubs"
+// marker it used before is kept as a fallback.
+const hasEnglishSubtitles = ({ title, tags, location }: XRayResult) =>
+  Boolean(
+    tags?.toLowerCase().includes('englishsubs') ||
+    location?.toLowerCase().includes('english no problem') ||
+    ENGLISH_SUBS_TITLE_SUFFIX.test(title ?? ''),
+  )
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const results: XRayResult[] = await xray(
@@ -59,14 +84,10 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   logger.debug('main page', { results })
 
   const screenings = results
-    .filter(
-      ({ tags, location }) =>
-        tags?.toLowerCase().includes('englishsubs') &&
-        location?.toLowerCase().includes('de sien @kanaal30'),
-    )
+    .filter(hasEnglishSubtitles)
     .map(({ title, url, date, time }) => ({
       title: cleanTitle(title),
-      year: extractYearFromTitle(title),
+      year: extractYearFromTitle(title) ?? extractYearFromUrl(url),
       url,
       cinema: 'De Sien',
       date: parseScreeningDate(date, time),
