@@ -127,6 +127,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | melkweg                  | ok     |                                                 |
 | natlab                   | ok     |                                                 |
 | rialto                   | ok     | fixed 2026-09-28 via JSON API; De Pijp only now |
+| rialtovu                 | ok     | added 2026-09-30 (VU Griffioen)                 |
 | schuur                   | ok     |                                                 |
 | slachtstraat             | ok     |                                                 |
 | sliekerfilm              | ok     | 0 until 2026-09-15                              |
