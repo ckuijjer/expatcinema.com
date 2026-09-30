@@ -18,6 +18,7 @@ type Show = {
   Production: {
     Title: string
     SubTitle?: string
+    Other?: string // e.g. "drama / Japan 1988 / Nederlandse ondertiteling / 139 min"
     Url: string
   }
 }
@@ -27,7 +28,10 @@ type ApiResponse = {
 }
 
 const hasEnglishSubtitles = (show: Show) =>
-  (show.Production.SubTitle ?? '').toLowerCase().includes('english subtitles')
+  // Subtitles used to be in SubTitle; they're now listed in Other
+  /english subtitles|engelse ondertitel/i.test(
+    `${show.Production.SubTitle ?? ''} ${show.Production.Other ?? ''}`,
+  )
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const apiResponse: ApiResponse = await got(
@@ -43,14 +47,16 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.debug('api response', { numberOfShows: apiResponse.Data.length })
 
-  const screenings = apiResponse.Data.filter(hasEnglishSubtitles).map((show) => ({
-    title: titleCase(show.Production.Title),
-    url: show.Production.Url,
-    cinema: 'Cinema Amstelveen',
-    date: DateTime.fromISO(show.Start, {
-      zone: 'Europe/Amsterdam',
-    }).toJSDate(),
-  }))
+  const screenings = apiResponse.Data.filter(hasEnglishSubtitles).map(
+    (show) => ({
+      title: titleCase(show.Production.Title),
+      url: show.Production.Url,
+      cinema: 'Cinema Amstelveen',
+      date: DateTime.fromISO(show.Start, {
+        zone: 'Europe/Amsterdam',
+      }).toJSDate(),
+    }),
+  )
 
   return makeScreeningsUniqueAndSorted(screenings)
 }
