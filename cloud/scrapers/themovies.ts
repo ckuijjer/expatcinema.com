@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
+import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
@@ -20,24 +21,6 @@ type FkFeedItem = {
   language: { label: string; value: string }
   permalink: string
   times: { program_start: string; program_end: string; tags: string[] }[]
-}
-
-const hasEnglishSubtitles = (
-  time: FkFeedItem['times'][0],
-  movie: FkFeedItem,
-) => {
-  return hasEnglishSubtitlesLabel(movie) || hasTimeWithEnglishSubtitlesTag(time)
-}
-
-const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
-  return (
-    movie.language.label === 'Ondertitels' &&
-    (movie.language.value === 'Engels' || movie.language.value === 'English')
-  )
-}
-
-const hasTimeWithEnglishSubtitlesTag = (time: FkFeedItem['times'][0]) => {
-  return time.tags.includes('EN SUBS')
 }
 
 // e.g. 202210181005 -> 2022-10-18T10:05:00.000Z
@@ -56,7 +39,7 @@ const extractFromMainPage = async () => {
   const screenings: Screening[][] = movies
     .map((movie) => {
       return movie.times
-        ?.filter((time) => hasEnglishSubtitles(time, movie))
+        ?.filter((time) => fkFeedHasEnglishSubtitles(movie, time))
         ?.map((time) => {
           return {
             title: cleanTitle(movie.title),

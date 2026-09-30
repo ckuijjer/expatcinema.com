@@ -7,6 +7,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
+import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { runIfMain } from './utils/runIfMain'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { titleCase } from './utils/titleCase'
@@ -43,17 +44,6 @@ type FkFeedItem = {
   }[]
 }
 
-const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
-  return (
-    movie.language.label === 'Ondertitels' &&
-    (movie.language.value === 'Engels' || movie.language.value === 'English')
-  )
-}
-
-const hasTimeWithEnglishSubtitlesTag = (time: FkFeedItem['times'][0]) => {
-  return time.tags.includes('EN SUBS')
-}
-
 const cleanTitle = (title: string, cinema: string) =>
   titleCase(cinema === 'Trianon' ? removeYearSuffix(title) : title)
 
@@ -67,10 +57,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings: Screening[][] = movies
     .map((movie) => {
       return movie.times
-        ?.filter(
-          (time) =>
-            hasEnglishSubtitlesLabel(movie) ||
-            hasTimeWithEnglishSubtitlesTag(time),
+        ?.filter((time) =>
+          fkFeedHasEnglishSubtitles(movie, time, {
+            // Leiden also tags these screenings "Expat Cinema"
+            extraTags: ['Expat Cinema'],
+          }),
         )
         .map((time) => {
           const cinema = capitalize(extractLocation(time.location))

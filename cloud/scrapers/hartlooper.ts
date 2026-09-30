@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
+import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
@@ -33,13 +34,6 @@ const extractDate = (time: string) =>
 
 const cleanTitle = (title: string) => titleCase(title)
 
-const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
-  return (
-    movie.language.label === 'Ondertitels' &&
-    (movie.language.value === 'Engels' || movie.language.value === 'English')
-  )
-}
-
 const isLouisHartlooperComplex = (time: FkFeedItem['times'][0]) =>
   time.location !== 'DOM'
 
@@ -55,7 +49,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       return movie.times
         ?.filter(
           (time) =>
-            hasEnglishSubtitlesLabel(movie) && isLouisHartlooperComplex(time),
+            fkFeedHasEnglishSubtitles(movie, time, {
+              venues: ['LHC', 'Louis Hartlooper'],
+            }) && isLouisHartlooperComplex(time),
         )
         .map((time) => {
           return {

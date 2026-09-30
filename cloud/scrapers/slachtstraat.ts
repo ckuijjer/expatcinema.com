@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
+import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
@@ -33,13 +34,6 @@ const extractDate = (time: string) =>
 
 const cleanTitle = (title: string) => titleCase(title)
 
-const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
-  return (
-    movie.language.label === 'Ondertitels' &&
-    (movie.language.value === 'Engels' || movie.language.value === 'English')
-  )
-}
-
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const movies = Object.values<FkFeedItem>(
     await got('https://slachtstraat.nl/fk-feed/agenda').json(),
@@ -50,7 +44,9 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings: Screening[][] = movies
     .map((movie) => {
       return movie.times
-        ?.filter(() => hasEnglishSubtitlesLabel(movie))
+        ?.filter((time) =>
+          fkFeedHasEnglishSubtitles(movie, time, { venues: ['Slachtstraat'] }),
+        )
         .map((time) => {
           return {
             title: cleanTitle(decode(movie.title)),

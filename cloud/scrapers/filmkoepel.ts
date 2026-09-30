@@ -6,6 +6,7 @@ import { Screening } from '../types'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { guessYear } from './utils/guessYear'
 import { monthToNumber } from './utils/monthToNumber'
+import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
@@ -47,7 +48,7 @@ const extractFromSpecialExpatCinemaPage = async () => {
 
   const screenings: Screening[] = movies.flatMap(
     ({ title, url, screenings }) => {
-        return screenings
+      return screenings
         .filter((screening) => screening.includes('EN SUBS'))
         .map((screening) => {
           let day, month
@@ -108,24 +109,6 @@ const extractFromSpecialExpatCinemaPage = async () => {
   return screenings
 }
 
-const hasEnglishSubtitles = (
-  time: FkFeedItem['times'][0],
-  movie: FkFeedItem,
-) => {
-  return hasEnglishSubtitlesLabel(movie) || hasTimeWithEnglishSubtitlesTag(time)
-}
-
-const hasEnglishSubtitlesLabel = (movie: FkFeedItem) => {
-  return (
-    movie.language.label === 'Ondertitels' && movie.language.value === 'Engels'
-  )
-}
-
-// didn't see an occurrence of this yet in filmkoepel, but let's support it anyway
-const hasTimeWithEnglishSubtitlesTag = (time: FkFeedItem['times'][0]) => {
-  return time.tags.some((tag) => tag.toLowerCase() === 'en subs')
-}
-
 // e.g. 202210181005 -> 2022-10-18T10:05:00.000Z
 const extractDate = (time: string) =>
   DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
@@ -144,7 +127,7 @@ const extractFromMainPage = async () => {
   const screenings: Screening[][] = movies
     .map((movie) => {
       return movie.times
-        ?.filter((time) => hasEnglishSubtitles(time, movie))
+        ?.filter((time) => fkFeedHasEnglishSubtitles(movie, time))
         .map((time) => {
           return {
             title: cleanTitle(movie.title),

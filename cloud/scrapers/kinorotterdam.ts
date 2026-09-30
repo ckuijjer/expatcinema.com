@@ -8,6 +8,7 @@ import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { removeYearSuffix } from './utils/removeYearSuffix'
+import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
@@ -27,23 +28,6 @@ type FkFeedItem = {
   language: { label: string; value: string }
   permalink: string
   times: { program_start: string; program_end: string; tags: string[] }[]
-}
-
-const hasEnglishSubtitles = (
-  time: FkFeedItem['times'][0],
-  movie: FkFeedItem,
-) => {
-  const allScreeningsHaveEnglishSubtitels =
-    movie.language.label === 'Ondertitels' &&
-    (movie.language.value === 'English' || movie.language.value === 'Engels')
-
-  const specificScreeningHasEnglishSubtitles = time.tags.some((tag) =>
-    /en subs/i.test(tag),
-  )
-
-  return (
-    allScreeningsHaveEnglishSubtitels || specificScreeningHasEnglishSubtitles
-  )
 }
 
 const removeSpecialPrefix = (title: string) => {
@@ -81,7 +65,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings: Screening[][] = movies
     .map((movie) => {
       return movie.times
-        ?.filter((time) => hasEnglishSubtitles(time, movie))
+        ?.filter((time) => fkFeedHasEnglishSubtitles(movie, time))
         .map((time) => {
           return {
             title: cleanTitle(decode(movie.title)),

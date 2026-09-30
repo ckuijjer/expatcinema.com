@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
+import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
@@ -44,7 +45,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     .map((movie) => {
       return movie.times
         ?.filter((time) =>
-          time.tags?.some((tag) => tag.toLowerCase() === 'en subs'),
+          fkFeedHasEnglishSubtitles(movie, time, { venues: ['Springhaver'] }),
         )
         .map((time) => {
           return {
