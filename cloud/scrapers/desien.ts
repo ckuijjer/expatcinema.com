@@ -40,8 +40,20 @@ const parseScreeningDate = (date: string, time: string) => {
 
 const ENGLISH_SUBS_TITLE_SUFFIX = /\s*\|\s*eng(lish)? subs$/i
 
+// De Sien prefixes titles with a series or partner, e.g. "UQCF | Rebel Dykes"
+// or "Centraal Museum | News From Home (1977)"; keep only the film title.
 const cleanTitle = (title: string) =>
-  titleCase(removeYearSuffix(title.replace(ENGLISH_SUBS_TITLE_SUFFIX, '')))
+  titleCase(
+    removeYearSuffix(
+      title.replace(ENGLISH_SUBS_TITLE_SUFFIX, '').split(' | ').pop() ?? title,
+    ),
+  )
+
+// Film page slugs sometimes end in the release year, e.g. /uqcf-rebel-dykes-2021/
+const extractYearFromUrl = (url: string) => {
+  const year = url.match(/-((?:19|20)\d{2})\/?$/)?.[1]
+  return year ? Number(year) : undefined
+}
 
 // De Sien marks English-subtitled screenings with the "English No Problem"
 // selection and/or an "| Eng subs" title suffix. The data-genre "englishsubs"
@@ -75,7 +87,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     .filter(hasEnglishSubtitles)
     .map(({ title, url, date, time }) => ({
       title: cleanTitle(title),
-      year: extractYearFromTitle(title),
+      year: extractYearFromTitle(title) ?? extractYearFromUrl(url),
       url,
       cinema: 'De Sien',
       date: parseScreeningDate(date, time),
