@@ -7,6 +7,7 @@ import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { guessYear } from './utils/guessYear'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { removeYearSuffix } from './utils/removeYearSuffix'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { runIfMain } from './utils/runIfMain'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { titleCase } from './utils/titleCase'
@@ -42,13 +43,14 @@ type DetailPageResult = {
 const cleanTitle = (title: string) =>
   titleCase(
     removeYearSuffix(title).replace(
-      /\s+\|\s+(?:movies that matter on tour|rainbow night|royal opera(?:\s+\d{2}\/\d{2})?|mamoru hosoda retrospectief|klassieker|ontbijt\s*&\s*film|senver|met .*|laatste kans|voorpremi[eè]re)|europadag$/i,
+      /\s+\|\s+(?:movies that matter on tour|rainbow night|royal opera(?:\s+\d{2}\/\d{2})?|mamoru hosoda retrospectief|klassieker|ontbijt\s*&\s*film|senver|met .*|laatste kans|voorpremi[eè]re|english subtitles)|europadag$/i,
       '',
     ),
   )
 
 const extractTime = (time: string) => {
-  const matchedTime = time.match(/\b\d{1,2}:\d{2}\b/)?.[0]
+  // The room name can follow the time without a space, e.g. "19:00Boutiquezaal"
+  const matchedTime = time.match(/(?<!\d)\d{1,2}:\d{2}(?!\d)/)?.[0]
 
   if (!matchedTime) {
     throw new Error(
@@ -170,13 +172,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.debug('main page', { movies })
 
-  const screenings = (
-    await Promise.all(
-      movies
-        .filter(({ title, url }) => title && url)
-        .map((movie) => extractFromMoviePage(movie)),
-    )
-  ).flat()
+  const screenings = await extractScreeningsFromPages(
+    movies.filter(({ title, url }) => title && url),
+    extractFromMoviePage,
+    { logger, url: ({ url }) => url },
+  )
 
   return makeScreeningsUniqueAndSorted(screenings)
 }
