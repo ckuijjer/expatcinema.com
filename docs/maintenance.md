@@ -101,7 +101,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | desien                   | ok     | fixed 2026-09-28 (new English marker)           |
 | deuitkijk                | ok     |                                                 |
 | dewittdordrecht          | idle   | no Expat Cinema; all films NL subs (09-28)      |
-| dokhuis                  | broken | 0 on all runs                                   |
+| dokhuis                  | ok     | occasional: film nights with English subs       |
 | eyefilm                  | ok     |                                                 |
 | fchyena                  | broken | new Framer site, no /agenda/; needs rewrite     |
 | filmhuisbreda            | broken | works locally; 403 in prod, AWS IP blocked?     |

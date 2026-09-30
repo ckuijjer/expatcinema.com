@@ -29,6 +29,11 @@ type DokhuisMovie = {
   url?: string
 }
 
+const hasEnglishSubtitles = (content?: string) =>
+  /engelse ondertitel|english subtitle|english subs|eng subs/i.test(
+    content ?? '',
+  )
+
 const extractFromMoviePage = async ({
   url,
 }: {
@@ -43,6 +48,11 @@ const extractFromMoviePage = async ({
   logger.debug('scrapeResult', { scrapeResult })
 
   const { content, date, time } = scrapeResult
+
+  if (!hasEnglishSubtitles(content)) {
+    logger.debug('no English subtitles', { url })
+    return []
+  }
 
   const [dayString, monthString] = date.split(/\s+/)
   const day = Number(dayString)
@@ -95,9 +105,10 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     .filter((item): item is DokhuisMovie & { url: string; title: string } =>
       Boolean(item.url && item.title),
     ) // remove movies without url (e.g. in the past)
-    .filter(({ title }) =>
-      title.toLowerCase().includes('movie night: acts of care'),
-    ) // only events with "Movie Night: Acts of care" in the title have English subtitles
+    // Dokhuis programmes film nights from several series (e.g. NIVOZ
+    // Filmavond, IFFR Filmclub); only some are shown with English subtitles,
+    // which extractFromMoviePage checks in the event description.
+    .filter(({ title }) => /film|movie/i.test(title))
 
   logger.debug('extracted', { movies })
 
