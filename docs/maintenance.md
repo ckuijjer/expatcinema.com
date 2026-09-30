@@ -50,7 +50,7 @@ With AWS access (local sessions, read-only profile `casper-readonly`):
 4. **Per cinema**, using the analytics history and the status table below (only cinemas with status `ok` raise alerts):
    - **Broken:** 0 screenings for 3+ consecutive runs, while its median over the previous 14 runs is above 0.
    - **Suspicious:** below 50% of the same weekday one week earlier, and a drop of at least 5 screenings.
-   - **Recovered:** a cinema with status `broken` that now returns screenings. Report it, so its status can be updated.
+   - **Recovered:** a cinema with status `broken` or `idle` that now returns screenings. Report it, so its status can be updated.
 5. **New errors:** `ERROR` alerts in Slack since yesterday's check, for scrapers other than those already `broken`.
 
 **Weekly rhythm (don't alert on it):** most cinemas publish next week's programme on Monday, so counts are lowest in Monday's run (about 0.8× normal) and jump in Tuesday's run. A single low Monday is not a problem. Zeros are not more likely on any particular weekday.
@@ -83,38 +83,38 @@ Look for cinemas in the Netherlands that show films with English subtitles but a
 
 ## Cinema status
 
-Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (monitored), `broken` (known broken, being fixed), `seasonal` (legitimately empty at times), `inactive` (no longer relevant).
+Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (monitored), `broken` (known broken, being fixed), `idle` (scraper works, but the cinema has no English-subtitled screenings right now; check again in the quarterly discovery).
 
 | Scraper                  | Status | Notes (as of 2026-09-28)                        |
 | ------------------------ | ------ | ----------------------------------------------- |
-| amstelveen               | broken | 0 on all runs                                   |
+| amstelveen               | idle   | subs now in Production.Other; all NL (09-28)    |
 | bioscopenleiden          | broken | 0 on most runs, 1 on a few                      |
-| castellum                | broken | 0 on all runs                                   |
-| chasse                   | broken | 0 since 2026-09-03, errors every run            |
+| castellum                | idle   | no English-subtitled films (2026-09-28)         |
+| chasse                   | broken | BunnyCDN bot wall, blocks Chromium too; ask     |
 | cinecenter               | ok     |                                                 |
-| cinecitta                | broken | 0 on all runs                                   |
-| cinemadevlugt            | broken | 0 on all runs                                   |
+| cinecitta                | idle   | new domain (#375); no Eng-subs films (09-28)    |
+| cinemadevlugt            | idle   | Expat Cinema list empty (2026-09-28)            |
 | cinemathepulse           | ok     | fixed 2026-09-28 (URL marker changed)           |
-| cinerama                 | broken | 0 on all runs, errors every run                 |
+| cinerama                 | broken | works locally (13); fails in prod, AWS IP?      |
 | concordia                | ok     |                                                 |
 | defilmhallen             | ok     |                                                 |
 | desien                   | broken | 0 since 2026-09-25                              |
 | deuitkijk                | ok     |                                                 |
-| dewittdordrecht          | broken | 0 on all runs                                   |
+| dewittdordrecht          | idle   | no Expat Cinema; all films NL subs (09-28)      |
 | dokhuis                  | broken | 0 on all runs                                   |
 | eyefilm                  | ok     |                                                 |
-| fchyena                  | broken | 0 on all runs, errors every run                 |
-| filmhuisbreda            | broken | 0 on all runs, HTTP 403 (likely bot blocking)   |
-| filmhuisbussum           | broken | 0 since 2026-09-13                              |
+| fchyena                  | broken | new Framer site, no /agenda/; needs rewrite     |
+| filmhuisbreda            | broken | works locally; 403 in prod, AWS IP blocked?     |
+| filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)         |
 | filmhuisdenhaag          | ok     |                                                 |
 | filmhuislumen            | ok     |                                                 |
-| filmkoepel               | ok     |                                                 |
+| filmkoepel               | idle   | Expat page redesigned; selectors need update    |
 | filmtheaterhilversum     | broken | 0 on all runs, errors every run                 |
 | florafilmtheater         | ok     |                                                 |
 | focusarnhem              | ok     | small (1–4)                                     |
 | forumgroningen           | ok     |                                                 |
 | hartlooper               | ok     |                                                 |
-| heerenstraattheater      | broken | 0 on all runs, HTTP 403 (likely bot blocking)   |
+| heerenstraattheater      | broken | works locally; 403 in prod, AWS IP blocked?     |
 | hetdocumentairepaviljoen | ok     | fixed 2026-09-28 (subtitle label changed)       |
 | ketelhuis                | ok     | small (1–6)                                     |
 | kinorotterdam            | ok     |                                                 |
