@@ -44,6 +44,7 @@ const hasEnglishSubtitles = (movie: WpJsonMovie) => {
   const metadataHasEnglishSubtitles =
     movie.language_subtitles?.toLowerCase() === 'engels' ||
     movie.language_subtitles?.toLowerCase() === 'english' ||
+    movie.language_subtitles?.toLowerCase() === 'en' ||
     movie.status_other?.toLowerCase() === 'english subtitled' ||
     movie.status_other?.toLowerCase() === 'english subtitles'
 
@@ -59,7 +60,7 @@ const cleanTitle = (movie: WpJsonMovie) => {
 const extractFromMainPage = async (): Promise<Screening[]> => {
   try {
     const movies: WpJsonMovie[] = await got(
-      'https://cinecitta.nl/wp-json/wp/v2/movie?with_shows=true&type=&movie_post_id=&lang=en',
+      'https://cinecittatilburg.nl/wp-json/wp/v2/movie?with_shows=true&type=&movie_post_id=&lang=en',
       {
         https: {
           rejectUnauthorized: false, // cinecitta.nl has a misconfigured SSL certificate
@@ -71,13 +72,15 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
     const moviesWithEnglishSubtitles = movies.filter(hasEnglishSubtitles)
 
-    logger.debug('movies with english subtitles', { moviesWithEnglishSubtitles })
+    logger.debug('movies with english subtitles', {
+      moviesWithEnglishSubtitles,
+    })
 
     const screenings: Screening[][] = (
       await Promise.all(
         moviesWithEnglishSubtitles.map(async (movie) => {
           const shows: ShowJson[] = await got(
-            `https://cinecitta.nl/rest-api/v1/wordpress-integration/shows/?format=json&movie_sync_id=${movie.movie_sync_id}`,
+            `https://cinecittatilburg.nl/rest-api/v1/wordpress-integration/shows/?format=json&movie_sync_id=${movie.movie_sync_id}`,
             {
               https: {
                 rejectUnauthorized: false, // cinecitta.nl has a misconfigured SSL certificate
