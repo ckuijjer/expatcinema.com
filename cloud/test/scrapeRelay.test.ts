@@ -68,7 +68,7 @@ describe('scrape relay client', () => {
   })
 
   describe('relayGet', () => {
-    test('posts the url and headers to the relay with the bearer token', async () => {
+    test('posts the url and headers to the relay with basic auth and the token', async () => {
       configure()
       relayReturns({
         status: 200,
@@ -84,7 +84,11 @@ describe('scrape relay client', () => {
       expect(post).toHaveBeenCalledTimes(1)
       const [endpoint, options] = post.mock.calls[0]
       expect(endpoint).toBe('https://relay.example.com/fetch')
-      expect(options.headers.authorization).toBe('Bearer secret-token')
+      // Pangolin checks the basic auth at the edge, the relay the token itself
+      expect(options.headers.authorization).toBe(
+        `Basic ${Buffer.from('scrape-relay:secret-token').toString('base64')}`,
+      )
+      expect(options.headers['x-relay-token']).toBe('secret-token')
       expect(options.json).toEqual({
         url: 'https://www.filmhuisbreda.nl/x',
         headers: { 'user-agent': 'test-agent' },

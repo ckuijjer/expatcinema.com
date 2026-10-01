@@ -4,8 +4,11 @@ import got from 'got'
 // (Cloudflare for Filmhuis Breda and Heerenstraattheater, Kinepolis' firewall
 // for Cinerama) but accept a home IP. Those pages are fetched through a small
 // relay on the maintainer's home server ("teatree"), which is reached through
-// a public URL and a bearer token. The relay only fetches an allowlist of
-// hosts; keep RELAYED_HOSTS and the relay's ALLOWED_HOSTS
+// a public URL (behind Pangolin) and a token. The token is sent twice: as HTTP
+// basic auth, which Pangolin checks at the edge, and in X-Relay-Token, which
+// the relay checks itself (so it doesn't matter whether Pangolin forwards the
+// Authorization header). The relay only fetches an allowlist of hosts; keep
+// RELAYED_HOSTS and the relay's ALLOWED_HOSTS
 // (~/docker/scrape-relay/docker-compose.yml on teatree) in sync.
 //
 // Without SCRAPE_RELAY_URL and SCRAPE_RELAY_TOKEN (local runs, or before the
@@ -15,6 +18,9 @@ export const RELAYED_HOSTS = new Set([
   'www.heerenstraattheater.nl',
   'kinepolisweb-programmation.kinepolis.com',
 ])
+
+// Username of the HTTP basic auth that Pangolin checks; the password is the token
+const RELAY_USER = 'scrape-relay'
 
 const relayConfig = () => {
   const url = process.env.SCRAPE_RELAY_URL
@@ -50,7 +56,10 @@ export const relayGet = async (
   // handling and in Slack, instead of looking like an empty programme.
   const response = await got
     .post(`${config.url}/fetch`, {
-      headers: { authorization: `Bearer ${config.token}` },
+      headers: {
+        authorization: `Basic ${Buffer.from(`${RELAY_USER}:${config.token}`).toString('base64')}`,
+        'x-relay-token': config.token,
+      },
       json: { url, headers },
       timeout: { request: 60_000 },
       retry: { limit: 2, methods: ['POST'] },
