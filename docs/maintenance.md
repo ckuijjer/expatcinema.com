@@ -97,7 +97,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | cinecitta                | idle   | new domain (#375); no Eng-subs films (09-28)    |
 | cinemadevlugt            | idle   | Expat Cinema list empty (2026-09-28)            |
 | cinemathepulse           | ok     | fixed 2026-09-28 (URL marker changed)           |
-| cinerama                 | broken | works locally (13); fails in prod, AWS IP?      |
+| cinerama                 | ok     | fixed 2026-10-01: fetched via teatree relay     |
 | concordia                | ok     |                                                 |
 | defilmhallen             | ok     |                                                 |
 | desien                   | ok     | fixed 2026-09-28 (new English marker)           |
@@ -106,7 +106,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | dokhuis                  | ok     | occasional: film nights with English subs       |
 | eyefilm                  | ok     |                                                 |
 | fchyena                  | broken | new Framer site, no /agenda/; needs rewrite     |
-| filmhuisbreda            | broken | works locally; 403 in prod, AWS IP blocked?     |
+| filmhuisbreda            | ok     | fixed 2026-10-01: fetched via teatree relay     |
 | filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)         |
 | filmhuisdenhaag          | ok     |                                                 |
 | filmhuislumen            | ok     |                                                 |
@@ -116,7 +116,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)        |
 | forumgroningen           | ok     |                                                 |
 | hartlooper               | ok     |                                                 |
-| heerenstraattheater      | broken | works locally; 403 in prod, AWS IP blocked?     |
+| heerenstraattheater      | ok     | fixed 2026-10-01: fetched via teatree relay     |
 | hetdocumentairepaviljoen | ok     | fixed 2026-09-28 (subtitle label changed)       |
 | ketelhuis                | ok     | small (1–6); empty pages retried, then WARN     |
 | kinorotterdam            | ok     |                                                 |
