@@ -265,6 +265,10 @@ pnpm format
 - Prefer scraper-level cleanup for recurring cinema-specific prefixes and suffixes.
 - Keep scraper files lowercase and cinema-named, e.g. `kinorotterdam.ts`.
 
+## Scraping cinemas that block AWS
+
+Filmhuis Breda, Heerenstraattheater and Cinerama block requests from AWS, so on the Lambda their requests go through a relay on a home server (`cloud/clients/scrapeRelay.ts`, needs the `SCRAPE_RELAY_URL` and `SCRAPE_RELAY_TOKEN` secrets). Locally, and without those variables, requests go out directly. Adding a host to `RELAYED_HOSTS` also needs it in the relay's `ALLOWED_HOSTS` (`scrape-relay/` in the maintainer's teatree-docker repo).
+
 ## Metadata Conventions
 
 - Stable movie identity is `movieId`, not title string.

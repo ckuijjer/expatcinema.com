@@ -113,6 +113,8 @@ export class BackendStack extends cdk.Stack {
           OMDB_API_KEY: config.OMDB_API_KEY,
           SCRAPERS: config.SCRAPERS,
           WEB_DEPLOY_TOKEN: config.WEB_DEPLOY_TOKEN,
+          SCRAPE_RELAY_URL: config.SCRAPE_RELAY_URL,
+          SCRAPE_RELAY_TOKEN: config.SCRAPE_RELAY_TOKEN,
         },
       },
     )

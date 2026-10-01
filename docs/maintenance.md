@@ -24,6 +24,8 @@ Everything in this file, and everything an agent commits, is public. Therefore:
 
 Scraper `WARN`/`ERROR` log lines are forwarded to Slack by the notify-slack Lambda.
 
+Three cinemas block AWS (Filmhuis Breda and Heerenstraattheater via Cloudflare, Cinerama via Kinepolis' firewall). Their pages are fetched through a small relay on the maintainer's home server (teatree), see `cloud/clients/scrapeRelay.ts`. If they suddenly all fail at once with `Error retrieving ... via relay` or a 401/403/5xx from the relay, the relay or its tunnel is down, not the scrapers: check `https://scrape-relay.home.kuijjer.com/health` and tell the maintainer.
+
 ## Data sources
 
 Usable without AWS credentials (cloud agents):

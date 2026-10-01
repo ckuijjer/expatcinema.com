@@ -1,6 +1,7 @@
 import got from 'got'
 import { DateTime } from 'luxon'
 
+import { relayJson, shouldRelay } from '../clients/scrapeRelay'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { runIfMain } from './utils/runIfMain'
@@ -53,27 +54,32 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     const url =
       'https://kinepolisweb-programmation.kinepolis.com/api/Programmation/NL/NL/WWW/Cinema/Cinerama'
 
-    const programmation: KinepolisProgrammation = await got(url, {
-      headers: {
-        accept:
-          'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'accept-language': 'en-US,en;q=0.9',
-        'sec-ch-ua': '"Chromium";v="143", "Not;A=Brand";v="8"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"macOS"',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'cross-site',
-        Referer: 'https://cineramabios.nl/',
-        'user-agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36',
-      },
-    }).json()
+    // Kinepolis blocks AWS, so on the Lambda this goes through the relay
+    const headers = {
+      accept:
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+      'accept-language': 'en-US,en;q=0.9',
+      'sec-ch-ua': '"Chromium";v="143", "Not;A=Brand";v="8"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': '"macOS"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'cross-site',
+      Referer: 'https://cineramabios.nl/',
+      'user-agent':
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36',
+    }
+
+    const programmation: KinepolisProgrammation = shouldRelay(url)
+      ? await relayJson<KinepolisProgrammation>(url, headers)
+      : await got(url, { headers }).json()
 
     const moviesWithEnglishSubtitles =
       programmation.films.filter(hasEnglishSubtitles)
 
-    logger.debug('movies with english subtitles', { moviesWithEnglishSubtitles })
+    logger.debug('movies with english subtitles', {
+      moviesWithEnglishSubtitles,
+    })
 
     const screenings: Screening[][] = moviesWithEnglishSubtitles.map((movie) =>
       programmation.sessions

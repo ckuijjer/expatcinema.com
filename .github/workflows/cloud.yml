@@ -48,4 +48,6 @@ jobs:
           GOOGLE_CUSTOM_SEARCH_API_KEY: ${{ secrets.GOOGLE_CUSTOM_SEARCH_API_KEY }}
           SCRAPERS: ${{ secrets.SCRAPERS }}
           WEB_DEPLOY_TOKEN: ${{ secrets.WEB_DEPLOY_TOKEN }}
+          SCRAPE_RELAY_URL: ${{ secrets.SCRAPE_RELAY_URL }}
+          SCRAPE_RELAY_TOKEN: ${{ secrets.SCRAPE_RELAY_TOKEN }}
         run: pnpm run deploy:ci
