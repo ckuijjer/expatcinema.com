@@ -111,7 +111,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | filmhuiscavia            | ok     | added 2026-10-02; monthly programme pages       |
 | filmhuisdenhaag          | ok     |                                                 |
 | filmhuislumen            | ok     |                                                 |
-| filmkoepel               | idle   | Expat page redesigned; selectors need update    |
+| filmkoepel               | idle   | feed only; no EN-subbed films (2026-10-02)      |
 | filmtheaterhilversum     | ok     | fixed 2026-09-28 (time parsing)                 |
 | florafilmtheater         | ok     |                                                 |
 | focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)        |
