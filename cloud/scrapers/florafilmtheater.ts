@@ -54,8 +54,17 @@ type XRayFromMainPage = {
   screenings: string[]
 }
 
-const hasEnglishSubtitles = (movie: XRayFromMainPage) => {
-  return movie.metadata.includes('EN SUBS')
+// The badge reads 'EN SUBS', but also 'English SUBS' on some films
+export const hasEnglishSubtitles = (
+  movie: Pick<XRayFromMainPage, 'metadata'>,
+) => movie.metadata.some((entry) => /^(?:EN|English) SUBS$/i.test(entry))
+
+// A day has one or more showtimes: 'za 24 okt. 15:00 21:15' or 'Vandaag 21:30'
+export const splitDateAndTimes = (screening: string) => {
+  const times = screening.match(/\b\d{1,2}:\d{2}\b/g) ?? []
+  const date = screening.replace(/\s*\b\d{1,2}:\d{2}\b/g, '').trim()
+
+  return { date, times }
 }
 
 const extractMetadataYear = (metadata: string[]) => {
@@ -118,29 +127,29 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
     const screenings: Screening[] = moviesWithEnglishSubtitles.flatMap(
       (movie) => {
-        return movie.screenings.map((screening) => {
-          const lastSpaceIndex = screening.lastIndexOf(' ')
-          const date = screening.substring(0, lastSpaceIndex)
-          const time = screening.substring(lastSpaceIndex + 1)
-
+        return movie.screenings.flatMap((screening) => {
+          const { date, times } = splitDateAndTimes(screening)
           const { day, month, year } = splitDate(date)
-          const [hour, minute] = splitTime(time)
 
-          return {
-            title: movie.title,
-            year:
-              extractMetadataYear(movie.metadata) ??
-              extractYearFromTitle(movie.rawTitle),
-            url: movie.url,
-            cinema: 'Flora Filmtheater',
-            date: DateTime.fromObject({
-              day,
-              month,
-              year,
-              hour,
-              minute,
-            }).toJSDate(),
-          }
+          return times.map((time) => {
+            const [hour, minute] = splitTime(time)
+
+            return {
+              title: movie.title,
+              year:
+                extractMetadataYear(movie.metadata) ??
+                extractYearFromTitle(movie.rawTitle),
+              url: movie.url,
+              cinema: 'Flora Filmtheater',
+              date: DateTime.fromObject({
+                day,
+                month,
+                year,
+                hour,
+                minute,
+              }).toJSDate(),
+            }
+          })
         })
       },
     )
