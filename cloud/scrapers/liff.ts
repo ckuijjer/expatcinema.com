@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -124,7 +123,5 @@ const extractFromMainPage = () => {
     )
     .then((results) => results.flat())
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

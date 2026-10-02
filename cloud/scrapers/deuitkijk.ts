@@ -7,7 +7,6 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { USER_AGENT } from '../xRay'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
@@ -144,7 +143,5 @@ const extractFromMainPage = async () => {
 
   return screenings
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

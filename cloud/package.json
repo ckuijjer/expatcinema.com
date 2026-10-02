@@ -24,8 +24,8 @@
     "scrapers:local": "IS_LOCAL=true DOTENV_CONFIG_PATH=.env.local node -r dotenv/config --no-warnings --import tsx -e \"import { scrapers } from './scrapers/index.ts'; await scrapers()\"",
     "scrapers": "AWS_PROFILE=casper aws lambda invoke --cli-read-timeout 900 --function-name expatcinema-dev-scrapers output/expatcinema-dev-scrapers.json",
     "scrapers:prod": "AWS_PROFILE=casper aws lambda invoke --cli-read-timeout 900 --function-name expatcinema-prod-scrapers output/expatcinema-prod-scrapers.json",
-    "scraper": "IS_LOCAL=true DOTENV_CONFIG_PATH=.env.local AWS_PROFILE=casper node -r dotenv/config --no-warnings --import tsx",
-    "scraper:headless": "node --no-warnings --import tsx",
+    "scraper": "IS_LOCAL=true DOTENV_CONFIG_PATH=.env.local AWS_PROFILE=casper node -r dotenv/config --no-warnings --import tsx runScraper.ts",
+    "scraper:headless": "node --no-warnings --import tsx runScraper.ts",
     "playground": "AWS_PROFILE=casper aws lambda invoke --function-name expatcinema-dev-playground output/expatcinema-dev-playground.json"
   },
   "author": "Casper Kuijjer",

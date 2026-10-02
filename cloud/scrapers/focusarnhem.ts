@@ -3,7 +3,6 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -143,7 +142,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   return screenings
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

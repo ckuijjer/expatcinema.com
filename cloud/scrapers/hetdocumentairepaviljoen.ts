@@ -3,7 +3,6 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -188,7 +187,5 @@ const extractFromMainPage = async () => {
   logger.debug('screenings', { screenings })
   return screenings
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

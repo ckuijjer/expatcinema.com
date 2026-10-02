@@ -8,7 +8,6 @@ import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberDutch } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
-import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 
@@ -204,7 +203,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   return makeScreeningsUniqueAndSorted(screenings)
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

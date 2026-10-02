@@ -5,7 +5,6 @@ import { Screening } from '../types'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberDutch } from './utils/monthToNumber'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -185,7 +184,5 @@ const extractFromMainPage = async () => {
 
   return makeScreeningsUniqueAndSorted(screenings)
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

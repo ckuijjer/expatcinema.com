@@ -8,7 +8,6 @@ import { guessYear } from './utils/guessYear'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
-import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
@@ -164,7 +163,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const uniqueAndSortedScreenings = makeScreeningsUniqueAndSorted(screenings)
   return uniqueAndSortedScreenings
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

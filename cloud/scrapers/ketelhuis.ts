@@ -10,7 +10,6 @@ import {
   fullMonthToNumberDutch,
   shortMonthToNumberDutch,
 } from './utils/monthToNumber'
-import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { titleCase } from './utils/titleCase'
@@ -254,7 +253,5 @@ const extractFromMoviePage = async ({
   logger.debug('screenings', { screenings })
   return screenings
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

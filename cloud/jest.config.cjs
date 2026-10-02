@@ -13,5 +13,7 @@ module.exports = {
       },
     ],
   },
-  transformIgnorePatterns: ['/node_modules/(?!.*leven/)'],
+  // got and many of its dependencies are ESM only, so transform node_modules
+  // too; it's what lets the tests import scrapers
+  transformIgnorePatterns: [],
 }

@@ -5,7 +5,6 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { useLLM } from './utils/useLLM'
 import { createXray } from '../xRay'
@@ -122,7 +121,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   return screenings
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

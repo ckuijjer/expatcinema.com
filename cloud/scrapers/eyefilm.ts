@@ -3,7 +3,6 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -91,21 +90,17 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
 
   logger.debug('number of shows', { count: shows.length })
 
-  const screenings = shows
-    .filter(hasEnglishSubtitles)
-    .map((show) => {
-      return {
-        title: cleanTitle(show.production[0].title),
-        year: show.production[0].year ?? undefined,
-        url: show.url,
-        cinema: 'Eye',
-        date: new Date(show.startDateTime),
-      }
-    })
+  const screenings = shows.filter(hasEnglishSubtitles).map((show) => {
+    return {
+      title: cleanTitle(show.production[0].title),
+      year: show.production[0].year ?? undefined,
+      url: show.url,
+      cinema: 'Eye',
+      date: new Date(show.startDateTime),
+    }
+  })
 
   return screenings
 }
-
-runIfMain(extractFromGraphQL, import.meta.url)
 
 export default extractFromGraphQL

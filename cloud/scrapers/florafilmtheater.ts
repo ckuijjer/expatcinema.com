@@ -8,7 +8,6 @@ import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { guessYear } from './utils/guessYear'
 import { monthToNumber } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
-import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 import { normalizeWhitespace } from './utils/xrayFilters'
@@ -154,7 +153,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     return []
   }
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage
