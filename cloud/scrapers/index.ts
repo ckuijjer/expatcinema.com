@@ -29,6 +29,7 @@ import dokhuis from './dokhuis'
 import eyefilm from './eyefilm'
 import fchyena from './fchyena'
 import filmhuisbussum from './filmhuisbussum'
+import filmhuiscavia from './filmhuiscavia'
 import filmhuisbreda from './filmhuisbreda'
 import filmhuisdenhaag from './filmhuisdenhaag'
 import filmtheaterhilversum from './filmtheaterhilversum'
@@ -87,6 +88,7 @@ const SCRAPERS = {
   eyefilm,
   fchyena,
   filmhuisbussum,
+  filmhuiscavia,
   filmhuisbreda,
   filmhuisdenhaag,
   filmtheaterhilversum,
