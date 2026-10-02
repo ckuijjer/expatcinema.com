@@ -124,7 +124,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | kriterion                | ok     |                                                 |
 | lab1                     | ok     |                                                 |
 | lab111                   | ok     |                                                 |
-| lantarenvenster          | ok     | festival spikes, e.g. 24–27 Sep 2026; not a bug |
+| lantarenvenster          | ok     | fell 115→45 on 28 Sep: real (checked 10-02)     |
 | lumiere                  | ok     | fixed 2026-09-28 (GraphQL API)                  |
 | lux                      | ok     | fixed 2026-09-28 (3 English markers)            |
 | melkweg                  | ok     |                                                 |
