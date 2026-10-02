@@ -39,7 +39,7 @@ const MONTH_PAGE_URL =
 const DATE_TEXT =
   /(?:maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag|zondag)\s+(\d{1,2})\s+([a-z]+),?\s+(\d{1,2}[:.]\d{2})/i
 
-const parseMonthPageUrl = (url: string) => {
+export const parseMonthPageUrl = (url: string) => {
   const match = url.match(MONTH_PAGE_URL)
   if (!match) return undefined
 
@@ -51,7 +51,10 @@ const parseMonthPageUrl = (url: string) => {
 
 // The month page only says "Donderdag 1 oktober"; its URL has the year. An
 // entry can also belong to a neighbouring month (a December page listing 2 January).
-const parseDate = (text: string, page: { month: number; year: number }) => {
+export const parseDate = (
+  text: string,
+  page: { month: number; year: number },
+) => {
   const match = text.match(DATE_TEXT)
   if (!match) return undefined
 
@@ -74,13 +77,13 @@ const parseDate = (text: string, page: { month: number; year: number }) => {
 // e.g. "Eduardo Coutinho | 1984 | Brazil | 119’ | EN subtitles". Silent films
 // and films without dialogue say so there instead, and some entries have no
 // such line at all; neither has English subtitles.
-const findMetadataLine = (metadata: string[]) =>
+export const findMetadataLine = (metadata: string[]) =>
   metadata.find((line) => line.includes('|'))
 
-const hasEnglishSubtitles = (metadataLine?: string) =>
+export const hasEnglishSubtitles = (metadataLine?: string) =>
   /\b(?:EN|English) subtitles\b/i.test(metadataLine ?? '')
 
-const extractReleaseYear = (metadataLine?: string) => {
+export const extractReleaseYear = (metadataLine?: string) => {
   const year = (metadataLine ?? '')
     .split('|')
     .map((field) => field.trim())
@@ -92,7 +95,7 @@ const extractReleaseYear = (metadataLine?: string) => {
 // Drop add-ons to the film title, e.g. "Azart – Come Make Art + Q&A",
 // "Ménilmontant with live score by Kadavergraver" and
 // "Looking Back – by Porn Film Festival Amsterdam"
-const cleanTitle = (title: string) =>
+export const cleanTitle = (title: string) =>
   titleCase(
     removeYearSuffix(
       title
@@ -107,7 +110,7 @@ const cleanTitle = (title: string) =>
 // A month page is one article; every screening is an entry separated by
 // <hr id="slug">. Returns [{ anchor: 'slug', html: '<entry html>' }, ...]; the
 // intro before the first <hr> is skipped, and the last entry runs into the footer.
-const splitEntries = (html: string) => {
+export const splitEntries = (html: string) => {
   // [intro, <hr>, entry, <hr>, entry, ...]
   const parts = html.split(/(<hr[^>]*>)/i)
 
@@ -159,7 +162,7 @@ const extractFromEntry = async (
   ]
 }
 
-const extractScreeningsFromMonthHtml = async (
+export const extractScreeningsFromMonthHtml = async (
   html: string,
   monthPageUrl: string,
 ): Promise<Screening[]> => {
