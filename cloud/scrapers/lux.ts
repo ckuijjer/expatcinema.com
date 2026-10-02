@@ -6,7 +6,6 @@ import { Screening } from '../types'
 import { guessYear } from './utils/guessYear'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
-import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
@@ -170,7 +169,5 @@ const extractFromMainPage = async () => {
 
   return screenings
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

@@ -4,7 +4,6 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -37,7 +36,8 @@ const extractProgrammaUrls = (xml: string) =>
     ),
   )
 
-const hasEnglishSubtitles = (text: string) => /Ondertiteling\s+(English|Engels)/i.test(text)
+const hasEnglishSubtitles = (text: string) =>
+  /Ondertiteling\s+(English|Engels)/i.test(text)
 
 type XRayPage = {
   bodyText: string
@@ -58,9 +58,13 @@ const extractScreeningDates = (text: string): Date[] =>
     ),
   )
     .map(([, , dateStr, timeStr]) => {
-      const dt = DateTime.fromFormat(`${dateStr} ${timeStr}`, 'd-MM-yyyy HH:mm', {
-        zone: 'Europe/Amsterdam',
-      })
+      const dt = DateTime.fromFormat(
+        `${dateStr} ${timeStr}`,
+        'd-MM-yyyy HH:mm',
+        {
+          zone: 'Europe/Amsterdam',
+        },
+      )
       return dt.isValid ? dt.toJSDate() : null
     })
     .filter((d): d is Date => d !== null)
@@ -104,7 +108,9 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const sitemapXml = await got('https://www.filmhuisbussum.nl/sitemap.xml').text()
+  const sitemapXml = await got(
+    'https://www.filmhuisbussum.nl/sitemap.xml',
+  ).text()
   const urls = extractProgrammaUrls(sitemapXml)
 
   logger.info('programme urls', { numberOfUrls: urls.length })
@@ -113,7 +119,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   return makeScreeningsUniqueAndSorted(screenings)
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

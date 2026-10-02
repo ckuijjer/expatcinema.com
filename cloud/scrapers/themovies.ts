@@ -6,7 +6,6 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -56,7 +55,5 @@ const extractFromMainPage = async () => {
 
   return screenings.flat()
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

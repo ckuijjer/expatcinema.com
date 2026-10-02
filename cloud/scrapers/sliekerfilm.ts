@@ -6,7 +6,6 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { removeYearSuffix } from './utils/removeYearSuffix'
-import { runIfMain } from './utils/runIfMain'
 import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
@@ -146,7 +145,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   return makeScreeningsUniqueAndSorted(screenings)
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

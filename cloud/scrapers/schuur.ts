@@ -6,7 +6,6 @@ import { Screening } from '../types'
 import xRayPuppeteer from '../xRayPuppeteer'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
-import { runIfMain } from './utils/runIfMain'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
@@ -98,7 +97,5 @@ const extractFromMainPage = async () => {
     return []
   }
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

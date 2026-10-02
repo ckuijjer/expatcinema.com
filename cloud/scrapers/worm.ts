@@ -6,7 +6,6 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -186,7 +185,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     screenings.filter(({ date }) => date >= now),
   )
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

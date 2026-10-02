@@ -8,7 +8,6 @@ import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
-import { runIfMain } from './utils/runIfMain'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { titleCase } from './utils/titleCase'
 
@@ -82,7 +81,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   return screenings.flat()
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

@@ -5,7 +5,6 @@ import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { removeYearSuffix } from './utils/removeYearSuffix'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -95,7 +94,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   return makeScreeningsUniqueAndSorted(screenings)
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

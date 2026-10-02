@@ -7,7 +7,6 @@ import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { guessYear } from './utils/guessYear'
 import { monthToNumber } from './utils/monthToNumber'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -159,7 +158,5 @@ const extractFromMainPage = async () => {
 
   return Object.values(uniqueScreenings)
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage

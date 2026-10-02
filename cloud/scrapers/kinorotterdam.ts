@@ -9,7 +9,6 @@ import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
-import { runIfMain } from './utils/runIfMain'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -83,7 +82,5 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   return screenings.flat()
 }
-
-runIfMain(extractFromMainPage, import.meta.url)
 
 export default extractFromMainPage
