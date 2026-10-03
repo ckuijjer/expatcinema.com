@@ -61,6 +61,7 @@ import studiok from './studiok'
 import themovies from './themovies'
 import worm from './worm'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { withTimeout } from './utils/withTimeout'
 import {
   getMetadataLookupKey,
   getMovieSortTitle,
@@ -197,6 +198,10 @@ const getEnabledScrapers = () => {
   return SCRAPERS
 }
 
+// The Lambda is killed after 9 minutes, losing every scraper's results, so a
+// scraper that hangs gets cut off well before that (the slowest take ~1 minute)
+const SCRAPER_TIMEOUT_MS = 4 * 60 * 1000
+
 export const scrapers = async () => {
   try {
     const ENABLED_SCRAPERS = getEnabledScrapers()
@@ -215,7 +220,11 @@ export const scrapers = async () => {
           const start = Date.now()
           let result: Screening[] = []
           try {
-            result = await fn()
+            result = await withTimeout(
+              fn(),
+              SCRAPER_TIMEOUT_MS,
+              `scraper ${name}`,
+            )
           } catch (error) {
             logger.error('error scraping (scrapers Promise.all loop)', {
               scraper: name,

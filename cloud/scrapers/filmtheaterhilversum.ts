@@ -154,7 +154,10 @@ const extractFromMoviePage = async ({
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const html = await got(PROGRAMME_URL).text()
+  const html = await got(PROGRAMME_URL, {
+    timeout: { request: 30_000 },
+    retry: { limit: 2, maxRetryAfter: 10_000 },
+  }).text()
 
   const movies: ProgrammeMovie[] = await xray(html, '.moviecard', [
     {

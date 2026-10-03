@@ -38,6 +38,10 @@ const createGotDriver =
 
     got(String(url), {
       headers: { 'user-agent': USER_AGENT },
+      // Without a timeout got waits for a stalled connection forever, and
+      // honours any Retry-After on a 503 or 429, however long
+      timeout: { request: 30_000 },
+      retry: { limit: 2, maxRetryAfter: 10_000 },
       hooks: {
         afterResponse: [logNonOkResponseHook(logger)],
         beforeError: [logErrorHook(logger)],
