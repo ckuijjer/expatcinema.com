@@ -119,17 +119,20 @@ export class BackendStack extends cdk.Stack {
       },
     )
 
-    // Schedule for Scrapers Lambda
-    new events.Rule(this, 'scrapers-schedule-rule', {
-      schedule: events.Schedule.cron({
-        minute: '0',
-        hour: '3',
-        day: '*',
-        month: '*',
-        year: '*',
-      }),
-      targets: [new targets.LambdaFunction(scrapersLambda)],
-    })
+    // Schedule for Scrapers Lambda, prod only: a dev stack that ran every night
+    // as well posted its errors to the same Slack channel as prod
+    if (stage === 'prod') {
+      new events.Rule(this, 'scrapers-schedule-rule', {
+        schedule: events.Schedule.cron({
+          minute: '0',
+          hour: '3',
+          day: '*',
+          month: '*',
+          year: '*',
+        }),
+        targets: [new targets.LambdaFunction(scrapersLambda)],
+      })
+    }
 
     scrapersLambda.logGroup.addSubscriptionFilter('notify-slack-subscription', {
       destination: new cdk.aws_logs_destinations.LambdaDestination(
