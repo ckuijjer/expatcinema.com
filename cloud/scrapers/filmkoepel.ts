@@ -3,12 +3,10 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import { parseFkFeedYear } from './utils/parseFkFeedYear'
-import { guessYear } from './utils/guessYear'
-import { monthToNumber } from './utils/monthToNumber'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
+import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { titleCase } from './utils/titleCase'
-import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -16,147 +14,68 @@ const logger = parentLogger.createChild({
   },
 })
 
-const xray = createXray({ logger })
-
-type XRayFromMainPage = {
-  title: string
-  url: string
-  screenings: string[]
-}
+// Filmkoepel's /special/expat-cinema/ page used to list the Expat Cinema films
+// itself (.tile / .schedule__item, with an 'EN SUBS' label per screening). Since
+// its redesign it only shows the generic film list of the day, without any
+// subtitle information (verified against the Wayback Machine snapshots of
+// 2025-10-14 and 2026-04-19 and the live page of 2026-10-02), so English
+// subtitles are read from the agenda feed instead, like the other cinemas on
+// the same platform (see fkFeedEnglishSubtitles).
+const FEED_URL = 'https://filmkoepel.nl/fk-feed/agenda'
 
 type FkFeedItem = {
   title: string
   year?: string
-  language: { label: string; value: string }
+  language?: { label: string; value: string } | ''
   permalink: string
-  times: { program_start: string; program_end: string; tags: string[] }[]
+  times?: { program_start: string; program_end: string; tags?: string[] }[]
 }
 
-const extractFromSpecialExpatCinemaPage = async () => {
-  const url = 'https://filmkoepel.nl/special/expat-cinema/'
+// e.g. 202210181005 -> 2022-10-18T10:05:00 Europe/Amsterdam
+export const extractDate = (time: string) =>
+  DateTime.fromFormat(time, 'yyyyMMddHHmm', {
+    zone: 'Europe/Amsterdam',
+  }).toJSDate()
 
-  const movies: XRayFromMainPage[] = await xray(url, '.tile', [
-    {
-      title: '.tile__title a | trim',
-      url: '.tile__title a@href',
-      screenings: ['.schedule__item | trim'],
-    },
-  ])
+export const cleanTitle = (title: string) => titleCase(title.trim())
 
-  logger.debug('special expat cinema page', { movies })
-
-  const screenings: Screening[] = movies.flatMap(
-    ({ title, url, screenings }) => {
-      return screenings
-        .filter((screening) => screening.includes('EN SUBS'))
-        .map((screening) => {
-          let day, month
-
-          if (
-            screening.startsWith('Today') ||
-            screening.startsWith('Vandaag')
-          ) {
-            day = DateTime.local().day
-            month = DateTime.local().month
-          } else if (
-            screening.startsWith('Tomorrow') ||
-            screening.startsWith('Morgen')
-          ) {
-            const tomorrow = DateTime.local().plus({ days: 1 })
-
-            day = tomorrow.day
-            month = tomorrow.month
-          } else {
-            const [dayOfWeek, dayString, monthString] = screening.split(/\s+/) // ['Wed', '21', 'Aug', '18:15', 'EN', 'SUBS']
-
-            day = Number(dayString)
-            month = monthToNumber(monthString)
-          }
-
-          const timeMatch = screening.match(/\d\d:\d\d/)
-          if (!timeMatch) {
-            throw new Error(`filmkoepel screening missing time: ${screening}`)
-          }
-
-          const [hour, minute] = timeMatch[0].split(':').map(Number)
-
-          const year = guessYear({
-            day,
-            month,
-            hour,
-            minute,
-          })
-
-          return {
-            title,
-            url,
-            cinema: 'Filmkoepel',
-            date: DateTime.fromObject({
-              day,
-              month,
-              year,
-              hour,
-              minute,
-            }).toJSDate(),
-          }
-        })
-    },
+// The feed is an object keyed by film (or a list); films without showtimes
+// have no `times`
+export const extractScreeningsFromFeed = (
+  feed: Record<string, FkFeedItem> | FkFeedItem[],
+): Screening[] =>
+  Object.values(feed).flatMap((movie) =>
+    (movie.times ?? [])
+      .filter((time) => fkFeedHasEnglishSubtitles(movie, time))
+      .map((time) => ({
+        title: cleanTitle(movie.title),
+        year: parseFkFeedYear(movie.year),
+        url: movie.permalink,
+        cinema: 'Filmkoepel',
+        date: extractDate(time.program_start),
+      })),
   )
 
-  logger.debug('main page', { screenings })
+const extractFromMainPage = async (): Promise<Screening[]> => {
+  const feed = await got(FEED_URL).json<
+    Record<string, FkFeedItem> | FkFeedItem[]
+  >()
+
+  const movies = Object.values(feed)
+
+  logger.debug('feed', { movies: movies.length })
+
+  if (movies.length === 0) {
+    logger.warn('the agenda feed has no films')
+  }
+
+  const screenings = makeScreeningsUniqueAndSorted(
+    extractScreeningsFromFeed(feed),
+  )
+
+  logger.debug('screenings', { screenings })
 
   return screenings
-}
-
-// e.g. 202210181005 -> 2022-10-18T10:05:00.000Z
-const extractDate = (time: string) =>
-  DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
-
-const cleanTitle = (title: string) => titleCase(title)
-
-const extractFromMainPage = async () => {
-  const specialExpatScreenings = await extractFromSpecialExpatCinemaPage()
-
-  const movies = Object.values<FkFeedItem>(
-    await got('https://filmkoepel.nl/fk-feed/agenda').json(),
-  )
-
-  logger.debug('main page', { movies })
-
-  const screenings: Screening[][] = movies
-    .map((movie) => {
-      return movie.times
-        ?.filter((time) => fkFeedHasEnglishSubtitles(movie, time))
-        .map((time) => {
-          return {
-            title: cleanTitle(movie.title),
-            year: parseFkFeedYear(movie.year),
-            url: movie.permalink,
-            cinema: 'Filmkoepel',
-            date: extractDate(time.program_start),
-          }
-        })
-    })
-    .filter((x) => x)
-
-  logger.debug('before flatten', { screenings })
-
-  const allScreenings = [...specialExpatScreenings, ...screenings.flat()]
-
-  const uniqueScreenings = allScreenings.reduce(
-    (acc, screening) => {
-      const key = `${screening.title}${screening.url}${screening.cinema}${screening.date}`
-
-      if (!acc[key]) {
-        acc[key] = screening
-      }
-
-      return acc
-    },
-    {} as Record<string, Screening>,
-  )
-
-  return Object.values(uniqueScreenings)
 }
 
 export default extractFromMainPage

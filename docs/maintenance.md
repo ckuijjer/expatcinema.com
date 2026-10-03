@@ -92,7 +92,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | amstelveen               | idle   | subs now in Production.Other; all NL (09-28)    |
 | bioscopenleiden          | ok     | fixed 2026-09-28 ("ENGLISH SUBS" tag)           |
 | castellum                | idle   | no English-subtitled films (2026-09-28)         |
-| chasse                   | broken | BunnyCDN bot wall, blocks Chromium too; ask     |
+| chasse                   | ok     | fixed 2026-10-03: Chromium + Chrome UA          |
 | cinecenter               | ok     |                                                 |
 | cinecitta                | idle   | new domain (#375); no Eng-subs films (09-28)    |
 | cinemadevlugt            | idle   | Expat Cinema list empty (2026-09-28)            |
@@ -111,7 +111,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | filmhuiscavia            | ok     | added 2026-10-02; monthly programme pages       |
 | filmhuisdenhaag          | ok     |                                                 |
 | filmhuislumen            | ok     |                                                 |
-| filmkoepel               | idle   | Expat page redesigned; selectors need update    |
+| filmkoepel               | idle   | feed only; no EN-subbed films (2026-10-02)      |
 | filmtheaterhilversum     | ok     | fixed 2026-09-28 (time parsing)                 |
 | florafilmtheater         | ok     |                                                 |
 | focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)        |
