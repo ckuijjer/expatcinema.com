@@ -59,10 +59,11 @@ export const hasEnglishSubtitles = (
   movie: Pick<XRayFromMainPage, 'metadata'>,
 ) => movie.metadata.some((entry) => /^(?:EN|English) SUBS$/i.test(entry))
 
-// A day has one or more showtimes: 'za 24 okt. 15:00 21:15' or 'Vandaag 21:30'
+// A day has one or more showtimes: 'za 24 okt. 15:00 21:15' or 'Vandaag 21:30',
+// and a showtime can be followed by a note: 'Morgen 19:25 Uitverkocht'
 export const splitDateAndTimes = (screening: string) => {
   const times = screening.match(/\b\d{1,2}:\d{2}\b/g) ?? []
-  const date = screening.replace(/\s*\b\d{1,2}:\d{2}\b/g, '').trim()
+  const date = screening.split(/\b\d{1,2}:\d{2}\b/)[0].trim()
 
   return { date, times }
 }
@@ -129,7 +130,19 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       (movie) => {
         return movie.screenings.flatMap((screening) => {
           const { date, times } = splitDateAndTimes(screening)
-          const { day, month, year } = splitDate(date)
+
+          // One screening in a format we don't know shouldn't take the rest of
+          // the programme down with it
+          let day: number, month: number, year: number
+          try {
+            ;({ day, month, year } = splitDate(date))
+          } catch (error) {
+            logger.warn('skipping screening with an unknown date', {
+              screening,
+              error,
+            })
+            return []
+          }
 
           return times.map((time) => {
             const [hour, minute] = splitTime(time)
