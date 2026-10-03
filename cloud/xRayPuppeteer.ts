@@ -7,12 +7,16 @@ import { getBrowser } from './browser'
 
 type XRayPuppeteerOptions = {
   interactWithPage?: (page: Page, ctx: DriverContext) => Promise<void>
+  // Some sites' bot protection (e.g. Bunny Shield) blocks the default
+  // 'HeadlessChrome' user agent; this presents the same browser as regular Chrome
+  hideHeadlessUserAgent?: boolean
   logger?: Logger
   waitForOptions?: WaitForOptions
 }
 
 const xRayPuppeteer = ({
   interactWithPage = async () => {},
+  hideHeadlessUserAgent = false,
   logger,
   waitForOptions,
 }: XRayPuppeteerOptions = {}): Driver => {
@@ -22,6 +26,11 @@ const xRayPuppeteer = ({
 
       logger?.debug('opening page', { url: ctx.url })
       let page = await browser.newPage()
+      if (hideHeadlessUserAgent) {
+        const userAgent = await browser.userAgent()
+        await page.setUserAgent(userAgent.replace('HeadlessChrome', 'Chrome'))
+        await page.setExtraHTTPHeaders({ 'Accept-Language': 'nl,en;q=0.8' })
+      }
       await page.goto(String(ctx.url), waitForOptions)
 
       if (interactWithPage) {
