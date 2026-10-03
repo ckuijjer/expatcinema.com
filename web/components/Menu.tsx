@@ -50,7 +50,7 @@ const menuModalStyle = css({
   right: '0',
   position: 'fixed',
   backgroundColor: 'var(--background-inverse-color)',
-  zIndex: '1',
+  zIndex: '100',
 })
 
 const menuModalContentStyle = css({

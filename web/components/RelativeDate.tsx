@@ -19,5 +19,5 @@ export const RelativeDate = ({ children }: { children: string }) => {
     relativeDate = `Tomorrow \u2013 ${fullDate}`
   }
 
-  return <h3 className={listSectionHeadingStyle}>{relativeDate}</h3>
+  return <h3 id={children} className={listSectionHeadingStyle}>{relativeDate}</h3>
 }
