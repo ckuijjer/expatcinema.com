@@ -12,7 +12,7 @@ The `.env.local` file from `cloud/` is only used when running it locally, when d
 
 ### Deploy Dev
 
-It's possible to create a _dev_ stage, by locally running e.g.
+There is currently no _dev_ stage (the one that existed was deleted on 2026-10-03). It's possible to create one, by locally running e.g.
 
 ```sh
 pnpm run synth  # synthesize the cdk stack for dev
@@ -36,13 +36,11 @@ The scrapers run on a daily schedule defined in the cdk stack in `cloud/lib/back
 
 #### Manual Dev
 
-- `cd cloud; pnpm run scrapers` to run the scrapers on the _dev_ stage, see _output/expatcinema-dev-scrapers.json_ for the output of the scrapers.
+There is no dev stage to invoke at the moment. To try a scraper, run it locally: `cd cloud; pnpm run scraper scrapers/<name>.ts`, or `pnpm run scrapers:local` for all of them, where the `SCRAPERS` environment variable in _.env.local_ limits which scrapers run.
 
-If you want to run it on only a few scrapers, you can use the `SCRAPERS` environment variable in _.env_ to specify which scrapers to run. After making changes, `pnpm run deploy` and `pnpm run scrapers`.
+A dev stage that was deployed again with `pnpm run deploy` has no daily schedule (only prod has one); invoke it with `aws lambda invoke --function-name expatcinema-dev-scrapers` and a profile for the account.
 
-Or as `cdk watch` doesn't trigger on _.env_ file changes, when running `pnpm run watch` trigger a deploy by making a change in a _.ts_ file, and afterwards run `pnpm run scrapers`
-
-`pnpm run config:scraper` can be used to get the lambda function configuration for the scrapers.
+`pnpm run config:scrapers` can be used to get the lambda function configuration for the prod scrapers.
 
 ## Deploy Web
 

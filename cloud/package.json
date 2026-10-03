@@ -7,7 +7,7 @@
   "scripts": {
     "tsx": "IS_LOCAL=true node --inspect --no-warnings --import tsx",
     "type-check": "tsc --noEmit",
-    "tail-cloudwatch-logs": "AWS_PROFILE=casper aws logs tail /aws/lambda/expatcinema-dev --follow --region eu-west-1",
+    "tail-cloudwatch-logs": "AWS_PROFILE=casper aws logs tail /aws/lambda/expatcinema-prod-scrapers --follow --region eu-west-1",
     "prettify-log": "awk -F'\\t' '{if ($5 && $5 ~ /^{/ && !system(\"echo \\x27\" $5 \"\\x27 | jq -e > /dev/null 2>&1\")) { print $1\"\\t\"$2\"\\t\"$3\"\\t\"$4 system(\"echo \\x27\" $5 \"\\x27 | jq\") } else { print $0 }}'",
     "prettify-log:test": "cat tail-cloudwatch-logs.example.log | pnpm prettify-log",
     "log": "pnpm tail-cloudwatch-logs|pnpm prettify-log",
@@ -20,13 +20,11 @@
     "deploy": "AWS_PROFILE=casper STAGE=dev DOTENV_CONFIG_PATH=.env.dev cdk deploy --hotswap-fallback",
     "synth": "AWS_PROFILE=casper STAGE=dev DOTENV_CONFIG_PATH=.env.dev cdk synth",
     "watch": "AWS_PROFILE=casper STAGE=dev DOTENV_CONFIG_PATH=.env.dev cdk watch --hotswap-fallback",
-    "config:scrapers": "AWS_PROFILE=casper aws lambda get-function-configuration --function-name expatcinema-dev-scrapers",
+    "config:scrapers": "AWS_PROFILE=casper aws lambda get-function-configuration --function-name expatcinema-prod-scrapers",
     "scrapers:local": "IS_LOCAL=true DOTENV_CONFIG_PATH=.env.local node -r dotenv/config --no-warnings --import tsx -e \"import { scrapers } from './scrapers/index.ts'; await scrapers()\"",
-    "scrapers": "AWS_PROFILE=casper aws lambda invoke --cli-read-timeout 900 --function-name expatcinema-dev-scrapers output/expatcinema-dev-scrapers.json",
     "scrapers:prod": "AWS_PROFILE=casper aws lambda invoke --cli-read-timeout 900 --function-name expatcinema-prod-scrapers output/expatcinema-prod-scrapers.json",
     "scraper": "IS_LOCAL=true DOTENV_CONFIG_PATH=.env.local AWS_PROFILE=casper node -r dotenv/config --no-warnings --import tsx runScraper.ts",
-    "scraper:headless": "node --no-warnings --import tsx runScraper.ts",
-    "playground": "AWS_PROFILE=casper aws lambda invoke --function-name expatcinema-dev-playground output/expatcinema-dev-playground.json"
+    "scraper:headless": "node --no-warnings --import tsx runScraper.ts"
   },
   "author": "Casper Kuijjer",
   "license": "ISC",
