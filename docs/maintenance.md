@@ -116,6 +116,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | cinerama                 | ok     | fixed 2026-10-01: fetched via teatree relay     |
 | concordia                | ok     |                                                 |
 | defilmhallen             | ok     |                                                 |
+| delievevrouw             | idle   | no English-subtitled events (2026-10-03)        |
 | desien                   | ok     | fixed 2026-09-28 (new English marker)           |
 | deuitkijk                | ok     |                                                 |
 | dewittdordrecht          | idle   | no Expat Cinema; all films NL subs (09-28)      |
