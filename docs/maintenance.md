@@ -24,6 +24,13 @@ Everything in this file, and everything an agent commits, is public. Therefore:
 
 Scraper `WARN`/`ERROR` log lines are forwarded to Slack by the notify-slack Lambda.
 
+Failure modes seen so far, and how to recognise them:
+
+- **First invocation timed out, Lambda retried.** The scrapers Lambda has a 9 minute timeout and EventBridge retries a failed async invocation about a minute later, so a hung scraper shows up as analytics rows stamped 03:10 instead of 03:00, and `Status: timeout` in the Lambda's `REPORT` line. Find the culprit as the scraper with a `start scraping` log line but no `done scraping`. Each scraper now has a 4 minute deadline (`withTimeout` in `scrapers/index.ts`) and the shared got driver has a 30 second request timeout, so one stuck cinema can no longer cost the whole run (seen 2026-10-01 to 10-03 with Filmtheater Hilversum, whose pages answer 503 to AWS addresses).
+- **A whole cinema suddenly at 0 with a `:sos:` and `Invalid unit value NaN`, or a `toLowerCase` of undefined,** is a date or time label the scraper doesn't recognise (Flora: `Morgen 19:25 Uitverkocht`, `za 24 okt. 15:00 21:15`). Look at what the page shows in the first failing screening. A screening whose date can't be parsed is meant to be skipped with a warning, not to empty the cinema.
+- **A cinema that returns 0 with no error** can be the cinema's own page failing: Ketelhuis' Expat Cinema page was blank (HTTP 200, zero bytes) on 2026-10-03, also in a browser.
+- **Only `prod` has a schedule.** A dev stage can be deployed, but nothing runs it nightly; an earlier dev stack that did, with the prod Slack channel, produced alerts that looked like prod failures.
+
 Three cinemas block AWS (Filmhuis Breda and Heerenstraattheater via Cloudflare, Cinerama via Kinepolis' firewall). Their pages are fetched through a small relay on the maintainer's home server (teatree), see `cloud/clients/scrapeRelay.ts`. If they suddenly all fail at once with `Error retrieving ... via relay` or a 401/403/5xx from the relay, the relay or its tunnel is down, not the scrapers: check `https://scrape-relay.home.kuijjer.com/health` and tell the maintainer.
 
 ## Data sources
@@ -92,7 +99,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | amstelveen               | idle   | subs now in Production.Other; all NL (09-28)    |
 | bioscopenleiden          | ok     | fixed 2026-09-28 ("ENGLISH SUBS" tag)           |
 | castellum                | idle   | no English-subtitled films (2026-09-28)         |
-| chasse                   | ok     | fixed 2026-10-03: Chromium + Chrome UA          |
+| chasse                   | ok     | ok from AWS 2026-10-03 (Chromium + Chrome UA)   |
 | cinecenter               | ok     |                                                 |
 | cinecitta                | idle   | new domain (#375); no Eng-subs films (09-28)    |
 | cinemadevlugt            | idle   | Expat Cinema list empty (2026-09-28)            |
@@ -105,21 +112,21 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | dewittdordrecht          | idle   | no Expat Cinema; all films NL subs (09-28)      |
 | dokhuis                  | ok     | occasional: film nights with English subs       |
 | eyefilm                  | ok     |                                                 |
-| fchyena                  | ok     | fixed 2026-10-02 (Framer); low: 1 EN film       |
+| fchyena                  | ok     | ok from AWS 2026-10-03 (Framer); low: 1 EN film |
 | filmhuisbreda            | ok     | fixed 2026-10-01: fetched via teatree relay     |
 | filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)         |
 | filmhuiscavia            | ok     | added 2026-10-02; monthly programme pages       |
 | filmhuisdenhaag          | ok     |                                                 |
 | filmhuislumen            | ok     |                                                 |
 | filmkoepel               | idle   | feed only; no EN-subbed films (2026-10-02)      |
-| filmtheaterhilversum     | ok     | fixed 2026-09-28 (time parsing)                 |
-| florafilmtheater         | ok     |                                                 |
+| filmtheaterhilversum     | ok     | 503s from AWS; timeouts added (10-03)           |
+| florafilmtheater         | ok     | fixed 2026-10-03: sold-out, 2+ showtimes/day    |
 | focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)        |
 | forumgroningen           | ok     |                                                 |
 | hartlooper               | ok     |                                                 |
 | heerenstraattheater      | ok     | fixed 2026-10-01: fetched via teatree relay     |
 | hetdocumentairepaviljoen | ok     | fixed 2026-09-28 (subtitle label changed)       |
-| ketelhuis                | ok     | small (1–6); empty pages retried, then WARN     |
+| ketelhuis                | ok     | small (1–6); page blank 10-03 (their site)      |
 | kinorotterdam            | ok     |                                                 |
 | kriterion                | ok     |                                                 |
 | lab1                     | ok     |                                                 |
@@ -136,5 +143,5 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | sliekerfilm              | ok     | 0 until 2026-09-15                              |
 | springhaver              | ok     |                                                 |
 | studiok                  | ok     |                                                 |
-| themovies                | ok     | low but correct: 1 English-subtitled film       |
+| themovies                | idle   | no EN-subbed films (checked 2026-10-03)         |
 | worm                     | ok     |                                                 |
