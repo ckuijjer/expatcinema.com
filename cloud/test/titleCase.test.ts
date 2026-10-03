@@ -48,6 +48,61 @@ describe('titleCase', () => {
 // These tests verify that words which look like Roman numerals but are not
 // valid are correctly capitalised rather than kept uppercase.
 
+describe('titleCase – numbers followed by letters', () => {
+  test.each([
+    [
+      'shall we dance? (30th anniversary)',
+      'Shall We Dance? (30th Anniversary)',
+    ],
+    [
+      'SHALL WE DANCE? - 30TH ANNIVERSARY',
+      'Shall We Dance? - 30th Anniversary',
+    ],
+    ['the 2nd life of 21st street', 'The 2nd Life of 21st Street'],
+    ['1er mai', '1er Mai'],
+  ])('keeps ordinal suffixes lowercase: %p', (input, expected) => {
+    expect(titleCase(input)).toBe(expected)
+  })
+
+  test.each([
+    ['the ’70s: themroc', "The '70s: Themroc"],
+    ['THE ’80S: KIKI’S DELIVERY SERVICE', "The '80s: Kiki's Delivery Service"],
+  ])('keeps decades lowercase: %p', (input, expected) => {
+    expect(titleCase(input)).toBe(expected)
+  })
+
+  test.each([
+    ['35mm print', '35mm Print'],
+    ['70MM', '70mm'],
+  ])('keeps film formats lowercase: %p', (input, expected) => {
+    expect(titleCase(input)).toBe(expected)
+  })
+
+  test.each([
+    ['avatar 3d', 'Avatar 3D'],
+    ['AVATAR 3D', 'Avatar 3D'],
+    ['4k restoration', '4K Restoration'],
+    ['the film in 4K', 'The Film in 4K'],
+  ])('keeps 3D and 4K in capitals: %p', (input, expected) => {
+    expect(titleCase(input)).toBe(expected)
+  })
+
+  test('does not capitalize letters that follow a number in a title', () => {
+    expect(
+      titleCase('interstella 5555: the 5tory of the 5ecret 5tar 5ystem'),
+    ).toBe('Interstella 5555: the 5tory of the 5ecret 5tar 5ystem')
+    expect(titleCase('3X3 EYES')).toBe('3x3 Eyes')
+  })
+
+  test.each([
+    ['r2d2 and the 2001 robots', 'R2D2 and the 2001 Robots'],
+    ['10 things i hate about you', '10 Things I Hate About You'],
+    ['kill bill: vol. 2', 'Kill Bill: Vol. 2'],
+  ])('leaves other titles with numbers alone: %p', (input, expected) => {
+    expect(titleCase(input)).toBe(expected)
+  })
+})
+
 describe('titleCase – Roman numeral detection', () => {
   // Valid Roman numerals: preserved as-is (uppercase)
   const validNumerals = [
