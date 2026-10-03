@@ -3,9 +3,11 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
-import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { createXray } from '../xRay'
+import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
+import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { removeYearSuffix } from './utils/removeYearSuffix'
+import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -15,48 +17,58 @@ const logger = parentLogger.createChild({
 
 const xray = createXray({ logger })
 
+// FC Hyena's site is built with Framer, but server rendered:
+//
+// - /calendar links every film to its ticket shop with
+//   `.../z_events_list?production_id=123488`
+// - /films/<production id> is the page of a film, with its title and a list of
+//   details (director, genre, country, language, year). The language says
+//   whether there are English subtitles, e.g. 'Hebrew, with English subs',
+//   but also 'Engels gesproken, Nederlands ondertiteld'
+// - the ticket shop lists all dates of a film, so not only this week's
 const BASE_URL = 'https://fchyena.nl'
-const TICKETS_BASE_URL = 'https://tickets.fchyena.nl'
-
-type MainPageResult = {
-  title: string
-  url: string
-  productionId: string
-}
+const TICKETS_URL =
+  'https://tickets.fchyena.nl/fchyena/nl/flow_configs/1/z_events_list'
 
 type DetailPageResult = {
-  credits: string[]
+  title: string
+  language?: string
+  year?: string
 }
 
 type TicketPageResult = {
   date: string
 }
 
-const hasEnglishSubtitles = ({ credits }: DetailPageResult) => {
-  const normalizedCredits = (credits ?? []).join(' ').toLowerCase()
+export const parseProductionId = (href: string) => {
+  const productionId = href.match(/[?&]production_id=(\d+)(?:&|$)/)?.[1]
 
-  return (
-    normalizedCredits.includes('english subs') ||
-    normalizedCredits.includes('engels ondertiteld') ||
-    normalizedCredits.includes('engels gesproken, engels ondertiteld')
-  )
+  return productionId && productionId !== '0' ? productionId : undefined
 }
 
-const parseReleaseYear = ({ credits }: DetailPageResult) => {
-  const creditIndex = (credits ?? []).findIndex((credit) =>
-    /^Jaar$/i.test(credit),
+// e.g. 'Hebrew, with English subs'. Not 'Engels gesproken, Nederlands
+// ondertiteld', 'Engels gesproken, geen ondertiteling' or a bare 'Engels'
+export const hasEnglishSubtitles = (language?: string) =>
+  /\b(?:english|engels|eng)\s+(?:subs|subtitles|ondertiteld|ondertiteling)\b/i.test(
+    language ?? '',
   )
 
-  if (creditIndex === -1) {
-    return undefined
-  }
+// 'NAZA - ENG SUBS' and 'NAZA - NL subs' are the same film with different subtitles
+export const cleanTitle = (title: string) =>
+  titleCase(
+    removeYearSuffix(
+      title.replace(/\s+-\s+(?:eng|english|nl)\s+subs$/i, '').trim(),
+    ),
+  )
 
-  const year = Number(credits[creditIndex + 1])
+export const parseReleaseYear = (year?: string) => {
+  const match = (year ?? '').trim().match(/^(?:19|20)\d{2}$/)
 
-  return Number.isInteger(year) ? year : undefined
+  return match ? Number(match[0]) : undefined
 }
 
-const parseScreeningDate = (date: string) => {
+// e.g. 'za 03 oktober 2026, 12:20'
+export const parseScreeningDate = (date: string) => {
   const parsed = DateTime.fromFormat(date, 'ccc d LLLL yyyy, HH:mm', {
     locale: 'nl',
     zone: 'Europe/Amsterdam',
@@ -69,87 +81,75 @@ const parseScreeningDate = (date: string) => {
   return parsed.toJSDate()
 }
 
-const extractFromTicketPage = async ({
-  title,
-  url,
-  productionId,
-  year,
-}: MainPageResult & { year?: number }): Promise<Screening[]> => {
-  if (!productionId || productionId === '0') {
-    return []
-  }
+const extractFromTicketPage = async (
+  productionId: string,
+): Promise<TicketPageResult[]> => {
+  const html = await got(TICKETS_URL, {
+    searchParams: { production_id: productionId },
+  }).text()
 
-  const html = await got(
-    `${TICKETS_BASE_URL}/fchyena/nl/flow_configs/1/z_events_list`,
-    {
-      searchParams: {
-        production_id: productionId,
-      },
-    },
-  ).text()
-
-  const screenings: TicketPageResult[] = await xray(html, 'table tbody tr', [
+  return xray(html, 'table tbody tr', [
     {
       date: 'p | normalizeWhitespace | trim',
     },
   ])
+}
 
-  logger.debug('ticket page', { title, productionId, screenings })
+const extractFromMoviePage = async (
+  productionId: string,
+): Promise<Screening[]> => {
+  const url = `${BASE_URL}/films/${productionId}`
+
+  // Every detail is a label and a value in two containers next to each other
+  const movie: DetailPageResult = await xray(url, {
+    title: 'h2 | normalizeWhitespace | trim',
+    language:
+      '[data-framer-name="Langauge"] > div:last-child p | normalizeWhitespace | trim', // sic
+    year: '[data-framer-name="Year"] > div:last-child p | normalizeWhitespace | trim',
+  })
+
+  logger.debug('movie page', { url, movie })
+
+  // The title can say it as well: 'NAZA - ENG SUBS'
+  if (
+    !movie.title ||
+    !hasEnglishSubtitles(`${movie.language ?? ''} ${movie.title}`)
+  ) {
+    return []
+  }
+
+  const screenings = await extractFromTicketPage(productionId)
+
+  logger.debug('ticket page', { productionId, screenings })
 
   return screenings.map(({ date }) => ({
-    title,
-    year,
+    title: cleanTitle(movie.title),
+    year: parseReleaseYear(movie.year),
     url,
     cinema: 'FC Hyena',
     date: parseScreeningDate(date),
   }))
 }
 
-const extractFromMoviePage = async (
-  movie: MainPageResult,
-): Promise<Screening[]> => {
-  const detailPage: DetailPageResult = await xray(movie.url, {
-    credits: ['.film-detail__credits div | normalizeWhitespace | trim'],
-  })
-
-  logger.debug('detail page', { movie, detailPage })
-
-  if (!hasEnglishSubtitles(detailPage)) {
-    return []
-  }
-
-  return extractFromTicketPage({
-    ...movie,
-    year: parseReleaseYear(detailPage),
-  })
-}
-
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const html = await got(`${BASE_URL}/agenda/`).text()
+  const links: string[] = await xray(`${BASE_URL}/calendar`, [
+    'a[href*="production_id="]@href',
+  ])
 
-  const results: MainPageResult[] = await xray(
-    html,
-    'li.film--poster[data-productionid]',
-    [
-      {
-        title: 'h2.film-info__title | normalizeWhitespace | trim',
-        url: '.film-info a.time.time--inverted[href*="/films/"]@href',
-        productionId: '@data-productionid',
-      },
-    ],
+  const productionIds = Array.from(
+    new Set(links.map(parseProductionId).filter((id): id is string => !!id)),
   )
 
-  logger.debug('main page', { results })
+  logger.debug('main page', { productionIds })
+
+  if (productionIds.length === 0) {
+    logger.warn('no films found on the calendar')
+  }
 
   const screenings = await extractScreeningsFromPages(
-    results,
-    ({ title, url, productionId }) =>
-      extractFromMoviePage({
-        title,
-        url: new URL(url, BASE_URL).toString(),
-        productionId,
-      }),
-    { logger, url: ({ url }) => url },
+    productionIds,
+    extractFromMoviePage,
+    { logger, url: (productionId) => `${BASE_URL}/films/${productionId}` },
   )
 
   return makeScreeningsUniqueAndSorted(screenings)

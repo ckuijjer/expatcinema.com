@@ -105,7 +105,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | dewittdordrecht          | idle   | no Expat Cinema; all films NL subs (09-28)      |
 | dokhuis                  | ok     | occasional: film nights with English subs       |
 | eyefilm                  | ok     |                                                 |
-| fchyena                  | broken | new Framer site, no /agenda/; needs rewrite     |
+| fchyena                  | ok     | fixed 2026-10-02 (Framer); low: 1 EN film       |
 | filmhuisbreda            | ok     | fixed 2026-10-01: fetched via teatree relay     |
 | filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)         |
 | filmhuiscavia            | ok     | added 2026-10-02; monthly programme pages       |
