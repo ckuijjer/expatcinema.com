@@ -17,6 +17,7 @@ export const RELAYED_HOSTS = new Set([
   'www.filmhuisbreda.nl',
   'www.heerenstraattheater.nl',
   'kinepolisweb-programmation.kinepolis.com',
+  'www.chasse.nl',
 ])
 
 // Username of the HTTP basic auth that Pangolin checks; the password is the token

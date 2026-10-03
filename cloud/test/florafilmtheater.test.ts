@@ -12,6 +12,10 @@ describe('florafilmtheater', () => {
       ['za 24 okt. 15:00 21:15', 'za 24 okt.', ['15:00', '21:15']],
       ['Morgen 12:40 16:20', 'Morgen', ['12:40', '16:20']],
       ['vr 09 okt.', 'vr 09 okt.', []],
+      // sold out
+      ['Morgen 19:25 Uitverkocht', 'Morgen', ['19:25']],
+      ['ma 05 okt. 19:20 Uitverkocht', 'ma 05 okt.', ['19:20']],
+      ['za 24 okt. 15:00 Uitverkocht 21:15', 'za 24 okt.', ['15:00', '21:15']],
     ])('%p', (input, date, times) => {
       expect(splitDateAndTimes(input)).toEqual({ date, times })
     })
