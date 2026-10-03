@@ -61,6 +61,11 @@ With AWS access (local sessions, read-only profile `casper-readonly`):
    - **Suspicious:** below 50% of the same weekday one week earlier, and a drop of at least 5 screenings.
    - **Recovered:** a cinema with status `broken` or `idle` that now returns screenings. Report it, so its status can be updated.
 5. **New errors:** `ERROR` alerts in Slack since yesterday's check, for scrapers other than those already `broken`.
+6. **Waiting PRs:** open PRs with the label `waiting-for-screenings` (`https://api.github.com/repos/ckuijjer/expatcinema.com/issues?labels=waiting-for-screenings&state=open`). These are scrapers for cinemas that don't have English-subtitled screenings yet (status `idle`), kept open instead of merged. For each, run the PR's scraper and see whether it now returns screenings:
+   - Find the scraper from the PR's files (`cloud/scrapers/<name>.ts`), fetch the PR head (`git fetch origin pull/<n>/head`) into a scratch worktree outside the repo checkout (`git worktree add /tmp/pr-<n> FETCH_HEAD`), run `corepack enable; pnpm install --frozen-lockfile` there, then `cd cloud && pnpm scraper:headless scrapers/<name>.ts`.
+   - **Ready to merge:** it returns 1 or more screenings. Open at least 2 of the returned `url`s and look for the English-subtitles evidence the scraper relies on; say whether each is confirmed. Report the PR, the number of screenings and up to 5 examples (title, date and time in Amsterdam time, url). The maintainer decides and merges.
+   - **Failing:** the scraper throws or the site no longer looks like the PR expects. Report it, the PR needs rework.
+   - Still 0 screenings: not a finding. Mention in the thread how many PRs are waiting.
 
 **Weekly rhythm (don't alert on it):** most cinemas publish next week's programme on Monday, so counts are lowest in Monday's run (about 0.8× normal) and jump in Tuesday's run. A single low Monday is not a problem. Zeros are not more likely on any particular weekday.
 
@@ -68,6 +73,7 @@ With AWS access (local sessions, read-only profile `casper-readonly`):
 
 - All fine: `✅ Daily health <date>: scraped 03:01, site deployed 03:03, <n> screenings across <k> cinemas.`
 - Otherwise: `⚠️ Daily health <date>` with one line per finding (cinema, what's wrong, likely cause), and details in a thread.
+- A waiting PR that is ready to merge is good news, not a problem: add the line `🟢 Ready to merge: #<n> <cinema> now has <k> English-subtitled screenings` to the message (also when everything else is fine, so use the `✅` headline then), and put the examples in the thread. Mention that after merging, the cinema's status in the table below changes from `idle` to `ok`.
 
 ## Routine 2: Weekly quality audit
 
@@ -98,6 +104,7 @@ Look for cinemas in the Netherlands that show films with English subtitles but a
 
 - Fixing a scraper: follow `AGENTS.md` (run it with `pnpm scraper scrapers/<name>.ts`, add or update a test, open a PR). After merging, the maintainer runs `pnpm run scrapers:prod`.
 - When a cinema's status changes, update the table below in the same PR.
+- A scraper for a cinema that has no English-subtitled screenings yet (status `idle`) can be kept open as a PR with the label `waiting-for-screenings`, instead of being merged. The daily health check runs these scrapers and reports when one is ready to merge. Don't close these PRs as stale. Idle cinemas that are already merged stay listed on the site (an empty cinema shows "No screenings found in …"), so that visitors can still find their cinema.
 
 ## Cinema status
 
