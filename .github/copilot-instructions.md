@@ -41,12 +41,11 @@ type Screening = {
 
 ```bash
 # Local development (cloud/)
-pnpm run scrapers          # dev stage
 pnpm run scrapers:prod     # prod stage
 LOG_LEVEL=debug pnpm tsx scrapers/kinorotterdam.ts  # single scraper
 
-# Control which scrapers run via SCRAPERS env var
-SCRAPERS=kinorotterdam,eyefilm pnpm run scrapers
+# Control which scrapers run locally via SCRAPERS env var
+SCRAPERS=kinorotterdam,eyefilm pnpm run scrapers:local
 ```
 
 ### Local Development Setup

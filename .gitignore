@@ -33,7 +33,6 @@ backup/
 data/
 .claude/settings.local.json
 .claude/worktrees/
-output/expatcinema-dev-scrapers.json
 
 ## Panda
 styled-system
