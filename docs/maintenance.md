@@ -115,6 +115,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | cinemathepulse           | ok     | fixed 2026-09-28 (URL marker changed)           |
 | cinerama                 | ok     | fixed 2026-10-01: fetched via teatree relay     |
 | concordia                | ok     |                                                 |
+| debalie                  | ok     | added 2026-10-03; EN only when ENG is listed    |
 | defilmhallen             | ok     |                                                 |
 | desien                   | ok     | fixed 2026-09-28 (new English marker)           |
 | deuitkijk                | ok     |                                                 |
