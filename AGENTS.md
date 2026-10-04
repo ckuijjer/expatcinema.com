@@ -265,7 +265,10 @@ Run `pnpm format` before every commit. The `Format` workflow fails a PR that isn
 
 ## Coding Style
 
-Write code that looks like the code around it. When in doubt, look at `cloud/scrapers/kinorotterdam.ts` (with `cloud/test/kinorotterdam.test.ts`): a small scraper with short example comments that predates AI-assisted changes.
+Write code that looks like the code around it. When in doubt, look at these small scrapers with short example comments, which predate AI-assisted changes:
+
+- `cloud/scrapers/kinorotterdam.ts` (with `cloud/test/kinorotterdam.test.ts`): reads a JSON feed with `got`.
+- `cloud/scrapers/concordia.ts`: scrapes an HTML listing page with `createXray` and selectors.
 
 ### General
 
