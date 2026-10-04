@@ -51,6 +51,8 @@ With AWS access (local sessions, read-only profile `casper-readonly`):
 
 **When:** every day, 04:30 UTC (the morning after the nightly run, which finishes before 03:05 UTC).
 
+**Schedule of the three routines:** they run one after the other in the early morning, so the maintainer has the reports when they get up (07:00 Amsterdam time is 05:00 UTC in summer, 06:00 UTC in winter): daily 04:30 UTC, weekly audit Mondays 04:45 UTC, quarterly discovery on the 1st of Jan/Apr/Jul/Oct at 05:15 UTC. The scheduler starts a routine a few minutes after its time (6 to 14 minutes seen) and a run takes about 5 (daily), 11 (weekly) or 2 to 10 minutes (quarterly), so they can occasionally overlap, which does no harm.
+
 **Checks:**
 
 1. **Scrape ran:** `screenings.json` `Last-Modified` is today, after 03:00 UTC.
@@ -77,7 +79,7 @@ With AWS access (local sessions, read-only profile `casper-readonly`):
 
 ## Routine 2: Weekly quality audit
 
-**When:** Tuesdays, 12:00 UTC (after most weekly programmes are published).
+**When:** Mondays, 04:45 UTC, after the daily check. Most cinemas publish the next week's programme during Monday, so this audit sees the programme as it stood after the previous week, and anything published later on Monday is covered by the next audit.
 
 **Precision: no screening without English subtitles.** Every listed screening must have English subtitles. An English-language film without subtitles does not qualify. Sample 15 random upcoming screenings from `screenings.json`, spread across cinemas. For each, open its `url` and confirm the cinema says it has English subtitles. Report every false positive, with the evidence.
 
@@ -96,7 +98,7 @@ A wrong match is worse than no match: it puts a different film's poster and deta
 
 ## Routine 3: Quarterly cinema discovery
 
-**When:** 1 January, April, July and October, 09:00 UTC.
+**When:** 1 January, April, July and October, 05:15 UTC.
 
 Look for cinemas in the Netherlands that show films with English subtitles but aren't scraped yet: search for "English subtitles" / "Engelse ondertiteling" / "expat cinema" programmes, Cineville cinemas, and film festivals. Skip cinemas already listed in `docs/cinema-research.md`. Report candidates in Slack, and open a PR adding the outcome to `docs/cinema-research.md`.
 
