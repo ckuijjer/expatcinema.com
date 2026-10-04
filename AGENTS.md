@@ -265,7 +265,7 @@ Run `pnpm format` before every commit. The `Format` workflow fails a PR that isn
 
 ## Coding Style
 
-Write code that looks like the code around it. When in doubt, look at an existing scraper with a test (`filmhuiscavia.ts`, `debalie.ts`) and match it, but keep it leaner, as described below.
+Write code that looks like the code around it. When in doubt, look at `cloud/scrapers/kinorotterdam.ts` (with `cloud/test/kinorotterdam.test.ts`): a small scraper with short example comments that predates AI-assisted changes.
 
 ### General
 
