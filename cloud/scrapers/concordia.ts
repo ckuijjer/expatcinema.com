@@ -3,10 +3,10 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import { createXray } from '../xRay'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
+import { createXray } from '../xRay'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {

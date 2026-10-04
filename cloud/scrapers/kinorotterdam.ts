@@ -6,9 +6,9 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
-import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { removeYearSuffix } from './utils/removeYearSuffix'
+import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({

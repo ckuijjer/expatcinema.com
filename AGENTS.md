@@ -274,7 +274,6 @@ Write code that looks like the code around it. When in doubt, look at these smal
 
 - Prettier settings: no semicolons, single quotes. Don't hand-format; run `pnpm format`.
 - Arrow functions assigned to `const`; no `function` declarations, no classes.
-- Group imports: packages first, then a blank line, then relative imports. Keep each group alphabetical by module path.
 - Prefer small, plain functions over abstractions. Don't add options, parameters, or helpers for cases that don't exist yet.
 - Don't write defensive code for situations that can't happen. Handle the failures that do happen (a missing field on a real page, an unparsable date) where they happen, and log them.
 - Don't copy the same option object or logic into a second place; put it in one constant or helper.
