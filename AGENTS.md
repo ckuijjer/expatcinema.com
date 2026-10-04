@@ -213,6 +213,10 @@ Workflows:
 `web.yml` deploys on `main`, and is dispatched by the prod scrapers Lambda after every successful run (`cloud/triggerWebDeploy.ts`, token in the `WEB_DEPLOY_TOKEN` secret). There is intentionally no `schedule:` trigger: GitHub delayed it by 5+ hours and disables schedules after 60 days of repo inactivity.
 `web-build.yml` builds PRs without deploying.
 
+### Format
+
+`.github/workflows/format.yml` runs `pnpm prettier --check .` on every pull request.
+
 ### Prod rollout sequence
 
 After merging cloud changes that affect scraper output:
@@ -257,13 +261,60 @@ pnpm prettier --check .
 pnpm format
 ```
 
-## Scraper Conventions
+Run `pnpm format` before every commit. The `Format` workflow fails a PR that isn't formatted, including Markdown in `docs/`.
 
+## Coding Style
+
+Write code that looks like the code around it. When in doubt, look at an existing scraper with a test (`filmhuiscavia.ts`, `debalie.ts`) and match it, but keep it leaner, as described below.
+
+### General
+
+- Prettier settings: no semicolons, single quotes. Don't hand-format; run `pnpm format`.
+- Arrow functions assigned to `const`; no `function` declarations, no classes.
+- Group imports: packages first, then a blank line, then relative imports. Keep each group alphabetical by module path.
+- Prefer small, plain functions over abstractions. Don't add options, parameters, or helpers for cases that don't exist yet.
+- Don't write defensive code for situations that can't happen. Handle the failures that do happen (a missing field on a real page, an unparsable date) where they happen, and log them.
+- Don't copy the same option object or logic into a second place; put it in one constant or helper.
+- No commented-out code and no leftover debug calls. Use `logger.debug` for intermediate data.
+- Avoid `any`; type xray results with a `type XRayFrom...` like the other scrapers.
+
+### Comments
+
+Short and concrete, usually one line, ideally showing an example of the input or the before and after:
+
+```ts
+// e.g. 'ma 11.12'
+// 'SWEPT AWAY (1974) • I'LL HAVE WHAT SHE'S HAVING' -> 'SWEPT AWAY (1974)'
+```
+
+- Explain why or show what the data looks like; don't narrate what the code does.
+- A scraper can start with a short note (a few lines) on where its data comes from when that isn't obvious, e.g. "the programme page is filled by JavaScript; the films come from the WordPress REST API". Don't paste whole HTML structures.
+- No JSDoc blocks, no comments about possible future changes ("seam for adding retries later"), and no comments that restate the function name.
+
+### Scrapers
+
+- Keep scraper files lowercase and cinema-named, e.g. `kinorotterdam.ts`.
+- File order: imports, `logger`, `xray`, constants and regexes, types, helpers, `extractFromMoviePage`, `extractFromMainPage`, `export default extractFromMainPage`.
+- Build on the shared pieces instead of writing your own: `createXray` (`cloud/xRay.ts`), `extractScreeningsFromPages`, `makeScreeningsUniqueAndSorted`, and the utils in `cloud/scrapers/utils/` (`splitTime`, `guessYear`, `monthToNumber`, `titleCase`, `removeYearSuffix`, ...).
+- Keep helpers that only one cinema needs inside that scraper's file; no cinema-specific files in `utils/`.
+- Put parsing in small pure functions (`parseDate`, `hasEnglishSubtitles`, `cleanTitle`) so they can be tested with real examples from the site. Export a helper only when a test uses it.
+- A screening has English subtitles only when the page says so explicitly for it; never guess from the language of the film.
 - Use `luxon` with Europe/Amsterdam timezone handling.
 - Return absolute screening URLs.
 - Keep scraper output titles as scraped unless there is scraper-specific programme noise that should clearly be removed.
 - Prefer scraper-level cleanup for recurring cinema-specific prefixes and suffixes.
-- Keep scraper files lowercase and cinema-named, e.g. `kinorotterdam.ts`.
+- Tests live in `cloud/test/<scraper>.test.ts` and use real snippets and URLs from the cinema's site, with both a positive (English subtitles) and a negative example.
+
+### Web
+
+- Style with Panda (`css` from `styled-system/css`), as `const xStyle = css({...})` constants at the top of the file.
+- Components are arrow functions exported by name, with props typed inline or in a `type ...Props`.
+
+### Commits and PRs
+
+- Titles are short and imperative, at most about 60 characters, e.g. "Fix Flora sold-out showtimes" or "Add De Balie scraper". Details go in the body.
+- One topic per PR. Don't mix refactors or reformatting of unrelated files into a fix.
+- PR bodies say what was wrong, what changed, and how it was verified (e.g. scraper output counts before and after, example screenings with URLs).
 
 ## Scraping cinemas that block AWS
 
