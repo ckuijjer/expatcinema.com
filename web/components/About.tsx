@@ -96,7 +96,9 @@ export const About = () => {
                   const isLast = i === arr.length - 1
                   return (
                     <React.Fragment key={cinema.name}>
-                      <ExternalLink href={cinema.url}>{cinema.name}</ExternalLink>
+                      <ExternalLink href={cinema.url}>
+                        {cinema.name}
+                      </ExternalLink>
                       {isLast ? '' : ', '}
                     </React.Fragment>
                   )
@@ -132,7 +134,9 @@ export const About = () => {
             </Link>
             <p>
               Movie metadata and poster images are provided by{' '}
-              <ExternalLink href="https://www.themoviedb.org/">TMDB</ExternalLink>
+              <ExternalLink href="https://www.themoviedb.org/">
+                TMDB
+              </ExternalLink>
               . This product uses the TMDB API but is not endorsed or certified
               by TMDB.
             </p>

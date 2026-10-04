@@ -122,7 +122,9 @@ export const UnmatchedMoviesOverview = ({
     <Layout>
       <div className={pageStyle}>
         <div>
-          <PageTitle>Unmatched movies ({uniqueUnmatchedMovies.length})</PageTitle>
+          <PageTitle>
+            Unmatched movies ({uniqueUnmatchedMovies.length})
+          </PageTitle>
           <p className={introStyle}>
             All movies that couldn't be matched to a known movie in The Movie
             Database.

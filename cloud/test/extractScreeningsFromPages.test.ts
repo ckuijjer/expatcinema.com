@@ -11,7 +11,7 @@ const screening = (title: string): Screening => ({
 })
 
 const makeLogger = () =>
-  ({ warn: jest.fn() } as unknown as Logger & { warn: jest.Mock })
+  ({ warn: jest.fn() }) as unknown as Logger & { warn: jest.Mock }
 
 describe('extractScreeningsFromPages', () => {
   test('flattens the screenings from every page', async () => {

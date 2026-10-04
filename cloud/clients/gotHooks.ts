@@ -9,7 +9,8 @@ export const camelcaseKeysHook = (response: any) => {
   return response
 }
 
-export const logErrorHook = (logger: Logger = defaultLogger) =>
+export const logErrorHook =
+  (logger: Logger = defaultLogger) =>
   (error: RequestError) => {
     logger.error(
       `Error retrieving ${error.options.url}: ${error.response?.statusCode} ${error.code} ${error.message}`,
@@ -17,7 +18,8 @@ export const logErrorHook = (logger: Logger = defaultLogger) =>
     return error
   }
 
-export const logNonOkResponseHook = (logger: Logger = defaultLogger) =>
+export const logNonOkResponseHook =
+  (logger: Logger = defaultLogger) =>
   (response: Response) => {
     if (response.statusCode >= 400) {
       logger.warn(

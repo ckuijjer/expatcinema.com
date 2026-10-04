@@ -123,8 +123,6 @@ const linkRowStyle = css({
   flexWrap: 'wrap',
 })
 
-
-
 const trailerSectionStyle = css({
   display: 'grid',
   rowGap: '12px',
@@ -163,7 +161,8 @@ const languageDisplayNames = new Intl.DisplayNames(['en'], { type: 'language' })
 
 const formatLanguage = (language?: string | null) => {
   if (!language) return undefined
-  if (TMDB_LANGUAGE_OVERRIDES[language]) return TMDB_LANGUAGE_OVERRIDES[language]
+  if (TMDB_LANGUAGE_OVERRIDES[language])
+    return TMDB_LANGUAGE_OVERRIDES[language]
   return languageDisplayNames.of(language) ?? language
 }
 
@@ -193,7 +192,13 @@ const formatRuntime = (runtime?: number | null) => {
   return parts.join('')
 }
 
-const MetadataRow = ({ label, value }: { label: string; value?: string | null }) =>
+const MetadataRow = ({
+  label,
+  value,
+}: {
+  label: string
+  value?: string | null
+}) =>
   value ? (
     <div className={metadataItemStyle}>
       <span className={metadataLabelStyle}>{label}:</span>
@@ -309,7 +314,13 @@ export const MoviePage = ({
               {year ? <span className={yearStyle}> ({year})</span> : null}
             </h1>
             {showOriginalTitle ? (
-              <p className={css({ margin: '0', fontSize: '20px', color: 'var(--text-muted-color)' })}>
+              <p
+                className={css({
+                  margin: '0',
+                  fontSize: '20px',
+                  color: 'var(--text-muted-color)',
+                })}
+              >
                 {originalTitle}
               </p>
             ) : null}
@@ -323,12 +334,19 @@ export const MoviePage = ({
                 <MetadataRow label="Language" value={originalLanguage} />
                 <MetadataRow label="Subtitles" value="English" />
                 <MetadataRow label="Runtime" value={runtime} />
-                <MetadataRow label="Rating" value={voteAverage ? `${voteAverage}/10` : undefined} />
+                <MetadataRow
+                  label="Rating"
+                  value={voteAverage ? `${voteAverage}/10` : undefined}
+                />
               </div>
             </div>
             <div className={linkRowStyle}>
-              {tmdbHref ? <ExternalLink href={tmdbHref}>TMDB</ExternalLink> : null}
-              {imdbHref ? <ExternalLink href={imdbHref}>IMDb</ExternalLink> : null}
+              {tmdbHref ? (
+                <ExternalLink href={tmdbHref}>TMDB</ExternalLink>
+              ) : null}
+              {imdbHref ? (
+                <ExternalLink href={imdbHref}>IMDb</ExternalLink>
+              ) : null}
             </div>
             {trailer?.key ? (
               <div className={trailerSectionStyle}>
