@@ -49,7 +49,7 @@ With AWS access (local sessions, read-only profile `casper-readonly`):
 
 ## Routine 1: Daily health check
 
-**When:** every day, 05:30 UTC (the morning after the nightly run).
+**When:** every day, 04:30 UTC (the morning after the nightly run, which finishes before 03:05 UTC).
 
 **Checks:**
 
