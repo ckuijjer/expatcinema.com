@@ -40,7 +40,7 @@ Usable without AWS credentials (cloud agents):
 - Public data: `https://s3-eu-west-1.amazonaws.com/expatcinema-public-prod/screenings.json` (also `movies.json`, `title-matches.json`). The `Last-Modified` header is the time of the last successful scrape.
 - Per-scraper counts for the last ~28 runs: `https://4jiprxxc8g.execute-api.eu-west-1.amazonaws.com/analytics`. Rows look like `{ "type": "count", "createdAt": "<ISO>", "scraper": "<name>", "value": <n> }`; `scraper` is also `all` and `allWithMovieId`.
 - Site deploys: `gh run list --workflow web.yml` / `gh api repos/ckuijjer/expatcinema.com/actions/workflows/web.yml/runs`.
-- Slack `#expatcinema`: alerts and earlier reports.
+- Slack `#expatcinema`: alerts and earlier reports. The channel is noisy (many `:warning:` lines and Node `DeprecationWarning` stack traces per run), so paging `slack_read_channel` by message count, or bounding it with a hand-computed `oldest` timestamp, can land you on a stale page or miss recent messages entirely. To check for new `:sos:` alerts or find a previous report, search instead, e.g. `slack_search_public` with `keywords: [":sos:"]` and `filters: "in:#expatcinema after:<date>"` (or `on:<date>`).
 
 With AWS access (local sessions, read-only profile `casper-readonly`):
 
