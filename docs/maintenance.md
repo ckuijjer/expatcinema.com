@@ -22,7 +22,7 @@ Everything in this file, and everything an agent commits, is public. Therefore:
 | ~03:01     | Lambda dispatches the `Web` workflow (`cloud/triggerWebDeploy.ts`)                                                                     |
 | ~03:03     | `Web` has rebuilt and deployed the static site to GitHub Pages                                                                         |
 
-Scraper `WARN`/`ERROR` log lines are forwarded to Slack by the notify-slack Lambda.
+Scraper `WARN`/`ERROR` log lines are forwarded to Slack by the notify-slack Lambda. A post that Slack rejects is logged (`failed to post to Slack`) and skipped; it used to fail the whole invocation, and Lambda's retry then posted the batch again, up to three times (seen 2026-10-05: a thread over Slack's 3000 character limit, now truncated to 2900).
 
 Failure modes seen so far, and how to recognise them:
 
@@ -101,6 +101,11 @@ A wrong match is worse than no match: it puts a different film's poster and deta
 **When:** 1 January, April, July and October, 05:15 UTC.
 
 Look for cinemas in the Netherlands that show films with English subtitles but aren't scraped yet: search for "English subtitles" / "Engelse ondertiteling" / "expat cinema" programmes, Cineville cinemas, and film festivals. Skip cinemas already listed in `docs/cinema-research.md`. Report candidates in Slack, and open a PR adding the outcome to `docs/cinema-research.md`.
+
+Also check the health of the code base itself (report only: don't change dependencies or code, and open no PR for it):
+
+- **Deprecations.** The scrapers Lambda runs with `--no-deprecation` (`cloud/lib/backend-stack.ts`) because `x-ray` and its dependencies (unmaintained since 2022) trigger two Node deprecation warnings on every cold start: DEP0005 (`Buffer()`, from `http-outgoing`) and DEP0169 (`url.parse()`, from `x-ray`). That also hides new ones, so look for them here: install dependencies, then run `NODE_OPTIONS="--pending-deprecation --trace-deprecation" pnpm scraper:headless scrapers/<name>.ts` for `concordia` (x-ray), `kinorotterdam` (got) and `chasse` (Puppeteer), and `pnpm test` with the same `NODE_OPTIONS`, in `cloud/`. List every `DEP00xx` code other than the two above, with the package that triggers it (from the stack trace). Also check whether AWS has announced the end of support for the Lambda Node.js runtime in use (`NODEJS_24_X`).
+- **Dependencies.** In `cloud/` and `web/`, run `pnpm outdated`. Report major versions that are out, anything that is deprecated or hasn't been published for over two years (`x-ray` and its dependencies are known), and for `x-ray` whether a maintained replacement or fork exists now. Also note `got`, `puppeteer`, `@sparticuz/chromium`, `next` and `react` even when only a minor version is out.
 
 ## Working on findings
 

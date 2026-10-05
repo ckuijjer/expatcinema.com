@@ -41,6 +41,17 @@ type SlackMessage = {
   threadBlock: SlackBlock | null
 }
 
+// Slack rejects a section block whose text is over 3000 characters
+// (invalid_blocks), e.g. the JSON of a logged got HTTPError
+const MAX_THREAD_TEXT_LENGTH = 2900
+
+const toCodeBlock = (text: string) =>
+  '```' +
+  (text.length > MAX_THREAD_TEXT_LENGTH
+    ? `${text.slice(0, MAX_THREAD_TEXT_LENGTH)}\n… truncated`
+    : text) +
+  '```'
+
 const notifySlack = async ({ awslogs }: CloudWatchLogsEvent) => {
   const payload = Buffer.from(awslogs.data, 'base64')
 
@@ -56,7 +67,18 @@ const notifySlack = async ({ awslogs }: CloudWatchLogsEvent) => {
 
   const slackMessages = filteredLogEvents.map(getSlackMessage)
 
-  await Promise.all(slackMessages.map(postToSlack))
+  // One failing post (e.g. Slack rejecting a block) must not make the Lambda
+  // fail: it would retry the whole batch and post every message again
+  const results = await Promise.allSettled(slackMessages.map(postToSlack))
+
+  results.forEach((result, index) => {
+    if (result.status === 'rejected') {
+      console.error('failed to post to Slack', {
+        message: slackMessages[index].mainBlock.text.text,
+        error: result.reason,
+      })
+    }
+  })
 }
 
 const levelsToEmoji = {
@@ -66,7 +88,7 @@ const levelsToEmoji = {
   DEBUG: ':information_source:',
 }
 
-const getSlackMessage = (logEvent: LogEvent): SlackMessage => {
+export const getSlackMessage = (logEvent: LogEvent): SlackMessage => {
   try {
     const json = JSON.parse(logEvent.message) as {
       level?: keyof typeof levelsToEmoji
@@ -88,7 +110,7 @@ const getSlackMessage = (logEvent: LogEvent): SlackMessage => {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: '```' + JSON.stringify(json, null, 2) + '```',
+          text: toCodeBlock(JSON.stringify(json, null, 2)),
         },
       },
     }
