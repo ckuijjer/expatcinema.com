@@ -106,6 +106,12 @@ export class BackendStack extends cdk.Stack {
         environment: {
           ...DEFAULT_FUNCTION_ENVIRONMENT_PROPS,
 
+          // x-ray and its dependencies (unmaintained since 2022) trigger
+          // DEP0005 (Buffer()) and DEP0169 (url.parse()) on every cold start,
+          // which ended up as :sos: alerts in Slack. The quarterly routine
+          // checks for new deprecations and dependency updates.
+          NODE_OPTIONS: `${DEFAULT_FUNCTION_ENVIRONMENT_PROPS.NODE_OPTIONS} --no-deprecation`,
+
           PRIVATE_BUCKET: scrapersOutputBucketName,
           PUBLIC_BUCKET: publicBucketName,
           DYNAMODB_ANALYTICS: scrapersAnalyticsTableName,
