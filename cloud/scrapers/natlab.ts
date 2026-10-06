@@ -39,6 +39,7 @@ const cleanTitle = (title: string) =>
   titleCase(
     title
       .replace(/ \| Expat Cinema$/i, '')
+      .replace(/ \| K-Wave$/i, '')
       .replace(/ \(English Subs\)$/i, '')
       .replace(/ \[Eng Subs\]$/i, ''),
   )
