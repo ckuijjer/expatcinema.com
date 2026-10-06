@@ -75,37 +75,68 @@ type ProgramItem = {
   starts_at_time: string
 }
 
-export const cleanTitle = (title: string) => {
-  let cleaned = title
+// Filmhuis Den Haag adds the series, label or event to a title after " - ", and
+// the suffixes stack: "Lamb - Gather Round Folks - EN subs", "Youri - met Q&A".
+// Cutting at the first " - " would also cut the subtitle of a film such as
+// "Mission: Impossible - Fallout", which then no longer matches on TMDB. So only
+// a suffix that is a format label, a festival, a known series, or shared by more
+// than one film of the programme (a series, as opposed to the subtitle of one
+// film) goes.
+const FORMAT_LABEL = /^(?:EN subs\b.*|met\s.+)$/i
 
-  do {
-    const previous = cleaned
+// e.g. "No Limits Festival", "Festival Dag in de Branding"
+const FESTIVAL_LABEL = /\bfestival\b/i
 
-    cleaned = cleaned
-      .replace(/(\s+-\s+Laff)$/i, '')
-      .replace(/(\s+-\s+Drank & Drugs)$/i, '')
-      .replace(/(\s+-\s+This Is Not Funny)$/i, '')
-      .replace(/(\s+-\s+Is This Bruce Lee\?)$/i, '')
-      .replace(/(\s+-\s+Ciné Première)$/i, '')
-      .replace(/(\s+-\s+Late Night Anime)$/i, '')
-      .replace(
-        /(\s+-\s+En Subs(\s+Met\s+(Introductie|Inleiding|Nagesprek))?)$/i,
-        '',
-      )
-      .replace(/(\s+-\s+Met\s+(Introductie|Inleiding|Nagesprek))$/i, '')
-      .replace(/ - EN subs$/i, '')
-      .replace(
-        /\s+\((4K Restoration|Re-Release)\)(\s+-\s+Late Night Anime)?$/i,
-        '',
-      )
-      .trim()
+const KNOWN_SERIES = [
+  'Laff',
+  'Drank & Drugs',
+  'This Is Not Funny',
+  'Is This Bruce Lee?',
+  'Ciné Première',
+  'Late Night Anime',
+  'First Pick',
+]
 
-    if (cleaned === previous) {
-      break
+const splitTitle = (title: string) => title.split(/\s+-\s+/)
+
+// Case and spacing don't count: "No Lonely Dancefloors" and "No Lonely Dance Floors"
+const labelKey = (label: string) => label.toLowerCase().replace(/\s+/g, '')
+
+const KNOWN_SERIES_KEYS = new Set(KNOWN_SERIES.map(labelKey))
+
+// The suffixes that more than one film of the programme has, e.g. "LIFF"
+export const findSeriesLabels = (titles: string[]) => {
+  const films = new Map<string, number>()
+
+  for (const title of new Set(titles)) {
+    for (const key of new Set(splitTitle(title).slice(1).map(labelKey))) {
+      films.set(key, (films.get(key) ?? 0) + 1)
     }
-  } while (true)
+  }
 
-  return cleaned
+  return new Set(
+    [...films].filter(([, count]) => count > 1).map(([key]) => key),
+  )
+}
+
+export const cleanTitle = (title: string, seriesLabels: Set<string>) => {
+  const [film, ...suffixes] = splitTitle(title)
+
+  const firstLabel = suffixes.findIndex(
+    (suffix) =>
+      FORMAT_LABEL.test(suffix) ||
+      FESTIVAL_LABEL.test(suffix) ||
+      KNOWN_SERIES_KEYS.has(labelKey(suffix)) ||
+      seriesLabels.has(labelKey(suffix)),
+  )
+
+  return [
+    film,
+    ...(firstLabel === -1 ? suffixes : suffixes.slice(0, firstLabel)),
+  ]
+    .join(' - ')
+    .replace(/\s+\((4K Restoration|Re-Release)\)$/i, '')
+    .trim()
 }
 
 const hasEnglishSubtitles = (item: ProgramItem) => {
@@ -159,6 +190,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ),
   )
 
+  const seriesLabels = findSeriesLabels(programs.map(({ title }) => title))
+
   const screenings: Screening[] = programs
     .filter(hasEnglishSubtitles)
     .map((item) => {
@@ -168,7 +201,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       const [hour, minute] = splitTime(item.starts_at_time)
 
       return {
-        title: cleanTitle(item.title),
+        title: cleanTitle(item.title, seriesLabels),
         year: releaseYearByUrl.get(`https://filmhuisdenhaag.nl${item.uri}`),
         url: `https://filmhuisdenhaag.nl${item.uri}`,
         cinema: 'Filmhuis Den Haag',
