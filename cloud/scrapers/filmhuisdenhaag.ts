@@ -77,13 +77,61 @@ type ProgramItem = {
 
 // Filmhuis Den Haag adds the series, label or event to a title after " - ", and
 // the suffixes stack: "Lamb - Gather Round Folks - EN subs", "Youri - met Q&A".
-// The film is what comes before the first one; an en dash ("Ellie de Olifant –
-// De Grote Reis") belongs to the title and stays.
-export const cleanTitle = (title: string) =>
-  title
-    .replace(/\s+-\s+.*$/, '')
+// Cutting at the first " - " would also cut the subtitle of a film such as
+// "Mission: Impossible - Fallout", which then no longer matches on TMDB. So only
+// a suffix that is a format label, a known series, or shared by more than one
+// film of the programme (a series, as opposed to the subtitle of one film) goes.
+const FORMAT_LABEL = /^(?:EN subs\b.*|met\s.+)$/i
+
+const KNOWN_SERIES = [
+  'Laff',
+  'Drank & Drugs',
+  'This Is Not Funny',
+  'Is This Bruce Lee?',
+  'Ciné Première',
+  'Late Night Anime',
+]
+
+const splitTitle = (title: string) => title.split(/\s+-\s+/)
+
+// Case and spacing don't count: "No Lonely Dancefloors" and "No Lonely Dance Floors"
+const labelKey = (label: string) => label.toLowerCase().replace(/\s+/g, '')
+
+const KNOWN_SERIES_KEYS = new Set(KNOWN_SERIES.map(labelKey))
+
+// The suffixes that more than one film of the programme has, e.g. "LIFF"
+export const findSeriesLabels = (titles: string[]) => {
+  const films = new Map<string, number>()
+
+  for (const title of new Set(titles)) {
+    for (const key of new Set(splitTitle(title).slice(1).map(labelKey))) {
+      films.set(key, (films.get(key) ?? 0) + 1)
+    }
+  }
+
+  return new Set(
+    [...films].filter(([, count]) => count > 1).map(([key]) => key),
+  )
+}
+
+export const cleanTitle = (title: string, seriesLabels: Set<string>) => {
+  const [film, ...suffixes] = splitTitle(title)
+
+  const firstLabel = suffixes.findIndex(
+    (suffix) =>
+      FORMAT_LABEL.test(suffix) ||
+      KNOWN_SERIES_KEYS.has(labelKey(suffix)) ||
+      seriesLabels.has(labelKey(suffix)),
+  )
+
+  return [
+    film,
+    ...(firstLabel === -1 ? suffixes : suffixes.slice(0, firstLabel)),
+  ]
+    .join(' - ')
     .replace(/\s+\((4K Restoration|Re-Release)\)$/i, '')
     .trim()
+}
 
 const hasEnglishSubtitles = (item: ProgramItem) => {
   return (
@@ -136,6 +184,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ),
   )
 
+  const seriesLabels = findSeriesLabels(programs.map(({ title }) => title))
+
   const screenings: Screening[] = programs
     .filter(hasEnglishSubtitles)
     .map((item) => {
@@ -145,7 +195,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       const [hour, minute] = splitTime(item.starts_at_time)
 
       return {
-        title: cleanTitle(item.title),
+        title: cleanTitle(item.title, seriesLabels),
         year: releaseYearByUrl.get(`https://filmhuisdenhaag.nl${item.uri}`),
         url: `https://filmhuisdenhaag.nl${item.uri}`,
         cinema: 'Filmhuis Den Haag',
