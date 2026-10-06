@@ -75,43 +75,15 @@ type ProgramItem = {
   starts_at_time: string
 }
 
-export const cleanTitle = (title: string) => {
-  let cleaned = title
-
-  do {
-    const previous = cleaned
-
-    cleaned = cleaned
-      .replace(/(\s+-\s+Laff)$/i, '')
-      .replace(/(\s+-\s+Drank & Drugs)$/i, '')
-      .replace(/(\s+-\s+This Is Not Funny)$/i, '')
-      .replace(/(\s+-\s+Is This Bruce Lee\?)$/i, '')
-      .replace(/(\s+-\s+Ciné Première)$/i, '')
-      .replace(/(\s+-\s+Late Night Anime)$/i, '')
-      .replace(/(\s+-\s+Gather Round Folks)$/i, '')
-      .replace(/(\s+-\s+No Lonely Dancefloors)$/i, '')
-      .replace(/(\s+-\s+LIFF)$/i, '')
-      .replace(/(\s+-\s+(BAM|Black Achievement Month))$/i, '')
-      .replace(/(\s+-\s+First Pick)$/i, '')
-      .replace(
-        /(\s+-\s+En Subs(\s+Met\s+(Introductie|Inleiding|Nagesprek))?)$/i,
-        '',
-      )
-      .replace(/(\s+-\s+Met\s+(Introductie|Inleiding|Nagesprek))$/i, '')
-      .replace(/ - EN subs$/i, '')
-      .replace(
-        /\s+\((4K Restoration|Re-Release)\)(\s+-\s+Late Night Anime)?$/i,
-        '',
-      )
-      .trim()
-
-    if (cleaned === previous) {
-      break
-    }
-  } while (true)
-
-  return cleaned
-}
+// Filmhuis Den Haag adds the series, label or event to a title after " - ", and
+// the suffixes stack: "Lamb - Gather Round Folks - EN subs", "Youri - met Q&A".
+// The film is what comes before the first one; an en dash ("Ellie de Olifant –
+// De Grote Reis") belongs to the title and stays.
+export const cleanTitle = (title: string) =>
+  title
+    .replace(/\s+-\s+.*$/, '')
+    .replace(/\s+\((4K Restoration|Re-Release)\)$/i, '')
+    .trim()
 
 const hasEnglishSubtitles = (item: ProgramItem) => {
   return (
