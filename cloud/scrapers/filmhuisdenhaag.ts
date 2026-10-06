@@ -88,6 +88,11 @@ export const cleanTitle = (title: string) => {
       .replace(/(\s+-\s+Is This Bruce Lee\?)$/i, '')
       .replace(/(\s+-\s+Ciné Première)$/i, '')
       .replace(/(\s+-\s+Late Night Anime)$/i, '')
+      .replace(/(\s+-\s+Gather Round Folks)$/i, '')
+      .replace(/(\s+-\s+No Lonely Dancefloors)$/i, '')
+      .replace(/(\s+-\s+LIFF)$/i, '')
+      .replace(/(\s+-\s+(BAM|Black Achievement Month))$/i, '')
+      .replace(/(\s+-\s+First Pick)$/i, '')
       .replace(
         /(\s+-\s+En Subs(\s+Met\s+(Introductie|Inleiding|Nagesprek))?)$/i,
         '',
