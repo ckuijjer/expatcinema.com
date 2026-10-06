@@ -79,9 +79,13 @@ type ProgramItem = {
 // the suffixes stack: "Lamb - Gather Round Folks - EN subs", "Youri - met Q&A".
 // Cutting at the first " - " would also cut the subtitle of a film such as
 // "Mission: Impossible - Fallout", which then no longer matches on TMDB. So only
-// a suffix that is a format label, a known series, or shared by more than one
-// film of the programme (a series, as opposed to the subtitle of one film) goes.
+// a suffix that is a format label, a festival, a known series, or shared by more
+// than one film of the programme (a series, as opposed to the subtitle of one
+// film) goes.
 const FORMAT_LABEL = /^(?:EN subs\b.*|met\s.+)$/i
+
+// e.g. "No Limits Festival", "Festival Dag in de Branding"
+const FESTIVAL_LABEL = /\bfestival\b/i
 
 const KNOWN_SERIES = [
   'Laff',
@@ -90,6 +94,7 @@ const KNOWN_SERIES = [
   'Is This Bruce Lee?',
   'Ciné Première',
   'Late Night Anime',
+  'First Pick',
 ]
 
 const splitTitle = (title: string) => title.split(/\s+-\s+/)
@@ -120,6 +125,7 @@ export const cleanTitle = (title: string, seriesLabels: Set<string>) => {
   const firstLabel = suffixes.findIndex(
     (suffix) =>
       FORMAT_LABEL.test(suffix) ||
+      FESTIVAL_LABEL.test(suffix) ||
       KNOWN_SERIES_KEYS.has(labelKey(suffix)) ||
       seriesLabels.has(labelKey(suffix)),
   )

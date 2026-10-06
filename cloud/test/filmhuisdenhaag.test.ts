@@ -55,6 +55,13 @@ describe('cleanTitle', () => {
       'Human Traffic',
     ],
     ['Dirty Dancing - No Lonely Dance Floors', 'Dirty Dancing'],
+    // a festival, and a known series that only one film has
+    [
+      'True to Our Inner Daemon - Festival Dag in de Branding - EN subs - met Q&A',
+      'True to Our Inner Daemon',
+    ],
+    ['Joe Speedboot - No Limits Festival', 'Joe Speedboot'],
+    ['Coward - First Pick - EN subs', 'Coward'],
     // a format label
     ['Youri - met Q&A', 'Youri'],
     ['Histoires Parallèles - EN subs', 'Histoires Parallèles'],
@@ -78,7 +85,6 @@ describe('cleanTitle', () => {
     ],
     // a suffix that only one film has can't be told from a subtitle, so it stays
     // and the title shows up as unmatched
-    ['Coward - First Pick - EN subs', 'Coward - First Pick'],
     [
       'Les Parapluies de Cherbourg - Jacques Demy',
       'Les Parapluies de Cherbourg - Jacques Demy',
