@@ -141,6 +141,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)         |
 | filmhuiscavia            | ok     | added 2026-10-02; monthly programme pages       |
 | filmhuisdenhaag          | ok     |                                                 |
+| filmhuisemmen            | idle   | added 2026-10-03; EN subs: 1 in 7 seasons       |
 | filmhuislumen            | ok     |                                                 |
 | filmkoepel               | idle   | feed only; no EN-subbed films (2026-10-02)      |
 | filmtheaterhilversum     | ok     | 503s from AWS; timeouts added (10-03)           |
