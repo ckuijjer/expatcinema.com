@@ -48,6 +48,24 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: 'Slachtstraat returns a slightly different title',
     addedAt: '2026-04-24',
   },
+  {
+    title: 'Shall We Dance?',
+    tmdbId: 11239,
+    note: 'The 30th anniversary screenings are of the 1996 Japanese film (Shall we ダンス?). Without this the resolver picks the 2004 remake by popularity, also when the year is 1996.',
+    addedAt: '2026-10-07',
+  },
+  {
+    title: 'Shall We Dance? (30th Anniversary)',
+    tmdbId: 11239,
+    note: 'The 30th anniversary screenings are of the 1996 Japanese film (Shall we ダンス?), not the 2004 remake.',
+    addedAt: '2026-10-07',
+  },
+  {
+    title: 'Shall We Dance? - 30th Anniversary',
+    tmdbId: 11239,
+    note: 'Forum Groningen: the 30th anniversary screening of the 1996 Japanese film (Shall we ダンス?), not the 2004 remake.',
+    addedAt: '2026-10-07',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
