@@ -8,7 +8,7 @@ import { Metadata } from './types'
 // the subtitle of a single film ("Mission: Impossible - Fallout").
 
 // ": ", " - ", " – ", " — ", " • ", " > " and "|"
-const DELIMITER = /:\s+|\s+[-–—•>]\s+|\s*\|\s*/
+export const DELIMITER = /:\s+|\s+[-–—•>]\s+|\s*\|\s*/
 
 const labelKey = (label: string) => label.toLowerCase().replace(/\s+/g, '')
 

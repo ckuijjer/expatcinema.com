@@ -4,6 +4,7 @@ export type MatchMethod =
   | 'manual-override'
   | 'tmdb-search'
   | 'shared-label'
+  | 'title-part'
   | 'unmatched'
 
 export type TmdbVideo = {
@@ -52,7 +53,7 @@ export type MetadataMatch = {
   matchedOriginalTitle?: string
   matchedAlternativeTitle?: string
   matchedReleaseDate?: string
-  // for method 'shared-label': the title that matched, without the label
+  // for method 'shared-label' and 'title-part': the title that matched
   strippedTitle?: string
   candidates?: Array<{
     movieId: string

@@ -14,12 +14,15 @@ const NOISE_PATTERNS = [
   /\bpreview\b/gi,
   /\bavant[-\s]?premiere\b/gi,
   /\bsneak\s+preview\b/gi,
+  /\+\s*q\s*&\s*a(?:\s+\w+)?/gi, // "+ Q&A Regisseur"
   /\bq\s*&\s*a\b/gi,
   /\bintroduction\b/gi,
   /\bwith\s+introduction\b/gi,
   /\benglish\s+subtitles?\b/gi,
   /\bengels\s+ondertiteld\b/gi,
   /\ben\s+subs?\b/gi,
+  /\beng\.?\s+subs?\b/gi,
+  /\bincl\.?\s+introduction\b/gi,
   /\bpart\s+(?:one|two|three|four|five|six|seven|eight|nine|ten|i|ii|iii|iv|v|vi|vii|viii|ix|x|\d+)(?:\s*&\s*part\s+(?:one|two|three|four|five|six|seven|eight|nine|ten|i|ii|iii|iv|v|vi|vii|viii|ix|x|\d+))?\b/gi,
 ]
 
@@ -74,6 +77,37 @@ export const stripTitleNoise = (title: string) => {
   return cleaned
 }
 
+// "Het Offer (the Sacrifice)": the part in brackets is often the title in
+// another language. A year, or a marker such as "(Eng Subs)", is not.
+export const getBracketTitleVariants = (title: string) => {
+  const match = /^(.*?)\s*\(([^()]{4,60})\)\s*$/.exec(title.trim())
+  if (!match) {
+    return []
+  }
+
+  const [, outside, inside] = match
+  if (/^\d{4}$/.test(inside.trim()) || matchesNoisePattern(inside)) {
+    return []
+  }
+
+  return Array.from(
+    new Set(
+      [outside, inside, inside.split(/,\s*/)[0]]
+        .map((variant) => variant.trim())
+        .filter((variant) => variant.length >= 3),
+    ),
+  )
+}
+
+// Only letters and digits, "&" as "and", without a leading article, so that
+// "Goodbye, Lenin!" is the same as "Good Bye, Lenin!" and "Brief History of
+// Love" the same as "A Brief History of Love"
+export const compactTitle = (title: string) =>
+  normalizeMovieTitleForLookup(title)
+    .replace(/&/g, ' and ')
+    .replace(/^(?:the|a|an|de|het|een|le|la|les|el|los|las|der|die|das)\s+/, '')
+    .replace(/[^\p{L}\p{N}]+/gu, '')
+
 export const getTitleSearchVariants = (title: string) => {
   const stripped = stripTitleNoise(title)
   const normalizedRaw = normalizeMovieTitleForLookup(title)
@@ -81,9 +115,13 @@ export const getTitleSearchVariants = (title: string) => {
 
   return Array.from(
     new Set(
-      [title.trim(), stripped, normalizedRaw, normalizedStripped].filter(
-        (value) => value.length > 0,
-      ),
+      [
+        title.trim(),
+        stripped,
+        normalizedRaw,
+        normalizedStripped,
+        ...getBracketTitleVariants(title),
+      ].filter((value) => value.length > 0),
     ),
   )
 }
@@ -148,6 +186,37 @@ type ScoreCandidateInput = {
 export type ScoredCandidate<T> = {
   candidate: T
   confidence: number
+  // the release year is within a year of a year hint
+  yearAgrees?: boolean
+}
+
+const getYearHints = (rawTitle: string, yearHints: number[]) =>
+  Array.from(
+    new Set(
+      [...yearHints, extractYearHint(rawTitle)].filter(
+        (value): value is number => typeof value === 'number',
+      ),
+    ),
+  )
+
+const getReleaseYear = (candidate: ScoreCandidateInput) =>
+  candidate.releaseDate ? Number(candidate.releaseDate.slice(0, 4)) : undefined
+
+const YEAR_TOLERANCE = 1
+
+export const candidateYearAgrees = (
+  rawTitle: string,
+  candidate: ScoreCandidateInput,
+  yearHints: number[] = [],
+) => {
+  const releaseYear = getReleaseYear(candidate)
+
+  return (
+    releaseYear !== undefined &&
+    getYearHints(rawTitle, yearHints).some(
+      (yearHint) => Math.abs(yearHint - releaseYear) <= YEAR_TOLERANCE,
+    )
+  )
 }
 
 const getYearScore = (releaseYear: number | undefined, yearHints: number[]) => {
@@ -162,6 +231,10 @@ const getYearScore = (releaseYear: number | undefined, yearHints: number[]) => {
   )
 }
 
+// The title is one part of a title with a subtitle: "Zur Lage" for "Zur Lage:
+// Österreich in sechs Kapiteln"
+const COLON_PART_SCORE = 0.95
+
 export const scoreCandidateWithYearHints = (
   rawTitle: string,
   candidate: ScoreCandidateInput,
@@ -171,14 +244,12 @@ export const scoreCandidateWithYearHints = (
   const normalizedStripped = normalizeMovieTitleForLookup(
     stripTitleNoise(rawTitle),
   )
-  const inferredYearHint = extractYearHint(rawTitle)
-  const uniqueYearHints = Array.from(
-    new Set(
-      [...yearHints, inferredYearHint].filter(
-        (value): value is number => typeof value === 'number',
-      ),
-    ),
-  )
+  const titleVariants = [
+    normalizedRaw,
+    normalizedStripped,
+    ...getBracketTitleVariants(rawTitle).map(normalizeMovieTitleForLookup),
+  ]
+  const uniqueYearHints = getYearHints(rawTitle, yearHints)
 
   const candidateTitles = [
     candidate.title,
@@ -188,18 +259,38 @@ export const scoreCandidateWithYearHints = (
     .filter((value): value is string => Boolean(value))
     .map(normalizeMovieTitleForLookup)
 
-  const bestTitleScore = candidateTitles.reduce((best, value) => {
+  let bestTitleScore = candidateTitles.reduce((best, value) => {
     return Math.max(
       best,
-      similarity(normalizedRaw, value),
-      similarity(normalizedStripped, value),
+      ...titleVariants.map((variant) => similarity(variant, value)),
     )
   }, 0)
 
-  const releaseYear = candidate.releaseDate
-    ? Number(candidate.releaseDate.slice(0, 4))
-    : undefined
-  const yearScore = getYearScore(releaseYear, uniqueYearHints)
+  // These two take a title for the same film, so they need the year to agree.
+  // Without a year "Brief History of Love" would match any film of that name.
+  if (candidateYearAgrees(rawTitle, candidate, yearHints)) {
+    const compactVariants = new Set(
+      titleVariants.map(compactTitle).filter((value) => value.length >= 3),
+    )
+
+    if (
+      candidateTitles.some((value) => compactVariants.has(compactTitle(value)))
+    ) {
+      bestTitleScore = Math.max(bestTitleScore, 1)
+    } else if (
+      candidateTitles.some(
+        (value) =>
+          value.includes(':') &&
+          value
+            .split(/:\s*/)
+            .some((part) => compactVariants.has(compactTitle(part))),
+      )
+    ) {
+      bestTitleScore = Math.max(bestTitleScore, COLON_PART_SCORE)
+    }
+  }
+
+  const yearScore = getYearScore(getReleaseYear(candidate), uniqueYearHints)
 
   return bestTitleScore * 0.85 + yearScore * 0.15
 }
@@ -216,6 +307,10 @@ export const scoreCandidate = (
   )
 }
 
+// Of the candidates that score about the same, one whose release year agrees
+// with the year of the screening wins over one that has no release date or a
+// different one ("Los Silencios" 2019 over a film of that name without a date).
+// Between those that agree, or when none does, the most popular one wins.
 export const selectCandidateWithPopularityTieBreak = <
   T extends { popularity?: number },
 >(
@@ -233,7 +328,11 @@ export const selectCandidateWithPopularityTieBreak = <
   const confidenceBand = byConfidence.filter(
     (candidate) => bestConfidence - candidate.confidence < 0.05,
   )
-  const byPopularity = [...confidenceBand].sort(
+  const yearConfirmed = confidenceBand.filter(
+    (candidate) => candidate.yearAgrees,
+  )
+  const contenders = yearConfirmed.length > 0 ? yearConfirmed : confidenceBand
+  const byPopularity = [...contenders].sort(
     (left, right) =>
       (right.candidate.popularity ?? -1) - (left.candidate.popularity ?? -1),
   )
@@ -244,7 +343,9 @@ export const selectCandidateWithPopularityTieBreak = <
 
   return {
     winner,
+    // the winner was picked from several candidates (by year or popularity)
     hasPopularityTieBreak:
-      confidenceBand.length > 1 && topPopularity > secondPopularity,
+      contenders.length < confidenceBand.length ||
+      (confidenceBand.length > 1 && topPopularity > secondPopularity),
   }
 }

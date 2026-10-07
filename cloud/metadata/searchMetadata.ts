@@ -11,6 +11,7 @@ import {
 } from './tmdbSearchHelpers'
 import {
   getMovieId,
+  candidateYearAgrees,
   getTitleSearchVariants,
   normalizeMovieTitleForLookup,
   scoreCandidateWithYearHints,
@@ -173,13 +174,13 @@ const searchMetadata = async (
     })
   }
 
+  const yearHints = [...(year !== undefined ? [year] : []), ...siblingYearHints]
+
   const scoredCandidates = Array.from(uniqueCandidates.values())
     .map((candidate) => ({
       candidate,
-      confidence: scoreCandidateWithYearHints(title, candidate, [
-        ...(year !== undefined ? [year] : []),
-        ...siblingYearHints,
-      ]),
+      confidence: scoreCandidateWithYearHints(title, candidate, yearHints),
+      yearAgrees: candidateYearAgrees(title, candidate, yearHints),
     }))
     .sort((left, right) => right.confidence - left.confidence)
 

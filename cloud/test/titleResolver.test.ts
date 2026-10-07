@@ -1,4 +1,7 @@
 import {
+  candidateYearAgrees,
+  compactTitle,
+  getBracketTitleVariants,
   getMovieSortTitle,
   getMovieId,
   getTitleSearchVariants,
@@ -169,5 +172,203 @@ describe('titleResolver', () => {
 
     expect(selected?.winner?.candidate.id).toBe(399031)
     expect(selected?.hasPopularityTieBreak).toBe(true)
+  })
+
+  describe('titles that only differ in spelling', () => {
+    const goodByeLenin = {
+      title: 'Good Bye, Lenin!',
+      releaseDate: '2003-02-13',
+    }
+
+    test('compacts to letters and digits, "&" as "and", without a leading article', () => {
+      expect(compactTitle('Goodbye, Lenin!')).toBe(
+        compactTitle('Good Bye, Lenin!'),
+      )
+      expect(compactTitle('Brief History of Love')).toBe(
+        compactTitle('A Brief History of Love'),
+      )
+      expect(compactTitle('Kreator Hate and Hope')).toBe(
+        compactTitle('Kreator - Hate & Hope'),
+      )
+      expect(compactTitle('Molly Vs the Machines')).toBe(
+        compactTitle('Molly vs. THE MACHINES'),
+      )
+    })
+
+    test('scores an identical spelling as a match when the year agrees', () => {
+      expect(
+        scoreCandidateWithYearHints('Goodbye, Lenin!', goodByeLenin, [2003]),
+      ).toBeGreaterThanOrEqual(0.9)
+      expect(
+        scoreCandidateWithYearHints('Goodbye, Lenin!', goodByeLenin, [2004]),
+      ).toBeGreaterThanOrEqual(0.9)
+    })
+
+    test('needs a year that agrees', () => {
+      expect(
+        scoreCandidateWithYearHints('Goodbye, Lenin!', goodByeLenin),
+      ).toBeLessThan(0.9)
+      expect(
+        scoreCandidateWithYearHints('Goodbye, Lenin!', goodByeLenin, [1996]),
+      ).toBeLessThan(0.9)
+    })
+
+    test('does not make a different title similar', () => {
+      expect(
+        scoreCandidateWithYearHints(
+          'Goodbye, Lenin!',
+          { title: 'Good Night, and Good Luck', releaseDate: '2003-01-01' },
+          [2003],
+        ),
+      ).toBeLessThan(0.9)
+    })
+  })
+
+  describe('a title that is one part of a title with a subtitle', () => {
+    const stateOfTheNation = {
+      title: 'State of the Nation',
+      originalTitle: 'Zur Lage: Österreich in sechs Kapiteln',
+      releaseDate: '2002-01-01',
+    }
+
+    test('matches the part before the colon when the year agrees', () => {
+      expect(
+        scoreCandidateWithYearHints('Zur Lage', stateOfTheNation, [2002]),
+      ).toBeGreaterThanOrEqual(0.9)
+    })
+
+    test('matches the part after the colon, a year off', () => {
+      expect(
+        scoreCandidateWithYearHints(
+          'Below the Clouds',
+          { title: 'Pompei: Below the Clouds', releaseDate: '2025-01-01' },
+          [2026],
+        ),
+      ).toBeGreaterThanOrEqual(0.9)
+    })
+
+    test('needs the year to agree', () => {
+      expect(
+        scoreCandidateWithYearHints('Zur Lage', stateOfTheNation),
+      ).toBeLessThan(0.9)
+      expect(
+        scoreCandidateWithYearHints('Zur Lage', stateOfTheNation, [2010]),
+      ).toBeLessThan(0.9)
+    })
+  })
+
+  describe('a title with an alternative title in brackets', () => {
+    test('has the parts as search variants', () => {
+      expect(getBracketTitleVariants('Het Offer (the Sacrifice)')).toEqual([
+        'Het Offer',
+        'the Sacrifice',
+      ])
+      expect(
+        getBracketTitleVariants(
+          'Cabra Marcado Para Morrer (Man Marked for Death, 20 Years Later)',
+        ),
+      ).toEqual([
+        'Cabra Marcado Para Morrer',
+        'Man Marked for Death, 20 Years Later',
+        'Man Marked for Death',
+      ])
+      expect(getTitleSearchVariants('Het Offer (the Sacrifice)')).toContain(
+        'the Sacrifice',
+      )
+    })
+
+    test('ignores a year and markers in brackets', () => {
+      expect(getBracketTitleVariants('Der Held (2025)')).toEqual([])
+      expect(getBracketTitleVariants('Fjord (Eng Subs)')).toEqual([])
+      expect(getBracketTitleVariants('Akira (4K Restoration)')).toEqual([])
+      expect(getBracketTitleVariants('Heat')).toEqual([])
+    })
+
+    test('scores the film by the title in brackets', () => {
+      expect(
+        scoreCandidateWithYearHints(
+          'Het Offer (the Sacrifice)',
+          {
+            title: 'The Sacrifice',
+            originalTitle: 'Offret',
+            releaseDate: '1986-05-09',
+          },
+          [1986],
+        ),
+      ).toBeGreaterThanOrEqual(0.9)
+    })
+  })
+
+  test('strips Eng Subs and Q&A markers', () => {
+    expect(stripTitleNoise('Eng Sub Palestine 36')).toBe('Palestine 36')
+    expect(stripTitleNoise('Waar Is Mijn Libido? + Q&a Regisseur')).toBe(
+      'Waar Is Mijn Libido?',
+    )
+  })
+
+  describe('candidates with the same score', () => {
+    test('prefers the one whose release year agrees over one without a release date', () => {
+      const selected = selectCandidateWithPopularityTieBreak([
+        { candidate: { id: 324455, popularity: 1.5 }, confidence: 0.925 },
+        {
+          candidate: { id: 519121, popularity: 0.9 },
+          confidence: 0.95,
+          yearAgrees: true,
+        },
+      ])
+
+      expect(selected?.winner.candidate.id).toBe(519121)
+      expect(selected?.hasPopularityTieBreak).toBe(true)
+    })
+
+    test('uses popularity among those whose year agrees', () => {
+      const selected = selectCandidateWithPopularityTieBreak([
+        {
+          candidate: { id: 1, popularity: 1 },
+          confidence: 1,
+          yearAgrees: true,
+        },
+        {
+          candidate: { id: 2, popularity: 5 },
+          confidence: 1,
+          yearAgrees: true,
+        },
+        {
+          candidate: { id: 3, popularity: 9 },
+          confidence: 1,
+          yearAgrees: false,
+        },
+      ])
+
+      expect(selected?.winner.candidate.id).toBe(2)
+    })
+
+    test('is unchanged when none agrees', () => {
+      const selected = selectCandidateWithPopularityTieBreak([
+        {
+          candidate: { id: 1, popularity: 1 },
+          confidence: 1,
+          yearAgrees: false,
+        },
+        {
+          candidate: { id: 2, popularity: 5 },
+          confidence: 1,
+          yearAgrees: false,
+        },
+      ])
+
+      expect(selected?.winner.candidate.id).toBe(2)
+    })
+  })
+
+  test('knows when a release year agrees with a year hint', () => {
+    expect(
+      candidateYearAgrees('X', { releaseDate: '2019-04-03' }, [2018]),
+    ).toBe(true)
+    expect(
+      candidateYearAgrees('X', { releaseDate: '2019-04-03' }, [2017]),
+    ).toBe(false)
+    expect(candidateYearAgrees('X', { releaseDate: '' }, [2019])).toBe(false)
+    expect(candidateYearAgrees('X', { releaseDate: '2019-04-03' })).toBe(false)
   })
 })
