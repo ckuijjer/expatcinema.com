@@ -1,0 +1,47 @@
+name: Scrapers (prod)
+
+# Runs the scrapers on prod now, like the nightly schedule does and like
+# `pnpm run scrapers:prod`, without needing a local AWS session. The Lambda
+# dispatches the Web workflow itself when it is done.
+#
+#   gh workflow run scrapers-prod.yml
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: scrapers-prod
+  cancel-in-progress: false
+
+jobs:
+  run:
+    name: Run
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check that no Cloud deploy is running
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          running=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow cloud.yml --limit 10 --json status --jq '[.[] | select(.status == "in_progress" or .status == "queued" or .status == "waiting")] | length')
+          if [ "$running" != "0" ]; then
+            echo "::error::A Cloud deploy is still running; the Lambda would run the old code. Run this again when it has finished."
+            exit 1
+          fi
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.1.0
+        with:
+          aws-region: eu-west-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Invoke the scrapers Lambda
+        run: |
+          aws lambda invoke \
+            --cli-read-timeout 900 \
+            --function-name expatcinema-prod-scrapers \
+            response.json | tee invoke.json
+          cat response.json
+          # a Lambda that threw still answers with StatusCode 200
+          if grep -q '"FunctionError"' invoke.json; then
+            echo "::error::The scrapers Lambda returned an error, see its logs"
+            exit 1
+          fi

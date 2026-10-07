@@ -109,7 +109,7 @@ Also check the health of the code base itself (report only: don't change depende
 
 ## Working on findings
 
-- Fixing a scraper: follow `AGENTS.md` (run it with `pnpm scraper scrapers/<name>.ts`, add or update a test, open a PR). After merging, the maintainer runs `pnpm run scrapers:prod`.
+- Fixing a scraper: follow `AGENTS.md` (run it with `pnpm scraper scrapers/<name>.ts`, add or update a test, open a PR). After merging, the maintainer runs the scrapers on prod with `gh workflow run scrapers-prod.yml` (or `pnpm run scrapers:prod`).
 - When a cinema's status changes, update the table below in the same PR.
 - A scraper for a cinema that has no English-subtitled screenings yet (status `idle`) can be kept open as a PR with the label `waiting-for-screenings`, instead of being merged. The daily health check runs these scrapers and reports when one is ready to merge. Don't close these PRs as stale. Idle cinemas that are already merged stay listed on the site (an empty cinema shows "No screenings found in …"), so that visitors can still find their cinema.
 

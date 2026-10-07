@@ -222,13 +222,13 @@ Workflows:
 After merging cloud changes that affect scraper output:
 
 1. wait for the `Cloud` workflow on `main` to succeed
-2. run `cd cloud && pnpm run scrapers:prod`
+2. run the scrapers on prod: `gh workflow run scrapers-prod.yml` (the `Scrapers (prod)` workflow; it refuses to start while a `Cloud` deploy is running), or locally `cd cloud && pnpm run scrapers:prod`
 3. the scrapers Lambda dispatches `Web` automatically when it finishes; validate the affected cinema or scraper output in production `screenings.json` in S3
 4. validate the refreshed site data after the `Web` workflow finishes
 
 Notes:
 
-- `pnpm run scrapers:prod` depends on a valid AWS session for the `casper` profile. If it fails with an expired-session error, reauthenticate with `aws login` before retrying.
+- `pnpm run scrapers:prod` (unlike the workflow) depends on a valid AWS session for the `casper` profile. If it fails with an expired-session error, reauthenticate with `aws login` before retrying.
 - Prefer running deployment steps from local `main` that is aligned with `origin/main` or directly from `origin/main`, rather than from an older feature branch checkout.
 
 ## Testing and Validation
