@@ -222,7 +222,7 @@ Workflows:
 After merging cloud changes that affect scraper output:
 
 1. wait for the `Cloud` workflow on `main` to succeed
-2. run the scrapers on prod: `gh workflow run scrapers-prod.yml` (the `Scrapers (prod)` workflow; it refuses to start while a `Cloud` deploy is running), or locally `cd cloud && pnpm run scrapers:prod`
+2. run the scrapers on prod: `gh workflow run scrapers.yml` (the `Scrapers` workflow; it refuses to start while a `Cloud` deploy is running), or locally `cd cloud && pnpm run scrapers:prod`
 3. the scrapers Lambda dispatches `Web` automatically when it finishes; validate the affected cinema or scraper output in production `screenings.json` in S3
 4. validate the refreshed site data after the `Web` workflow finishes
 

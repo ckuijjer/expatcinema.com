@@ -1,15 +1,15 @@
-name: Scrapers (prod)
+name: Scrapers
 
 # Runs the scrapers on prod now, like the nightly schedule does and like
 # `pnpm run scrapers:prod`, without needing a local AWS session. The Lambda
 # dispatches the Web workflow itself when it is done.
 #
-#   gh workflow run scrapers-prod.yml
+#   gh workflow run scrapers.yml
 on:
   workflow_dispatch:
 
 concurrency:
-  group: scrapers-prod
+  group: scrapers
   cancel-in-progress: false
 
 jobs:
