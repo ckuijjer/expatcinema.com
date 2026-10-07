@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { relayJson, shouldRelay } from '../clients/scrapeRelay'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -31,6 +32,12 @@ type KinepolisMovie = {
   id: string
   corporateId: string
   title: string
+  releaseDate?: string // e.g. '2026-10-20T00:00:00', the release in the Netherlands
+  event?: {
+    isActive: boolean
+    name?: string // e.g. 'Klassieker'
+    shortName?: string // e.g. 'Reprise'
+  }
   subtitles: {
     id: string
     name: string
@@ -46,6 +53,34 @@ const hasEnglishSubtitles = (movie: KinepolisMovie) => {
 
 const cleanTitle = (title: string) => {
   return titleCase(title.replace(/^Special Event:\s+/i, ''))
+}
+
+// The API only has the date a film is released in the Netherlands, not its
+// production year. That is the year of a new film, but a classic or re-release
+// has the date of the re-release: 'Akira (4K Restoration)' says 2026, the film
+// is from 1988. A wrong year is worse than none, because it moves the match to
+// another film (Akira, 2025), so those get no year, and a year in the title
+// ('Pride (2014)') is the film's year.
+const RE_RELEASE_EVENT = /klassieker|classic|reprise/i
+const RE_RELEASE_TITLE = /restoration|remaster|anniversary|re-?release/i
+
+export const extractYear = (movie: KinepolisMovie) => {
+  const yearInTitle = extractYearFromTitle(movie.title)
+  if (yearInTitle) {
+    return yearInTitle
+  }
+
+  const isReRelease =
+    RE_RELEASE_EVENT.test(
+      `${movie.event?.name ?? ''} ${movie.event?.shortName ?? ''}`,
+    ) || RE_RELEASE_TITLE.test(movie.title)
+  if (isReRelease) {
+    return undefined
+  }
+
+  const year = Number(movie.releaseDate?.slice(0, 4))
+
+  return year >= 1888 && year <= DateTime.now().year + 2 ? year : undefined
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
@@ -85,6 +120,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         .filter((session) => session.film.id === movie.id)
         .map((session) => ({
           title: cleanTitle(movie.title),
+          year: extractYear(movie),
           url: `https://cineramabios.nl/movies/detail/${movie.corporateId}/${movie.id}/`,
           cinema: 'Cinerama',
           date: DateTime.fromISO(session.showtime).toJSDate(),
