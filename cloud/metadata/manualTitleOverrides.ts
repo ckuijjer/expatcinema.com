@@ -72,6 +72,12 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: 'Lab111 shows La peluca (The Wig, 2026, Emiliano Rocha Minter) with the short The Flesh Dress. Without this "The Wig" matches an older film of that name (2005).',
     addedAt: '2026-10-07',
   },
+  {
+    title: 'Film & Food: Tampopo (Incl. Ramen)',
+    tmdbId: 11830,
+    note: "Lab111 page and TMDB agree on director (Juzo Itami), cast (Ken Watanabe, Tsutomu Yamazaki, Nobuko Miyamoto) and runtime (114 vs 115 min). The page's Release date (6 October 1988) is the Dutch release, the film is from 1985, so with a year from that date it stays unmatched.",
+    addedAt: '2026-10-07',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(

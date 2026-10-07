@@ -27,3 +27,15 @@ describe('The Wig', () => {
     ).toBe(1207380)
   })
 })
+
+describe('Tampopo', () => {
+  test('is the 1985 film, whatever year a screening gives', () => {
+    expect(
+      getManualTitleOverride('Film & Food: Tampopo (Incl. Ramen)')?.tmdbId,
+    ).toBe(11830)
+    expect(
+      getManualTitleOverride('Film & Food: Tampopo (Incl. Ramen)', 1988)
+        ?.tmdbId,
+    ).toBe(11830)
+  })
+})
