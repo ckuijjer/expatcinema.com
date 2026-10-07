@@ -145,14 +145,18 @@ export const resolveWithoutSharedLabels = async (
   for (const title of titlesWithoutLabels) {
     const retry = await getMetadata({ title, year: metadata.year })
 
-    if (retry.match.status === 'matched') {
+    // a manual override of the title without the label counts as a match too
+    if (retry.match.status === 'matched' || retry.match.status === 'manual') {
       return {
         ...retry,
         query: metadata.query,
         year: metadata.year,
         match: {
           ...retry.match,
-          method: 'shared-label',
+          method:
+            retry.match.status === 'manual'
+              ? retry.match.method
+              : 'shared-label',
           strippedTitle: title,
         },
       }

@@ -155,6 +155,28 @@ describe('resolveWithoutSharedLabels', () => {
     })
   })
 
+  test('accepts a manual override of the title without the label', async () => {
+    lookup.mockResolvedValue({
+      ...metadata('manual'),
+      match: { status: 'manual', method: 'manual-override', confidence: 1 },
+      movieId: 'tmdb:11239',
+    })
+
+    const result = await resolveWithoutSharedLabels(metadata('unmatched'), [
+      'Shall We Dance?',
+    ])
+
+    expect(result).toMatchObject({
+      movieId: 'tmdb:11239',
+      query: 'docs: naza',
+      match: {
+        status: 'manual',
+        method: 'manual-override',
+        strippedTitle: 'Shall We Dance?',
+      },
+    })
+  })
+
   test('also retries an ambiguous title', async () => {
     lookup.mockResolvedValue({ ...metadata('matched'), movieId: 'tmdb:1' })
 
