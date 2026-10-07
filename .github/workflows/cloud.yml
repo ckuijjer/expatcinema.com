@@ -9,6 +9,15 @@ on:
       - '.github/workflows/cloud.yml'
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
+# One deploy at a time: a second `cdk deploy` on the same stack fails while the
+# first is running. A waiting deploy is replaced by a newer one (main has all
+# earlier commits). A running one is never cancelled: that only stops the CDK
+# CLI, not CloudFormation, which keeps updating the stack in AWS, so the next
+# deploy would start while it is still busy and fail.
+concurrency:
+  group: cloud
+  cancel-in-progress: false
+
 defaults:
   run:
     working-directory: cloud/
