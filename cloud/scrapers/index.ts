@@ -12,6 +12,7 @@ import {
   getTitlesWithoutSharedLabels,
   resolveWithoutSharedLabels,
 } from '../metadata/sharedLabels'
+import { resolveWithTitleParts } from '../metadata/titleParts'
 import { logger } from '../powertools'
 import { triggerWebDeploy } from '../triggerWebDeploy'
 import { Screening } from '../types'
@@ -300,7 +301,7 @@ export const scrapers = async () => {
     const titlesWithoutSharedLabels =
       getTitlesWithoutSharedLabels(allRawScreenings)
 
-    const uniqueTitlesAndMetadata = await pMap(
+    const metadataWithoutSharedLabels = await pMap(
       primaryMetadata,
       (metadata) =>
         resolveWithoutSharedLabels(
@@ -311,6 +312,22 @@ export const scrapers = async () => {
             )?.rawTitles ?? [],
           ).flatMap(
             (rawTitle) => titlesWithoutSharedLabels.get(rawTitle) ?? [],
+          ),
+        ),
+      { concurrency: 5 },
+    )
+
+    // and without the label or the title that is not the film's, when the
+    // year of the screening confirms it
+    const uniqueTitlesAndMetadata = await pMap(
+      metadataWithoutSharedLabels,
+      (metadata) =>
+        resolveWithTitleParts(
+          metadata,
+          Array.from(
+            metadataLookups.get(
+              getMetadataLookupKey(metadata.query, metadata.year),
+            )?.rawTitles ?? [],
           ),
         ),
       { concurrency: 5 },

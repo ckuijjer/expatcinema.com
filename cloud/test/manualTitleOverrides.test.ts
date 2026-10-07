@@ -17,3 +17,13 @@ describe('Shall We Dance?', () => {
     expect(getManualTitleOverride('Shall We Dance Again?')).toBeUndefined()
   })
 })
+
+describe('The Wig', () => {
+  test("is Emiliano Rocha Minter's La peluca, not the 2005 film", () => {
+    expect(
+      getManualTitleOverride(
+        'Imagine Film Festival: the Wig (+ the Flesh Dress Short)',
+      )?.tmdbId,
+    ).toBe(1207380)
+  })
+})
