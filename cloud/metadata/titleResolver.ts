@@ -78,7 +78,8 @@ export const stripTitleNoise = (title: string) => {
 }
 
 // "Het Offer (the Sacrifice)": the part in brackets is often the title in
-// another language. A year, or a marker such as "(Eng Subs)", is not.
+// another language. A year, a marker such as "(Eng Subs)" or an add-on such as
+// "(+ the Flesh Dress Short)" or "(Incl. Ramen)" is not.
 export const getBracketTitleVariants = (title: string) => {
   const match = /^(.*?)\s*\(([^()]{4,60})\)\s*$/.exec(title.trim())
   if (!match) {
@@ -86,7 +87,11 @@ export const getBracketTitleVariants = (title: string) => {
   }
 
   const [, outside, inside] = match
-  if (/^\d{4}$/.test(inside.trim()) || matchesNoisePattern(inside)) {
+  if (
+    /^\d{4}$/.test(inside.trim()) ||
+    /^\s*(?:\+|incl\b|inclusief\b|plus\b|with\b|met\b|feat\b)/i.test(inside) ||
+    matchesNoisePattern(inside)
+  ) {
     return []
   }
 

@@ -66,6 +66,12 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: 'Forum Groningen: the 30th anniversary screening of the 1996 Japanese film (Shall we ダンス?), not the 2004 remake.',
     addedAt: '2026-10-07',
   },
+  {
+    title: 'Imagine Film Festival: the Wig (+ the Flesh Dress Short)',
+    tmdbId: 1207380,
+    note: 'Lab111 shows La peluca (The Wig, 2026, Emiliano Rocha Minter) with the short The Flesh Dress. Without this "The Wig" matches an older film of that name (2005).',
+    addedAt: '2026-10-07',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(

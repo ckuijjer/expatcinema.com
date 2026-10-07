@@ -281,6 +281,11 @@ describe('titleResolver', () => {
       expect(getBracketTitleVariants('Der Held (2025)')).toEqual([])
       expect(getBracketTitleVariants('Fjord (Eng Subs)')).toEqual([])
       expect(getBracketTitleVariants('Akira (4K Restoration)')).toEqual([])
+      expect(
+        getBracketTitleVariants('The Wig (+ the Flesh Dress Short)'),
+      ).toEqual([])
+      expect(getBracketTitleVariants('Tampopo (Incl. Ramen)')).toEqual([])
+      expect(getBracketTitleVariants('Heat (with introduction)')).toEqual([])
       expect(getBracketTitleVariants('Heat')).toEqual([])
     })
 
