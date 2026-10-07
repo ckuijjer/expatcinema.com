@@ -17,6 +17,7 @@ const xray = createXray({ logger })
 type CinemaFilmDetail = {
   id: string
   fullPreferredTitle: string
+  yearOfProduction?: number | null
   shows: CinemaFilmDetailShow[]
 }
 
@@ -51,6 +52,16 @@ type CinemaFilmDetailShow = {
         translation: string
       }[]
     | null
+}
+
+// The film detail has "yearOfProduction": 1982 (Sans soleil). Not to be
+// confused with "edition": { "year": 2023 }, the year of the festival edition.
+export const parseYearOfProduction = (value?: number | string | null) => {
+  const year = /^\d{4}$/.test(String(value ?? '')) ? Number(value) : undefined
+
+  return year && year >= 1888 && year <= new Date().getFullYear() + 2
+    ? year
+    : undefined
 }
 
 const cleanTitle = (title: string) => titleCase(title)
@@ -109,6 +120,7 @@ const extractFromMoviePage = async (film: MainPageCinemaScheduleFilm) => {
     .map((show) => {
       return {
         title,
+        year: parseYearOfProduction(filmDetail.yearOfProduction),
         url,
         cinema: 'Het Documentaire Paviljoen',
         date: new Date(show.startOn),
