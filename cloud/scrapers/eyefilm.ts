@@ -13,13 +13,21 @@ const logger = parentLogger.createChild({
 
 const cleanTitle = (title: string) => titleCase(title)
 
+// The GraphQL API gives the year as a string ("1996"), which the title resolver
+// ignores as a year hint (it only takes numbers)
+export const parseYear = (year: string | number | null | undefined) => {
+  const parsed = Number(year)
+
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : undefined
+}
+
 type EyeShow = {
   url: string
   startDateTime: string
   singleSubtitles: string
   production: {
     title: string
-    year?: number | null
+    year?: string | number | null
   }[]
 }
 
@@ -93,7 +101,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
   const screenings = shows.filter(hasEnglishSubtitles).map((show) => {
     return {
       title: cleanTitle(show.production[0].title),
-      year: show.production[0].year ?? undefined,
+      year: parseYear(show.production[0].year),
       url: show.url,
       cinema: 'Eye',
       date: new Date(show.startDateTime),
