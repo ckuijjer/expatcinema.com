@@ -29,6 +29,7 @@ const cleanTitle = (title: string) =>
 
 type XRayFromMoviePage = {
   title: string
+  year: string
   subtitles: string
   screenings: {
     date: string
@@ -36,13 +37,30 @@ type XRayFromMoviePage = {
   }[]
 }
 
-export const extractFromMoviePage = async (
+// The film's year is listed with the country and the duration, e.g.
+// <div class="cine-details"><div class="wp_theatre_prod_country">België</div>
+// <div class="wp_theatre_prod_year">2026</div><div class="wp_theatre_prod_duration">127’</div></div>
+// A surprise film has no year: the page only says "Surprise" for the country.
+export const parseYear = (value?: string) => {
+  const year = /^\s*(\d{4})\s*$/.exec(value ?? '')?.[1]
+
+  return year &&
+    Number(year) >= 1888 &&
+    Number(year) <= new Date().getFullYear() + 2
+    ? Number(year)
+    : undefined
+}
+
+// `source` is the URL of the film page, or its HTML
+export const extractScreeningsFromMovieSource = async (
+  source: string,
   url: string,
 ): Promise<Screening[]> => {
   logger.debug('extracting', { url })
 
-  const movie: XRayFromMoviePage = await xray(url, '.page-content-aside', {
+  const movie: XRayFromMoviePage = await xray(source, '.page-content-aside', {
     title: '.wp_theatre_prod_title',
+    year: '.wp_theatre_prod_year | trim',
     subtitles: '.wp_theatre_prod_languages_subtitles | trim',
     screenings: xray('.wpt_production_login_form tr', [
       {
@@ -56,6 +74,8 @@ export const extractFromMoviePage = async (
 
   if (!hasEnglishSubtitles(movie)) return []
 
+  const year = parseYear(movie.year) ?? extractYearFromTitle(movie.title)
+
   const screenings: Screening[] = movie.screenings
     .map(({ date, times }) => {
       return times
@@ -67,7 +87,7 @@ export const extractFromMoviePage = async (
           const month = shortMonthToNumberDutch(monthString)
           const [hour, minute] = splitTime(time)
 
-          const year = guessYear({
+          const screeningYear = guessYear({
             day,
             month,
             hour,
@@ -76,7 +96,7 @@ export const extractFromMoviePage = async (
 
           return {
             title: cleanTitle(movie.title),
-            year: extractYearFromTitle(movie.title),
+            year,
             url,
             cinema: 'Lantarenvenster',
             date: DateTime.fromObject({
@@ -84,7 +104,7 @@ export const extractFromMoviePage = async (
               month,
               hour,
               minute,
-              year,
+              year: screeningYear,
             }).toJSDate(),
           }
         })
@@ -95,6 +115,9 @@ export const extractFromMoviePage = async (
 
   return screenings
 }
+
+export const extractFromMoviePage = (url: string) =>
+  extractScreeningsFromMovieSource(url, url)
 
 type XRayFromMainPage = {
   url: string
