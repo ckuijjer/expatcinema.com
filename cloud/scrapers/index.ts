@@ -8,6 +8,10 @@ import { dirname, resolve } from 'path'
 import { closeBrowser } from '../browser'
 import documentClient from '../documentClient'
 import getMetadata from '../metadata'
+import {
+  getTitlesWithoutSharedLabels,
+  resolveWithoutSharedLabels,
+} from '../metadata/sharedLabels'
 import { logger } from '../powertools'
 import { triggerWebDeploy } from '../triggerWebDeploy'
 import { Screening } from '../types'
@@ -274,7 +278,7 @@ export const scrapers = async () => {
       metadataLookups.set(lookupKey, existingLookup)
     })
 
-    const uniqueTitlesAndMetadata = await pMap(
+    const primaryMetadata = await pMap(
       Array.from(metadataLookups.values())
         .sort((left, right) => {
           const leftRawTitle = Array.from(left.rawTitles)[0] ?? ''
@@ -289,6 +293,27 @@ export const scrapers = async () => {
       {
         concurrency: 5,
       },
+    )
+
+    // a title that doesn't match, retried without the festival, series or
+    // event name that several titles at its cinema have
+    const titlesWithoutSharedLabels =
+      getTitlesWithoutSharedLabels(allRawScreenings)
+
+    const uniqueTitlesAndMetadata = await pMap(
+      primaryMetadata,
+      (metadata) =>
+        resolveWithoutSharedLabels(
+          metadata,
+          Array.from(
+            metadataLookups.get(
+              getMetadataLookupKey(metadata.query, metadata.year),
+            )?.rawTitles ?? [],
+          ).flatMap(
+            (rawTitle) => titlesWithoutSharedLabels.get(rawTitle) ?? [],
+          ),
+        ),
+      { concurrency: 5 },
     )
 
     const matchedYearsByQuery = new Map<string, Set<number>>()

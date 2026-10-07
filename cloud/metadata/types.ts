@@ -1,6 +1,10 @@
 export type MatchStatus = 'matched' | 'manual' | 'ambiguous' | 'unmatched'
 
-export type MatchMethod = 'manual-override' | 'tmdb-search' | 'unmatched'
+export type MatchMethod =
+  | 'manual-override'
+  | 'tmdb-search'
+  | 'shared-label'
+  | 'unmatched'
 
 export type TmdbVideo = {
   id?: string
@@ -48,6 +52,8 @@ export type MetadataMatch = {
   matchedOriginalTitle?: string
   matchedAlternativeTitle?: string
   matchedReleaseDate?: string
+  // for method 'shared-label': the title that matched, without the label
+  strippedTitle?: string
   candidates?: Array<{
     movieId: string
     tmdbId: number

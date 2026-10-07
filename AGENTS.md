@@ -328,6 +328,7 @@ Filmhuis Breda, Heerenstraattheater and Cinerama block requests from AWS, so on 
 - `screenings.json` keeps original screening titles.
 - Resolver/match details belong in `title-matches.json` and review artifacts, not in public screenings rows.
 - Manual corrections should go in `cloud/metadata/manualTitleOverrides.ts`.
+- A title that doesn't match is retried without a festival, series or event name that two or more titles at the same cinema share (`Imagine Film Festival: Donkey Princess` becomes `Donkey Princess`; `cloud/metadata/sharedLabels.ts`). The full title is always tried first, so a film such as `Mission: Impossible - Fallout` is never shortened. Scrapers don't need to remove such names, only noise that is specific to one cinema's markup. A match found this way has `method: 'shared-label'` in `title-matches.json`.
 
 ## Maintenance and monitoring
 
