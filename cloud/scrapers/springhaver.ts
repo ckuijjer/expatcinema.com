@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { titleCase } from './utils/titleCase'
@@ -31,6 +32,11 @@ type FkFeedItem = {
 const extractDate = (time: string) =>
   DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
 
+// The feed's year field is often empty for repertory films, while the title
+// then carries it, e.g. "Akira (1988)" has year '' in the feed.
+export const extractYear = (movie: Pick<FkFeedItem, 'title' | 'year'>) =>
+  parseFkFeedYear(movie.year) ?? extractYearFromTitle(decode(movie.title))
+
 const cleanTitle = (title: string) => titleCase(title)
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
@@ -49,7 +55,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         .map((time) => {
           return {
             title: cleanTitle(decode(movie.title)),
-            year: parseFkFeedYear(movie.year),
+            year: extractYear(movie),
             url: movie.permalink,
             cinema: 'Springhaver',
             date: extractDate(time.program_start),
