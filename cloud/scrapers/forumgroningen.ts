@@ -36,6 +36,7 @@ const xray = createXray({
 
 type XRayFromMoviePage = {
   title: string
+  credits?: { label: string; value: string }[]
   screenings: {
     date: string
     times: {
@@ -50,6 +51,20 @@ type XRayFromMainPage = {
   url: string
 }[]
 
+// The film page lists the year with the country and the director, e.g.
+// <p class="title">Year</p><p class="content">1988</p>
+// A film without a year has no such row, so there's no year then.
+export const parseYear = (credits: { label?: string; value?: string }[]) => {
+  const value = credits.find(({ label }) => label?.trim() === 'Year')?.value
+  const year = /^\s*(\d{4})\s*$/.exec(value ?? '')?.[1]
+
+  return year &&
+    Number(year) >= 1888 &&
+    Number(year) <= new Date().getFullYear() + 2
+    ? Number(year)
+    : undefined
+}
+
 const extractFromMoviePage = async ({
   url,
 }: {
@@ -57,6 +72,12 @@ const extractFromMoviePage = async ({
 }): Promise<Screening[]> => {
   const scrapeResult: XRayFromMoviePage = await xray(url, {
     title: 'h1.title | cleanTitle | trim',
+    credits: xray('.credits-inside', [
+      {
+        label: '.title | normalizeWhitespace | trim',
+        value: '.content | normalizeWhitespace | trim',
+      },
+    ]),
     screenings: xray('.calendar-day', [
       {
         date: '.calendar-day-head | normalizeWhitespace | trim',
@@ -71,6 +92,8 @@ const extractFromMoviePage = async ({
   })
 
   logger.debug('scrapeResult', { scrapeResult })
+
+  const filmYear = parseYear(scrapeResult.credits ?? [])
 
   const screenings: Screening[] = scrapeResult.screenings.flatMap(
     ({ date, times }) => {
@@ -92,6 +115,7 @@ const extractFromMoviePage = async ({
 
           return {
             title: scrapeResult.title,
+            year: filmYear,
             url,
             cinema: 'Forum Groningen',
             date: DateTime.fromObject({
