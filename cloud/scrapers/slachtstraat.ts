@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { titleCase } from './utils/titleCase'
@@ -33,6 +34,11 @@ const extractDate = (time: string) =>
 
 const cleanTitle = (title: string) => titleCase(title)
 
+// The feed's year field is sometimes empty while the title states the year,
+// e.g. "Good Bye, Lenin! (2003)" with year ""
+export const extractYear = (title: string, year?: string) =>
+  parseFkFeedYear(year) ?? extractYearFromTitle(title)
+
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const movies = Object.values<FkFeedItem>(
     await got('https://slachtstraat.nl/fk-feed/agenda').json(),
@@ -47,9 +53,10 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
           fkFeedHasEnglishSubtitles(movie, time, { venues: ['Slachtstraat'] }),
         )
         .map((time) => {
+          const title = cleanTitle(decode(movie.title))
           return {
-            title: cleanTitle(decode(movie.title)),
-            year: parseFkFeedYear(movie.year),
+            title,
+            year: extractYear(title, movie.year),
             url: movie.permalink,
             cinema: 'Slachtstraat',
             date: extractDate(time.program_start),
