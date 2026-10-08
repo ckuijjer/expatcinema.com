@@ -37,6 +37,18 @@ const xray = createXray({ logger })
   .throttle(3, 600)
   .timeout('5s')
 
+// e.g. "Regie: Jan SvankmajerSpeelduur: 107 minJaar: 1994Kijkwijzer:" -> 1994
+// Not every film has a "Jaar", then the year in the title is used
+export const extractYear = (meta?: string, title?: string) => {
+  const year = Number(meta?.match(/\bJaar:\s*((?:18|19|20)\d{2})(?!\d)/)?.[1])
+
+  if (year >= 1888 && year <= new Date().getFullYear() + 2) {
+    return year
+  }
+
+  return extractYearFromTitle(title)
+}
+
 type XRayFromMoviePage = {
   title: string
   meta: string
@@ -93,7 +105,7 @@ const extractFromMoviePage = async (url: string) => {
 
           return {
             title: cleanTitle(title),
-            year: extractYearFromTitle(title),
+            year: extractYear(movie.meta, title),
             url,
             cinema: 'Studio/K',
             date: DateTime.fromObject({
