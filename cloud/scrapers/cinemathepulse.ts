@@ -29,8 +29,22 @@ const extractEngFilmUrls = (xml: string) =>
     ),
   )
 
+// The film page shows the production year next to the title, in separate
+// elements: <h2 class="heading-style-film-year">(</h2>
+// <h2 ...>1988</h2><h2 ...>)</h2>, e.g. Akira -> "(1988)".
+export const extractYear = (parts: string[] = []) => {
+  const year = parts.join('').match(/^\s*\(?\s*(\d{4})\s*\)?\s*$/)?.[1]
+
+  return year &&
+    Number(year) >= 1888 &&
+    Number(year) <= new Date().getFullYear() + 2
+    ? Number(year)
+    : undefined
+}
+
 type XRayPage = {
   h1Title: string
+  yearParts: string[]
   dateSyncs: string[]
 }
 
@@ -45,6 +59,7 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
 
   const page: XRayPage = await xray(html, {
     h1Title: 'h1.heading-style-film-titles | trim',
+    yearParts: ['.heading-style-film-year | trim'],
     dateSyncs: ['.shows_date_sync | trim'],
   })
 
@@ -55,6 +70,8 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
     logger.warn('skipping page with missing title', { url })
     return []
   }
+
+  const year = extractYear(page.yearParts)
 
   const dates = page.dateSyncs
     .map((dateSync) => {
@@ -72,6 +89,7 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
 
   return dates.map((date) => ({
     title,
+    year,
     url,
     cinema: 'Cinema The Pulse',
     date,
