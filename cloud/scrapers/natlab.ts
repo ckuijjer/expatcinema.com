@@ -44,6 +44,18 @@ const cleanTitle = (title: string) =>
       .replace(/ \[Eng Subs\]$/i, ''),
   )
 
+// The details list the year of the film, e.g. <dt>Jaar</dt><dd>2016</dd>
+// A film without a "Jaar" has no year.
+export const parseYear = (metadata: Record<string, string | undefined>) => {
+  const year = /^\s*(\d{4})\s*$/.exec(metadata.Jaar ?? '')?.[1]
+
+  return year &&
+    Number(year) >= 1888 &&
+    Number(year) <= new Date().getFullYear() + 2
+    ? Number(year)
+    : undefined
+}
+
 const extractFromMoviePage = async ({
   url,
   title,
@@ -86,6 +98,8 @@ const extractFromMoviePage = async ({
     return []
   }
 
+  const filmYear = parseYear(metadata)
+
   logger.debug('screenings', { screenings: scrapeResult.screenings })
 
   const screenings: Screening[] = scrapeResult.screenings.flatMap(
@@ -114,6 +128,7 @@ const extractFromMoviePage = async ({
 
         return {
           title: cleanTitle(scrapeResult.title),
+          year: filmYear,
           url,
           cinema: 'Natlab',
           date,
