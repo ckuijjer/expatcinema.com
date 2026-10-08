@@ -132,7 +132,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | castellum                | idle   | no English-subtitled films (2026-09-28)         |
 | chasse                   | ok     | ok from AWS 2026-10-03 (Chromium + Chrome UA)   |
 | cinecenter               | ok     |                                                 |
-| cinecitta                | idle   | new domain (#375); no Eng-subs films (09-28)    |
+| cinecitta                | ok     | block 21-24 Oct (10-08); 0 after is fine        |
 | cinemadevlugt            | idle   | Expat Cinema list empty (2026-09-28)            |
 | cinemathepulse           | ok     | fixed 2026-09-28 (URL marker changed)           |
 | cinerama                 | ok     | fixed 2026-10-01: fetched via teatree relay     |
