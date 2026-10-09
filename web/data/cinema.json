@@ -665,5 +665,18 @@
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20Botanique%20Breda%2C%20Keizerstraat%2019F%2C%204811%20HL%2C%20Breda%2C%20Netherlands"
     },
     "logo": "filmhuis-botanique-breda.png"
+  },
+  {
+    "name": "Filmhuis De Spiegel",
+    "slug": "filmhuis-de-spiegel",
+    "city": "heerlen",
+    "url": "https://filmhuisdespiegel.nl/",
+    "address": {
+      "streetAddress": "Burg. van Grunsvenplein 145",
+      "postalCode": "6411 AS",
+      "addressLocality": "Heerlen",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20De%20Spiegel%2C%20Burg.%20van%20Grunsvenplein%20145%2C%206411%20AS%2C%20Heerlen%2C%20Netherlands"
+    },
+    "logo": "filmhuis-de-spiegel.jpg"
   }
 ]
