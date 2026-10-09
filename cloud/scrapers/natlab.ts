@@ -15,7 +15,9 @@ const logger = parentLogger.createChild({
   },
 })
 
-const xray = createXray({ logger })
+// natlab.nl sends a visitor without a cookie / -> /csq/ -> / in a loop (a CDN
+// gate that sets a token cookie), so it needs the cookies sent back
+const xray = createXray({ logger, cookies: true })
 
 type XRayFromMainPage = {
   url: string
@@ -35,10 +37,11 @@ type NatlabMoviePage = {
   genres: string[]
 }
 
-const cleanTitle = (title: string) =>
+export const cleanTitle = (title: string) =>
   titleCase(
     title
       .replace(/ \| Expat Cinema$/i, '')
+      .replace(/^K-Wave \| /i, '') // 'K-Wave | Train to Busan'
       .replace(/ \| K-Wave$/i, '')
       .replace(/ \(English Subs\)$/i, '')
       .replace(/ \[Eng Subs\]$/i, ''),
