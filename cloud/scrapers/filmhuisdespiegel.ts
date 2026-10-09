@@ -104,6 +104,7 @@ export const cleanTitle = (title: string) =>
     removeYearSuffix(
       title
         .replace(/\s+\+\s+.*$/, '')
+        .replace(/\s+\|\s+AFFR on Tour$/i, '') // 'Construction Site | AFFR on Tour'
         .replace(/^(?:Cinekid|Coming Out Day):\s+/i, '')
         .trim(),
     ),

@@ -135,6 +135,12 @@ describe('filmhuisdespiegel', () => {
       ['No Good Men + Q&A', 'No Good Men'],
       ['Coming Out Day: Jim Queen', 'Jim Queen'],
       ['Cinekid: Extraordinairy', 'Extraordinairy'],
+      ['Construction Site | AFFR on Tour', 'Construction Site'],
+      [
+        'La Ricarda. Melody of a House | AFFR on Tour',
+        'La Ricarda. Melody of a House',
+      ],
+      ['Hotel Lux | Cinema Today', 'Hotel Lux | Cinema Today'],
       ['The Cycle of Love', 'The Cycle of Love'],
       ['Toutes Directions', 'Toutes Directions'],
       ['Spira Mirabilis (2016)', 'Spira Mirabilis'],
