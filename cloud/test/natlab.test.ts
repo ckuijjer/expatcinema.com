@@ -1,4 +1,4 @@
-import { parseYear } from '../scrapers/natlab'
+import { cleanTitle, parseYear } from '../scrapers/natlab'
 
 // The details of https://www.natlab.nl/nl/programma/train-to-busan-k-wave-d8dv, as on 2026-10-07:
 // <dt>Regie</dt><dd>Yeon Sang-ho</dd> <dt>Speelduur</dt><dd>118 min</dd>
@@ -42,5 +42,21 @@ describe('parseYear', () => {
 
   test('ignores a year in other details', () => {
     expect(parseYear({ Speelduur: '2016' })).toBeUndefined()
+  })
+})
+
+describe('cleanTitle', () => {
+  test.each([
+    ['K-Wave | Train to Busan', 'Train to Busan'],
+    ['Train to Busan | K-Wave', 'Train to Busan'],
+    [
+      'Children Who Chase Lost Voices | Expat Cinema',
+      'Children Who Chase Lost Voices',
+    ],
+    ['Burning (English Subs)', 'Burning'],
+    ['Burning [Eng Subs]', 'Burning'],
+    ['Burning', 'Burning'],
+  ])('turns %s into %s', (title, expected) => {
+    expect(cleanTitle(title)).toBe(expected)
   })
 })

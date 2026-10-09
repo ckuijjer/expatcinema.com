@@ -11,8 +11,36 @@ import { normalizeWhitespace, trim } from './scrapers/utils/xrayFilters'
 export const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
 
+// A cookie jar that is just enough for a site that sets a cookie on a redirect
+// and wants it back, such as the CDN gate of natlab.nl: / -> /csq/ (sets a
+// token) -> /, which loops forever without the cookie. Cookies are kept per
+// host; path, expiry and the other attributes are ignored.
+export const createCookieJar = () => {
+  const cookies = new Map<string, Map<string, string>>()
+
+  return {
+    setCookie: async (rawCookie: string, url: string) => {
+      const [pair] = rawCookie.split(';')
+      const separator = pair.indexOf('=')
+      if (separator <= 0) return
+
+      const host = new URL(url).hostname
+      const hostCookies = cookies.get(host) ?? new Map<string, string>()
+      hostCookies.set(
+        pair.slice(0, separator).trim(),
+        pair.slice(separator + 1).trim(),
+      )
+      cookies.set(host, hostCookies)
+    },
+    getCookieString: async (url: string) =>
+      [...(cookies.get(new URL(url).hostname) ?? [])]
+        .map(([name, value]) => `${name}=${value}`)
+        .join('; '),
+  }
+}
+
 const createGotDriver =
-  (logger?: Logger): Driver =>
+  (logger?: Logger, cookieJar?: ReturnType<typeof createCookieJar>): Driver =>
   (context, callback) => {
     const { url } = context
 
@@ -47,14 +75,23 @@ const createGotDriver =
         beforeError: [logErrorHook(logger)],
       },
       throwHttpErrors: false,
+      cookieJar,
     })
       .then((response) => callback(null, response.body as never))
       .catch((err) => callback(err, null as never))
   }
 
-type CreateXrayOptions = Partial<Xray.Options> & { logger?: Logger }
+type CreateXrayOptions = Partial<Xray.Options> & {
+  logger?: Logger
+  // Send the cookies a site sets back to it, for the requests of this xray
+  cookies?: boolean
+}
 
-export const createXray = ({ logger, filters }: CreateXrayOptions = {}) =>
+export const createXray = ({
+  logger,
+  filters,
+  cookies = false,
+}: CreateXrayOptions = {}) =>
   Xray({
     filters: {
       trim,
@@ -64,4 +101,4 @@ export const createXray = ({ logger, filters }: CreateXrayOptions = {}) =>
   })
     .concurrency(10)
     .throttle(10, 300)
-    .driver(createGotDriver(logger))
+    .driver(createGotDriver(logger, cookies ? createCookieJar() : undefined))
