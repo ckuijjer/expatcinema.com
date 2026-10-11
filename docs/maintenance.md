@@ -165,7 +165,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | kriterion                | ok     |                                                 |
 | lab1                     | ok     |                                                 |
 | lab111                   | ok     |                                                 |
-| lantarenvenster          | ok     | fell 115→45 on 28 Sep: real (checked 10-02)     |
+| lantarenvenster          | ok     | festival-driven (CJ 23-27 Sep, AFFR 7-11 Oct)   |
 | lumiere                  | ok     | fixed 2026-09-28 (GraphQL API)                  |
 | lux                      | ok     | fixed 2026-09-28 (3 English markers)            |
 | melkweg                  | ok     |                                                 |
