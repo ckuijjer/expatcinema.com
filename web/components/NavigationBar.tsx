@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 import { css, cx } from 'styled-system/css'
 
-import { useKeypress, useSearch } from '../utils/hooks'
+import { useSearch, useShortcut } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
 import { Menu } from './Menu'
 import { TextFilter } from './TextFilter'
@@ -96,7 +96,31 @@ export const NavigationBar = ({ showSearch = true }) => {
     }
   }
 
-  useKeypress('/', () => toggleSearch())
+  // "/" toggles the search, unless it is typed in a field
+  useShortcut(
+    (e) => showSearch && e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey,
+    toggleSearch,
+  )
+
+  // Cmd/Ctrl+K opens the search, or focuses it when it is already open
+  useShortcut(
+    (e) =>
+      showSearch &&
+      (e.metaKey || e.ctrlKey) &&
+      !e.altKey &&
+      !e.shiftKey &&
+      e.key.toLowerCase() === 'k',
+    () => {
+      if (!isSearchOpen) return openSearch()
+
+      const input = document.querySelector<HTMLInputElement>(
+        'input[name="search"]',
+      )
+      input?.focus()
+      input?.select()
+    },
+    { inInputs: true },
+  )
 
   return (
     <>
