@@ -5,11 +5,13 @@ import { css } from 'styled-system/css'
 
 import cinemas from '../data/cinema.json'
 import { getCity } from '../utils/getCity'
+import { getScreenings } from '../utils/getScreenings'
 import { Layout } from './Layout'
 import { NavigationBar } from './NavigationBar'
 import { PageTitle } from './PageTitle'
 import { PageSection } from './PageSection'
 import { ExternalLink } from './ExternalLink'
+import { ExternalLinkIcon } from './ExternalLinkIcon'
 import { TmdbLogo } from './TmdbLogo'
 
 const containerStyle = css({
@@ -34,6 +36,28 @@ const textLinkStyle = css({
   },
 })
 
+const cinemaLinkStyle = css({
+  color: 'var(--secondary-color)',
+  textDecoration: 'underline',
+  textUnderlineOffset: '2px',
+  '&:hover': {
+    opacity: '0.75',
+  },
+})
+
+const quietCinemaLinkStyle = css({
+  color: 'var(--text-subtle-color)',
+  textDecoration: 'underline',
+  textUnderlineOffset: '2px',
+  '&:hover': {
+    opacity: '0.75',
+  },
+})
+
+const websiteLinkStyle = css({
+  color: 'var(--text-subtle-color)',
+})
+
 const tmdbAttributionStyle = css({
   display: 'flex',
   alignItems: 'center',
@@ -52,7 +76,12 @@ const citySlugs = [...new Set(cinemas.map((cinema) => cinema.city))].sort(
     ),
 )
 
-export const About = () => {
+export const About = async () => {
+  const screenings = await getScreenings()
+  const cinemasWithScreenings = new Set(
+    screenings.map((screening) => screening.cinema.slug),
+  )
+
   return (
     <>
       <Layout backgroundColor="var(--palette-purple-600)">
@@ -79,7 +108,11 @@ export const About = () => {
             </Link>
           </p>
           <PageSection>Cinemas</PageSection>
-          <br />
+          <p>
+            Click a cinema to see its screenings. The arrow goes to the cinema's
+            own website. Cinemas in grey have no screenings with English
+            subtitles at the moment.
+          </p>
           {citySlugs.map((city) => {
             const href = `/city/${city}`
             const cinemasInCity = cinemas
@@ -96,9 +129,25 @@ export const About = () => {
                   const isLast = i === arr.length - 1
                   return (
                     <React.Fragment key={cinema.name}>
-                      <ExternalLink href={cinema.url}>
+                      <Link
+                        href={`${href}/cinema/${cinema.slug}`}
+                        className={
+                          cinemasWithScreenings.has(cinema.slug)
+                            ? cinemaLinkStyle
+                            : quietCinemaLinkStyle
+                        }
+                      >
                         {cinema.name}
-                      </ExternalLink>
+                      </Link>
+                      <a
+                        href={cinema.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`${cinema.name} website`}
+                        className={websiteLinkStyle}
+                      >
+                        <ExternalLinkIcon />
+                      </a>
                       {isLast ? '' : ', '}
                     </React.Fragment>
                   )
