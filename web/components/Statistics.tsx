@@ -5,6 +5,7 @@ import React from 'react'
 
 import { css, cva } from 'styled-system/css'
 
+import { getScraperName } from '../utils/scraperNames'
 import { Layout } from './Layout'
 
 export type AnalyticsPoint = {
@@ -126,7 +127,8 @@ export const Statistics = ({ points }: { points: AnalyticsPoint[] }) => {
     x: {
       label: '',
       transform: (d: string) => new Date(d),
-      tickFormat: (d: Date) => d.toLocaleDateString(),
+      tickFormat: (d: Date) =>
+        d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' }),
     },
     color: {
       domain: highlight ? [true, false] : [false],
@@ -164,7 +166,7 @@ export const Statistics = ({ points }: { points: AnalyticsPoint[] }) => {
         {latestValuePerScraper.map(({ scraper, value }) => (
           <Tile
             value={value}
-            title={scraper}
+            title={getScraperName(scraper)}
             key={scraper}
             onClick={handleTileClick(scraper)}
             isHighlighted={isHighlighted(scraper)}

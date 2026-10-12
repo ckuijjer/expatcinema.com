@@ -5,6 +5,12 @@ import { fileURLToPath } from 'node:url'
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url))
 const webDirectory = path.resolve(scriptDirectory, '..', 'web')
+const scrapersDirectory = path.resolve(
+  scriptDirectory,
+  '..',
+  'cloud',
+  'scrapers',
+)
 const cinemasPath = path.join(webDirectory, 'data', 'cinema.json')
 const citiesPath = path.join(webDirectory, 'data', 'city.json')
 
@@ -24,6 +30,16 @@ for (const cinema of cinemas) {
   requireString(cinema, 'slug', cinema.slug)
   requireString(cinema, 'city', cinema.city)
   requireString(cinema, 'url', cinema.url)
+  requireString(cinema, 'scraper', cinema.scraper)
+
+  if (
+    typeof cinema.scraper === 'string' &&
+    !fs.existsSync(path.join(scrapersDirectory, `${cinema.scraper}.ts`))
+  ) {
+    failures.push(
+      `${cinema.name}: scraper "${cinema.scraper}" is not a file in cloud/scrapers`,
+    )
+  }
 
   const expectedLocality = cityNameBySlug.get(cinema.city)
   if (!expectedLocality) {
