@@ -34,9 +34,12 @@ const detailPageXray = createXray({ logger })
 const hasEnglishSubtitles = (movie: XRayFromMainPage) =>
   movie.metadata.includes('Ondertiteling: Engels')
 
-const cleanTitle = (title: string) => {
+// A year in the title, e.g. "The Time Masters (1982) Incl. Introduction", is
+// shown next to the title already
+export const cleanTitle = (title: string) => {
   return titleCase(
     title
+      .replace(/\s*\((?:19|20)\d{2}\)/g, '')
       .replace(/ \(4k Restoration\)/i, '')
       .replace(' (with English subtitles)', '')
       .replace(/^Club Imagine:\s+/i, '')
