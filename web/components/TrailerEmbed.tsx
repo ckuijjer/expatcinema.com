@@ -1,9 +1,9 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 
-import { css, cx } from 'styled-system/css'
+import { css } from 'styled-system/css'
 
 const thumbnailStyle = css({
   position: 'relative',
@@ -20,11 +20,6 @@ const thumbnailStyle = css({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-})
-
-const linkResetStyle = css({
-  color: 'inherit',
-  textDecoration: 'none',
 })
 
 const backdropStyle = css({
@@ -89,11 +84,6 @@ const closeStyle = css({
   cursor: 'pointer',
 })
 
-// iPadOS reports itself as a Mac, with a touch screen
-const isIos = () =>
-  /iPhone|iPad|iPod/.test(navigator.userAgent) ||
-  (navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1)
-
 // A small thumbnail that plays the trailer in a dialog when clicked. The YouTube
 // player is about 4 MB, so it is only added while the dialog is open.
 export const TrailerEmbed = ({
@@ -107,11 +97,6 @@ export const TrailerEmbed = ({
 }) => {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [isOpen, setIsOpen] = useState(false)
-  const [opensYouTube, setOpensYouTube] = useState(false)
-
-  // iOS Safari doesn't autoplay a YouTube iframe, not even after a tap, so the
-  // player would need a second tap. YouTube itself plays after one.
-  useEffect(() => setOpensYouTube(isIos()), [])
 
   const open = () => {
     setIsOpen(true)
@@ -119,40 +104,6 @@ export const TrailerEmbed = ({
   }
 
   const close = () => dialogRef.current?.close()
-
-  const thumbnail = (
-    <>
-      {backdropUrl ? (
-        <Image
-          src={backdropUrl}
-          alt=""
-          fill
-          sizes="540px"
-          className={backdropStyle}
-        />
-      ) : null}
-      <span className={playIconStyle} aria-hidden>
-        ▶
-      </span>
-      <span className={labelStyle} aria-hidden>
-        Trailer
-      </span>
-    </>
-  )
-
-  if (opensYouTube) {
-    return (
-      <a
-        href={`https://www.youtube.com/watch?v=${videoKey}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={cx(thumbnailStyle, linkResetStyle)}
-        aria-label={`Watch the trailer for ${title} on YouTube`}
-      >
-        {thumbnail}
-      </a>
-    )
-  }
 
   return (
     <>
@@ -162,7 +113,21 @@ export const TrailerEmbed = ({
         onClick={open}
         aria-label={`Play trailer for ${title}`}
       >
-        {thumbnail}
+        {backdropUrl ? (
+          <Image
+            src={backdropUrl}
+            alt=""
+            fill
+            sizes="540px"
+            className={backdropStyle}
+          />
+        ) : null}
+        <span className={playIconStyle} aria-hidden>
+          ▶
+        </span>
+        <span className={labelStyle} aria-hidden>
+          Trailer
+        </span>
       </button>
       <dialog
         ref={dialogRef}
