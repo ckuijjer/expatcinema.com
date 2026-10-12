@@ -5,7 +5,6 @@ import { css, cx } from 'styled-system/css'
 
 import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
-import { ExternalLinkIcon } from './ExternalLinkIcon'
 import { PosterPlaceholder } from './PosterPlaceholder'
 import { Time } from './Time'
 import {
@@ -68,7 +67,7 @@ const cinemaIconStyle = css({
 })
 
 // The poster is the way to the movie page on this site, the rest of the row
-// goes to the cinema. The padding makes it a bigger target, the badge says it is a link.
+// goes to the cinema. The padding makes it a bigger target.
 const posterLinkStyle = css({
   gridRow: '1 / span 2',
   alignSelf: 'start',
@@ -82,21 +81,46 @@ const posterLinkStyle = css({
   zIndex: '2',
 })
 
-const posterBadgeStyle = css({
+// An "i" centered on the poster. Devices with a hover show it, with a scrim over
+// the poster, on hover and on keyboard focus; touch devices have no hover, so
+// there it is always there, small and quiet.
+const posterOverlayStyle = css({
   position: 'absolute',
-  right: '2px',
-  bottom: '2px',
-  width: '18px',
-  height: '18px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--background-inverse-color)',
-  color: 'var(--text-inverse-color)',
-  border: '1px solid var(--text-inverse-color)',
-  fontSize: '12px',
-  fontWeight: '700',
-  lineHeight: '16px',
-  textAlign: 'center',
+  inset: '8px',
+  borderRadius: '4px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   pointerEvents: 'none',
+  transition: 'background-color 0.15s',
+  '@media (hover: hover)': {
+    backgroundColor: 'transparent',
+    '& > span': { opacity: '0', transition: 'opacity 0.15s' },
+    '[data-poster-link]:hover > &, [data-poster-link]:focus-visible > &': {
+      backgroundColor: 'rgba(0, 0, 0, 0.55)',
+      '& > span': { opacity: '1' },
+    },
+  },
+})
+
+const posterIconStyle = css({
+  width: '28px',
+  height: '28px',
+  borderRadius: '50%',
+  border: '2px solid var(--text-inverse-color)',
+  color: 'var(--text-inverse-color)',
+  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  fontSize: '16px',
+  fontWeight: '700',
+  lineHeight: '24px',
+  textAlign: 'center',
+  '@media (hover: none)': {
+    width: '22px',
+    height: '22px',
+    fontSize: '13px',
+    lineHeight: '18px',
+    opacity: '0.8',
+  },
 })
 
 const screeningRowLinkStyle = css({
@@ -181,7 +205,6 @@ export const ScreeningRow = ({
           <CinemaIcon cinema={cinema} />
           {cinema.name}
           {showCity ? <> | {cinema.city.name}</> : null}
-          <ExternalLinkIcon />
         </div>
       </div>
       {showPoster ? (
@@ -190,6 +213,7 @@ export const ScreeningRow = ({
             <a
               href={movieUrl}
               className={posterLinkStyle}
+              data-poster-link
               aria-label={`More about ${title}`}
             >
               <Image
@@ -200,8 +224,8 @@ export const ScreeningRow = ({
                 aria-hidden
                 className={listPosterStyle}
               />
-              <span className={posterBadgeStyle} aria-hidden>
-                i
+              <span className={posterOverlayStyle} aria-hidden>
+                <span className={posterIconStyle}>i</span>
               </span>
             </a>
           ) : (
@@ -218,14 +242,15 @@ export const ScreeningRow = ({
           <a
             href={movieUrl}
             className={posterLinkStyle}
+            data-poster-link
             aria-label={`More about ${title}`}
           >
             <PosterPlaceholder
               title={movieId ? title : undefined}
               className={movieId ? undefined : unmatchedPosterPlaceholderStyle}
             />
-            <span className={posterBadgeStyle} aria-hidden>
-              i
+            <span className={posterOverlayStyle} aria-hidden>
+              <span className={posterIconStyle}>i</span>
             </span>
           </a>
         ) : null
