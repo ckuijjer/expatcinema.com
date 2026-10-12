@@ -6,8 +6,13 @@ import { Duration } from 'luxon'
 import { css, cx } from 'styled-system/css'
 
 import { NavigationBar } from './NavigationBar'
+import { TrailerEmbed } from './TrailerEmbed'
 import { headerFont } from '../utils/theme'
-import { getMoviePosterUrl, getMovieReleaseYear } from '../utils/getMovies'
+import {
+  getMovieBackdropUrl,
+  getMoviePosterUrl,
+  getMovieReleaseYear,
+} from '../utils/getMovies'
 import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
 import { isEnabled, STRUCTURED_DATA_FEATURE } from '../utils/featureFlags'
@@ -126,25 +131,6 @@ const linkRowStyle = css({
 const trailerSectionStyle = css({
   display: 'grid',
   rowGap: '12px',
-})
-
-const trailerEmbedStyle = css({
-  position: 'relative',
-  width: '100%',
-  aspectRatio: '16 / 9',
-  overflow: 'hidden',
-  borderRadius: '12px',
-  border: '1px solid var(--border-color)',
-  backgroundColor: 'var(--background-highlight-color)',
-  maxWidth: '960px',
-})
-
-const trailerFrameStyle = css({
-  position: 'absolute',
-  inset: '0',
-  width: '100%',
-  height: '100%',
-  border: '0',
 })
 
 // TMDB returns original_language as an ISO 639-1 code, but uses some non-standard
@@ -351,16 +337,11 @@ export const MoviePage = ({
             {trailer?.key ? (
               <div className={trailerSectionStyle}>
                 <PageSection>Trailer</PageSection>
-                <div className={trailerEmbedStyle}>
-                  <iframe
-                    className={trailerFrameStyle}
-                    src={`https://www.youtube-nocookie.com/embed/${trailer.key}?rel=0`}
-                    title={`Trailer for ${movie.title}`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    loading="lazy"
-                  />
-                </div>
+                <TrailerEmbed
+                  videoKey={trailer.key}
+                  title={movie.title}
+                  backdropUrl={getMovieBackdropUrl(movie.tmdb?.backdropPath)}
+                />
               </div>
             ) : null}
           </div>
