@@ -63,5 +63,5 @@ export const listTitleStyle = css({
 })
 
 export const listYearStyle = css({
-  color: 'color-mix(in srgb, var(--text-color) 35%, transparent)',
+  color: 'var(--text-subtle-color)',
 })
