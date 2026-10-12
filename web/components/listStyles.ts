@@ -57,9 +57,7 @@ export const listTitleStyle = css({
   minWidth: '0',
   paddingTop: '4px',
   fontSize: '18px',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
+  overflowWrap: 'anywhere',
 })
 
 export const listYearStyle = css({
