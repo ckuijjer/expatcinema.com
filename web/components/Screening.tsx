@@ -80,8 +80,8 @@ const cityStyle = css({
   pointerEvents: 'none',
 })
 
-// A row with neither title nor cinema: only the time and where it leads
-const ticketsStyle = css({
+// A row with neither title nor cinema: only the time and the link to the cinema
+const moreInfoStyle = css({
   gridColumnStart: 'rest',
   gridRow: '1 / span 2',
   alignSelf: 'center',
@@ -248,8 +248,8 @@ export const ScreeningRow = ({
           </>
         ) : null}
         {!showTitle && !showCinema ? (
-          <div className={ticketsStyle}>
-            Tickets
+          <div className={moreInfoStyle}>
+            More info
             <ExternalLinkIcon />
           </div>
         ) : null}
