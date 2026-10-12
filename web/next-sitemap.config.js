@@ -3,5 +3,6 @@ module.exports = {
   siteUrl: 'https://www.expatcinema.com',
   generateRobotsTxt: true,
   outDir: 'out',
-  // ...other options
+  // internal pages, they are noindex
+  exclude: ['/movie/unmatched', '/statistics'],
 }
