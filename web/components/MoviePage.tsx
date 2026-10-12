@@ -311,9 +311,6 @@ export const MoviePage = ({
               </p>
             ) : null}
             <div className={detailsStyle}>
-              {description ? (
-                <p className={descriptionStyle}>{description}</p>
-              ) : null}
               <div className={metadataStyle}>
                 <MetadataRow label="Director" value={directors} />
                 <MetadataRow label="Genre" value={genres} />
@@ -325,6 +322,9 @@ export const MoviePage = ({
                   value={voteAverage ? `${voteAverage}/10` : undefined}
                 />
               </div>
+              {description ? (
+                <p className={descriptionStyle}>{description}</p>
+              ) : null}
             </div>
             <div className={linkRowStyle}>
               {tmdbHref ? (
@@ -334,16 +334,6 @@ export const MoviePage = ({
                 <ExternalLink href={imdbHref}>IMDb</ExternalLink>
               ) : null}
             </div>
-            {trailer?.key ? (
-              <div className={trailerSectionStyle}>
-                <PageSection>Trailer</PageSection>
-                <TrailerEmbed
-                  videoKey={trailer.key}
-                  title={movie.title}
-                  backdropUrl={getMovieBackdropUrl(movie.tmdb?.backdropPath)}
-                />
-              </div>
-            ) : null}
           </div>
           <div style={{ gridColumn: '1 / -1' }}>
             <MovieLocationFilters
@@ -369,6 +359,19 @@ export const MoviePage = ({
               />
             </Suspense>
           </div>
+          {trailer?.key ? (
+            <div
+              style={{ gridColumn: '1 / -1' }}
+              className={trailerSectionStyle}
+            >
+              <PageSection>Trailer</PageSection>
+              <TrailerEmbed
+                videoKey={trailer.key}
+                title={movie.title}
+                backdropUrl={getMovieBackdropUrl(movie.tmdb?.backdropPath)}
+              />
+            </div>
+          ) : null}
         </div>
       </Layout>
     </>
