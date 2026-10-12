@@ -36,6 +36,7 @@ export const Calendar = ({
   showCity,
   showPoster = true,
   showTitle = true,
+  runtimeMinutes,
   currentCity,
   currentCinema,
 }: {
@@ -43,6 +44,7 @@ export const Calendar = ({
   showCity: boolean
   showPoster?: boolean
   showTitle?: boolean
+  runtimeMinutes?: number | null
   currentCity?: string
   currentCinema?: string
 }) => {
@@ -110,6 +112,7 @@ export const Calendar = ({
           showCinema={!currentCinema}
           showTitle={showTitle}
           showPoster={showPoster}
+          runtimeMinutes={runtimeMinutes}
         />
       )}
     </div>

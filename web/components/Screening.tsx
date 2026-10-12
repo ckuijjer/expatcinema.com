@@ -7,7 +7,6 @@ import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
 import { PosterPlaceholder } from './PosterPlaceholder'
 import { Time } from './Time'
-import { ExternalLinkIcon } from './ExternalLinkIcon'
 import {
   listPosterStyle,
   listRowBaseStyle,
@@ -77,17 +76,6 @@ const cityStyle = css({
   minWidth: '0',
   fontSize: '14px',
   color: 'var(--text-muted-color)',
-  pointerEvents: 'none',
-})
-
-// A row with neither title nor cinema: only the time and the link to the cinema
-const moreInfoStyle = css({
-  gridColumnStart: 'rest',
-  gridRow: '1 / span 2',
-  alignSelf: 'start',
-  paddingTop: '4px',
-  fontSize: '18px',
-  color: 'var(--secondary-color)',
   pointerEvents: 'none',
 })
 
@@ -247,12 +235,6 @@ export const ScreeningRow = ({
               <div className={cityStyle}>{cinema.city.name}</div>
             ) : null}
           </>
-        ) : null}
-        {!showTitle && !showCinema ? (
-          <div className={moreInfoStyle}>
-            More info
-            <ExternalLinkIcon />
-          </div>
         ) : null}
       </div>
       {showPoster ? (
