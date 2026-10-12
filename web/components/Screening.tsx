@@ -84,8 +84,9 @@ const cityStyle = css({
 const moreInfoStyle = css({
   gridColumnStart: 'rest',
   gridRow: '1 / span 2',
-  alignSelf: 'center',
-  fontSize: '16px',
+  alignSelf: 'start',
+  paddingTop: '4px',
+  fontSize: '18px',
   color: 'var(--secondary-color)',
   pointerEvents: 'none',
 })
