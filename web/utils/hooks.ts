@@ -101,3 +101,33 @@ export const useKeypress = (
     return () => window.removeEventListener('keyup', onKeyup)
   }, [key, inInputs])
 }
+
+// Runs the action on keydown when `matches` accepts the event, and stops the
+// browser from also acting on it (Firefox opens quick find on "/", Chrome
+// focuses the address bar on Ctrl+K). A shortcut typed into a form field is
+// ignored unless `inInputs` is set.
+export const useShortcut = (
+  matches: (e: KeyboardEvent) => boolean,
+  action: () => void,
+  { inInputs = false }: { inInputs?: boolean } = {},
+) => {
+  const matchesRef = useRef(matches)
+  const actionRef = useRef(action)
+  useLayoutEffect(() => {
+    matchesRef.current = matches
+    actionRef.current = action
+  })
+
+  useEffect(() => {
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.repeat || e.isComposing || !matchesRef.current(e)) return
+      if (!inInputs && isEditable(e.target)) return
+
+      e.preventDefault()
+      actionRef.current()
+    }
+
+    window.addEventListener('keydown', onKeydown)
+    return () => window.removeEventListener('keydown', onKeydown)
+  }, [inInputs])
+}
