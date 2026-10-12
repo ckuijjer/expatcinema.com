@@ -5,6 +5,7 @@ import { css, cx } from 'styled-system/css'
 
 import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
+import { ExternalLinkIcon } from './ExternalLinkIcon'
 import { PosterPlaceholder } from './PosterPlaceholder'
 import { Time } from './Time'
 import {
@@ -66,14 +67,36 @@ const cinemaIconStyle = css({
   display: 'block',
 })
 
+// The poster is the way to the movie page on this site, the rest of the row
+// goes to the cinema. The padding makes it a bigger target, the badge says it is a link.
 const posterLinkStyle = css({
   gridRow: '1 / span 2',
   alignSelf: 'start',
   display: 'block',
   width: '48px',
   height: '72px',
+  boxSizing: 'content-box',
+  padding: '8px',
+  margin: '-8px',
   position: 'relative',
   zIndex: '2',
+})
+
+const posterBadgeStyle = css({
+  position: 'absolute',
+  right: '2px',
+  bottom: '2px',
+  width: '18px',
+  height: '18px',
+  borderRadius: '50%',
+  backgroundColor: 'var(--background-inverse-color)',
+  color: 'var(--text-inverse-color)',
+  border: '1px solid var(--text-inverse-color)',
+  fontSize: '12px',
+  fontWeight: '700',
+  lineHeight: '16px',
+  textAlign: 'center',
+  pointerEvents: 'none',
 })
 
 const screeningRowLinkStyle = css({
@@ -158,12 +181,17 @@ export const ScreeningRow = ({
           <CinemaIcon cinema={cinema} />
           {cinema.name}
           {showCity ? <> | {cinema.city.name}</> : null}
+          <ExternalLinkIcon />
         </div>
       </div>
       {showPoster ? (
         posterUrl ? (
           movieUrl ? (
-            <a href={movieUrl} className={posterLinkStyle}>
+            <a
+              href={movieUrl}
+              className={posterLinkStyle}
+              aria-label={`More about ${title}`}
+            >
               <Image
                 src={posterUrl}
                 width={48}
@@ -172,6 +200,9 @@ export const ScreeningRow = ({
                 aria-hidden
                 className={listPosterStyle}
               />
+              <span className={posterBadgeStyle} aria-hidden>
+                i
+              </span>
             </a>
           ) : (
             <Image
@@ -184,11 +215,18 @@ export const ScreeningRow = ({
             />
           )
         ) : movieUrl ? (
-          <a href={movieUrl} className={posterLinkStyle}>
+          <a
+            href={movieUrl}
+            className={posterLinkStyle}
+            aria-label={`More about ${title}`}
+          >
             <PosterPlaceholder
               title={movieId ? title : undefined}
               className={movieId ? undefined : unmatchedPosterPlaceholderStyle}
             />
+            <span className={posterBadgeStyle} aria-hidden>
+              i
+            </span>
           </a>
         ) : null
       ) : null}
