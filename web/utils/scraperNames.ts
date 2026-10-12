@@ -1,60 +1,39 @@
-// What the statistics page shows for the keys of the analytics points
-const scraperNames: Record<string, string> = {
+import cinemas from '../data/cinema.json'
+
+const compact = (text: string) => text.replace(/[^a-z0-9]/gi, '').toLowerCase()
+
+// Most scraper keys are the cinema's slug without the dashes (lab-1 -> lab1)
+const cinemaNameByKey = new Map(
+  cinemas.map((cinema) => [compact(cinema.slug), cinema.name]),
+)
+
+const cinemaNameBySlug = new Map(
+  cinemas.map((cinema) => [cinema.slug, cinema.name]),
+)
+
+// Scraper keys that are not their cinema's slug without the dashes
+const slugByKey: Record<string, string> = {
+  amstelveen: 'cinema-amstelveen',
+  castellum: 'castellum-theater-film',
+  chasse: 'chasse-cinema',
+  dewittdordrecht: 'filmtheater-de-witt',
+  eyefilm: 'eye',
+  filmhuisbreda: 'filmhuis-botanique-breda',
+  hartlooper: 'louis-hartlooper-complex',
+  kinorotterdam: 'kino',
+  rialto: 'rialto-de-pijp',
+}
+
+// Not a cinema, or one scraper for more than one
+const otherNames: Record<string, string> = {
   all: 'All screenings',
   allWithMovieId: 'Matched with TMDB',
   bioscopenleiden: 'Leiden (Kijkhuis, Lido, Trianon)',
-  castellum: 'Castellum Theater & Film',
-  chasse: 'Chassé Cinema',
-  cinecenter: 'Cinecenter',
-  cinecitta: 'Cinecitta',
-  cinemadevlugt: 'Cinema de Vlugt',
-  cinemathepulse: 'Cinema The Pulse',
-  cinerama: 'Cinerama',
-  concordia: 'Concordia',
-  debalie: 'De Balie',
-  defilmhallen: 'De Filmhallen',
-  desien: 'De Sien',
-  deuitkijk: 'De Uitkijk',
-  dewittdordrecht: 'Filmtheater De Witt',
-  dokhuis: 'Dokhuis',
-  eyefilm: 'Eye',
-  fchyena: 'FC Hyena',
-  filmhuisbreda: 'Filmhuis Botanique Breda',
-  filmhuisbussum: 'Filmhuis Bussum',
-  filmhuiscavia: 'Filmhuis Cavia',
-  filmhuisdenhaag: 'Filmhuis Den Haag',
-  filmhuisdespiegel: 'Filmhuis De Spiegel',
-  filmhuislumen: 'Filmhuis Lumen',
-  filmkoepel: 'Filmkoepel',
-  filmtheaterhilversum: 'Filmtheater Hilversum',
-  florafilmtheater: 'Flora Filmtheater',
-  focusarnhem: 'Focus Arnhem',
-  forumgroningen: 'Forum Groningen',
-  hartlooper: 'Louis Hartlooper Complex',
-  heerenstraattheater: 'Heerenstraat Theater',
-  hetdocumentairepaviljoen: 'Het Documentaire Paviljoen',
-  ketelhuis: 'Ketelhuis',
-  kinorotterdam: 'Kino',
-  kriterion: 'Kriterion',
-  lab1: 'Lab-1',
-  lab111: 'Lab111',
-  lantarenvenster: 'Lantarenvenster',
-  lumiere: 'Lumière',
-  lux: 'Lux',
-  melkweg: 'Melkweg',
-  natlab: 'Natlab',
-  rialto: 'Rialto De Pijp',
-  rialtovu: 'Rialto VU',
-  schuur: 'Schuur',
-  slachtstraat: 'Slachtstraat',
-  sliekerfilm: 'Slieker Film',
-  springhaver: 'Springhaver',
-  studiok: 'Studio/K',
-  themovies: 'The Movies',
-  worm: 'WORM',
-  amstelveen: 'Cinema Amstelveen',
 }
 
-// A scraper that is not listed yet shows its key
+// A scraper that is not known yet shows its key
 export const getScraperName = (scraper: string) =>
-  scraperNames[scraper] ?? scraper
+  otherNames[scraper] ??
+  cinemaNameBySlug.get(slugByKey[scraper]) ??
+  cinemaNameByKey.get(scraper) ??
+  scraper
