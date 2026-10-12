@@ -30,7 +30,15 @@ const menuTextItemStyle = css({
   },
 })
 
+const buttonResetStyle = {
+  padding: '0',
+  border: 'none',
+  background: 'none',
+  color: 'inherit',
+} as const
+
 const menuButtonStyle = css({
+  ...buttonResetStyle,
   width: '32px',
   height: '32px',
   display: 'flex',
@@ -61,6 +69,7 @@ const menuModalContentStyle = css({
 })
 
 const menuCloseButtonStyle = css({
+  ...buttonResetStyle,
   position: 'absolute',
   top: '28px',
   right: '0',
@@ -98,16 +107,27 @@ export const Menu = () => {
       >
         About
       </Link>
-      <div className={menuButtonStyle} onClick={openMenu}>
+      <button
+        type="button"
+        className={menuButtonStyle}
+        onClick={openMenu}
+        aria-label="Menu"
+        aria-expanded={isMenuOpen}
+      >
         <MenuIcon />
-      </div>
+      </button>
       {isMenuOpen && (
         <div className={menuModalStyle} onClick={closeMenu}>
           <Layout>
             <div className={menuModalContentStyle}>
-              <div className={menuCloseButtonStyle} onClick={closeMenu}>
+              <button
+                type="button"
+                className={menuCloseButtonStyle}
+                onClick={closeMenu}
+                aria-label="Close menu"
+              >
                 <CrossIcon color="var(--text-inverse-color)" />
-              </div>
+              </button>
               <Link
                 href="/"
                 className={cx(menuItemStyle, headerFont.className)}

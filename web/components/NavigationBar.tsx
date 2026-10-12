@@ -58,6 +58,10 @@ const navigationItemsStyle = css({
 })
 
 const searchButtonStyle = css({
+  padding: '0',
+  border: 'none',
+  background: 'none',
+  color: 'inherit',
   width: '32px',
   height: '32px',
   display: 'flex',
@@ -113,9 +117,14 @@ export const NavigationBar = ({ showSearch = true }) => {
         </div>
         <div className={navigationItemsStyle}>
           {showSearch && (
-            <div className={searchButtonStyle} onClick={toggleSearch}>
+            <button
+              type="button"
+              className={searchButtonStyle}
+              onClick={toggleSearch}
+              aria-label={isSearchOpen ? 'Close search' : 'Search'}
+            >
               {isSearchOpen ? <CrossIcon /> : <SearchIcon />}
-            </div>
+            </button>
           )}
           <Menu />
         </div>
