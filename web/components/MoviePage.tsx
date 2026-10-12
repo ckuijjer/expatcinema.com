@@ -350,6 +350,7 @@ export const MoviePage = ({
                 screenings={screenings}
                 showCity={showCity}
                 showPoster={false}
+                showTitle={false}
                 currentCity={currentCity}
                 currentCinema={currentCinema}
               />

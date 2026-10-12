@@ -16,11 +16,10 @@ export const listSectionTitleStyle = css({
 
 export const listSectionHeadingStyle = `${listSectionTitleStyle} ${headerFont.className}`
 
-export const listRowBaseStyle = css({
+const listRowProps = {
   lineHeight: '1.5',
   padding: '12px',
   alignItems: 'start',
-  minHeight: '72px',
   marginLeft: '-12px',
   marginRight: '-12px',
   textDecoration: 'none',
@@ -29,7 +28,12 @@ export const listRowBaseStyle = css({
     backgroundColor: 'var(--background-highlight-color)',
     borderRadius: '10px',
   },
-})
+} as const
+
+export const listRowBaseStyle = css({ ...listRowProps, minHeight: '72px' })
+
+// for rows without a poster and a second line, which don't need to be 72px high
+export const listRowCompactStyle = css({ ...listRowProps, minHeight: '48px' })
 
 export const listPosterStyle = css({
   width: '48px',

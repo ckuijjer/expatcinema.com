@@ -7,10 +7,14 @@ import { ScreeningRow } from '../Screening'
 export const DirectCalendar = ({
   rows,
   showCity,
+  showCinema,
+  showTitle,
   showPoster,
 }: {
   rows: Row[]
   showCity: boolean
+  showCinema: boolean
+  showTitle: boolean
   showPoster: boolean
 }) => (
   <>
@@ -22,6 +26,8 @@ export const DirectCalendar = ({
           key={`${row.props.url}-${row.props.date.toISO()}-${row.props.title}`}
           {...row.props}
           showCity={showCity}
+          showCinema={showCinema}
+          showTitle={showTitle}
           showPoster={showPoster}
         />
       ),
