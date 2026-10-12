@@ -30,7 +30,6 @@ import { getMovieDescription } from '../utils/seoMetadata'
 import { Calendar } from './Calendar'
 import { Layout } from './Layout'
 import { MovieLocationFilters } from './MovieLocationFilters'
-import { PageSection } from './PageSection'
 
 const pageStyle = css({
   marginTop: '16px',
@@ -128,9 +127,27 @@ const linkRowStyle = css({
   flexWrap: 'wrap',
 })
 
-const trailerSectionStyle = css({
-  display: 'grid',
-  rowGap: '12px',
+const headerRowStyle = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  gap: '12px 24px',
+  '@media (max-width: 640px)': {
+    flexWrap: 'nowrap',
+    gap: '12px',
+  },
+})
+
+const titleBlockStyle = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  minWidth: '0',
+  flex: '1 1 280px',
+  '@media (max-width: 640px)': {
+    flexBasis: '0',
+  },
 })
 
 // TMDB returns original_language as an ISO 639-1 code, but uses some non-standard
@@ -295,21 +312,32 @@ export const MoviePage = ({
             )}
           </div>
           <div className={movieInfoStyle}>
-            <h1 className={cx(titleStyle, headerFont.className)}>
-              {movie.title}
-              {year ? <span className={yearStyle}> ({year})</span> : null}
-            </h1>
-            {showOriginalTitle ? (
-              <p
-                className={css({
-                  margin: '0',
-                  fontSize: '20px',
-                  color: 'var(--text-muted-color)',
-                })}
-              >
-                {originalTitle}
-              </p>
-            ) : null}
+            <div className={headerRowStyle}>
+              <div className={titleBlockStyle}>
+                <h1 className={cx(titleStyle, headerFont.className)}>
+                  {movie.title}
+                  {year ? <span className={yearStyle}> ({year})</span> : null}
+                </h1>
+                {showOriginalTitle ? (
+                  <p
+                    className={css({
+                      margin: '0',
+                      fontSize: '20px',
+                      color: 'var(--text-muted-color)',
+                    })}
+                  >
+                    {originalTitle}
+                  </p>
+                ) : null}
+              </div>
+              {trailer?.key ? (
+                <TrailerEmbed
+                  videoKey={trailer.key}
+                  title={movie.title}
+                  backdropUrl={getMovieBackdropUrl(movie.tmdb?.backdropPath)}
+                />
+              ) : null}
+            </div>
             <div className={detailsStyle}>
               <div className={metadataStyle}>
                 <MetadataRow label="Director" value={directors} />
@@ -359,19 +387,6 @@ export const MoviePage = ({
               />
             </Suspense>
           </div>
-          {trailer?.key ? (
-            <div
-              style={{ gridColumn: '1 / -1' }}
-              className={trailerSectionStyle}
-            >
-              <PageSection>Trailer</PageSection>
-              <TrailerEmbed
-                videoKey={trailer.key}
-                title={movie.title}
-                backdropUrl={getMovieBackdropUrl(movie.tmdb?.backdropPath)}
-              />
-            </div>
-          ) : null}
         </div>
       </Layout>
     </>
