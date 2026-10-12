@@ -44,8 +44,6 @@ The canonical list of active scrapers is the `SCRAPERS` object in `cloud/scraper
 | Studio/K                                    | Amsterdam  | `studiok.ts`                  |
 | The Movies                                  | Amsterdam  | `themovies.ts`                |
 
-**Note:** `liff.ts` exists in the scrapers directory but is **not imported in `index.ts`** — it is inactive. LIFF (Leiden International Film Festival) is a seasonal multi-venue festival in Leiden.
-
 ---
 
 ## GitHub issues filed — awaiting scrapers
