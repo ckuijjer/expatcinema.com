@@ -70,7 +70,19 @@ export const useScrollFade = (ref: React.RefObject<HTMLElement | null>) => {
   return showFade
 }
 
-export const useKeypress = (key: string, action: () => void) => {
+const isEditable = (target: EventTarget | null) =>
+  target instanceof HTMLElement &&
+  (target.isContentEditable ||
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))
+
+// Runs the action when the key is pressed. Unless `inInputs` is set, a key typed
+// into a form field is ignored, so a shortcut like "/" can still be typed in
+// the search box.
+export const useKeypress = (
+  key: string,
+  action: () => void,
+  { inInputs = false }: { inInputs?: boolean } = {},
+) => {
   const actionRef = useRef(action)
   useLayoutEffect(() => {
     actionRef.current = action
@@ -78,12 +90,14 @@ export const useKeypress = (key: string, action: () => void) => {
 
   useEffect(() => {
     const onKeyup = (e: KeyboardEvent) => {
-      if (e.key === key) {
-        actionRef.current()
-      }
+      if (e.key !== key) return
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      if (!inInputs && isEditable(e.target)) return
+
+      actionRef.current()
     }
 
     window.addEventListener('keyup', onKeyup)
     return () => window.removeEventListener('keyup', onKeyup)
-  }, [key])
+  }, [key, inInputs])
 }
