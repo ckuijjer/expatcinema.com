@@ -29,33 +29,64 @@ const selectWrapStyle = css({
 const selectStyle = css({
   width: '100%',
   minWidth: '0',
-  height: '40px',
-  padding: '0 44px 0 10px',
-  borderRadius: '4px',
-  border: '2px solid var(--secondary-color)',
-  backgroundColor: 'var(--primary-color)',
-  color: 'var(--secondary-color)',
-  fontSize: '18px',
-  lineHeight: '38px',
-  outline: 'none',
+  height: '44px',
+  padding: '0 40px 0 14px',
+  borderRadius: '8px',
+  border: '1px solid color-mix(in srgb, var(--text-color) 35%, transparent)',
+  backgroundColor: 'var(--background-color)',
+  color: 'var(--text-color)',
+  fontFamily: 'inherit',
+  fontSize: '16px',
+  cursor: 'pointer',
   appearance: 'none',
   WebkitAppearance: 'none',
-  '&:focus': {
-    boxShadow:
-      '0 0 0 2px color-mix(in srgb, var(--secondary-color) 25%, transparent)',
+  textOverflow: 'ellipsis',
+  '&:hover': {
+    borderColor: 'var(--text-color)',
+  },
+  '&:focus-visible': {
+    outline: '2px solid var(--secondary-color)',
+    outlineOffset: '2px',
+  },
+  // a filter that is applied gets the accent color, like a selected tab
+  '&[data-active="true"]': {
+    borderColor: 'var(--secondary-color)',
+    boxShadow: 'inset 0 0 0 1px var(--secondary-color)',
+  },
+  '@media (prefers-color-scheme: dark)': {
+    '&:focus-visible': { outlineColor: 'var(--primary-color)' },
+    '&[data-active="true"]': {
+      borderColor: 'var(--primary-color)',
+      boxShadow: 'inset 0 0 0 1px var(--primary-color)',
+    },
   },
 })
 
-const arrowStyle = css({
+const chevronStyle = css({
   position: 'absolute',
   right: '14px',
   top: '50%',
   transform: 'translateY(-50%)',
   pointerEvents: 'none',
-  color: 'var(--secondary-color)',
-  fontSize: '16px',
-  lineHeight: '1',
+  color: 'var(--text-muted-color)',
 })
+
+const Chevron = () => (
+  <svg
+    className={chevronStyle}
+    width="12"
+    height="8"
+    viewBox="0 0 12 8"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M1 1.5l5 5 5-5" />
+  </svg>
+)
 
 const sortOptions = (left: SelectOption, right: SelectOption) =>
   left.label.localeCompare(right.label, undefined, { sensitivity: 'base' })
@@ -126,6 +157,7 @@ export const MovieLocationFilters = ({
         <select
           className={selectStyle}
           aria-label="City filter"
+          data-active={Boolean(currentCity)}
           value={citySelectValue}
           onChange={(event) => {
             const nextCity = event.target.value || undefined
@@ -139,14 +171,13 @@ export const MovieLocationFilters = ({
             </option>
           ))}
         </select>
-        <span className={arrowStyle} aria-hidden>
-          ▾
-        </span>
+        <Chevron />
       </div>
       <div className={selectWrapStyle}>
         <select
           className={selectStyle}
           aria-label="Cinema filter"
+          data-active={Boolean(currentCinema)}
           value={cinemaSelectValue}
           onChange={(event) => {
             const nextCinema = event.target.value || undefined
@@ -169,9 +200,7 @@ export const MovieLocationFilters = ({
             </option>
           ))}
         </select>
-        <span className={arrowStyle} aria-hidden>
-          ▾
-        </span>
+        <Chevron />
       </div>
     </div>
   )
