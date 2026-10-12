@@ -49,7 +49,7 @@ export const listPosterPlaceholderStyle = css({
   justifyContent: 'center',
   fontSize: '16px',
   fontWeight: '700',
-  color: 'color-mix(in srgb, var(--text-color) 30%, transparent)',
+  color: 'var(--text-subtle-color)',
   userSelect: 'none',
 })
 
