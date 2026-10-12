@@ -1,4 +1,8 @@
-import { extractReleaseYear, parseReleaseYear } from '../scrapers/lab111'
+import {
+  cleanTitle,
+  extractReleaseYear,
+  parseReleaseYear,
+} from '../scrapers/lab111'
 
 // The details of https://www.lab111.nl/movie/akira/, as on 2026-10-07
 const AKIRA_META = `
@@ -86,5 +90,18 @@ describe('parseReleaseYear', () => {
 
   test('has no year without details', () => {
     expect(parseReleaseYear([])).toBeUndefined()
+  })
+})
+
+describe('lab111 cleanTitle', () => {
+  test.each([
+    [
+      'The Time Masters (1982) Incl. Introduction',
+      'The Time Masters Incl. Introduction',
+    ],
+    ['Perfect Days (2023)', 'Perfect Days'],
+    ['Akira (4K Restoration)', 'Akira'],
+  ])('removes the year from %s', (title, expected) => {
+    expect(cleanTitle(title)).toBe(expected)
   })
 })

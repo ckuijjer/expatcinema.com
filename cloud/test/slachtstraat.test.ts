@@ -1,4 +1,4 @@
-import { extractYear } from '../scrapers/slachtstraat'
+import { cleanTitle, extractYear } from '../scrapers/slachtstraat'
 
 // Titles and year fields from https://slachtstraat.nl/fk-feed/agenda (2026-10-07)
 describe('slachtstraat extractYear', () => {
@@ -22,5 +22,18 @@ describe('slachtstraat extractYear', () => {
     ['Freeride Film Festival 2026', ''],
   ])('has no year for %s', (title, year) => {
     expect(extractYear(title, year)).toBeUndefined()
+  })
+})
+
+describe('slachtstraat cleanTitle', () => {
+  test.each([
+    [
+      'Der Held Von Bahnhof Friedrichstrasse (2025)',
+      'Der Held Von Bahnhof Friedrichstrasse',
+    ],
+    ['3×3 Eyes (1991)', '3×3 Eyes'],
+    ['Good Bye, Lenin!', 'Good Bye, Lenin!'],
+  ])('removes the year from %s', (title, expected) => {
+    expect(cleanTitle(title)).toBe(expected)
   })
 })

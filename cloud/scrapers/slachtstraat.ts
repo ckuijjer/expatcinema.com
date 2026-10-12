@@ -7,6 +7,7 @@ import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
+import { removeYearSuffix } from './utils/removeYearSuffix'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -32,7 +33,8 @@ type FkFeedItem = {
 const extractDate = (time: string) =>
   DateTime.fromFormat(time, 'yyyyMMddHHmm').toJSDate()
 
-const cleanTitle = (title: string) => titleCase(title)
+// The year is shown next to the title, so "Good Bye, Lenin! (2003)" stays "Good Bye, Lenin!"
+export const cleanTitle = (title: string) => titleCase(removeYearSuffix(title))
 
 // The feed's year field is sometimes empty while the title states the year,
 // e.g. "Good Bye, Lenin! (2003)" with year ""
@@ -53,10 +55,10 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
           fkFeedHasEnglishSubtitles(movie, time, { venues: ['Slachtstraat'] }),
         )
         .map((time) => {
-          const title = cleanTitle(decode(movie.title))
+          const rawTitle = decode(movie.title)
           return {
-            title,
-            year: extractYear(title, movie.year),
+            title: cleanTitle(rawTitle),
+            year: extractYear(rawTitle, movie.year),
             url: movie.permalink,
             cinema: 'Slachtstraat',
             date: extractDate(time.program_start),
