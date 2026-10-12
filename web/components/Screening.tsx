@@ -9,112 +9,54 @@ import { PosterPlaceholder } from './PosterPlaceholder'
 import { Time } from './Time'
 import {
   listPosterStyle,
-  listRowBaseStyle,
-  listRowCompactStyle,
-  listTitleStyle,
+  listRowCenteredStyle,
   listYearStyle,
 } from './listStyles'
 
-const gridStyle = css({
-  position: 'relative',
-  display: 'grid',
-  gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
-  gridTemplateRows: 'auto auto',
-  gridColumnGap: '12px',
-})
-
 // The browser skips the layout and paint of rows that are off-screen,
 // 72px is the height of the row without its padding, which keeps the scrollbar steady
-const offscreenStyle = css({
-  contentVisibility: 'auto',
-  containIntrinsicSize: 'auto 72px',
-})
+const containerStyle = cx(
+  listRowCenteredStyle,
+  css({
+    position: 'relative',
+    display: 'flex',
+    gap: '12px',
+    contentVisibility: 'auto',
+    containIntrinsicSize: 'auto 72px',
+  }),
+)
 
-const containerStyle = cx(listRowBaseStyle, gridStyle, offscreenStyle)
-const compactContainerStyle = cx(listRowCompactStyle, gridStyle)
-
-const timeStyle = css({
-  gridColumnStart: 'time',
-  gridRow: '1 / span 2',
-  alignSelf: 'start',
-  paddingTop: '4px',
+// The time and the text, centered in the row as a whole. Both start with an
+// 18px line, so the time lines up with the first line of the text
+const textGridStyle = css({
+  flex: '1 1 0',
+  minWidth: '0',
+  display: 'grid',
+  gridTemplateColumns: '60px minmax(0, 1fr)',
+  columnGap: '12px',
+  alignItems: 'start',
   pointerEvents: 'none',
 })
 
-// A row without a second line: the time and title line up with the middle of the poster
-const timeCenteredStyle = css({
-  gridColumnStart: 'time',
-  gridRow: '1 / span 2',
-  alignSelf: 'center',
-  pointerEvents: 'none',
+const textStyle = css({
+  minWidth: '0',
+  display: 'grid',
 })
 
-const titleCenteredStyle = css({
-  gridColumnStart: 'rest',
-  gridRow: '1 / span 2',
-  alignSelf: 'center',
+const mainLineStyle = css({
   minWidth: '0',
   fontSize: '18px',
   overflowWrap: 'anywhere',
 })
 
-// A row without a title: the cinema is the main line, the city the second
-const cinemaNameStyle = css({
-  gridColumnStart: 'rest',
-  gridRowStart: '1',
-  minWidth: '0',
-  paddingTop: '4px',
-  fontSize: '18px',
-  display: 'flex',
-  alignItems: 'center',
-  pointerEvents: 'none',
-})
-
-const cityStyle = css({
-  gridColumnStart: 'rest',
-  gridRowStart: '2',
+const secondLineStyle = css({
   minWidth: '0',
   fontSize: '14px',
   color: 'var(--text-muted-color)',
-  pointerEvents: 'none',
-})
-
-const contentStyle = css({
-  display: 'contents',
-})
-
-const cinemaInfoStyle = css({
-  gridColumnStart: 'rest',
-  gridRowStart: '2',
-  minWidth: '0',
-  fontSize: '14px',
-  color: 'var(--text-muted-color)',
-  display: 'flex',
-  alignItems: 'center',
-  pointerEvents: 'none',
-})
-
-const cinemaIconFrameStyle = css({
-  width: '18px',
-  height: '18px',
-  marginRight: '6px',
-  borderRadius: '4px',
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: '0',
-  overflow: 'hidden',
-  backgroundColor: 'var(--text-inverse-color)',
-  border: '1px solid var(--border-color)',
-})
-
-const cinemaIconStyle = css({
-  display: 'block',
 })
 
 const posterLinkStyle = css({
-  gridRow: '1 / span 2',
-  alignSelf: 'start',
+  flex: 'none',
   display: 'block',
   width: '48px',
   height: '72px',
@@ -134,28 +76,6 @@ const screeningRowLinkStyle = css({
 const unmatchedPosterPlaceholderStyle = css({
   backgroundColor: 'transparent',
 })
-
-type CinemaIconProps = {
-  cinema: Cinema
-}
-
-const CinemaIcon = ({ cinema }: CinemaIconProps) => {
-  if (!cinema.logo) {
-    return null
-  }
-
-  return (
-    <span className={cinemaIconFrameStyle}>
-      <Image
-        src={`/images/${cinema.logo}`}
-        width={14}
-        height={14}
-        alt={`Logo for ${cinema.name}`}
-        className={cinemaIconStyle}
-      />
-    </span>
-  )
-}
 
 export const ScreeningRow = ({
   url,
@@ -189,53 +109,37 @@ export const ScreeningRow = ({
   const movieUrl =
     movieHref ?? (movieSlug ? getMoviePagePath(movieSlug) : undefined)
 
-  const hasSecondLine = showTitle ? showCinema : showCinema && showCity
-  const hasPoster = showPoster && (posterUrl || movieUrl)
-  // a lone line is centered next to a poster, and a row without a poster is lower
-  const centered = !hasSecondLine && Boolean(hasPoster)
+  const mainLine = showTitle ? (
+    <>
+      {title}
+      {year ? <span className={listYearStyle}> ({year})</span> : null}
+    </>
+  ) : showCinema ? (
+    cinema.name
+  ) : null
+  const secondLine = showTitle
+    ? showCinema
+      ? `${cinema.name}${showCity ? ` | ${cinema.city.name}` : ''}`
+      : null
+    : showCinema && showCity
+      ? cinema.city.name
+      : null
 
   return (
-    <div
-      className={
-        hasSecondLine || hasPoster ? containerStyle : compactContainerStyle
-      }
-    >
+    <div className={containerStyle}>
       <a
         href={url}
         aria-label={`Open screening for ${title}`}
         className={screeningRowLinkStyle}
       />
-      <div className={centered ? timeCenteredStyle : timeStyle}>
+      <div className={textGridStyle}>
         <Time>{date}</Time>
-      </div>
-      <div className={contentStyle}>
-        {showTitle ? (
-          <div
-            className={centered ? titleCenteredStyle : listTitleStyle}
-            style={{ pointerEvents: 'none' }}
-          >
-            {title}
-            {year ? <span className={listYearStyle}> ({year})</span> : null}
-          </div>
-        ) : null}
-        {showTitle && showCinema ? (
-          <div className={cinemaInfoStyle}>
-            <CinemaIcon cinema={cinema} />
-            {cinema.name}
-            {showCity ? <> | {cinema.city.name}</> : null}
-          </div>
-        ) : null}
-        {!showTitle && showCinema ? (
-          <>
-            <div className={cinemaNameStyle}>
-              <CinemaIcon cinema={cinema} />
-              {cinema.name}
-            </div>
-            {showCity ? (
-              <div className={cityStyle}>{cinema.city.name}</div>
-            ) : null}
-          </>
-        ) : null}
+        <div className={textStyle}>
+          {mainLine ? <div className={mainLineStyle}>{mainLine}</div> : null}
+          {secondLine ? (
+            <div className={secondLineStyle}>{secondLine}</div>
+          ) : null}
+        </div>
       </div>
       {showPoster ? (
         posterUrl ? (
