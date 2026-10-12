@@ -39,12 +39,12 @@ const pageStyle = css({
   gap: '16px',
 })
 
-// The poster (2:3) and the trailer (16:9) share one height, which shrinks with
-// the viewport so that both always fit next to each other
+// The poster (2:3) and the trailer (16:9) share one height, which follows the
+// width of the page (up to its 992px max) so that together they fill the row
 const mediaRowStyle = css({
   display: 'flex',
   gap: '16px',
-  height: 'min(300px, calc((100vw - 48px) / 2.4445))',
+  height: 'calc((min(100vw, 992px) - 48px) / 2.4445)',
 })
 
 const posterWrapStyle = css({

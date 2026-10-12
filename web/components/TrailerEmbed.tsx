@@ -7,11 +7,10 @@ import { css } from 'styled-system/css'
 
 const thumbnailStyle = css({
   position: 'relative',
-  flex: '0 1 auto',
+  flex: '1 1 0',
   boxSizing: 'border-box',
   height: '100%',
   minWidth: '0',
-  aspectRatio: '16 / 9',
   padding: '0',
   overflow: 'hidden',
   borderRadius: '8px',
