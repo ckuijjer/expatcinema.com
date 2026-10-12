@@ -18,6 +18,10 @@ const containerStyle = cx(
   listRowBaseStyle,
   css({
     position: 'relative',
+    // The browser skips the layout and paint of rows that are off-screen,
+    // 72px is the height of the row without its padding, which keeps the scrollbar steady
+    contentVisibility: 'auto',
+    containIntrinsicSize: 'auto 72px',
     display: 'grid',
     gridTemplateColumns: '[time] 60px [rest] minmax(0, 1fr) [poster] auto',
     gridTemplateRows: 'auto auto',
