@@ -7,6 +7,11 @@ import { css, cx } from 'styled-system/css'
 
 import { useSearch, useShortcut } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
+import {
+  iconBoxStyle,
+  iconButtonStyle,
+  iconLabelStyle,
+} from './iconButtonStyles'
 import { Menu } from './Menu'
 import { TextFilter } from './TextFilter'
 import CrossIcon from './icons/CrossIcon'
@@ -55,20 +60,6 @@ const navigationItemsStyle = css({
   display: 'flex',
   gap: '24px',
   alignItems: 'center',
-})
-
-const searchButtonStyle = css({
-  padding: '0',
-  border: 'none',
-  background: 'none',
-  color: 'inherit',
-  width: '32px',
-  height: '32px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  boxSizing: 'border-box',
-  cursor: 'pointer',
 })
 
 export const NavigationBar = ({ showSearch = true }) => {
@@ -143,11 +134,16 @@ export const NavigationBar = ({ showSearch = true }) => {
           {showSearch && (
             <button
               type="button"
-              className={searchButtonStyle}
+              className={iconButtonStyle}
               onClick={toggleSearch}
               aria-label={isSearchOpen ? 'Close search' : 'Search'}
             >
-              {isSearchOpen ? <CrossIcon /> : <SearchIcon />}
+              <span className={iconBoxStyle}>
+                {isSearchOpen ? <CrossIcon /> : <SearchIcon />}
+              </span>
+              <span className={iconLabelStyle}>
+                {isSearchOpen ? 'Close' : 'Search'}
+              </span>
             </button>
           )}
           <Menu />

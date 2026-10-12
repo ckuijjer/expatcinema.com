@@ -8,6 +8,11 @@ import { css, cx } from 'styled-system/css'
 import { useKeypress } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
 import { Layout } from './Layout'
+import {
+  iconBoxStyle,
+  iconButtonStyle,
+  iconLabelStyle,
+} from './iconButtonStyles'
 import CrossIcon from './icons/CrossIcon'
 import MenuIcon from './icons/MenuIcon'
 
@@ -37,19 +42,14 @@ const buttonResetStyle = {
   color: 'inherit',
 } as const
 
-const menuButtonStyle = css({
-  ...buttonResetStyle,
-  width: '32px',
-  height: '32px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  boxSizing: 'border-box',
-  cursor: 'pointer',
-  '@media (min-width: 600px)': {
-    display: 'none',
-  },
-})
+const menuButtonStyle = cx(
+  iconButtonStyle,
+  css({
+    '@media (min-width: 600px)': {
+      display: 'none',
+    },
+  }),
+)
 
 const menuModalStyle = css({
   top: '0',
@@ -114,7 +114,10 @@ export const Menu = () => {
         aria-label="Menu"
         aria-expanded={isMenuOpen}
       >
-        <MenuIcon />
+        <span className={iconBoxStyle}>
+          <MenuIcon />
+        </span>
+        <span className={iconLabelStyle}>Menu</span>
       </button>
       {isMenuOpen && (
         <div className={menuModalStyle} onClick={closeMenu}>
