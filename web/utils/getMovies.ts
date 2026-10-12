@@ -65,6 +65,9 @@ export const getMoviePosterUrl = (
   return `https://image.tmdb.org/t/p/${size}${posterPath}`
 }
 
+export const getMovieBackdropUrl = (backdropPath?: string | null) =>
+  backdropPath ? `https://image.tmdb.org/t/p/w780${backdropPath}` : undefined
+
 export const getMovieReleaseYear = (movie: Pick<Movie, 'tmdb'>) => {
   const releaseDate = movie.tmdb?.releaseDate
   if (!releaseDate) {

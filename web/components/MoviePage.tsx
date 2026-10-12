@@ -6,8 +6,13 @@ import { Duration } from 'luxon'
 import { css, cx } from 'styled-system/css'
 
 import { NavigationBar } from './NavigationBar'
+import { TrailerEmbed } from './TrailerEmbed'
 import { headerFont } from '../utils/theme'
-import { getMoviePosterUrl, getMovieReleaseYear } from '../utils/getMovies'
+import {
+  getMovieBackdropUrl,
+  getMoviePosterUrl,
+  getMovieReleaseYear,
+} from '../utils/getMovies'
 import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
 import { isEnabled, STRUCTURED_DATA_FEATURE } from '../utils/featureFlags'
@@ -25,33 +30,33 @@ import { getMovieDescription } from '../utils/seoMetadata'
 import { Calendar } from './Calendar'
 import { Layout } from './Layout'
 import { MovieLocationFilters } from './MovieLocationFilters'
-import { PageSection } from './PageSection'
 
 const pageStyle = css({
   marginTop: '16px',
   marginBottom: '16px',
-  display: 'grid',
-  gridTemplateColumns: 'minmax(0, 240px) minmax(0, 1fr)',
-  columnGap: '24px',
-  rowGap: '16px',
-  alignItems: 'start',
-  '@media (max-width: 640px)': {
-    gridTemplateColumns: 'minmax(0, 1fr)',
-  },
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+})
+
+// The poster (2:3) and the trailer (16:9) share one height, which follows the
+// width of the page (up to its 992px max) so that together they fill the row
+const mediaRowStyle = css({
+  display: 'flex',
+  gap: '16px',
+  height: 'calc((min(100vw, 992px) - 48px) / 2.4445)',
 })
 
 const posterWrapStyle = css({
   position: 'relative',
-  width: '100%',
-  maxWidth: '240px',
+  flex: '0 0 auto',
+  boxSizing: 'border-box',
+  height: '100%',
   aspectRatio: '2 / 3',
   borderRadius: '10px',
   overflow: 'hidden',
   backgroundColor: 'var(--background-highlight-color)',
   border: '1px solid var(--border-color)',
-  '@media (max-width: 640px)': {
-    maxWidth: '180px',
-  },
 })
 
 const posterStyle = css({
@@ -76,19 +81,6 @@ const titleStyle = css({
 
 const yearStyle = css({
   color: 'var(--text-subtle-color)',
-})
-
-const movieInfoStyle = css({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-  minWidth: '0',
-})
-
-const detailsStyle = css({
-  display: 'grid',
-  rowGap: '12px',
-  marginTop: '4px',
 })
 
 const descriptionStyle = css({
@@ -123,28 +115,11 @@ const linkRowStyle = css({
   flexWrap: 'wrap',
 })
 
-const trailerSectionStyle = css({
-  display: 'grid',
-  rowGap: '12px',
-})
-
-const trailerEmbedStyle = css({
-  position: 'relative',
-  width: '100%',
-  aspectRatio: '16 / 9',
-  overflow: 'hidden',
-  borderRadius: '12px',
-  border: '1px solid var(--border-color)',
-  backgroundColor: 'var(--background-highlight-color)',
-  maxWidth: '960px',
-})
-
-const trailerFrameStyle = css({
-  position: 'absolute',
-  inset: '0',
-  width: '100%',
-  height: '100%',
-  border: '0',
+const titleBlockStyle = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  minWidth: '0',
 })
 
 // TMDB returns original_language as an ISO 639-1 code, but uses some non-standard
@@ -295,20 +270,7 @@ export const MoviePage = ({
       </Suspense>
       <Layout>
         <div className={pageStyle}>
-          <div className={posterWrapStyle}>
-            {posterUrl ? (
-              <Image
-                src={posterUrl}
-                fill
-                alt={`Poster for ${movie.title}`}
-                className={posterStyle}
-                sizes="(max-width: 640px) 180px, 240px"
-              />
-            ) : (
-              <div aria-hidden className={posterPlaceholderStyle} />
-            )}
-          </div>
-          <div className={movieInfoStyle}>
+          <div className={titleBlockStyle}>
             <h1 className={cx(titleStyle, headerFont.className)}>
               {movie.title}
               {year ? <span className={yearStyle}> ({year})</span> : null}
@@ -324,47 +286,52 @@ export const MoviePage = ({
                 {originalTitle}
               </p>
             ) : null}
-            <div className={detailsStyle}>
-              {description ? (
-                <p className={descriptionStyle}>{description}</p>
-              ) : null}
-              <div className={metadataStyle}>
-                <MetadataRow label="Director" value={directors} />
-                <MetadataRow label="Genre" value={genres} />
-                <MetadataRow label="Language" value={originalLanguage} />
-                <MetadataRow label="Subtitles" value="English" />
-                <MetadataRow label="Runtime" value={runtime} />
-                <MetadataRow
-                  label="Rating"
-                  value={voteAverage ? `${voteAverage}/10` : undefined}
+          </div>
+          <div className={mediaRowStyle}>
+            <div className={posterWrapStyle}>
+              {posterUrl ? (
+                <Image
+                  src={posterUrl}
+                  fill
+                  alt={`Poster for ${movie.title}`}
+                  className={posterStyle}
+                  sizes="200px"
                 />
-              </div>
-            </div>
-            <div className={linkRowStyle}>
-              {tmdbHref ? (
-                <ExternalLink href={tmdbHref}>TMDB</ExternalLink>
-              ) : null}
-              {imdbHref ? (
-                <ExternalLink href={imdbHref}>IMDb</ExternalLink>
-              ) : null}
+              ) : (
+                <div aria-hidden className={posterPlaceholderStyle} />
+              )}
             </div>
             {trailer?.key ? (
-              <div className={trailerSectionStyle}>
-                <PageSection>Trailer</PageSection>
-                <div className={trailerEmbedStyle}>
-                  <iframe
-                    className={trailerFrameStyle}
-                    src={`https://www.youtube-nocookie.com/embed/${trailer.key}?rel=0`}
-                    title={`Trailer for ${movie.title}`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    loading="lazy"
-                  />
-                </div>
-              </div>
+              <TrailerEmbed
+                videoKey={trailer.key}
+                title={movie.title}
+                backdropUrl={getMovieBackdropUrl(movie.tmdb?.backdropPath)}
+              />
             ) : null}
           </div>
-          <div style={{ gridColumn: '1 / -1' }}>
+          {description ? (
+            <p className={descriptionStyle}>{description}</p>
+          ) : null}
+          <div className={metadataStyle}>
+            <MetadataRow label="Director" value={directors} />
+            <MetadataRow label="Genre" value={genres} />
+            <MetadataRow label="Language" value={originalLanguage} />
+            <MetadataRow label="Subtitles" value="English" />
+            <MetadataRow label="Runtime" value={runtime} />
+            <MetadataRow
+              label="Rating"
+              value={voteAverage ? `${voteAverage}/10` : undefined}
+            />
+          </div>
+          <div className={linkRowStyle}>
+            {tmdbHref ? (
+              <ExternalLink href={tmdbHref}>TMDB</ExternalLink>
+            ) : null}
+            {imdbHref ? (
+              <ExternalLink href={imdbHref}>IMDb</ExternalLink>
+            ) : null}
+          </div>
+          <div>
             <MovieLocationFilters
               movieSlug={movieSlug}
               screenings={availableScreenings}
@@ -373,11 +340,11 @@ export const MoviePage = ({
             />
           </div>
           {currentCity && currentCinema && cinemaData ? (
-            <div style={{ gridColumn: '1 / -1' }}>
+            <div>
               <CinemaInfoBar cinema={cinemaData} />
             </div>
           ) : null}
-          <div style={{ gridColumn: '1 / -1' }}>
+          <div>
             <Suspense>
               <Calendar
                 screenings={screenings}
