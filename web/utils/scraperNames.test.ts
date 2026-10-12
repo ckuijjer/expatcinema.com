@@ -22,6 +22,7 @@ describe('getScraperName', () => {
     ['kinorotterdam', 'Kino'],
     ['hartlooper', 'Louis Hartlooper Complex'],
     ['allWithMovieId', 'Matched with TMDB'],
+    ['bioscopenleiden', 'Kijkhuis, Trianon, Lido'],
   ])('shows %s as %s', (key, name) => {
     expect(getScraperName(key)).toBe(name)
   })
