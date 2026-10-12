@@ -34,28 +34,29 @@ import { MovieLocationFilters } from './MovieLocationFilters'
 const pageStyle = css({
   marginTop: '16px',
   marginBottom: '16px',
-  display: 'grid',
-  gridTemplateColumns: 'minmax(0, 240px) minmax(0, 1fr)',
-  columnGap: '24px',
-  rowGap: '16px',
-  alignItems: 'start',
-  '@media (max-width: 640px)': {
-    gridTemplateColumns: 'minmax(0, 1fr)',
-  },
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+})
+
+// The poster (2:3) and the trailer (16:9) share one height, which shrinks with
+// the viewport so that both always fit next to each other
+const mediaRowStyle = css({
+  display: 'flex',
+  gap: '16px',
+  height: 'min(300px, calc((100vw - 48px) / 2.4445))',
 })
 
 const posterWrapStyle = css({
   position: 'relative',
-  width: '100%',
-  maxWidth: '240px',
+  flex: '0 0 auto',
+  boxSizing: 'border-box',
+  height: '100%',
   aspectRatio: '2 / 3',
   borderRadius: '10px',
   overflow: 'hidden',
   backgroundColor: 'var(--background-highlight-color)',
   border: '1px solid var(--border-color)',
-  '@media (max-width: 640px)': {
-    maxWidth: '180px',
-  },
 })
 
 const posterStyle = css({
@@ -80,19 +81,6 @@ const titleStyle = css({
 
 const yearStyle = css({
   color: 'var(--text-subtle-color)',
-})
-
-const movieInfoStyle = css({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-  minWidth: '0',
-})
-
-const detailsStyle = css({
-  display: 'grid',
-  rowGap: '12px',
-  marginTop: '4px',
 })
 
 const descriptionStyle = css({
@@ -127,27 +115,11 @@ const linkRowStyle = css({
   flexWrap: 'wrap',
 })
 
-const headerRowStyle = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  alignItems: 'flex-start',
-  justifyContent: 'space-between',
-  gap: '12px 24px',
-  '@media (max-width: 640px)': {
-    flexWrap: 'nowrap',
-    gap: '12px',
-  },
-})
-
 const titleBlockStyle = css({
   display: 'flex',
   flexDirection: 'column',
   gap: '8px',
   minWidth: '0',
-  flex: '1 1 280px',
-  '@media (max-width: 640px)': {
-    flexBasis: '0',
-  },
 })
 
 // TMDB returns original_language as an ISO 639-1 code, but uses some non-standard
@@ -298,72 +270,68 @@ export const MoviePage = ({
       </Suspense>
       <Layout>
         <div className={pageStyle}>
-          <div className={posterWrapStyle}>
-            {posterUrl ? (
-              <Image
-                src={posterUrl}
-                fill
-                alt={`Poster for ${movie.title}`}
-                className={posterStyle}
-                sizes="(max-width: 640px) 180px, 240px"
+          <div className={titleBlockStyle}>
+            <h1 className={cx(titleStyle, headerFont.className)}>
+              {movie.title}
+              {year ? <span className={yearStyle}> ({year})</span> : null}
+            </h1>
+            {showOriginalTitle ? (
+              <p
+                className={css({
+                  margin: '0',
+                  fontSize: '20px',
+                  color: 'var(--text-muted-color)',
+                })}
+              >
+                {originalTitle}
+              </p>
+            ) : null}
+          </div>
+          <div className={mediaRowStyle}>
+            <div className={posterWrapStyle}>
+              {posterUrl ? (
+                <Image
+                  src={posterUrl}
+                  fill
+                  alt={`Poster for ${movie.title}`}
+                  className={posterStyle}
+                  sizes="200px"
+                />
+              ) : (
+                <div aria-hidden className={posterPlaceholderStyle} />
+              )}
+            </div>
+            {trailer?.key ? (
+              <TrailerEmbed
+                videoKey={trailer.key}
+                title={movie.title}
+                backdropUrl={getMovieBackdropUrl(movie.tmdb?.backdropPath)}
               />
-            ) : (
-              <div aria-hidden className={posterPlaceholderStyle} />
-            )}
+            ) : null}
           </div>
-          <div className={movieInfoStyle}>
-            <div className={headerRowStyle}>
-              <div className={titleBlockStyle}>
-                <h1 className={cx(titleStyle, headerFont.className)}>
-                  {movie.title}
-                  {year ? <span className={yearStyle}> ({year})</span> : null}
-                </h1>
-                {showOriginalTitle ? (
-                  <p
-                    className={css({
-                      margin: '0',
-                      fontSize: '20px',
-                      color: 'var(--text-muted-color)',
-                    })}
-                  >
-                    {originalTitle}
-                  </p>
-                ) : null}
-              </div>
-              {trailer?.key ? (
-                <TrailerEmbed
-                  videoKey={trailer.key}
-                  title={movie.title}
-                  backdropUrl={getMovieBackdropUrl(movie.tmdb?.backdropPath)}
-                />
-              ) : null}
-            </div>
-            <div className={detailsStyle}>
-              <div className={metadataStyle}>
-                <MetadataRow label="Director" value={directors} />
-                <MetadataRow label="Genre" value={genres} />
-                <MetadataRow label="Language" value={originalLanguage} />
-                <MetadataRow label="Subtitles" value="English" />
-                <MetadataRow label="Runtime" value={runtime} />
-                <MetadataRow
-                  label="Rating"
-                  value={voteAverage ? `${voteAverage}/10` : undefined}
-                />
-              </div>
-              {description ? (
-                <p className={descriptionStyle}>{description}</p>
-              ) : null}
-            </div>
-            <div className={linkRowStyle}>
-              {tmdbHref ? (
-                <ExternalLink href={tmdbHref}>TMDB</ExternalLink>
-              ) : null}
-              {imdbHref ? (
-                <ExternalLink href={imdbHref}>IMDb</ExternalLink>
-              ) : null}
-            </div>
+          {description ? (
+            <p className={descriptionStyle}>{description}</p>
+          ) : null}
+          <div className={metadataStyle}>
+            <MetadataRow label="Director" value={directors} />
+            <MetadataRow label="Genre" value={genres} />
+            <MetadataRow label="Language" value={originalLanguage} />
+            <MetadataRow label="Subtitles" value="English" />
+            <MetadataRow label="Runtime" value={runtime} />
+            <MetadataRow
+              label="Rating"
+              value={voteAverage ? `${voteAverage}/10` : undefined}
+            />
           </div>
-          <div style={{ gridColumn: '1 / -1' }}>
+          <div className={linkRowStyle}>
+            {tmdbHref ? (
+              <ExternalLink href={tmdbHref}>TMDB</ExternalLink>
+            ) : null}
+            {imdbHref ? (
+              <ExternalLink href={imdbHref}>IMDb</ExternalLink>
+            ) : null}
+          </div>
+          <div>
             <MovieLocationFilters
               movieSlug={movieSlug}
               screenings={availableScreenings}
@@ -372,11 +340,11 @@ export const MoviePage = ({
             />
           </div>
           {currentCity && currentCinema && cinemaData ? (
-            <div style={{ gridColumn: '1 / -1' }}>
+            <div>
               <CinemaInfoBar cinema={cinemaData} />
             </div>
           ) : null}
-          <div style={{ gridColumn: '1 / -1' }}>
+          <div>
             <Suspense>
               <Calendar
                 screenings={screenings}

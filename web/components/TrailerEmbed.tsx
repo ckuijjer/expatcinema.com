@@ -7,8 +7,10 @@ import { css } from 'styled-system/css'
 
 const thumbnailStyle = css({
   position: 'relative',
-  flex: '0 0 auto',
-  width: '220px',
+  flex: '0 1 auto',
+  boxSizing: 'border-box',
+  height: '100%',
+  minWidth: '0',
   aspectRatio: '16 / 9',
   padding: '0',
   overflow: 'hidden',
@@ -19,9 +21,6 @@ const thumbnailStyle = css({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  '@media (max-width: 640px)': {
-    width: '132px',
-  },
 })
 
 const backdropStyle = css({
@@ -30,16 +29,16 @@ const backdropStyle = css({
 
 const playIconStyle = css({
   position: 'relative',
-  width: '40px',
-  height: '40px',
+  width: '56px',
+  height: '56px',
   borderRadius: '50%',
   backgroundColor: 'var(--background-inverse-color)',
   color: 'var(--text-inverse-color)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '16px',
-  paddingLeft: '2px',
+  fontSize: '22px',
+  paddingLeft: '3px',
   boxShadow: '0 2px 12px rgba(0, 0, 0, 0.4)',
 })
 
@@ -120,7 +119,7 @@ export const TrailerEmbed = ({
             src={backdropUrl}
             alt=""
             fill
-            sizes="220px"
+            sizes="540px"
             className={backdropStyle}
           />
         ) : null}
