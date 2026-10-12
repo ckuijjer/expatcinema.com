@@ -75,7 +75,7 @@ const titleStyle = css({
 })
 
 const yearStyle = css({
-  color: 'color-mix(in srgb, var(--text-color) 45%, transparent)',
+  color: 'var(--text-subtle-color)',
 })
 
 const movieInfoStyle = css({
