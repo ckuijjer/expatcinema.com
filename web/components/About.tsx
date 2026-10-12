@@ -58,7 +58,7 @@ export const About = () => {
       <Layout backgroundColor="var(--palette-purple-600)">
         <NavigationBar showSearch={false} />
       </Layout>
-      <Layout>
+      <Layout as="main">
         <PageTitle>About</PageTitle>
         <div className={containerStyle}>
           <p>

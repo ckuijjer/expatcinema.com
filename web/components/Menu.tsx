@@ -25,6 +25,12 @@ const menuTextItemStyle = css({
   fontWeight: '700',
   color: 'var(--text-inverse-color)',
   textDecoration: 'none',
+})
+
+const mainNavStyle = css({
+  display: 'flex',
+  gap: '24px',
+  alignItems: 'center',
   '@media (max-width: 600px)': {
     display: 'none',
   },
@@ -95,18 +101,20 @@ export const Menu = () => {
 
   return (
     <>
-      <Link
-        href="/movie"
-        className={cx(menuTextItemStyle, headerFont.className)}
-      >
-        Movies
-      </Link>
-      <Link
-        href="/about"
-        className={cx(menuTextItemStyle, headerFont.className)}
-      >
-        About
-      </Link>
+      <nav aria-label="Main" className={mainNavStyle}>
+        <Link
+          href="/movie"
+          className={cx(menuTextItemStyle, headerFont.className)}
+        >
+          Movies
+        </Link>
+        <Link
+          href="/about"
+          className={cx(menuTextItemStyle, headerFont.className)}
+        >
+          About
+        </Link>
+      </nav>
       <button
         type="button"
         className={menuButtonStyle}
@@ -119,7 +127,7 @@ export const Menu = () => {
       {isMenuOpen && (
         <div className={menuModalStyle} onClick={closeMenu}>
           <Layout>
-            <div className={menuModalContentStyle}>
+            <nav aria-label="Menu" className={menuModalContentStyle}>
               <button
                 type="button"
                 className={menuCloseButtonStyle}
@@ -146,7 +154,7 @@ export const Menu = () => {
               >
                 About
               </Link>
-            </div>
+            </nav>
           </Layout>
         </div>
       )}

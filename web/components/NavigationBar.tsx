@@ -100,7 +100,7 @@ export const NavigationBar = ({ showSearch = true }) => {
 
   return (
     <>
-      <div className={containerStyle}>
+      <header className={containerStyle}>
         <div className={titleContainerStyle}>
           {isSearchOpen ? (
             <TextFilter />
@@ -128,7 +128,7 @@ export const NavigationBar = ({ showSearch = true }) => {
           )}
           <Menu />
         </div>
-      </div>
+      </header>
     </>
   )
 }

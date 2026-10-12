@@ -119,7 +119,7 @@ export const UnmatchedMoviesOverview = ({
   })
 
   return (
-    <Layout>
+    <Layout as="main">
       <div className={pageStyle}>
         <div>
           <PageTitle>

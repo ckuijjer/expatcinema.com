@@ -40,6 +40,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={bodyFont.className}>
         <GoogleAnalytics />
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         {children}
       </body>
     </html>

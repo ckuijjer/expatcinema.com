@@ -23,19 +23,24 @@ export const pageContentStyle = cva({
 })
 
 type LayoutProps = {
+  as?: 'div' | 'main' | 'header'
   backgroundColor?: React.CSSProperties['backgroundColor']
   noPadding?: boolean
   children: React.ReactNode
 }
 
 export const Layout = ({
+  as: Element = 'div',
   backgroundColor,
   noPadding = false,
   children,
 }: LayoutProps) => {
   return (
-    <div style={{ backgroundColor }}>
+    <Element
+      id={Element === 'main' ? 'main-content' : undefined}
+      style={{ backgroundColor }}
+    >
       <div className={pageContentStyle({ noPadding })}>{children}</div>
-    </div>
+    </Element>
   )
 }

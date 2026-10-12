@@ -293,7 +293,7 @@ export const MoviePage = ({
           <NavigationBar />
         </Layout>
       </Suspense>
-      <Layout>
+      <Layout as="main">
         <div className={pageStyle}>
           <div className={posterWrapStyle}>
             {posterUrl ? (

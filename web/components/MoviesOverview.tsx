@@ -152,7 +152,7 @@ export const MoviesOverview = ({ movies }: { movies: Movie[] }) => {
   })
 
   return (
-    <Layout>
+    <Layout as="main">
       <div className={pageStyle}>
         <div>
           <PageTitle>Movies</PageTitle>
