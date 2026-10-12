@@ -8,11 +8,7 @@ import { css, cx } from 'styled-system/css'
 import { useKeypress } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
 import { Layout } from './Layout'
-import {
-  iconBoxStyle,
-  iconButtonStyle,
-  iconLabelStyle,
-} from './iconButtonStyles'
+import { iconButtonStyle, iconLabelStyle } from './iconButtonStyles'
 import CrossIcon from './icons/CrossIcon'
 import MenuIcon from './icons/MenuIcon'
 
@@ -114,9 +110,7 @@ export const Menu = () => {
         aria-label="Menu"
         aria-expanded={isMenuOpen}
       >
-        <span className={iconBoxStyle}>
-          <MenuIcon />
-        </span>
+        <MenuIcon />
         <span className={iconLabelStyle}>Menu</span>
       </button>
       {isMenuOpen && (

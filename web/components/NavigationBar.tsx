@@ -7,11 +7,7 @@ import { css, cx } from 'styled-system/css'
 
 import { useSearch, useShortcut } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
-import {
-  iconBoxStyle,
-  iconButtonStyle,
-  iconLabelStyle,
-} from './iconButtonStyles'
+import { iconButtonStyle, iconLabelStyle } from './iconButtonStyles'
 import { Menu } from './Menu'
 import { TextFilter } from './TextFilter'
 import CrossIcon from './icons/CrossIcon'
@@ -138,9 +134,7 @@ export const NavigationBar = ({ showSearch = true }) => {
               onClick={toggleSearch}
               aria-label={isSearchOpen ? 'Close search' : 'Search'}
             >
-              <span className={iconBoxStyle}>
-                {isSearchOpen ? <CrossIcon /> : <SearchIcon />}
-              </span>
+              {isSearchOpen ? <CrossIcon /> : <SearchIcon />}
               <span className={iconLabelStyle}>
                 {isSearchOpen ? 'Close' : 'Search'}
               </span>
