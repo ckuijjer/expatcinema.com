@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import type { Screening } from './getScreenings'
 
 export const defaultDescription =
@@ -103,3 +105,13 @@ export const buildMovieDescription = (
 
 export const getMovieDescription = (movieTitle: string, overview?: string) =>
   truncateDescription(overview ? overview : movieTitle)
+
+// A page's openGraph and twitter replace the ones of the root layout as a whole,
+// so the site name, type and card are repeated here next to the page's own title and description
+export const buildSocialMetadata = (
+  title: string,
+  description: string,
+): Pick<Metadata, 'openGraph' | 'twitter'> => ({
+  openGraph: { type: 'website', siteName: 'Expat Cinema', title, description },
+  twitter: { card: 'summary', creator: 'Expat Cinema', title, description },
+})
