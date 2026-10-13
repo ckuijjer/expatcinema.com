@@ -6,8 +6,10 @@ const chipsStyle = css({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '8px',
-  marginTop: '8px',
-  marginBottom: '12px',
+  // the same air as the rows of the other movie pages: 16px above and below,
+  // on top of the 4px under the date heading and the 2px between rows
+  marginTop: '16px',
+  marginBottom: '18px',
 })
 
 const chipStyle = css({
