@@ -32,7 +32,7 @@ import { Layout } from './Layout'
 import { MovieLocationFilters } from './MovieLocationFilters'
 
 const pageStyle = css({
-  marginTop: '16px',
+  marginTop: '28px',
   marginBottom: '16px',
   display: 'flex',
   flexDirection: 'column',
