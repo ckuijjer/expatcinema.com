@@ -35,11 +35,18 @@ const listRowProps = {
 
 export const listRowBaseStyle = css({ ...listRowProps, minHeight: '72px' })
 
-// Screening rows: all the same height (the 72px poster, padding is added), with the content centered
+// Screening rows, with the content centered. A row with a poster is at least as high
+// as the poster (72px plus padding), a row without one is as high as its text, which
+// is still more than the 44px that is needed to tap it
 export const listRowCenteredStyle = css({
   ...listRowProps,
   alignItems: 'center',
   minHeight: '72px',
+})
+
+export const listRowTextOnlyStyle = css({
+  ...listRowProps,
+  alignItems: 'center',
 })
 
 export const listPosterStyle = css({
