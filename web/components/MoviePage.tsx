@@ -70,8 +70,8 @@ const posterPlaceholderStyle = css({
   backgroundColor: 'var(--background-highlight-color)',
 })
 
-// the 16px gap of the page plus 12px makes the 28px above a page title
-const cinemaTitleWrapStyle = css({ marginTop: '12px' })
+// the 16px gap of the page plus 24px, as on the cinema page
+const cinemaTitleWrapStyle = css({ marginTop: '24px' })
 
 const yearStyle = css({
   color: 'var(--text-subtle-color)',

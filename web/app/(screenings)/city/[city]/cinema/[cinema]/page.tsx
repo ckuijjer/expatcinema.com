@@ -16,7 +16,7 @@ import {
 } from '../../../../../../utils/seoMetadata'
 import { getCanonicalUrl } from '../../../../../../utils/siteUrl'
 
-const titleWrapStyle = css({ marginTop: '28px', marginBottom: '16px' })
+const titleWrapStyle = css({ marginTop: '40px', marginBottom: '16px' })
 
 export const generateStaticParams = () =>
   cinemas.map((cinema) => ({
