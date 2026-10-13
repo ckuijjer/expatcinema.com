@@ -8,7 +8,11 @@ import { css, cx } from 'styled-system/css'
 import { useKeypress } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
 import { Layout } from './Layout'
-import { iconBoxStyle, iconButtonStyle, iconLabelStyle } from './iconButtonStyles'
+import {
+  iconBoxStyle,
+  iconButtonStyle,
+  iconLabelStyle,
+} from './iconButtonStyles'
 import CrossIcon from './icons/CrossIcon'
 import MenuIcon from './icons/MenuIcon'
 
@@ -30,13 +34,6 @@ const menuTextItemStyle = css({
     display: 'none',
   },
 })
-
-const buttonResetStyle = {
-  padding: '0',
-  border: 'none',
-  background: 'none',
-  color: 'inherit',
-} as const
 
 const menuButtonStyle = cx(
   iconButtonStyle,
@@ -64,19 +61,14 @@ const menuModalContentStyle = css({
   paddingTop: '64px',
 })
 
-const menuCloseButtonStyle = css({
-  ...buttonResetStyle,
-  position: 'absolute',
-  top: '28px',
-  right: '0',
-  width: '32px',
-  height: '32px',
-  boxSizing: 'border-box',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-})
+const menuCloseButtonStyle = cx(
+  iconButtonStyle,
+  css({
+    position: 'absolute',
+    top: '18px',
+    right: '0',
+  }),
+)
 
 export const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -125,7 +117,10 @@ export const Menu = () => {
                 onClick={closeMenu}
                 aria-label="Close menu"
               >
-                <CrossIcon color="var(--text-inverse-color)" />
+                <span className={iconBoxStyle}>
+                  <CrossIcon color="var(--text-inverse-color)" />
+                </span>
+                <span className={iconLabelStyle}>Close</span>
               </button>
               <Link
                 href="/"
