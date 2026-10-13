@@ -35,12 +35,16 @@ export const Calendar = ({
   screenings,
   showCity,
   showPoster = true,
+  showTitle = true,
+  runtimeMinutes,
   currentCity,
   currentCinema,
 }: {
   screenings: Screening[]
   showCity: boolean
   showPoster?: boolean
+  showTitle?: boolean
+  runtimeMinutes?: number | null
   currentCity?: string
   currentCinema?: string
 }) => {
@@ -103,8 +107,12 @@ export const Calendar = ({
       ) : (
         <DirectCalendar
           rows={rows}
-          showCity={showCity}
+          // what the page already says is left out of the rows
+          showCity={showCity && !currentCity}
+          showCinema={!currentCinema}
+          showTitle={showTitle}
           showPoster={showPoster}
+          runtimeMinutes={runtimeMinutes}
         />
       )}
     </div>

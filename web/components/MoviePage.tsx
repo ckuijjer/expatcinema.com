@@ -350,6 +350,8 @@ export const MoviePage = ({
                 screenings={screenings}
                 showCity={showCity}
                 showPoster={false}
+                showTitle={false}
+                runtimeMinutes={movie.tmdb?.runtime}
                 currentCity={currentCity}
                 currentCinema={currentCinema}
               />
