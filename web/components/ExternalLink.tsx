@@ -3,7 +3,7 @@ import { css } from 'styled-system/css'
 import { ExternalLinkIcon } from './ExternalLinkIcon'
 
 const externalLinkStyle = css({
-  color: 'var(--secondary-color)',
+  color: 'var(--link-color)',
   textDecoration: 'underline',
   textUnderlineOffset: '2px',
   '&:hover': {

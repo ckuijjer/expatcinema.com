@@ -47,7 +47,7 @@ const footerStyle = css({
 })
 
 const textLinkStyle = css({
-  color: 'var(--secondary-color)',
+  color: 'var(--link-color)',
 })
 
 const rowStyle = css({

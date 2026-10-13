@@ -26,7 +26,7 @@ const cityLinkStyle = css({
 })
 
 const textLinkStyle = css({
-  color: 'var(--secondary-color)',
+  color: 'var(--link-color)',
   textDecoration: 'underline',
   textUnderlineOffset: '2px',
   '&:hover': {

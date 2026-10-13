@@ -20,6 +20,8 @@
 
   --primary-color: var(--palette-purple-300);
   --secondary-color: var(--palette-purple-400);
+  /* text links, readable on the background in both themes */
+  --link-color: var(--palette-purple-400);
 }
 
 @layer reset, base, tokens, recipes, utilities;
@@ -31,6 +33,7 @@
     --background-color: var(--palette-purple-600);
     --background-highlight-color: var(--palette-purple-500);
     --border-color: color-mix(in srgb, var(--text-color) 18%, transparent);
+    --link-color: var(--palette-purple-300);
   }
 }
 
