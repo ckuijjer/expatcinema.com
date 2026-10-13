@@ -119,7 +119,7 @@ export const ScreeningRow = ({
   ) : null
   const secondLine = showTitle
     ? showCinema
-      ? `${cinema.name}${showCity ? ` | ${cinema.city.name}` : ''}`
+      ? `${cinema.name}${showCity ? `, ${cinema.city.name}` : ''}`
       : null
     : showCinema && showCity
       ? cinema.city.name
