@@ -10,7 +10,10 @@ export const listContainerStyle = css({
 export const listSectionTitleStyle = css({
   fontSize: '16px',
   fontWeight: '700',
-  margin: '12px 0',
+  // the rows below have 12px padding of their own, so 4px is enough underneath
+  // and the 28px on top (plus the 12px of the row above) separates the days
+  margin: '28px 0 4px',
+  lineHeight: '1.4',
   color: 'var(--text-color)',
 })
 
