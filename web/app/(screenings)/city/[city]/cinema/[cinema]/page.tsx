@@ -8,7 +8,10 @@ import cinemas from '../../../../../../data/cinema.json'
 import { getCinema } from '../../../../../../utils/getCinema'
 import { getCity } from '../../../../../../utils/getCity'
 import { getScreenings } from '../../../../../../utils/getScreenings'
-import { buildCinemaDescription } from '../../../../../../utils/seoMetadata'
+import {
+  buildCinemaDescription,
+  buildSocialMetadata,
+} from '../../../../../../utils/seoMetadata'
 import { getCanonicalUrl } from '../../../../../../utils/siteUrl'
 
 export const generateStaticParams = () =>
@@ -27,12 +30,16 @@ export async function generateMetadata({
   const cinemaName = cinemaData?.name ?? cinema
   const cityName = getCity(cinemaData?.city ?? city)?.name ?? city
 
+  const title = `Foreign movies with English subtitles at ${cinemaName}, ${cityName} – Expat Cinema`
+  const description = buildCinemaDescription(cinemaName, cityName)
+
   return {
-    title: `Foreign movies with English subtitles at ${cinemaName}, ${cityName} – Expat Cinema`,
-    description: buildCinemaDescription(cinemaName, cityName),
+    title,
+    description,
     alternates: {
       canonical: getCanonicalUrl(`/city/${city}/cinema/${cinema}`),
     },
+    ...buildSocialMetadata(title, description),
   }
 }
 

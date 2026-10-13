@@ -5,7 +5,10 @@ import { App } from '../../../../components/App'
 import cities from '../../../../data/city.json'
 import { getCity } from '../../../../utils/getCity'
 import { getScreenings } from '../../../../utils/getScreenings'
-import { buildCityDescription } from '../../../../utils/seoMetadata'
+import {
+  buildCityDescription,
+  buildSocialMetadata,
+} from '../../../../utils/seoMetadata'
 import { getCanonicalUrl } from '../../../../utils/siteUrl'
 
 export const generateStaticParams = () =>
@@ -22,10 +25,14 @@ export async function generateMetadata({
     (screening) => screening.cinema.city.slug === city,
   )
 
+  const title = `Foreign movies with English subtitles in ${cityName} – Expat Cinema`
+  const description = buildCityDescription(cityName, screenings)
+
   return {
-    title: `Foreign movies with English subtitles in ${cityName} – Expat Cinema`,
-    description: buildCityDescription(cityName, screenings),
+    title,
+    description,
     alternates: { canonical: getCanonicalUrl(`/city/${city}`) },
+    ...buildSocialMetadata(title, description),
   }
 }
 
