@@ -6,7 +6,7 @@ const chipsStyle = css({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '8px',
-  marginTop: '4px',
+  marginTop: '8px',
   marginBottom: '12px',
 })
 
