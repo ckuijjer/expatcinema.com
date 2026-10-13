@@ -39,3 +39,46 @@ describe('Tampopo', () => {
     ).toBe(11830)
   })
 })
+
+describe("Andiamo a Bere L'ultima", () => {
+  test("is Francesco Sossai's Le città di pianura (The Last One for the Road)", () => {
+    expect(
+      getManualTitleOverride("Andiamo a Bere L'ultima", 2025)?.tmdbId,
+    ).toBe(1462322)
+  })
+})
+
+describe('Suzaki Paradise Red Light', () => {
+  test("is Yuzo Kawashima's Suzaki Paradise: Red Light District", () => {
+    expect(
+      getManualTitleOverride('Suzaki Paradise Red Light', 1956)?.tmdbId,
+    ).toBe(125222)
+  })
+})
+
+describe('Temple of the Wild Geese', () => {
+  test("is Yuzo Kawashima's The Temple of Wild Geese", () => {
+    expect(
+      getManualTitleOverride('Temple of the Wild Geese', 1962)?.tmdbId,
+    ).toBe(333361)
+  })
+})
+
+describe('The Sun in the Last Days of the Shogunate', () => {
+  test('is the 1957 Yuzo Kawashima film, not the 2017 film of the same English title', () => {
+    expect(
+      getManualTitleOverride('The Sun in the Last Days of the Shogunate', 1957)
+        ?.tmdbId,
+    ).toBe(125217)
+  })
+})
+
+describe('No Way Down', () => {
+  // Lab111 scrapes this as "Imagine Film Festival: No Way Down"; the shared-label
+  // retry strips the festival prefix and looks up "No Way Down" again, so one
+  // override entry covers both De Filmhallen and Lab111.
+  test('is Kraken', () => {
+    expect(getManualTitleOverride('No Way Down', 2026)?.tmdbId).toBe(1571766)
+    expect(getManualTitleOverride('No Way Down')?.tmdbId).toBe(1571766)
+  })
+})
