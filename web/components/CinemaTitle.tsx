@@ -1,42 +1,42 @@
 import { css, cx } from 'styled-system/css'
 
 import { headerFont } from '../utils/theme'
-import { ExternalLinkIcon } from './ExternalLinkIcon'
+import { ExternalLink } from './ExternalLink'
 import { bigTitleStyle } from './titleStyles'
 
-const linkStyle = css({
-  display: 'inline-block',
-  // the padding makes the tap target bigger than the icon
-  // (cancelled with a negative margin, so that it does not make the title higher)
-  padding: '8px',
-  margin: '-8px -8px -8px 0',
-  color: 'var(--secondary-color)',
-  verticalAlign: 'middle',
-  '&:hover': {
-    opacity: '0.75',
-  },
+const blockStyle = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  minWidth: '0',
 })
 
-// The name of the cinema with a link to its website. The address and the Google Maps
-// link stay in the cinema data, for the structured data of the cinema.
+const linkRowStyle = css({
+  display: 'flex',
+  gap: '8px 14px',
+  flexWrap: 'wrap',
+  // as the links in the old info card
+  fontSize: '15px',
+  lineHeight: '1.35',
+})
+
+// The name of the cinema with the links to its website and to its location on Google Maps.
+// The address itself is not shown, but stays in the cinema data for the structured data.
 // On a page that has a title of its own (a movie) this is an h2
 export const CinemaTitle = ({
   cinema,
   as: Tag = 'h1',
 }: {
-  cinema: { name: string; url: string }
+  cinema: { name: string; url: string; address: { googleMapsUrl: string } }
   as?: 'h1' | 'h2'
 }) => (
-  <Tag className={cx(bigTitleStyle, headerFont.className)}>
-    {cinema.name}
-    <a
-      href={cinema.url}
-      target="_blank"
-      rel="noreferrer"
-      className={linkStyle}
-      aria-label={`Website of ${cinema.name}`}
-    >
-      <ExternalLinkIcon size={16} />
-    </a>
-  </Tag>
+  <div className={blockStyle}>
+    <Tag className={cx(bigTitleStyle, headerFont.className)}>{cinema.name}</Tag>
+    <div className={linkRowStyle}>
+      <ExternalLink href={cinema.url}>Website</ExternalLink>
+      <ExternalLink href={cinema.address.googleMapsUrl}>
+        Google Maps
+      </ExternalLink>
+    </div>
+  </div>
 )

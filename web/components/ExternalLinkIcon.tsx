@@ -1,7 +1,7 @@
-export const ExternalLinkIcon = ({ size = 11 }: { size?: number }) => (
+export const ExternalLinkIcon = () => (
   <svg
-    width={size}
-    height={size}
+    width="11"
+    height="11"
     viewBox="0 0 11 11"
     fill="currentColor"
     style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '2px' }}
