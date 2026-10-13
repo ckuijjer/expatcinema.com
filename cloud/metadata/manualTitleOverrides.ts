@@ -78,6 +78,41 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: "Lab111 page and TMDB agree on director (Juzo Itami), cast (Ken Watanabe, Tsutomu Yamazaki, Nobuko Miyamoto) and runtime (114 vs 115 min). The page's Release date (6 October 1988) is the Dutch release, the film is from 1985, so with a year from that date it stays unmatched.",
     addedAt: '2026-10-07',
   },
+  {
+    title: "Andiamo a Bere L'ultima",
+    year: 2025,
+    tmdbId: 1462322,
+    note: 'Lab111 and Filmtheater Hilversum agree with TMDB on director (Francesco Sossai) and runtime (100 vs 98 min); TMDB lists the film under its other title, Le città di pianura (The Last One for the Road). A plain TMDB search for the Italian title finds no candidate.',
+    addedAt: '2026-10-13',
+  },
+  {
+    title: 'Suzaki Paradise Red Light',
+    year: 1956,
+    tmdbId: 125222,
+    note: "Eye's page and TMDB agree on director (Yuzo Kawashima), runtime (81 min) and original title (洲崎パラダイス 赤信号 / Suzaki paradaisu akashingo). The resolver only finds it as a 0.76-confidence unmatched candidate because of the missing colon in Eye's title.",
+    addedAt: '2026-10-13',
+  },
+  {
+    title: 'Temple of the Wild Geese',
+    year: 1962,
+    tmdbId: 333361,
+    note: 'Eye\'s page and TMDB agree on director (Yuzo Kawashima), runtime (98 min) and original title (雁の寺). TMDB\'s title drops the leading article ("The Temple of Wild Geese"), which keeps it below the match threshold.',
+    addedAt: '2026-10-13',
+  },
+  {
+    title: 'The Sun in the Last Days of the Shogunate',
+    year: 1957,
+    tmdbId: 125217,
+    note: "Eye's page and TMDB agree on director (Yuzo Kawashima), runtime (110 min) and original title (幕末太陽傳 / Bakumatsu Taiyoden). Without this the resolver prefers a more popular 2017 film with the same English title and no release-date agreement.",
+    addedAt: '2026-10-13',
+  },
+  {
+    title: 'No Way Down',
+    year: 2026,
+    tmdbId: 1571766,
+    note: "De Filmhallen's and Lab111's (as \"Imagine Film Festival: No Way Down\") pages agree with TMDB's Kraken on director (Mohamed Chabane & Théo Jourdain), cast (Alassane Diong, Manon Bresch, Guillaume Gouix, Gazo) and synopsis (a group trapped in the abandoned 'Kraken' tower).",
+    addedAt: '2026-10-13',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
