@@ -10,21 +10,30 @@ import { Time } from './Time'
 import {
   listPosterStyle,
   listRowCenteredStyle,
+  listRowTextOnlyStyle,
   listYearStyle,
 } from './listStyles'
 
 // The browser skips the layout and paint of rows that are off-screen,
 // 72px is the height of the row without its padding, which keeps the scrollbar steady
+const flexStyle = css({
+  position: 'relative',
+  display: 'flex',
+  gap: '12px',
+})
+
 const containerStyle = cx(
   listRowCenteredStyle,
+  flexStyle,
   css({
-    position: 'relative',
-    display: 'flex',
-    gap: '12px',
     contentVisibility: 'auto',
     containIntrinsicSize: 'auto 72px',
   }),
 )
+
+// in a list without posters (the movie pages) a row is only as high as its text,
+// in a list with posters a row without one keeps the height of the others
+const textOnlyContainerStyle = cx(listRowTextOnlyStyle, flexStyle)
 
 // The time and the text, centered in the row as a whole. Both start with an
 // 18px line, so the time lines up with the first line of the text
@@ -126,7 +135,7 @@ export const ScreeningRow = ({
       : null
 
   return (
-    <div className={containerStyle}>
+    <div className={showPoster ? containerStyle : textOnlyContainerStyle}>
       <a
         href={url}
         aria-label={`Open screening for ${title}`}
