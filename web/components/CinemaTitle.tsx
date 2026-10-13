@@ -4,7 +4,7 @@ import { css, cx } from 'styled-system/css'
 
 import { headerFont } from '../utils/theme'
 import { ExternalLink } from './ExternalLink'
-import { bigTitleStyle } from './titleStyles'
+import { bigTitleStyle, subTitleStyle } from './titleStyles'
 
 const blockStyle = css({
   display: 'flex',
@@ -43,7 +43,14 @@ export const CinemaTitle = ({
   allScreeningsHref?: string
 }) => (
   <div className={blockStyle}>
-    <Tag className={cx(bigTitleStyle, headerFont.className)}>{cinema.name}</Tag>
+    <Tag
+      className={cx(
+        Tag === 'h1' ? bigTitleStyle : subTitleStyle,
+        headerFont.className,
+      )}
+    >
+      {cinema.name}
+    </Tag>
     <div className={linkRowStyle}>
       {allScreeningsHref ? (
         <Link href={allScreeningsHref} className={internalLinkStyle}>
