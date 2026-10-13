@@ -336,7 +336,11 @@ export const MoviePage = ({
           </div>
           {currentCity && currentCinema && cinemaData ? (
             <div className={cinemaTitleWrapStyle}>
-              <CinemaTitle cinema={cinemaData} as="h2" />
+              <CinemaTitle
+                cinema={cinemaData}
+                as="h2"
+                allScreeningsHref={`/city/${currentCity}/cinema/${currentCinema}`}
+              />
             </div>
           ) : null}
           <div>

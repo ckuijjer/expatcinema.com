@@ -37,7 +37,7 @@ const tileVariants = cva({
     highlighted: {
       true: {
         borderColor: 'var(--secondary-color)',
-        color: 'var(--secondary-color)',
+        color: 'var(--link-color)',
       },
       false: {
         borderColor: 'var(--text-muted-color)',

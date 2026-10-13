@@ -5,7 +5,7 @@ import { Layout } from '../components/Layout'
 import { NavigationBar } from '../components/NavigationBar'
 import { PageTitle } from '../components/PageTitle'
 
-const textLinkStyle = { color: 'var(--secondary-color)' }
+const textLinkStyle = { color: 'var(--link-color)' }
 
 export default function NotFound() {
   return (
