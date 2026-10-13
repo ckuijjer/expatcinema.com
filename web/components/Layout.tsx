@@ -36,10 +36,7 @@ export const Layout = ({
   children,
 }: LayoutProps) => {
   return (
-    <Element
-      id={Element === 'main' ? 'main-content' : undefined}
-      style={{ backgroundColor }}
-    >
+    <Element style={{ backgroundColor }}>
       <div className={pageContentStyle({ noPadding })}>{children}</div>
     </Element>
   )

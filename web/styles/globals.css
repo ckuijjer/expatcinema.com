@@ -42,17 +42,3 @@ body {
   color: var(--text-color);
 }
 
-.skip-link {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 20;
-  padding: 8px 12px;
-  color: var(--text-inverse-color);
-  background-color: var(--background-inverse-color);
-  transform: translateY(-200%);
-}
-
-.skip-link:focus {
-  transform: none;
-}
