@@ -16,7 +16,7 @@ export const App = ({
   currentCinema?: string
 }) => {
   return (
-    <Layout>
+    <Layout as="main">
       <Calendar
         screenings={screenings}
         showCity={showCity}

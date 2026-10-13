@@ -13,7 +13,7 @@ export default function NotFound() {
       <Layout backgroundColor="var(--palette-purple-600)">
         <NavigationBar showSearch={false} />
       </Layout>
-      <Layout>
+      <Layout as="main">
         <PageTitle>Page not found</PageTitle>
         <p style={{ fontSize: '18px', lineHeight: '1.4' }}>
           <Link href="/" style={textLinkStyle}>

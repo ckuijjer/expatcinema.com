@@ -42,13 +42,15 @@ export const FilterBarWrapper = ({
   fadeColor,
   textColor = 'var(--text-inverse-color)',
   showFade,
+  label,
 }: {
   children: React.ReactNode
+  label: string
   fadeColor: string
   textColor?: string
   showFade: boolean
 }) => (
-  <div className={wrapperStyle}>
+  <nav aria-label={label} className={wrapperStyle}>
     {children}
     {showFade && (
       <div
@@ -61,7 +63,7 @@ export const FilterBarWrapper = ({
         ❯
       </div>
     )}
-  </div>
+  </nav>
 )
 
 export const Container = React.forwardRef<
@@ -97,7 +99,11 @@ export const CityFilter = ({ links }: { links: FilterLink[] }) => {
   }, [city])
 
   return (
-    <FilterBarWrapper fadeColor="var(--secondary-color)" showFade={showFade}>
+    <FilterBarWrapper
+      label="Cities"
+      fadeColor="var(--secondary-color)"
+      showFade={showFade}
+    >
       <Container
         ref={containerRef}
         className={css({

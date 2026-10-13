@@ -263,7 +263,7 @@ export const MoviePage = ({
           <NavigationBar />
         </Layout>
       </Suspense>
-      <Layout>
+      <Layout as="main">
         <div className={pageStyle}>
           <div className={titleBlockStyle}>
             <h1 className={cx(bigTitleStyle, headerFont.className)}>
