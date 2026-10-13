@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 
+import { css } from 'styled-system/css'
+
 import { App } from '../../../../../../components/App'
-import { CinemaInfoBar } from '../../../../../../components/CinemaInfoBar'
+import { CinemaTitle } from '../../../../../../components/CinemaTitle'
 import { Layout } from '../../../../../../components/Layout'
 import cinemas from '../../../../../../data/cinema.json'
 import { getCinema } from '../../../../../../utils/getCinema'
@@ -13,6 +15,8 @@ import {
   buildSocialMetadata,
 } from '../../../../../../utils/seoMetadata'
 import { getCanonicalUrl } from '../../../../../../utils/siteUrl'
+
+const titleWrapStyle = css({ marginTop: '28px', marginBottom: '16px' })
 
 export const generateStaticParams = () =>
   cinemas.map((cinema) => ({
@@ -59,7 +63,9 @@ export default async function CinemaPage({
     <Suspense>
       {cinemaData ? (
         <Layout>
-          <CinemaInfoBar cinema={cinemaData} />
+          <div className={titleWrapStyle}>
+            <CinemaTitle cinema={cinemaData} />
+          </div>
         </Layout>
       ) : null}
       <App screenings={screenings} currentCity={city} currentCinema={cinema} />

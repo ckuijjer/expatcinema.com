@@ -16,7 +16,7 @@ import {
 import type { Movie, MovieVideo } from '../utils/getMovies'
 import type { Screening } from '../utils/getScreenings'
 import { isEnabled, STRUCTURED_DATA_FEATURE } from '../utils/featureFlags'
-import { CinemaInfoBar } from './CinemaInfoBar'
+import { CinemaTitle } from './CinemaTitle'
 import { ExternalLink } from './ExternalLink'
 import {
   buildBreadcrumbJsonLd,
@@ -30,6 +30,7 @@ import { getMovieDescription } from '../utils/seoMetadata'
 import { Calendar } from './Calendar'
 import { Layout } from './Layout'
 import { MovieLocationFilters } from './MovieLocationFilters'
+import { bigTitleStyle } from './titleStyles'
 
 const pageStyle = css({
   marginTop: '28px',
@@ -69,15 +70,8 @@ const posterPlaceholderStyle = css({
   backgroundColor: 'var(--background-highlight-color)',
 })
 
-const titleStyle = css({
-  marginTop: '0',
-  marginBottom: '0',
-  fontSize: '44px',
-  lineHeight: '1.05',
-  '@media (max-width: 640px)': {
-    fontSize: '32px',
-  },
-})
+// the 16px gap of the page plus 12px makes the 28px above a page title
+const cinemaTitleWrapStyle = css({ marginTop: '12px' })
 
 const yearStyle = css({
   color: 'var(--text-subtle-color)',
@@ -271,7 +265,7 @@ export const MoviePage = ({
       <Layout>
         <div className={pageStyle}>
           <div className={titleBlockStyle}>
-            <h1 className={cx(titleStyle, headerFont.className)}>
+            <h1 className={cx(bigTitleStyle, headerFont.className)}>
               {movie.title}
               {year ? <span className={yearStyle}> ({year})</span> : null}
             </h1>
@@ -340,8 +334,8 @@ export const MoviePage = ({
             />
           </div>
           {currentCity && currentCinema && cinemaData ? (
-            <div>
-              <CinemaInfoBar cinema={cinemaData} />
+            <div className={cinemaTitleWrapStyle}>
+              <CinemaTitle cinema={cinemaData} as="h2" />
             </div>
           ) : null}
           <div>
