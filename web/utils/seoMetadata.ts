@@ -106,12 +106,32 @@ export const buildMovieDescription = (
 export const getMovieDescription = (movieTitle: string, overview?: string) =>
   truncateDescription(overview ? overview : movieTitle)
 
+// The image of the site (1200x630) for pages without an image of their own
+export const defaultSocialImage = {
+  url: '/images/og-image.png',
+  width: 1200,
+  height: 630,
+  alt: 'Expat Cinema: foreign movies with English subtitles',
+}
+
 // A page's openGraph and twitter replace the ones of the root layout as a whole,
 // so the site name, type and card are repeated here next to the page's own title and description
 export const buildSocialMetadata = (
   title: string,
   description: string,
 ): Pick<Metadata, 'openGraph' | 'twitter'> => ({
-  openGraph: { type: 'website', siteName: 'Expat Cinema', title, description },
-  twitter: { card: 'summary', creator: 'Expat Cinema', title, description },
+  openGraph: {
+    type: 'website',
+    siteName: 'Expat Cinema',
+    title,
+    description,
+    images: [defaultSocialImage],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    creator: 'Expat Cinema',
+    title,
+    description,
+    images: [defaultSocialImage.url],
+  },
 })
