@@ -64,10 +64,6 @@ const secondLineStyle = css({
   color: 'var(--text-muted-color)',
 })
 
-const cityInlineStyle = css({
-  color: 'var(--text-muted-color)',
-})
-
 const posterLinkStyle = css({
   flex: 'none',
   display: 'block',
@@ -128,18 +124,15 @@ export const ScreeningRow = ({
       {year ? <span className={listYearStyle}> ({year})</span> : null}
     </>
   ) : showCinema ? (
-    <>
-      {cinema.name}
-      {showCity ? (
-        <span className={cityInlineStyle}>, {cinema.city.name}</span>
-      ) : null}
-    </>
+    cinema.name
   ) : null
   const secondLine = showTitle
     ? showCinema
       ? `${cinema.name}${showCity ? `, ${cinema.city.name}` : ''}`
       : null
-    : null
+    : showCinema && showCity
+      ? cinema.city.name
+      : null
 
   return (
     <div className={showPoster ? containerStyle : textOnlyContainerStyle}>
