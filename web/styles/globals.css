@@ -41,10 +41,3 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
 }
-
-/* The label of an icon button matches the Movies and About links next to it on a wide screen */
-@media (min-width: 600px) {
-  .icon-label {
-    font-family: 'Libre Baskerville', 'Libre Baskerville Fallback', serif;
-  }
-}
