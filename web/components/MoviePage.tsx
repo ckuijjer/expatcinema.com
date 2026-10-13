@@ -33,7 +33,8 @@ import { MovieLocationFilters } from './MovieLocationFilters'
 import { bigTitleStyle } from './titleStyles'
 
 const pageStyle = css({
-  marginTop: '28px',
+  // the same space above the title as on the cinema pages
+  marginTop: '40px',
   marginBottom: '16px',
   display: 'flex',
   flexDirection: 'column',

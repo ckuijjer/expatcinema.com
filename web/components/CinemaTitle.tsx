@@ -6,9 +6,12 @@ import { bigTitleStyle } from './titleStyles'
 
 const linkStyle = css({
   display: 'inline-block',
-  marginLeft: '12px',
+  // the padding makes the tap target bigger than the icon
+  // (cancelled with a negative margin, so that it does not make the title higher)
+  padding: '8px',
+  margin: '-8px -8px -8px 0',
   color: 'var(--secondary-color)',
-  verticalAlign: 'baseline',
+  verticalAlign: 'middle',
   '&:hover': {
     opacity: '0.75',
   },
@@ -33,7 +36,7 @@ export const CinemaTitle = ({
       className={linkStyle}
       aria-label={`Website of ${cinema.name}`}
     >
-      <ExternalLinkIcon size={22} />
+      <ExternalLinkIcon size={16} />
     </a>
   </Tag>
 )
