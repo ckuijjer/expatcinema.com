@@ -64,13 +64,60 @@ const secondLineStyle = css({
   color: 'var(--text-muted-color)',
 })
 
+// The poster is the way to the movie page on this site, the rest of the row
+// goes to the cinema. The padding makes it a bigger target.
 const posterLinkStyle = css({
   flex: 'none',
   display: 'block',
   width: '48px',
   height: '72px',
+  boxSizing: 'content-box',
+  padding: '8px',
+  margin: '-8px',
   position: 'relative',
   zIndex: '2',
+})
+
+// An "i" centered on the poster. Devices with a hover show it, with a scrim over
+// the poster, on hover and on keyboard focus; touch devices have no hover, so
+// there it is always there, small and quiet.
+const posterOverlayStyle = css({
+  position: 'absolute',
+  inset: '8px',
+  borderRadius: '4px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  pointerEvents: 'none',
+  transition: 'background-color 0.15s',
+  '@media (hover: hover)': {
+    backgroundColor: 'transparent',
+    '& > span': { opacity: '0', transition: 'opacity 0.15s' },
+    '[data-poster-link]:hover > &, [data-poster-link]:focus-visible > &': {
+      backgroundColor: 'rgba(0, 0, 0, 0.55)',
+      '& > span': { opacity: '1' },
+    },
+  },
+})
+
+const posterIconStyle = css({
+  width: '28px',
+  height: '28px',
+  borderRadius: '50%',
+  border: '2px solid var(--text-inverse-color)',
+  color: 'var(--text-inverse-color)',
+  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  fontSize: '16px',
+  fontWeight: '700',
+  lineHeight: '24px',
+  textAlign: 'center',
+  '@media (hover: none)': {
+    width: '22px',
+    height: '22px',
+    fontSize: '13px',
+    lineHeight: '18px',
+    opacity: '0.8',
+  },
 })
 
 const screeningRowLinkStyle = css({
@@ -153,7 +200,12 @@ export const ScreeningRow = ({
       {showPoster ? (
         posterUrl ? (
           movieUrl ? (
-            <a href={movieUrl} className={posterLinkStyle}>
+            <a
+              href={movieUrl}
+              className={posterLinkStyle}
+              data-poster-link
+              aria-label={`More about ${title}`}
+            >
               <Image
                 src={posterUrl}
                 width={48}
@@ -162,6 +214,9 @@ export const ScreeningRow = ({
                 aria-hidden
                 className={listPosterStyle}
               />
+              <span className={posterOverlayStyle} aria-hidden>
+                <span className={posterIconStyle}>i</span>
+              </span>
             </a>
           ) : (
             <Image
@@ -174,11 +229,19 @@ export const ScreeningRow = ({
             />
           )
         ) : movieUrl ? (
-          <a href={movieUrl} className={posterLinkStyle}>
+          <a
+            href={movieUrl}
+            className={posterLinkStyle}
+            data-poster-link
+            aria-label={`More about ${title}`}
+          >
             <PosterPlaceholder
               title={movieId ? title : undefined}
               className={movieId ? undefined : unmatchedPosterPlaceholderStyle}
             />
+            <span className={posterOverlayStyle} aria-hidden>
+              <span className={posterIconStyle}>i</span>
+            </span>
           </a>
         ) : null
       ) : null}
