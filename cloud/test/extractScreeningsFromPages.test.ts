@@ -77,4 +77,24 @@ describe('extractScreeningsFromPages', () => {
       expect.objectContaining({ url: 'https://example.com/x' }),
     )
   })
+
+  test('concurrency limits how many pages are fetched at the same time', async () => {
+    let running = 0
+    let maxRunning = 0
+
+    const screenings = await extractScreeningsFromPages(
+      ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
+      async (item) => {
+        running += 1
+        maxRunning = Math.max(maxRunning, running)
+        await new Promise((resolve) => setTimeout(resolve, 5))
+        running -= 1
+        return [screening(item)]
+      },
+      { logger: makeLogger(), concurrency: 3 },
+    )
+
+    expect(screenings).toHaveLength(7)
+    expect(maxRunning).toBe(3)
+  })
 })

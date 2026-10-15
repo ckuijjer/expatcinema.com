@@ -177,7 +177,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings = await extractScreeningsFromPages(
     movies.filter(({ title, url }) => title && url),
     extractFromMoviePage,
-    { logger, url: ({ url }) => url },
+    // the pages go through the relay, which allows 10 requests at a time
+    { logger, url: ({ url }) => url, concurrency: 5 },
   )
 
   return makeScreeningsUniqueAndSorted(screenings)
