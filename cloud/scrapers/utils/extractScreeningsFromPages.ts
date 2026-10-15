@@ -1,4 +1,5 @@
 import { Logger } from '@aws-lambda-powertools/logger'
+import pMap from 'p-map'
 
 import { Screening } from '../../types'
 
@@ -9,10 +10,13 @@ type Options<Item> = {
   // Extract the page URL from an item for the failure log. Defaults to the
   // item itself, which is correct when items are already URL strings.
   url?: (item: Item) => unknown
+  // How many pages are fetched at the same time, all of them by default. Needs
+  // to stay below the relay's MAX_CONCURRENT (10) for pages that are relayed
+  concurrency?: number
 }
 
 /**
- * Runs `extract` over every `item` concurrently and returns the flattened
+ * Runs `extract` over every `item` concurrently (all at once unless `concurrency` is set) and returns the flattened
  * screenings.
  *
  * Unlike a bare `Promise.all`, a single failing page does not reject the whole
@@ -25,11 +29,17 @@ type Options<Item> = {
 export const extractScreeningsFromPages = async <Item>(
   items: Item[],
   extract: ExtractFromPage<Item>,
-  { logger, url = (item) => item }: Options<Item>,
+  { logger, url = (item) => item, concurrency = Infinity }: Options<Item>,
 ): Promise<Screening[]> => {
-  const results = await Promise.allSettled(
+  const results = await pMap(
+    items,
     // pRetry seam: wrap this call to retry an individual film page.
-    items.map((item) => extract(item)),
+    (item): Promise<PromiseSettledResult<Screening[]>> =>
+      extract(item).then(
+        (value) => ({ status: 'fulfilled', value }),
+        (reason) => ({ status: 'rejected', reason }),
+      ),
+    { concurrency },
   )
 
   return results.flatMap((result, index) => {
