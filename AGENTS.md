@@ -320,7 +320,7 @@ Short and concrete, usually one line, ideally showing an example of the input or
 
 ## Scraping cinemas that block AWS
 
-Filmhuis Breda, Heerenstraattheater and Cinerama block requests from AWS, so on the Lambda their requests go through a relay on a home server (`cloud/clients/scrapeRelay.ts`, needs the `SCRAPE_RELAY_URL` and `SCRAPE_RELAY_TOKEN` secrets). Locally, and without those variables, requests go out directly. Adding a host to `RELAYED_HOSTS` also needs it in the relay's `ALLOWED_HOSTS` (`scrape-relay/` in the maintainer's teatree-docker repo).
+Filmhuis Breda, Heerenstraattheater, Cinerama and the film pages of Filmtheater Hilversum block requests from AWS, so on the Lambda their requests go through a relay on a home server (`cloud/clients/scrapeRelay.ts`, needs the `SCRAPE_RELAY_URL` and `SCRAPE_RELAY_TOKEN` secrets). Locally, and without those variables, requests go out directly. Adding a host to `RELAYED_HOSTS` also needs it in the relay's `ALLOWED_HOSTS` (`scrape-relay/` in the maintainer's teatree-docker repo).
 
 ## Metadata Conventions
 

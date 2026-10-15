@@ -32,7 +32,7 @@ Failure modes seen so far, and how to recognise them:
 - **A cinema that returns 0 with no error** can be the cinema's own page failing: Ketelhuis' Expat Cinema page was blank (HTTP 200, zero bytes) on 2026-10-03, also in a browser.
 - **Only `prod` has a schedule.** A dev stage can be deployed, but nothing runs it nightly; an earlier dev stack that did, with the prod Slack channel, produced alerts that looked like prod failures.
 
-Three cinemas block AWS (Filmhuis Breda and Heerenstraattheater via Cloudflare, Cinerama via Kinepolis' firewall). Their pages are fetched through a small relay on the maintainer's home server (teatree), see `cloud/clients/scrapeRelay.ts`. If they suddenly all fail at once with `Error retrieving ... via relay` or a 401/403/5xx from the relay, the relay or its tunnel is down, not the scrapers: check `https://scrape-relay.home.kuijjer.com/health` and tell the maintainer.
+Four cinemas block AWS (Filmhuis Breda and Heerenstraattheater via Cloudflare, Cinerama via Kinepolis' firewall, and Filmtheater Hilversum, which answers 503 to most of its film pages). Their pages are fetched through a small relay on the maintainer's home server (teatree), see `cloud/clients/scrapeRelay.ts`. If they suddenly all fail at once with `Error retrieving ... via relay` or a 401/403/5xx from the relay, the relay or its tunnel is down, not the scrapers: check `https://scrape-relay.home.kuijjer.com/health` and tell the maintainer.
 
 ## Data sources
 
@@ -153,7 +153,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | filmhuisdespiegel        | ok     | AFFR on Tour 31 Oct-3 Nov; Dutch subs else      |
 | filmhuislumen            | ok     |                                                 |
 | filmkoepel               | idle   | feed only; no EN-subbed films (2026-10-02)      |
-| filmtheaterhilversum     | ok     | 503s from AWS; timeouts added (10-03)           |
+| filmtheaterhilversum     | ok     | film pages fetched via teatree relay (10-15); timeouts added (10-03) |
 | florafilmtheater         | ok     | fixed 2026-10-03: sold-out, 2+ showtimes/day    |
 | focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)        |
 | forumgroningen           | ok     |                                                 |
