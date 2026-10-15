@@ -46,7 +46,30 @@ type RelayResponse = {
   body: string
 }
 
+// The upstream site itself can answer 502/503/504 now and then, also to the home
+// IP of the relay (Filmtheater Hilversum does that for a fifth of its film pages
+// in a run, and the same pages are fine a minute later), so those are tried again
+const RETRY_STATUSES = new Set([502, 503, 504])
+const RETRY_DELAYS_MS = [1_000, 3_000, 6_000]
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
 export const relayGet = async (
+  url: string,
+  headers: Record<string, string> = {},
+) => {
+  for (const delay of RETRY_DELAYS_MS) {
+    const result = await relayGetOnce(url, headers)
+
+    if (!RETRY_STATUSES.has(result.statusCode)) return result
+
+    await sleep(delay)
+  }
+
+  return relayGetOnce(url, headers)
+}
+
+const relayGetOnce = async (
   url: string,
   headers: Record<string, string> = {},
 ) => {
