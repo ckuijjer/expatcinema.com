@@ -2,7 +2,7 @@ import got from 'got'
 
 // Some cinema sites block requests from AWS, where the scrapers Lambda runs
 // (Cloudflare for Filmhuis Breda and Heerenstraattheater, Kinepolis' firewall
-// for Cinerama) but accept a home IP. Those pages are fetched through a small
+// for Cinerama, a 503 on most film pages for Filmtheater Hilversum) but accept a home IP. Those pages are fetched through a small
 // relay on the maintainer's home server ("teatree"), which is reached through
 // a public URL (behind Pangolin) and a token. The token is sent twice: as HTTP
 // basic auth, which Pangolin checks at the edge, and in X-Relay-Token, which
@@ -18,6 +18,7 @@ export const RELAYED_HOSTS = new Set([
   'www.heerenstraattheater.nl',
   'kinepolisweb-programmation.kinepolis.com',
   'www.chasse.nl',
+  'filmtheaterhilversum.nl',
 ])
 
 // Username of the HTTP basic auth that Pangolin checks; the password is the token
