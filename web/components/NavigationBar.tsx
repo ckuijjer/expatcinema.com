@@ -7,7 +7,11 @@ import { css, cx } from 'styled-system/css'
 
 import { useSearch, useShortcut } from '../utils/hooks'
 import { headerFont } from '../utils/theme'
-import { iconBoxStyle, iconButtonStyle, iconLabelStyle } from './iconButtonStyles'
+import {
+  iconBoxStyle,
+  iconButtonStyle,
+  iconLabelStyle,
+} from './iconButtonStyles'
 import { Menu } from './Menu'
 import { TextFilter } from './TextFilter'
 import CrossIcon from './icons/CrossIcon'

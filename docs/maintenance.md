@@ -126,56 +126,56 @@ Also check the health of the code base itself (report only: don't change depende
 
 Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (monitored), `broken` (known broken, being fixed), `idle` (scraper works, but the cinema has no English-subtitled screenings right now; check again in the quarterly discovery).
 
-| Scraper                  | Status | Notes (as of 2026-09-28)                        |
-| ------------------------ | ------ | ----------------------------------------------- |
-| amstelveen               | idle   | subs now in Production.Other; all NL (09-28)    |
-| bioscopenleiden          | ok     | fixed 2026-09-28 ("ENGLISH SUBS" tag)           |
-| castellum                | idle   | no English-subtitled films (2026-09-28)         |
-| chasse                   | ok     | ok from AWS 2026-10-03 (Chromium + Chrome UA)   |
-| cinecenter               | ok     |                                                 |
-| cinecitta                | ok     | block 21-24 Oct (10-08); 0 after is fine        |
-| cinemadevlugt            | idle   | Expat Cinema list empty (2026-09-28)            |
-| cinemathepulse           | ok     | fixed 2026-09-28 (URL marker changed)           |
-| cinerama                 | ok     | fixed 2026-10-01: fetched via teatree relay     |
-| concordia                | ok     |                                                 |
-| debalie                  | ok     | added 2026-10-03; EN only when ENG is listed    |
-| defilmhallen             | ok     |                                                 |
-| desien                   | ok     | fixed 2026-09-28 (new English marker)           |
-| deuitkijk                | ok     |                                                 |
-| dewittdordrecht          | idle   | no Expat Cinema; all films NL subs (09-28)      |
-| dokhuis                  | ok     | occasional: film nights with English subs       |
-| eyefilm                  | ok     |                                                 |
-| fchyena                  | ok     | ok from AWS 2026-10-03 (Framer); low: 1 EN film |
-| filmhuisbreda            | ok     | fixed 2026-10-01: fetched via teatree relay     |
-| filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)         |
-| filmhuiscavia            | ok     | added 2026-10-02; monthly programme pages       |
-| filmhuisdenhaag          | ok     |                                                 |
-| filmhuisdespiegel        | ok     | AFFR on Tour 31 Oct-3 Nov; Dutch subs else      |
-| filmhuislumen            | ok     |                                                 |
-| filmkoepel               | idle   | feed only; no EN-subbed films (2026-10-02)      |
+| Scraper                  | Status | Notes (as of 2026-09-28)                                             |
+| ------------------------ | ------ | -------------------------------------------------------------------- |
+| amstelveen               | idle   | subs now in Production.Other; all NL (09-28)                         |
+| bioscopenleiden          | ok     | fixed 2026-09-28 ("ENGLISH SUBS" tag)                                |
+| castellum                | idle   | no English-subtitled films (2026-09-28)                              |
+| chasse                   | ok     | ok from AWS 2026-10-03 (Chromium + Chrome UA)                        |
+| cinecenter               | ok     |                                                                      |
+| cinecitta                | ok     | block 21-24 Oct (10-08); 0 after is fine                             |
+| cinemadevlugt            | idle   | Expat Cinema list empty (2026-09-28)                                 |
+| cinemathepulse           | ok     | fixed 2026-09-28 (URL marker changed)                                |
+| cinerama                 | ok     | fixed 2026-10-01: fetched via teatree relay                          |
+| concordia                | ok     |                                                                      |
+| debalie                  | ok     | added 2026-10-03; EN only when ENG is listed                         |
+| defilmhallen             | ok     |                                                                      |
+| desien                   | ok     | fixed 2026-09-28 (new English marker)                                |
+| deuitkijk                | ok     |                                                                      |
+| dewittdordrecht          | idle   | no Expat Cinema; all films NL subs (09-28)                           |
+| dokhuis                  | ok     | occasional: film nights with English subs                            |
+| eyefilm                  | ok     |                                                                      |
+| fchyena                  | ok     | ok from AWS 2026-10-03 (Framer); low: 1 EN film                      |
+| filmhuisbreda            | ok     | fixed 2026-10-01: fetched via teatree relay                          |
+| filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)                              |
+| filmhuiscavia            | ok     | added 2026-10-02; monthly programme pages                            |
+| filmhuisdenhaag          | ok     |                                                                      |
+| filmhuisdespiegel        | ok     | AFFR on Tour 31 Oct-3 Nov; Dutch subs else                           |
+| filmhuislumen            | ok     |                                                                      |
+| filmkoepel               | idle   | feed only; no EN-subbed films (2026-10-02)                           |
 | filmtheaterhilversum     | ok     | film pages fetched via teatree relay (10-15); timeouts added (10-03) |
-| florafilmtheater         | ok     | fixed 2026-10-03: sold-out, 2+ showtimes/day    |
-| focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)        |
-| forumgroningen           | ok     |                                                 |
-| hartlooper               | ok     |                                                 |
-| heerenstraattheater      | ok     | fixed 2026-10-01: fetched via teatree relay     |
-| hetdocumentairepaviljoen | ok     | fixed 2026-09-28 (subtitle label changed)       |
-| ketelhuis                | ok     | small (1–6); page blank 10-03 (their site)      |
-| kinorotterdam            | ok     |                                                 |
-| kriterion                | ok     |                                                 |
-| lab1                     | ok     |                                                 |
-| lab111                   | ok     |                                                 |
-| lantarenvenster          | ok     | festival-driven (CJ 23-27 Sep, AFFR 7-11 Oct)   |
-| lumiere                  | ok     | fixed 2026-09-28 (GraphQL API)                  |
-| lux                      | ok     | fixed 2026-09-28 (3 English markers)            |
-| melkweg                  | ok     |                                                 |
-| natlab                   | ok     |                                                 |
-| rialto                   | ok     | fixed 2026-09-28 via JSON API; De Pijp only now |
-| rialtovu                 | ok     | added 2026-09-30 (VU Griffioen)                 |
-| schuur                   | ok     |                                                 |
-| slachtstraat             | ok     |                                                 |
-| sliekerfilm              | ok     | 0 until 2026-09-15                              |
-| springhaver              | ok     |                                                 |
-| studiok                  | ok     |                                                 |
-| themovies                | idle   | no EN-subbed films (checked 2026-10-03)         |
-| worm                     | ok     |                                                 |
+| florafilmtheater         | ok     | fixed 2026-10-03: sold-out, 2+ showtimes/day                         |
+| focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)                             |
+| forumgroningen           | ok     |                                                                      |
+| hartlooper               | ok     |                                                                      |
+| heerenstraattheater      | ok     | fixed 2026-10-01: fetched via teatree relay                          |
+| hetdocumentairepaviljoen | ok     | fixed 2026-09-28 (subtitle label changed)                            |
+| ketelhuis                | ok     | small (1–6); page blank 10-03 (their site)                           |
+| kinorotterdam            | ok     |                                                                      |
+| kriterion                | ok     |                                                                      |
+| lab1                     | ok     |                                                                      |
+| lab111                   | ok     |                                                                      |
+| lantarenvenster          | ok     | festival-driven (CJ 23-27 Sep, AFFR 7-11 Oct)                        |
+| lumiere                  | ok     | fixed 2026-09-28 (GraphQL API)                                       |
+| lux                      | ok     | fixed 2026-09-28 (3 English markers)                                 |
+| melkweg                  | ok     |                                                                      |
+| natlab                   | ok     |                                                                      |
+| rialto                   | ok     | fixed 2026-09-28 via JSON API; De Pijp only now                      |
+| rialtovu                 | ok     | added 2026-09-30 (VU Griffioen)                                      |
+| schuur                   | ok     |                                                                      |
+| slachtstraat             | ok     |                                                                      |
+| sliekerfilm              | ok     | 0 until 2026-09-15                                                   |
+| springhaver              | ok     |                                                                      |
+| studiok                  | ok     |                                                                      |
+| themovies                | idle   | no EN-subbed films (checked 2026-10-03)                              |
+| worm                     | ok     |                                                                      |
