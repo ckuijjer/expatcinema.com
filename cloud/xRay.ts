@@ -3,7 +3,8 @@ import Xray from 'x-ray'
 import { type Driver } from 'x-ray-crawler'
 import { Logger } from '@aws-lambda-powertools/logger'
 
-import { logErrorHook, logNonOkResponseHook } from './clients/gotHooks'
+import { logErrorHook } from './clients/gotHooks'
+import { retryOnServerError } from './clients/retryOnServerError'
 import { relayGet, shouldRelay } from './clients/scrapeRelay'
 import { logger as defaultLogger } from './powertools'
 import { normalizeWhitespace, trim } from './scrapers/utils/xrayFilters'
@@ -42,43 +43,42 @@ export const createCookieJar = () => {
 const createGotDriver =
   (logger?: Logger, cookieJar?: ReturnType<typeof createCookieJar>): Driver =>
   (context, callback) => {
-    const { url } = context
+    const url = String(context.url)
+    const log = logger ?? defaultLogger
 
     // Hosts that block AWS are fetched through the relay on the home server
-    if (shouldRelay(String(url))) {
-      const log = logger ?? defaultLogger
+    const relayed = shouldRelay(url)
+    const attempt = relayed
+      ? () => relayGet(url, { 'user-agent': USER_AGENT })
+      : () =>
+          got(url, {
+            headers: { 'user-agent': USER_AGENT },
+            // Without a timeout got waits for a stalled connection forever
+            timeout: { request: 30_000 },
+            // A connection that fails is tried again by got, an answer with a
+            // 5xx or 429 by retryOnServerError, for both the relay and got
+            retry: { limit: 2, statusCodes: [] },
+            hooks: { beforeError: [logErrorHook(logger)] },
+            throwHttpErrors: false,
+            cookieJar,
+          }).then((response) => ({
+            statusCode: response.statusCode,
+            body: response.body,
+          }))
 
-      relayGet(String(url), { 'user-agent': USER_AGENT })
-        .then((response) => {
-          if (response.statusCode >= 400) {
-            log.warn(
-              `Non-ok response retrieving ${url}: ${response.statusCode}`,
-            )
-          }
-          callback(null, response.body as never)
-        })
-        .catch((err) => {
-          log.error(`Error retrieving ${url} via relay: ${err.message}`)
-          callback(err, null as never)
-        })
-      return
-    }
-
-    got(String(url), {
-      headers: { 'user-agent': USER_AGENT },
-      // Without a timeout got waits for a stalled connection forever, and
-      // honours any Retry-After on a 503 or 429, however long
-      timeout: { request: 30_000 },
-      retry: { limit: 2, maxRetryAfter: 10_000 },
-      hooks: {
-        afterResponse: [logNonOkResponseHook(logger)],
-        beforeError: [logErrorHook(logger)],
-      },
-      throwHttpErrors: false,
-      cookieJar,
-    })
-      .then((response) => callback(null, response.body as never))
-      .catch((err) => callback(err, null as never))
+    retryOnServerError(attempt)
+      .then((response) => {
+        if (response.statusCode >= 400) {
+          log.warn(`Non-ok response retrieving ${url}: ${response.statusCode}`)
+        }
+        callback(null, response.body as never)
+      })
+      .catch((err) => {
+        log.error(
+          `Error retrieving ${url}${relayed ? ' via relay' : ''}: ${err.message}`,
+        )
+        callback(err, null as never)
+      })
   }
 
 type CreateXrayOptions = Partial<Xray.Options> & {

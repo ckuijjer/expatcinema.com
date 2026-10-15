@@ -118,62 +118,6 @@ describe('scrape relay client', () => {
         'not configured',
       )
     })
-
-    describe('when the site answers 503', () => {
-      const answer = (status: number) => ({
-        status,
-        url: 'https://filmtheaterhilversum.nl/x',
-        body: status === 200 ? 'ok' : '',
-      })
-
-      beforeEach(() => jest.useFakeTimers())
-      afterEach(() => jest.useRealTimers())
-
-      test('tries again and returns the first good answer', async () => {
-        configure()
-        post
-          .mockReturnValueOnce({
-            json: jest.fn().mockResolvedValue(answer(503)),
-          })
-          .mockReturnValueOnce({
-            json: jest.fn().mockResolvedValue(answer(200)),
-          })
-        const { relayGet } = await load()
-
-        const result = relayGet('https://filmtheaterhilversum.nl/x')
-        await jest.runAllTimersAsync()
-
-        expect(await result).toEqual(
-          expect.objectContaining({ statusCode: 200, body: 'ok' }),
-        )
-        expect(post).toHaveBeenCalledTimes(2)
-      })
-
-      test('gives up after 4 tries and returns the 503', async () => {
-        configure()
-        relayReturns(answer(503))
-        const { relayGet } = await load()
-
-        const result = relayGet('https://filmtheaterhilversum.nl/x')
-        await jest.runAllTimersAsync()
-
-        expect(await result).toEqual(
-          expect.objectContaining({ statusCode: 503 }),
-        )
-        expect(post).toHaveBeenCalledTimes(4)
-      })
-
-      test('does not try again on a 404', async () => {
-        configure()
-        relayReturns(answer(404))
-        const { relayGet } = await load()
-
-        const result = await relayGet('https://filmtheaterhilversum.nl/x')
-
-        expect(result.statusCode).toBe(404)
-        expect(post).toHaveBeenCalledTimes(1)
-      })
-    })
   })
 
   describe('relayJson', () => {
