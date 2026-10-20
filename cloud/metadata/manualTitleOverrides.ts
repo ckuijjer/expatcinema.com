@@ -113,6 +113,34 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: "De Filmhallen's and Lab111's (as \"Imagine Film Festival: No Way Down\") pages agree with TMDB's Kraken on director (Mohamed Chabane & Théo Jourdain), cast (Alassane Diong, Manon Bresch, Guillaume Gouix, Gazo) and synopsis (a group trapped in the abandoned 'Kraken' tower).",
     addedAt: '2026-10-13',
   },
+  {
+    title: 'Cinema Aperitivo: Cold War (Incl. Drink and Antipasti Platter)',
+    year: 2018,
+    tmdbId: 440298,
+    note: "Lab111's page and TMDB agree on director (Paweł Pawlikowski) and runtime (88 min).",
+    addedAt: '2026-10-20',
+  },
+  {
+    title:
+      "Daft Punk & Leiji Matsumoto's Interstella 5555: the 5tory of the 5ecret 5tar 5ystem",
+    year: 2003,
+    tmdbId: 11049,
+    note: "Lab111's page and TMDB agree on director (Kazuhisa Takenouchi), runtime (68 min) and release date (2003); the resolver scores the full scraped title (with the 'Daft Punk & Leiji Matsumoto's' prefix) just under the match threshold.",
+    addedAt: '2026-10-20',
+  },
+  {
+    title: 'The Time Masters Incl. Introduction',
+    year: 1982,
+    tmdbId: 22501,
+    note: "Lab111's page and TMDB agree on director (René Laloux) and original title (Les Maîtres du temps, 1982); without this, the trailing 'Incl. Introduction' is never stripped and the title isn't looked up at all.",
+    addedAt: '2026-10-20',
+  },
+  {
+    title: 'Frank',
+    tmdbId: 171372,
+    note: "Filmhuis Den Haag's page (filmhuisdenhaag.nl/films/frank-band) and TMDB agree on director (Lenny Abrahamson) and runtime (95 min); the cinema's own page lists the year as 1900 (its countries line reads 'Verenigd Koninkrijk, Ierland, Verenigde Staten , 1900'), so the resolver never considers this a 2014 film.",
+    addedAt: '2026-10-20',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
