@@ -9,6 +9,7 @@ import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSo
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -112,6 +113,9 @@ const hasEnglishSubtitles = ({ metadata }: DetailPageResult) => {
   return subtitles.includes('engels') || subtitles.includes('english')
 }
 
+const parseDirector = ({ metadata }: DetailPageResult) =>
+  cleanDirector(metadata.find(({ label }) => label === 'Regie')?.value)
+
 const parseReleaseYear = ({ metadata }: DetailPageResult) => {
   const metadataMap = Object.fromEntries(
     metadata.map(({ label, value }) => [label, value]),
@@ -146,6 +150,7 @@ const extractFromMoviePage = async ({
     (times ?? []).map((time) => ({
       title: cleanTitle(title),
       year: parseReleaseYear(detailPage) ?? extractYearFromTitle(title),
+      director: parseDirector(detailPage),
       url,
       cinema: 'Filmtheater Hilversum',
       date: parseScreeningDate(date, time),

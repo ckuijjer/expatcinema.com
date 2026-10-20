@@ -7,6 +7,7 @@ import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSo
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { splitTime } from './utils/splitTime'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -26,11 +27,21 @@ type XRayFromMainPage = {
 }
 
 type XRayFromMoviePage = {
+  info?: string
   screenings: {
     date: string
     times: string[]
   }[]
 }
+
+// e.g. "Regie: Lukas Dhont (o.a. Girl, Close) - Acteurs: o.a. Emmanuel Macchia
+// Lengte: 127 minuten", without the films the director is known for
+export const extractDirector = (info?: string) =>
+  cleanDirector(
+    info
+      ?.match(/Regie:\s*(.+?)(?=\s+-\s+Acteurs:|\s+Lengte:|$)/)?.[1]
+      ?.replace(/\s*\(o\.a\.[^)]*\)/g, ''),
+  )
 
 const cleanTitle = (title: string) =>
   titleCase(title.replace(/^Expat Cinema:\s*/i, ''))
@@ -61,6 +72,7 @@ const extractFromMoviePage = async ({
   url,
 }: XRayFromMainPage): Promise<Screening[]> => {
   const movie: XRayFromMoviePage = await xray(url, {
+    info: 'p.text-small | normalizeWhitespace | trim',
     screenings: xray('.showtijden', [
       {
         date: 'p.fw-bold | normalizeWhitespace | trim',
@@ -75,6 +87,7 @@ const extractFromMoviePage = async ({
     movie.screenings.flatMap(({ date, times }) =>
       times.map((time) => ({
         title: cleanTitle(title),
+        director: extractDirector(movie.info),
         url,
         cinema: 'Filmtheater De Witt',
         date: parseDate(date, time),

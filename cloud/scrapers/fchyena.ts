@@ -7,6 +7,7 @@ import { createXray } from '../xRay'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { removeYearSuffix } from './utils/removeYearSuffix'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -34,6 +35,7 @@ type DetailPageResult = {
   title: string
   language?: string
   year?: string
+  director?: string
 }
 
 type TicketPageResult = {
@@ -106,6 +108,8 @@ const extractFromMoviePage = async (
     language:
       '[data-framer-name="Langauge"] > div:last-child p | normalizeWhitespace | trim', // sic
     year: '[data-framer-name="Year"] > div:last-child p | normalizeWhitespace | trim',
+    director:
+      '[data-framer-name="Director"] > div:last-child p | normalizeWhitespace | trim',
   })
 
   logger.debug('movie page', { url, movie })
@@ -125,6 +129,7 @@ const extractFromMoviePage = async (
   return screenings.map(({ date }) => ({
     title: cleanTitle(movie.title),
     year: parseReleaseYear(movie.year),
+    director: cleanDirector(movie.director),
     url,
     cinema: 'FC Hyena',
     date: parseScreeningDate(date),

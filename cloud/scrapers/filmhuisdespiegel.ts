@@ -8,6 +8,7 @@ import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSo
 import { monthToNumber } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { splitTime } from './utils/splitTime'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -97,6 +98,15 @@ export const extractReleaseYear = (paragraphs: string[]) => {
   return match ? Number(match[1]) : undefined
 }
 
+// The "Regie: ..." that ends the paragraph with the year, e.g.
+// "Frankrijk, 2026 | 115 minutenRegie: Camille Cottin"
+export const extractDirector = (paragraphs: string[]) =>
+  cleanDirector(
+    paragraphs
+      .map((paragraph) => paragraph.match(/Regie:\s*(.+)$/)?.[1])
+      .find(Boolean),
+  )
+
 // Drop add-ons and the series a film is shown in, e.g. "No Good Men + Q&A",
 // "Cinekid: Extraordinairy" and "Coming Out Day: Jim Queen"
 export const cleanTitle = (title: string) =>
@@ -135,6 +145,7 @@ const extractFromScreeningPage = async ({
     {
       title: cleanTitle(page.title),
       year: extractReleaseYear(paragraphs),
+      director: extractDirector(paragraphs),
       url,
       cinema: 'Filmhuis De Spiegel',
       date,
