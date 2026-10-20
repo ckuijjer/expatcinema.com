@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -16,6 +17,11 @@ const xray = createXray({ logger })
 
 const hasEnglishSubtitles = (bodyText: string) =>
   /ondertitelde taal\s+engels/i.test(bodyText)
+
+// The film page lists the director before the language, e.g.
+// "... Regie Sandra Radecka, Machiel Spruijt Gesproken taal Mongools ..."
+export const extractDirector = (bodyText: string) =>
+  cleanDirector(bodyText.match(/\bRegie\s+(.+?)\s+Gesproken taal\b/)?.[1])
 
 type XRayFilmPage = {
   bodyText: string
@@ -57,8 +63,11 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
     return []
   }
 
+  const director = extractDirector(page.bodyText)
+
   return dates.map((date) => ({
     title,
+    director,
     url,
     cinema: 'Filmhuis Botanique Breda',
     date,

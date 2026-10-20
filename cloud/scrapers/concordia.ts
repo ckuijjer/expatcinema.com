@@ -6,6 +6,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -41,14 +42,18 @@ export const parseOriginYear = (origin?: string) => {
   return year >= 1888 && year <= new Date().getFullYear() + 2 ? year : undefined
 }
 
-// A page without a "Herkomst" (e.g. a concert registration) has no year
-const extractYear = async (url: string) => {
+// A page without a "Herkomst" (e.g. a concert registration) has no year, and
+// one without a "Regie" no director
+const extractDetails = async (url: string) => {
   try {
-    const { origin } = await xray(url, { origin: '.herkomst .value | trim' })
-    return parseOriginYear(origin)
+    const { origin, director } = await xray(url, {
+      origin: '.herkomst .value | trim',
+      director: '.regie .value | trim',
+    })
+    return { year: parseOriginYear(origin), director: cleanDirector(director) }
   } catch (error) {
-    logger.warn('failed to extract the year', { url, error })
-    return undefined
+    logger.warn('failed to extract the year and director', { url, error })
+    return { year: undefined, director: undefined }
   }
 }
 
@@ -76,8 +81,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   }
 
   const urls = Array.from(new Set(results.map(({ url }) => url)))
-  const years = new Map(
-    await pMap(urls, async (url) => [url, await extractYear(url)] as const, {
+  const details = new Map(
+    await pMap(urls, async (url) => [url, await extractDetails(url)] as const, {
       concurrency: 3,
     }),
   )
@@ -92,7 +97,8 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
         return {
           title: titleCase(decode(title)),
-          year: years.get(url),
+          year: details.get(url)?.year,
+          director: details.get(url)?.director,
           url,
           cinema: 'Concordia',
           date: DateTime.fromObject({

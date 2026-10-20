@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -128,6 +129,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     ({ movie, performance }) => ({
       title: movie.title,
       year: movie.eventData?.year ?? undefined,
+      director: cleanDirector(movie.eventData?.director),
       url: movie.link,
       cinema: 'Lumière',
       date: DateTime.fromFormat(performance.startAt, 'yyyy-MM-dd HH:mm:ss', {

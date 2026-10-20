@@ -200,6 +200,7 @@ describe('debalie', () => {
         {
           title: 'Club Heaven',
           year: undefined,
+          director: 'Jona Honer',
           url: URL,
           cinema: 'De Balie',
           date: new Date('2026-10-03T15:45:00Z'),
@@ -207,6 +208,7 @@ describe('debalie', () => {
         {
           title: 'Club Heaven',
           year: undefined,
+          director: 'Jona Honer',
           url: URL,
           cinema: 'De Balie',
           date: new Date('2026-10-06T18:30:00Z'),

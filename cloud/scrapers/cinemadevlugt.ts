@@ -4,6 +4,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -27,6 +28,7 @@ type XRayFromMainPage = {
 }
 
 type XRayFromMoviePage = {
+  info?: { label?: string; value?: string }[]
   screenings: {
     date: string
     time: string
@@ -62,6 +64,9 @@ const extractFromMoviePage = async ({
   url,
 }: XRayFromMainPage): Promise<Screening[]> => {
   const movie: XRayFromMoviePage = await xray(url, {
+    info: xray('.info-wrap', [
+      { label: 'strong | trim', value: 'p.info | normalizeWhitespace | trim' },
+    ]),
     screenings: xray('ul#tickets li.desktop1', [
       {
         date: 'p.date | normalizeWhitespace | trim',
@@ -72,9 +77,15 @@ const extractFromMoviePage = async ({
 
   logger.debug('extractFromMoviePage', { url, movie })
 
+  const director = cleanDirector(
+    (movie.info ?? []).find(({ label }) => /^regisseurs?:?$/i.test(label ?? ''))
+      ?.value,
+  )
+
   return makeScreeningsUniqueAndSorted(
     (movie.screenings ?? []).map(({ date, time }) => ({
       title,
+      director,
       url,
       cinema: 'Cinema de Vlugt',
       date: parseScreeningDate(date, time),

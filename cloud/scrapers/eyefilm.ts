@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -28,6 +29,7 @@ type EyeShow = {
   production: {
     title: string
     year?: string | number | null
+    director?: string | null
   }[]
 }
 
@@ -69,6 +71,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
             title
             ... on production_production_Entry {
               year
+              director
             }
           }
         }
@@ -102,6 +105,7 @@ const extractFromGraphQL = async (): Promise<Screening[]> => {
     return {
       title: cleanTitle(show.production[0].title),
       year: parseYear(show.production[0].year),
+      director: cleanDirector(show.production[0].director),
       url: show.url,
       cinema: 'Eye',
       date: new Date(show.startDateTime),

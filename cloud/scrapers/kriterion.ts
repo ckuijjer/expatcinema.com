@@ -5,6 +5,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { titleCase } from './utils/titleCase'
+import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -184,6 +185,7 @@ const extractFromMainPage = async () => {
         const screening: Screening = {
           title: cleanTitle(item.name),
           year: releaseYearBySlug.get(slug) ?? extractYearFromTitle(item.name),
+          director: cleanDirector(item.director),
           url,
           cinema: 'Kriterion',
           date: DateTime.fromISO(item.starts_at).toJSDate(),

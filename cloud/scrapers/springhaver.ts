@@ -6,6 +6,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
+import { parseFkFeedDirector } from './utils/parseFkFeedDirector'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { titleCase } from './utils/titleCase'
 
@@ -20,6 +21,7 @@ type FkFeedItem = {
   year?: string
   language: { label: string; value: string }
   permalink: string
+  director_name?: { label: string; value: string } | ''
   times: {
     program_start: string
     program_end: string
@@ -56,6 +58,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
           return {
             title: cleanTitle(decode(movie.title)),
             year: extractYear(movie),
+            director: parseFkFeedDirector(movie.director_name),
             url: movie.permalink,
             cinema: 'Springhaver',
             date: extractDate(time.program_start),

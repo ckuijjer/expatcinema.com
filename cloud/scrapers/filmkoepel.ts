@@ -6,6 +6,7 @@ import { Screening } from '../types'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
+import { parseFkFeedDirector } from './utils/parseFkFeedDirector'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -28,6 +29,7 @@ type FkFeedItem = {
   year?: string
   language?: { label: string; value: string } | ''
   permalink: string
+  director_name?: { label: string; value: string } | ''
   times?: { program_start: string; program_end: string; tags?: string[] }[]
 }
 
@@ -50,6 +52,7 @@ export const extractScreeningsFromFeed = (
       .map((time) => ({
         title: cleanTitle(movie.title),
         year: parseFkFeedYear(movie.year),
+        director: parseFkFeedDirector(movie.director_name),
         url: movie.permalink,
         cinema: 'Filmkoepel',
         date: extractDate(time.program_start),

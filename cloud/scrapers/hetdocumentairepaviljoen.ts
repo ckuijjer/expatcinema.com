@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -18,6 +19,7 @@ type CinemaFilmDetail = {
   id: string
   fullPreferredTitle: string
   yearOfProduction?: number | null
+  credits?: { fullName?: string; role?: { key?: string } }[] | null
   shows: CinemaFilmDetailShow[]
 }
 
@@ -53,6 +55,16 @@ type CinemaFilmDetailShow = {
       }[]
     | null
 }
+
+// The credits list every role; the directors are the ones with role "director"
+export const parseDirector = (credits?: CinemaFilmDetail['credits']) =>
+  cleanDirector(
+    (credits ?? [])
+      .filter(({ role }) => role?.key === 'director')
+      .map(({ fullName }) => fullName)
+      .filter(Boolean)
+      .join(', '),
+  )
 
 // The film detail has "yearOfProduction": 1982 (Sans soleil). Not to be
 // confused with "edition": { "year": 2023 }, the year of the festival edition.
@@ -121,6 +133,7 @@ const extractFromMoviePage = async (film: MainPageCinemaScheduleFilm) => {
       return {
         title,
         year: parseYearOfProduction(filmDetail.yearOfProduction),
+        director: parseDirector(filmDetail.credits),
         url,
         cinema: 'Het Documentaire Paviljoen',
         date: new Date(show.startOn),

@@ -5,6 +5,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { titleCase } from './utils/titleCase'
+import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -16,6 +17,7 @@ type Show = {
   Start: string
   Production: {
     Title: string
+    Director?: string
     SubTitle?: string
     Other?: string // e.g. "drama / Japan 1988 / Nederlandse ondertiteling / 139 min"
     Url: string
@@ -49,6 +51,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings = apiResponse.Data.filter(hasEnglishSubtitles).map(
     (show) => ({
       title: titleCase(show.Production.Title),
+      director: cleanDirector(show.Production.Director),
       url: show.Production.Url,
       cinema: 'Cinema Amstelveen',
       date: DateTime.fromISO(show.Start, {

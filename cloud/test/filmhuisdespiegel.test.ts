@@ -1,5 +1,6 @@
 import {
   cleanTitle,
+  extractDirector,
   extractReleaseYear,
   findSubtitles,
   hasEnglishSubtitles,
@@ -109,6 +110,19 @@ describe('filmhuisdespiegel', () => {
           findSubtitles(['Frans gesproken | Engels ondertiteld']),
         ),
       ).toBe(true)
+    })
+  })
+
+  describe('extractDirector', () => {
+    test.each([
+      [
+        ['Frankrijk, 2026 | 115 minutenRegie: Camille Cottin'],
+        'Camille Cottin',
+      ],
+      [['België/ Frankrijk2025 | 89 minutenRegie: Ash Smolar'], 'Ash Smolar'],
+      [['Dari, Pasjtoe gesproken | Nederlands ondertiteld'], undefined],
+    ])('%p', (paragraphs, director) => {
+      expect(extractDirector(paragraphs)).toBe(director)
     })
   })
 

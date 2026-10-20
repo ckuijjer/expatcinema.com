@@ -4,6 +4,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -42,6 +43,15 @@ const parseTimestamp = (timestamp: string) => {
   return parsed.toJSDate()
 }
 
+// The details alternate label and value: ['Regie', 'Lucio Messercola', 'Taal', ...]
+export const parseDirector = (details: string[] = []) => {
+  const detailIndex = details.findIndex((detail) => /^Regie$/i.test(detail))
+
+  return detailIndex === -1
+    ? undefined
+    : cleanDirector(details[detailIndex + 1])
+}
+
 const parseReleaseYear = (details: string[]) => {
   const detailIndex = (details ?? []).findIndex((detail) =>
     /^Productiejaar$/i.test(detail),
@@ -73,6 +83,7 @@ const extractFromMoviePage = async ({
     (movie.timestamps ?? []).map((timestamp) => ({
       title: cleanTitle(title),
       year,
+      director: parseDirector(movie.details),
       url,
       cinema: 'Heerenstraat Theater',
       date: parseTimestamp(timestamp),

@@ -8,6 +8,7 @@ import xRayPuppeteer from '../xRayPuppeteer'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
@@ -50,13 +51,21 @@ export const extractYear = (html: string) => {
     : undefined
 }
 
-// A film without a year, or a page that can't be fetched, just has no year
-const fetchYear = async (url: string) => {
+// The film page lists the director as <li><strong>Regie</strong> <span>Lukas Dhont</span></li>
+export const extractDirector = (html: string) =>
+  cleanDirector(
+    html.match(/<strong>\s*Regie\s*<\/strong>\s*<span>([^<]*)<\/span>/i)?.[1],
+  )
+
+// A film without a year or director, or a page that can't be fetched, just has
+// neither
+const fetchDetails = async (url: string) => {
   try {
-    return extractYear(await got(url).text())
+    const html = await got(url).text()
+    return { year: extractYear(html), director: extractDirector(html) }
   } catch (error) {
     logger.warn('could not fetch the film page for the year', { url, error })
-    return undefined
+    return { year: undefined, director: undefined }
   }
 }
 
@@ -88,9 +97,9 @@ const extractFromMainPage = async () => {
 
     // The film pages are server rendered, so a plain request is enough
     const urls = Array.from(new Set(scrapeResult.map(({ url }) => url)))
-    const years = new Map(
+    const details = new Map(
       await Promise.all(
-        urls.map(async (url) => [url, await fetchYear(url)] as const),
+        urls.map(async (url) => [url, await fetchDetails(url)] as const),
       ),
     )
 
@@ -110,7 +119,8 @@ const extractFromMainPage = async () => {
 
         return {
           title,
-          year: years.get(url),
+          year: details.get(url)?.year,
+          director: details.get(url)?.director,
           url,
           cinema: 'Schuur',
           date: DateTime.fromObject({

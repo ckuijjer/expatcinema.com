@@ -7,6 +7,7 @@ import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { createXray } from '../xRay'
+import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -117,6 +118,9 @@ const extractFromMoviePage = async ({
     .map(({ date }) => ({
       title: cleanTitle(movie.title || title.rendered),
       year: parseReleaseYear(movie.year),
+      director: cleanDirector(
+        detailPage.metadata?.find(({ label }) => label === 'Regie')?.value,
+      ),
       url: movie.permalink || link,
       cinema: 'Slieker Film',
       date: parseScreeningDate(date.meta),

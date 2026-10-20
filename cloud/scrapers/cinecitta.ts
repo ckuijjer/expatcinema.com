@@ -6,6 +6,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { titleCase } from './utils/titleCase'
+import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -23,6 +24,7 @@ type WpJsonMovie = {
   link: string
   movie_sync_id: number
   release_year?: string
+  director?: string
   language_subtitles: string
   status_other: string
 }
@@ -91,6 +93,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
             return {
               title: cleanTitle(movie),
               year: parseFkFeedYear(movie.release_year),
+              director: cleanDirector(movie.director),
               url: movie.link,
               cinema: 'Cinecitta',
               date: extractDate(show.start),

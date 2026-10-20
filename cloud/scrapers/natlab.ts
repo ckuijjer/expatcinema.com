@@ -6,6 +6,7 @@ import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { splitTime } from './utils/splitTime'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -114,6 +115,7 @@ const extractFromMoviePage = async ({
   }
 
   const filmYear = parseYear(metadata)
+  const director = cleanDirector(metadata.Regie)
 
   logger.debug('screenings', { screenings: scrapeResult.screenings })
 
@@ -144,6 +146,7 @@ const extractFromMoviePage = async ({
         return {
           title: cleanTitle(scrapeResult.title),
           year: filmYear,
+          director,
           url,
           cinema: 'Natlab',
           date,
