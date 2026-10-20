@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
+import { findDirectorInLines } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -145,6 +146,7 @@ const extractFromMoviePage = async ({
   logger.debug('scrape result', { scrapeResult })
 
   const year = extractMetadataYear(scrapeResult.metadata ?? [])
+  const director = findDirectorInLines(scrapeResult.metadata)
 
   const screenings: Screening[] = scrapeResult.screenings
     .filter(({ subtitles }) => hasEnglishSubtitles(subtitles))
@@ -152,6 +154,7 @@ const extractFromMoviePage = async ({
       return {
         title: cleanTitle(title),
         year: year ?? extractYearFromTitle(title),
+        director,
         url: url,
         cinema: 'Lab-1',
         date: extractDate(date),

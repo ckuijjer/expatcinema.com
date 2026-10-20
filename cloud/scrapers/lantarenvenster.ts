@@ -8,6 +8,7 @@ import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { splitTime } from './utils/splitTime'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -30,6 +31,7 @@ const cleanTitle = (title: string) =>
 type XRayFromMoviePage = {
   title: string
   year: string
+  director?: string
   subtitles: string
   screenings: {
     date: string
@@ -61,6 +63,7 @@ export const extractScreeningsFromMovieSource = async (
   const movie: XRayFromMoviePage = await xray(source, '.page-content-aside', {
     title: '.wp_theatre_prod_title',
     year: '.wp_theatre_prod_year | trim',
+    director: '.wp_theatre_prod_director | trim',
     subtitles: '.wp_theatre_prod_languages_subtitles | trim',
     screenings: xray('.wpt_production_login_form tr', [
       {
@@ -97,6 +100,7 @@ export const extractScreeningsFromMovieSource = async (
           return {
             title: cleanTitle(movie.title),
             year,
+            director: cleanDirector(movie.director),
             url,
             cinema: 'Lantarenvenster',
             date: DateTime.fromObject({

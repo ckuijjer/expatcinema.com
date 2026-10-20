@@ -7,6 +7,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
+import { findDirectorInLines } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { USER_AGENT } from '../xRay'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
@@ -101,6 +102,7 @@ export const extractFromMoviePage = async (
       title: cleanTitle(movie.title),
       year:
         parseReleaseYear(movie.metadata) ?? extractYearFromTitle(movie.title),
+      director: findDirectorInLines(movie.metadata),
       url,
       cinema: 'De Uitkijk',
       date: extractDate(screening),

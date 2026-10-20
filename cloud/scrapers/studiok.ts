@@ -9,6 +9,7 @@ import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSo
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { splitTime } from './utils/splitTime'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -48,6 +49,14 @@ export const extractYear = (meta?: string, title?: string) => {
 
   return extractYearFromTitle(title)
 }
+
+// e.g. "Regie: Jan SvankmajerSpeelduur: 107 minJaar: 1994" -> "Jan Svankmajer"
+export const extractDirector = (meta?: string) =>
+  cleanDirector(
+    meta?.match(
+      /\bRegie:\s*(.+?)(?=Speelduur:|Jaar:|Kijkwijzer:|Cast:|Acteurs:|Genre:|Land:|Taal:|Ondertiteling:|$)/,
+    )?.[1],
+  )
 
 type XRayFromMoviePage = {
   title: string
@@ -106,6 +115,7 @@ const extractFromMoviePage = async (url: string) => {
           return {
             title: cleanTitle(title),
             year: extractYear(movie.meta, title),
+            director: extractDirector(movie.meta),
             url,
             cinema: 'Studio/K',
             date: DateTime.fromObject({

@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { titleCase } from './utils/titleCase'
+import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -29,6 +30,9 @@ const MOVIES_QUERY = `
       nodes {
         title
         link
+        eventData {
+          director
+        }
         language {
           code
         }
@@ -55,6 +59,7 @@ type FocusPerformance = {
 type FocusMovie = {
   title: string | null
   link: string
+  eventData: { director: string | null } | null
   language: { code: string } | null
   performances: FocusPerformance[] | null
 }
@@ -130,6 +135,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       ),
       // No year: Focus's eventData.year looks like the Dutch release year
       // (2026 for Palestine 36 and Downtown, both 2025 films)
+      director: cleanDirector(movie.eventData?.director),
       url: movie.link,
       cinema: 'Focus Arnhem',
       date: DateTime.fromFormat(performance.startAt, 'yyyyMMddHHmm', {

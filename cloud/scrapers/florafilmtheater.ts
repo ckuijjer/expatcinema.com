@@ -11,6 +11,7 @@ import { removeYearSuffix } from './utils/removeYearSuffix'
 import { splitTime } from './utils/splitTime'
 import { titleCase } from './utils/titleCase'
 import { normalizeWhitespace } from './utils/xrayFilters'
+import { findDirectorInJsonLd } from './utils/findDirectorInJsonLd'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -101,6 +102,20 @@ const splitDate = (date: string) => {
   }
 }
 
+// The film page has the director in its JSON-LD. A page that can't be fetched
+// only leaves out the director
+const fetchDirector = async (url: string) => {
+  try {
+    const { jsonLd } = await xray(url, {
+      jsonLd: ['script[type="application/ld+json"]'],
+    })
+    return findDirectorInJsonLd(jsonLd)
+  } catch (error) {
+    logger.warn('failed to extract the director', { url, error })
+    return undefined
+  }
+}
+
 const extractFromMainPage = async (): Promise<Screening[]> => {
   try {
     const url = 'https://florafilmtheater.nl/agenda'
@@ -125,6 +140,14 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
     }
 
     logger.debug('movies', { moviesWithEnglishSubtitles })
+
+    const directors = new Map(
+      await Promise.all(
+        Array.from(
+          new Set(moviesWithEnglishSubtitles.map(({ url }) => url)),
+        ).map(async (url) => [url, await fetchDirector(url)] as const),
+      ),
+    )
 
     const screenings: Screening[] = moviesWithEnglishSubtitles.flatMap(
       (movie) => {
@@ -152,6 +175,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
               year:
                 extractMetadataYear(movie.metadata) ??
                 extractYearFromTitle(movie.rawTitle),
+              director: directors.get(movie.url),
               url: movie.url,
               cinema: 'Flora Filmtheater',
               date: DateTime.fromObject({

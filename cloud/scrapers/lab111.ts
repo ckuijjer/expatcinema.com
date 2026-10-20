@@ -10,6 +10,7 @@ import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
@@ -93,7 +94,11 @@ export const parseReleaseYear = (meta: MetaItem[]) => {
   return year >= 1888 && year <= thisYear + 2 ? year : undefined
 }
 
-export const extractReleaseYear = async (html: string) => {
+// "Regisseur" lists the director(s) of the film
+export const parseDirector = (meta: MetaItem[]) =>
+  cleanDirector(meta.find((item) => item.label === 'Regisseur')?.value)
+
+export const extractFilmDetails = async (html: string) => {
   const detailPage: XRayFromDetailPage = await detailPageXray(html, {
     meta: detailPageXray('.zmovie-meta', [
       {
@@ -103,8 +108,13 @@ export const extractReleaseYear = async (html: string) => {
     ]),
   })
 
-  return parseReleaseYear(detailPage.meta ?? [])
+  const meta = detailPage.meta ?? []
+
+  return { year: parseReleaseYear(meta), director: parseDirector(meta) }
 }
+
+export const extractReleaseYear = async (html: string) =>
+  (await extractFilmDetails(html)).year
 
 const extractFromMainPage = async () => {
   try {
@@ -128,8 +138,8 @@ const extractFromMainPage = async () => {
 
     const englishSubtitlesMovies = scrapeResult.filter(hasEnglishSubtitles)
 
-    // A film page without a year, or one that can't be fetched, only leaves out the year
-    const releaseYearByUrl = new Map(
+    // A film page without a year or director, or one that can't be fetched, only leaves those out
+    const detailsByUrl = new Map(
       await pMap(
         Array.from(new Set(englishSubtitlesMovies.map(({ url }) => url))),
         async (url) => {
@@ -139,7 +149,7 @@ const extractFromMainPage = async () => {
               retry: { limit: 2, maxRetryAfter: 10_000 },
             }).text()
 
-            return [url, await extractReleaseYear(html)] as const
+            return [url, await extractFilmDetails(html)] as const
           } catch (error) {
             logger.warn('failed to extract the release year', { url, error })
             return [url, undefined] as const
@@ -176,8 +186,9 @@ const extractFromMainPage = async () => {
         return {
           title: cleanTitle(movie.title),
           year:
-            releaseYearByUrl.get(movie.url) ??
+            detailsByUrl.get(movie.url)?.year ??
             extractYearFromTitle(movie.title),
+          director: detailsByUrl.get(movie.url)?.director,
           url: movie.url,
           cinema: 'Lab111',
           date: DateTime.fromObject({

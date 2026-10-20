@@ -12,6 +12,7 @@ import {
 } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
 import { removeYearSuffix } from './utils/removeYearSuffix'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { uniq } from './utils/uniq'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
@@ -56,6 +57,7 @@ type KetelhuisListing = {
 type KetelhuisMoviePage = {
   title: string
   metadata: string
+  director?: string
   mainContent: string
   firstDate: string
   firstTimes: string[]
@@ -170,6 +172,8 @@ const extractFromMoviePage = async ({
   const scrapeResult = (await xray(url, {
     title: '.c-filmheader-title__content h1 > span', // not using cleanTitle because we want to keep the "English subs" part here
     metadata: '.c-detail-info__filminfo | normalizeWhitespace',
+    director:
+      '.c-detail-info__filminfo [itemprop="director"] | normalizeWhitespace | trim',
     mainContent: '.c-main-content | normalizeWhitespace',
     firstDate: '.c-detail-schedule__firstday div:first-of-type | trim',
     firstTimes: ['.c-detail-schedule__times a | normalizeWhitespace | trim'],
@@ -248,6 +252,7 @@ const extractFromMoviePage = async ({
     cinema: 'Ketelhuis',
     title,
     year: releaseYear,
+    director: cleanDirector(scrapeResult.director),
   }))
 
   logger.debug('screenings', { screenings })

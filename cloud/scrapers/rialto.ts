@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -25,7 +26,7 @@ type RialtoProgram = {
 type RialtoEvent = {
   url: string // e.g. /en/films/coward
   title: string
-  fields?: { productionYear?: string }
+  fields?: { productionYear?: string; director?: string }
   programs?: RialtoProgram[]
 }
 
@@ -71,6 +72,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       .map((program) => ({
         title: event.title,
         year: parseYear(event.fields?.productionYear),
+        director: cleanDirector(event.fields?.director),
         url: new URL(event.url, BASE_URL).toString(),
         cinema: 'Rialto De Pijp',
         date: DateTime.fromISO(program.startAt, {

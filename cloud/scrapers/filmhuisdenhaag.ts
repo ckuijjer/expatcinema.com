@@ -6,6 +6,7 @@ import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { splitTime } from './utils/splitTime'
 import { createXray } from '../xRay'
+import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -203,6 +204,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       return {
         title: cleanTitle(item.title, seriesLabels),
         year: releaseYearByUrl.get(`https://filmhuisdenhaag.nl${item.uri}`),
+        director: cleanDirector(item.director),
         url: `https://filmhuisdenhaag.nl${item.uri}`,
         cinema: 'Filmhuis Den Haag',
         date: DateTime.fromObject({

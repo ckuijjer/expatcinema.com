@@ -7,6 +7,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -61,6 +62,15 @@ const extractSubtitles = (html: string) =>
 
 const hasEnglishSubtitles = (subtitles?: string) =>
   /^(engels|english)$/i.test(subtitles?.trim() ?? '')
+
+// e.g. <p><strong>Regisseur:</strong> Katsuhiro Otomo</p>, also
+// <strong>Regisseur</strong>: X and <strong>Regisseurs </strong>X, Y
+export const extractDirector = (html: string) =>
+  cleanDirector(
+    html.match(
+      /<strong>\s*Regisseurs?\s*:?\s*<\/strong>\s*:?\s*([^<]*)</i,
+    )?.[1],
+  )
 
 const extractTitle = (html: string) => {
   const title = html.match(
@@ -133,6 +143,7 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
     .filter(({ subtitles }) => hasEnglishSubtitles(subtitles))
     .map(({ screeningUrl }) => ({
       title,
+      director: extractDirector(html),
       url: screeningUrl,
       cinema: 'Rialto VU',
       date: extractDate(screeningUrl),

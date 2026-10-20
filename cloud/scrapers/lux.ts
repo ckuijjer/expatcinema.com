@@ -7,6 +7,7 @@ import { guessYear } from './utils/guessYear'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { splitTime } from './utils/splitTime'
+import { findDirectorInJsonLd } from './utils/findDirectorInJsonLd'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -20,6 +21,7 @@ const xray = createXray({ logger })
 
 type XRayFromMoviePage = {
   title: string
+  jsonLd?: string[]
   screenings: {
     date: string
     times: string[]
@@ -79,8 +81,9 @@ const extractFromMoviePage = async ({
 }: MainPageItem) => {
   // url example 'https://www.lux-nijmegen.nl/programma/english-subs-perfect-days/'
 
-  const data: XRayFromMoviePage = await xray(url, 'body', {
+  const data: XRayFromMoviePage = await xray(url, {
     title: 'h2.header-programme__title  | trim',
+    jsonLd: ['script[type="application/ld+json"]'],
     screenings: xray('.programme-tickets-popup__day', [
       {
         date: '.programme-tickets-popup__label | trim',
@@ -99,6 +102,7 @@ const extractFromMoviePage = async ({
       return {
         title: cleanTitle(data.title),
         year: extractReleaseYear({ title, permalink: url, ...item }),
+        director: findDirectorInJsonLd(data.jsonLd),
         url,
         cinema: 'Lux',
         date: DateTime.fromObject({

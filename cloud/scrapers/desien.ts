@@ -5,6 +5,7 @@ import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { removeYearSuffix } from './utils/removeYearSuffix'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -23,6 +24,7 @@ type XRayResult = {
   time: string
   location: string
   tags: string
+  director?: string
 }
 
 const parseScreeningDate = (date: string, time: string) => {
@@ -75,6 +77,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         date: '@data-date',
         time: '.cont .date | normalizeWhitespace | trim',
         location: '.special | normalizeWhitespace | trim',
+        director: '.info .regie | normalizeWhitespace | trim',
         tags: '@data-genre',
       },
     ],
@@ -84,9 +87,10 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   const screenings = results
     .filter(hasEnglishSubtitles)
-    .map(({ title, url, date, time }) => ({
+    .map(({ title, url, date, time, director }) => ({
       title: cleanTitle(title),
       year: extractYearFromTitle(title) ?? extractYearFromUrl(url),
+      director: cleanDirector(director),
       url,
       cinema: 'De Sien',
       date: parseScreeningDate(date, time),

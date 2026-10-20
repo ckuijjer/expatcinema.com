@@ -6,6 +6,7 @@ import { guessYear } from './utils/guessYear'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -54,6 +55,11 @@ type XRayFromMainPage = {
 // The film page lists the year with the country and the director, e.g.
 // <p class="title">Year</p><p class="content">1988</p>
 // A film without a year has no such row, so there's no year then.
+export const parseDirector = (credits: { label?: string; value?: string }[]) =>
+  cleanDirector(
+    credits.find(({ label }) => label?.trim() === 'Director')?.value,
+  )
+
 export const parseYear = (credits: { label?: string; value?: string }[]) => {
   const value = credits.find(({ label }) => label?.trim() === 'Year')?.value
   const year = /^\s*(\d{4})\s*$/.exec(value ?? '')?.[1]
@@ -94,6 +100,7 @@ const extractFromMoviePage = async ({
   logger.debug('scrapeResult', { scrapeResult })
 
   const filmYear = parseYear(scrapeResult.credits ?? [])
+  const director = parseDirector(scrapeResult.credits ?? [])
 
   const screenings: Screening[] = scrapeResult.screenings.flatMap(
     ({ date, times }) => {
@@ -116,6 +123,7 @@ const extractFromMoviePage = async ({
           return {
             title: scrapeResult.title,
             year: filmYear,
+            director,
             url,
             cinema: 'Forum Groningen',
             date: DateTime.fromObject({

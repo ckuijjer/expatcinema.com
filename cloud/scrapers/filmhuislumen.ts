@@ -5,6 +5,7 @@ import { Screening } from '../types'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberDutch } from './utils/monthToNumber'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -42,6 +43,7 @@ type XRayFromMoviePage = {
   language: string
   subtitles: string
   year: string
+  directors?: string[]
   screenings: {
     date: string
     times: string[]
@@ -93,6 +95,7 @@ const extractFromMoviePage = async ({
     language: 'p.field-language .value | normalizeWhitespace | trim',
     subtitles: 'p.field-subtitles .value | normalizeWhitespace | trim',
     year: 'p.field-year .value | normalizeWhitespace | trim',
+    directors: ['.taxonomy-director a | normalizeWhitespace | trim'],
     screenings: xray('#voorstellingen .wp-block-group:has(> .datum-tekst)', [
       {
         date: '.datum-tekst | normalizeWhitespace | trim',
@@ -121,6 +124,7 @@ const extractFromMoviePage = async ({
         return {
           title: movie.title,
           year: releaseYear,
+          director: cleanDirector((movie.directors ?? []).join(', ')),
           url,
           cinema: 'Filmhuis Lumen',
           date: DateTime.fromObject({
