@@ -6,6 +6,7 @@ import { Screening } from '../types'
 import { USER_AGENT, createXray } from '../xRay'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -182,6 +183,9 @@ export const extractScreeningsFromMovieHtml = async (
   const languages = parseSubtitleLanguages(subtitles?.value ?? '')
   const rule = parseEnglishSubtitlesRule(movie.paragraphs ?? [])
   const year = extractYear(info)
+  const director = cleanDirector(
+    info.find(({ label }) => /^regisseurs?$/i.test(label))?.value,
+  )
 
   return tickets.flatMap(({ day, time }) => {
     const date = parseDate(day, time)
@@ -197,6 +201,7 @@ export const extractScreeningsFromMovieHtml = async (
       {
         title: cleanTitle(movie.title),
         year,
+        director,
         url,
         cinema: 'De Balie',
         date: date.toJSDate(),

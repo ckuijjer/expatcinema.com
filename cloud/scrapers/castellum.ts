@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -21,6 +22,7 @@ type XRayFilmPage = {
   bodyText: string
   title: string
   jsonLd: string[]
+  crew?: { role?: string; name?: string }[]
 }
 
 const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
@@ -30,6 +32,9 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
       bodyText: 'body@text | normalizeWhitespace | trim',
       title: 'h1 span | trim',
       jsonLd: ['script[type="application/ld+json"]'],
+      crew: xray('.section__row', [
+        { role: 'p:first-child | trim', name: 'p:nth-child(2) | trim' },
+      ]),
     })
   } catch (error) {
     logger.warn('skipping film page that could not be fetched', { url, error })
@@ -76,8 +81,18 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
     return []
   }
 
+  // The cast & crew has a row per director, e.g. director / Steve Cox
+  const director = cleanDirector(
+    (page.crew ?? [])
+      .filter(({ role }) => role?.toLowerCase() === 'director')
+      .map(({ name }) => name)
+      .filter(Boolean)
+      .join(', '),
+  )
+
   return dates.map((date) => ({
     title,
+    director,
     url,
     cinema: 'Castellum Theater & Film',
     date,

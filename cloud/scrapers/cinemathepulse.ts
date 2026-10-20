@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
+import { cleanDirector } from './utils/cleanDirector'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -46,6 +47,7 @@ type XRayPage = {
   h1Title: string
   yearParts: string[]
   dateSyncs: string[]
+  info?: { label?: string; value?: string }[]
 }
 
 const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
@@ -61,6 +63,9 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
     h1Title: 'h1.heading-style-film-titles | trim',
     yearParts: ['.heading-style-film-year | trim'],
     dateSyncs: ['.shows_date_sync | trim'],
+    info: xray('.film-info_content-01', [
+      { label: 'p.heading-style-h7 | trim', value: 'h3 | trim' },
+    ]),
   })
 
   const title = page.h1Title
@@ -72,6 +77,10 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
   }
 
   const year = extractYear(page.yearParts)
+  const director = cleanDirector(
+    (page.info ?? []).find(({ label }) => /^regisseurs?$/i.test(label ?? ''))
+      ?.value,
+  )
 
   const dates = page.dateSyncs
     .map((dateSync) => {
@@ -90,6 +99,7 @@ const extractFromFilmPage = async (url: string): Promise<Screening[]> => {
   return dates.map((date) => ({
     title,
     year,
+    director,
     url,
     cinema: 'Cinema The Pulse',
     date,
