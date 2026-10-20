@@ -1,5 +1,9 @@
 import { decode } from 'html-entities'
 
+// More than this isn't names: Lab-1 has a description of the film as the
+// director of Downtown
+const MAX_LENGTH = 120
+
 // Tidies the free text a cinema has for the director(s): decodes HTML
 // entities, collapses whitespace and drops a leading label ("Regie:") and
 // trailing punctuation. Returns undefined when nothing is left.
@@ -10,7 +14,7 @@ export const cleanDirector = (director?: string | null) => {
     .replace(/[\s,;|&]+$/, '')
     .trim()
 
-  return cleaned || undefined
+  return cleaned && cleaned.length <= MAX_LENGTH ? cleaned : undefined
 }
 
 // Finds the director in a list of "Label: value" lines, e.g. the metadata

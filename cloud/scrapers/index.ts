@@ -2,17 +2,11 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { PutCommand } from '@aws-sdk/lib-dynamodb'
 import { mkdir, writeFile } from 'fs/promises'
 import { DateTime, Settings } from 'luxon'
-import pMap from 'p-map'
 import { dirname, resolve } from 'path'
 
 import { closeBrowser } from '../browser'
 import documentClient from '../documentClient'
-import getMetadata from '../metadata'
-import {
-  getTitlesWithoutSharedLabels,
-  resolveWithoutSharedLabels,
-} from '../metadata/sharedLabels'
-import { resolveWithTitleParts } from '../metadata/titleParts'
+import { resolveMetadata } from '../metadata/resolveMetadata'
 import { logger } from '../powertools'
 import { triggerWebDeploy } from '../triggerWebDeploy'
 import { Screening } from '../types'
@@ -68,14 +62,10 @@ import studiok from './studiok'
 import themovies from './themovies'
 import worm from './worm'
 import { buildMovies } from '../metadata/buildMovies'
-import { resolveWithSiblingYears } from '../metadata/siblingYears'
 import { withEvent } from './utils/extractEvent'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { withTimeout } from './utils/withTimeout'
-import {
-  getMetadataLookupKey,
-  normalizeMovieTitleForLookup,
-} from '../metadata/titleResolver'
+import { getMetadataLookupKey } from '../metadata/titleResolver'
 import type { Metadata } from '../metadata/types'
 
 const SCRAPERS = {
@@ -266,79 +256,10 @@ export const scrapers = async () => {
       Object.values(results).flat(),
     )
 
-    const metadataLookups = new Map<
-      string,
-      { query: string; year?: number; rawTitles: Set<string> }
-    >()
-    allRawScreenings.forEach(({ title, year }) => {
-      const query = normalizeMovieTitleForLookup(title)
-      const lookupKey = getMetadataLookupKey(title, year)
-      const existingLookup = metadataLookups.get(lookupKey) ?? {
-        query,
-        year,
-        rawTitles: new Set<string>(),
-      }
-      existingLookup.rawTitles.add(title)
-      metadataLookups.set(lookupKey, existingLookup)
-    })
-
-    const primaryMetadata = await pMap(
-      Array.from(metadataLookups.values())
-        .sort((left, right) => {
-          const leftRawTitle = Array.from(left.rawTitles)[0] ?? ''
-          const rightRawTitle = Array.from(right.rawTitles)[0] ?? ''
-          return leftRawTitle.localeCompare(rightRawTitle)
-        })
-        .map((lookup) => ({
-          title: Array.from(lookup.rawTitles)[0] ?? '',
-          year: lookup.year,
-        })),
-      getMetadata,
-      {
-        concurrency: 5,
-      },
-    )
-
-    // a title that doesn't match, retried without the festival, series or
-    // event name that several titles at its cinema have
-    const titlesWithoutSharedLabels =
-      getTitlesWithoutSharedLabels(allRawScreenings)
-
-    const metadataWithoutSharedLabels = await pMap(
-      primaryMetadata,
-      (metadata) =>
-        resolveWithoutSharedLabels(
-          metadata,
-          Array.from(
-            metadataLookups.get(
-              getMetadataLookupKey(metadata.query, metadata.year),
-            )?.rawTitles ?? [],
-          ).flatMap(
-            (rawTitle) => titlesWithoutSharedLabels.get(rawTitle) ?? [],
-          ),
-        ),
-      { concurrency: 5 },
-    )
-
-    // and without the label or the title that is not the film's, when the
-    // year of the screening confirms it
-    const uniqueTitlesAndMetadata = await pMap(
-      metadataWithoutSharedLabels,
-      (metadata) =>
-        resolveWithTitleParts(
-          metadata,
-          Array.from(
-            metadataLookups.get(
-              getMetadataLookupKey(metadata.query, metadata.year),
-            )?.rawTitles ?? [],
-          ),
-        ),
-      { concurrency: 5 },
-    )
-
-    // and with the years that the screenings of the same title matched
-    const uniqueTitlesAndMetadataWithSiblingHints =
-      await resolveWithSiblingYears(uniqueTitlesAndMetadata)
+    const {
+      metadataLookups,
+      metadata: uniqueTitlesAndMetadataWithSiblingHints,
+    } = await resolveMetadata(allRawScreenings)
 
     const allWithResolvedMovies = makeScreeningsUniqueAndSorted(
       allRawScreenings.map((movie) => {
@@ -387,6 +308,15 @@ export const scrapers = async () => {
       .filter((metadata) => metadata.match.status === 'ambiguous')
       .map(toTitleMatchRecord)
 
+    // matched, but the director of the screenings isn't one of the film's
+    const directorDisagreements = uniqueTitlesAndMetadataWithSiblingHints
+      .filter(
+        (metadata) =>
+          metadata.match.status === 'matched' &&
+          metadata.match.directorMatch === 'disagree',
+      )
+      .map(toTitleMatchRecord)
+
     const unmatchedMovies = uniqueTitlesAndMetadataWithSiblingHints
       .filter((metadata) => metadata.match.status === 'unmatched')
       .map(toTitleMatchRecord)
@@ -405,6 +335,9 @@ export const scrapers = async () => {
 
     await writeToFile(`review/ambiguous-movies/${now}.json`)(ambiguousMovies)
     await writeToFile(`review/unmatched-movies/${now}.json`)(unmatchedMovies)
+    await writeToFile(`review/director-disagreements/${now}.json`)(
+      directorDisagreements,
+    )
 
     logger.info('writing all, the combined json, to public S3 bucket')
     await writeToPublicFile('screenings.json')(allWithResolvedMovies)

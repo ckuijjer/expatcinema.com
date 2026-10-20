@@ -14,6 +14,7 @@ const YEAR_TOLERANCE = 1
 export const resolveWithTitleParts = async (
   metadata: Metadata,
   rawTitles: string[],
+  directors?: string[],
 ): Promise<Metadata> => {
   if (
     metadata.year === undefined ||
@@ -39,7 +40,11 @@ export const resolveWithTitleParts = async (
   const confirmed: { part: string; retry: Metadata }[] = []
 
   for (const part of parts) {
-    const retry = await getMetadata({ title: part, year: metadata.year })
+    const retry = await getMetadata({
+      title: part,
+      year: metadata.year,
+      directors,
+    })
     const releaseYear = Number(retry.tmdb?.releaseDate?.slice(0, 4))
 
     const isTitleOfFilm = [

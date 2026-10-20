@@ -5,6 +5,8 @@ export type MatchMethod =
   | 'tmdb-search'
   | 'shared-label'
   | 'title-part'
+  | 'director'
+  | 'director-year'
   | 'unmatched'
 
 export type TmdbVideo = {
@@ -45,6 +47,8 @@ export type TmdbMovie = {
   alternativeTitles?: string[]
 }
 
+export type DirectorMatch = 'agree' | 'disagree' | 'unknown'
+
 export type MetadataMatch = {
   status: MatchStatus
   method: MatchMethod
@@ -55,6 +59,9 @@ export type MetadataMatch = {
   matchedReleaseDate?: string
   // the film was picked from equally good candidates by its popularity
   popularityTieBreak?: boolean
+  // whether the director of the screenings is one of the film's, when the
+  // screenings have a director
+  directorMatch?: DirectorMatch
   // for method 'shared-label' and 'title-part': the title that matched
   strippedTitle?: string
   candidates?: Array<{
@@ -65,6 +72,7 @@ export type MetadataMatch = {
     releaseDate?: string
     popularity?: number
     confidence: number
+    directorMatch?: DirectorMatch
   }>
 }
 

@@ -228,6 +228,8 @@ export type ScoredCandidate<T> = {
   confidence: number
   // the release year is within a year of a year hint
   yearAgrees?: boolean
+  // one of the film's directors is the director the cinemas give
+  directorAgrees?: boolean
 }
 
 const getYearHints = (rawTitle: string, yearHints: number[]) =>
@@ -369,7 +371,7 @@ export const selectCandidateWithPopularityTieBreak = <
     (candidate) => bestConfidence - candidate.confidence < 0.05,
   )
   const yearConfirmed = confidenceBand.filter(
-    (candidate) => candidate.yearAgrees,
+    (candidate) => candidate.yearAgrees || candidate.directorAgrees,
   )
   const contenders = yearConfirmed.length > 0 ? yearConfirmed : confidenceBand
   const byPopularity = [...contenders].sort(
