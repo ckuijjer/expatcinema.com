@@ -59,6 +59,18 @@ export const parseYear = (metadata: Record<string, string | undefined>) => {
     : undefined
 }
 
+// A film is tagged English either via the "Ondertiteling" detail, the
+// ENGELSE ONDERTITELING genre, or a "[Eng Subs]" marker in the title (e.g.
+// 'Naza [ENG SUBS]')
+export const hasEnglishSubtitles = (movie: {
+  title: string
+  genres: string[]
+  metadata: Record<string, string | undefined>
+}) =>
+  movie.metadata.Ondertiteling?.includes('Engels') ||
+  movie.genres.includes('ENGELSE ONDERTITELING') ||
+  /\[Eng Subs\]/i.test(movie.title)
+
 const extractFromMoviePage = async ({
   url,
   title,
@@ -91,11 +103,11 @@ const extractFromMoviePage = async ({
   logger.debug('metadata', { metadata })
 
   if (
-    !(
-      metadata.Ondertiteling?.includes('Engels') ||
-      scrapeResult.genres.includes('ENGELSE ONDERTITELING') ||
-      scrapeResult.title.includes('[Eng Subs]')
-    )
+    !hasEnglishSubtitles({
+      title: scrapeResult.title,
+      genres: scrapeResult.genres,
+      metadata,
+    })
   ) {
     logger.debug('no English subtitles', { url, title })
     return []

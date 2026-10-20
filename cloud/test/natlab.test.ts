@@ -1,4 +1,4 @@
-import { cleanTitle, parseYear } from '../scrapers/natlab'
+import { cleanTitle, hasEnglishSubtitles, parseYear } from '../scrapers/natlab'
 
 // The details of https://www.natlab.nl/nl/programma/train-to-busan-k-wave-d8dv, as on 2026-10-07:
 // <dt>Regie</dt><dd>Yeon Sang-ho</dd> <dt>Speelduur</dt><dd>118 min</dd>
@@ -42,6 +42,50 @@ describe('parseYear', () => {
 
   test('ignores a year in other details', () => {
     expect(parseYear({ Speelduur: '2016' })).toBeUndefined()
+  })
+})
+
+describe('hasEnglishSubtitles', () => {
+  test('from the "Ondertiteling" detail', () => {
+    expect(
+      hasEnglishSubtitles({
+        title: 'Train to Busan',
+        genres: ['FILM'],
+        metadata: { Ondertiteling: 'Engels' },
+      }),
+    ).toBe(true)
+  })
+
+  test('from the ENGELSE ONDERTITELING genre', () => {
+    expect(
+      hasEnglishSubtitles({
+        title: 'Some Film',
+        genres: ['FILM', 'ENGELSE ONDERTITELING'],
+        metadata: {},
+      }),
+    ).toBe(true)
+  })
+
+  // https://www.natlab.nl/nl/programma/naza-eng-subs-5jcy (2026-10-20): "Naza
+  // [ENG SUBS]" with "Ondertiteling" still "Nederlands" on the page itself
+  test('from a "[Eng Subs]" marker in the title, any case', () => {
+    expect(
+      hasEnglishSubtitles({
+        title: 'Naza [ENG SUBS]',
+        genres: ['FILM'],
+        metadata: { Ondertiteling: 'Nederlands' },
+      }),
+    ).toBe(true)
+  })
+
+  test('false without any English signal', () => {
+    expect(
+      hasEnglishSubtitles({
+        title: 'Toutes Directions',
+        genres: ['FILM'],
+        metadata: { Ondertiteling: 'Nederlands' },
+      }),
+    ).toBeFalsy()
   })
 })
 
