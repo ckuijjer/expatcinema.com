@@ -400,8 +400,12 @@ export const scrapers = async () => {
             getMetadataLookupKey(entry.query, entry.year) === lookupKey,
         )
 
+        // The director is only used while scraping, it isn't needed in the
+        // public screenings.json
+        const { director, ...screening } = movie
+
         return {
-          ...movie,
+          ...screening,
           movieId: metadata?.movieId,
         }
       }),
