@@ -82,3 +82,41 @@ describe('No Way Down', () => {
     expect(getManualTitleOverride('No Way Down')?.tmdbId).toBe(1571766)
   })
 })
+
+describe('Cinema Aperitivo: Cold War', () => {
+  test("is Paweł Pawlikowski's Cold War (Zimna wojna)", () => {
+    expect(
+      getManualTitleOverride(
+        'Cinema Aperitivo: Cold War (Incl. Drink and Antipasti Platter)',
+        2018,
+      )?.tmdbId,
+    ).toBe(440298)
+  })
+})
+
+describe('Interstella 5555', () => {
+  test('is the 2003 Daft Punk / Leiji Matsumoto film', () => {
+    expect(
+      getManualTitleOverride(
+        "Daft Punk & Leiji Matsumoto's Interstella 5555: the 5tory of the 5ecret 5tar 5ystem",
+        2003,
+      )?.tmdbId,
+    ).toBe(11049)
+  })
+})
+
+describe('The Time Masters', () => {
+  test("is René Laloux's Les Maîtres du temps (1982)", () => {
+    expect(
+      getManualTitleOverride('The Time Masters Incl. Introduction', 1982)
+        ?.tmdbId,
+    ).toBe(22501)
+  })
+})
+
+describe('Frank', () => {
+  test("is Lenny Abrahamson's Frank (2014), whatever year a screening gives", () => {
+    expect(getManualTitleOverride('Frank')?.tmdbId).toBe(171372)
+    expect(getManualTitleOverride('Frank', 1900)?.tmdbId).toBe(171372)
+  })
+})
