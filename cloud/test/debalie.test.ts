@@ -238,5 +238,36 @@ describe('debalie', () => {
     test('an event without ticket links has no screenings', async () => {
       expect(await extractScreeningsFromMovieHtml(NO_TICKETS, URL)).toEqual([])
     })
+
+    // The Amsterdam Polish Film Festival pages: the day is the only option of the
+    // date selector, and there is no subtitles item
+    test('a festival page without ticket days or subtitles: English subtitles', async () => {
+      const html = `<h1>Amsterdam Polish Film Festival: The Promised Land</h1>
+        <select data-ticket-selector-select><option selected value="20261023">vr 23 oktober</option></select>
+        <div class="banner-bar__links"><a class="banner-bar__link" href="https://tickets.debalie.nl/x">18:30</a></div>
+        <div class="entry__content"><p><strong>About Amsterdam Polish Film Festival</strong><br>The 5th edition</p></div>`
+
+      expect(
+        await extractScreeningsFromMovieHtml(
+          html,
+          'https://debalie.nl/cinema/amsterdam-polish-film-festival-the-promised-land/',
+        ),
+      ).toEqual([
+        expect.objectContaining({
+          title: 'The Promised Land',
+          date: new Date('2026-10-23T16:30:00Z'),
+        }),
+      ])
+    })
+
+    test('a page without ticket days or the festival text has no screenings', async () => {
+      const html = `<h1>Something</h1>
+        <select data-ticket-selector-select><option value="20261023">vr 23 oktober</option></select>
+        <div class="banner-bar__links"><a class="banner-bar__link" href="x">18:30</a></div>`
+
+      expect(
+        await extractScreeningsFromMovieHtml(html, 'https://debalie.nl/x/'),
+      ).toEqual([])
+    })
   })
 })

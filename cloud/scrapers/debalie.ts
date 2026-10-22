@@ -50,6 +50,8 @@ type XRayFromMoviePage = {
   info: InfoItem[]
   paragraphs: string[]
   tickets: Ticket[]
+  days: string[]
+  times: string[]
 }
 
 // The subtitles are listed as language codes: 'NL', 'ENG', or 'NL, ENG'
@@ -135,6 +137,13 @@ export const parseDate = (day: string, time: string) => {
   return date.isValid ? date : undefined
 }
 
+// The pages of the Amsterdam Polish Film Festival have no subtitles item, the
+// festival says its programme is in English with English subtitles
+export const isPolishFilmFestival = (paragraphs: string[]) =>
+  paragraphs.some((paragraph) =>
+    /^About Amsterdam Polish Film Festival/i.test(paragraph),
+  )
+
 // Drop the series a film is part of, e.g.
 // "Amsterdam Polish Film Festival: Afterimage" and "CinéDialoog: Caméra d’Afrique"
 export const cleanTitle = (title: string) =>
@@ -169,10 +178,20 @@ export const extractScreeningsFromMovieHtml = async (
         time: '.banner-bar__link | normalizeWhitespace | trim',
       },
     ]),
+    // Without the day on the ticket links (the festival pages), the day is the
+    // only option of the date selector
+    days: ['[data-ticket-selector-select] option@value'],
+    times: ['.banner-bar__link | normalizeWhitespace | trim'],
   })
 
   const info = movie.info ?? []
-  const tickets = movie.tickets ?? []
+  const days = movie.days ?? []
+  const tickets =
+    (movie.tickets ?? []).length > 0
+      ? movie.tickets
+      : days.length === 1
+        ? (movie.times ?? []).map((time) => ({ day: days[0], time }))
+        : []
 
   if (!movie.title || tickets.length === 0) {
     logger.debug('no title or no screenings on sale', { url })
@@ -180,7 +199,11 @@ export const extractScreeningsFromMovieHtml = async (
   }
 
   const subtitles = info.find(({ label }) => SUBTITLES_LABEL.test(label))
-  const languages = parseSubtitleLanguages(subtitles?.value ?? '')
+  const languages = subtitles
+    ? parseSubtitleLanguages(subtitles.value)
+    : isPolishFilmFestival(movie.paragraphs ?? [])
+      ? ['ENG']
+      : []
   const rule = parseEnglishSubtitlesRule(movie.paragraphs ?? [])
   const year = extractYear(info)
   const director = cleanDirector(
