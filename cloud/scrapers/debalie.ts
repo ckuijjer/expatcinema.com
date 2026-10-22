@@ -139,7 +139,8 @@ export const parseDate = (day: string, time: string) => {
 
 // The pages of the Amsterdam Polish Film Festival have no subtitles item, the
 // festival says its programme is in English with English subtitles
-export const isPolishFilmFestival = (paragraphs: string[]) =>
+export const isPolishFilmFestival = (title: string, paragraphs: string[]) =>
+  /^Amsterdam Polish Film Festival:/i.test(title) ||
   paragraphs.some((paragraph) =>
     /^About Amsterdam Polish Film Festival/i.test(paragraph),
   )
@@ -201,7 +202,7 @@ export const extractScreeningsFromMovieHtml = async (
   const subtitles = info.find(({ label }) => SUBTITLES_LABEL.test(label))
   const languages = subtitles
     ? parseSubtitleLanguages(subtitles.value)
-    : isPolishFilmFestival(movie.paragraphs ?? [])
+    : isPolishFilmFestival(movie.title, movie.paragraphs ?? [])
       ? ['ENG']
       : []
   const rule = parseEnglishSubtitlesRule(movie.paragraphs ?? [])
