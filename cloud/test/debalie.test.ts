@@ -269,5 +269,15 @@ describe('debalie', () => {
         await extractScreeningsFromMovieHtml(html, 'https://debalie.nl/x/'),
       ).toEqual([])
     })
+
+    test('a festival page without the About paragraph: English subtitles', async () => {
+      const html = `<h1>Amsterdam Polish Film Festival: Afterimage</h1>
+        <select data-ticket-selector-select><option selected value="20261025">zo 25 oktober</option></select>
+        <div class="banner-bar__links"><a class="banner-bar__link" href="x">16:00</a></div>`
+
+      expect(
+        await extractScreeningsFromMovieHtml(html, 'https://debalie.nl/x/'),
+      ).toEqual([expect.objectContaining({ title: 'Afterimage' })])
+    })
   })
 })

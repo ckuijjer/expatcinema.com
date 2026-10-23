@@ -120,3 +120,9 @@ describe('Frank', () => {
     expect(getManualTitleOverride('Frank', 1900)?.tmdbId).toBe(171372)
   })
 })
+
+describe('The Promised Land', () => {
+  test("is Andrzej Wajda's Ziemia obiecana (1975)", () => {
+    expect(getManualTitleOverride('The Promised Land')?.tmdbId).toBe(511)
+  })
+})
