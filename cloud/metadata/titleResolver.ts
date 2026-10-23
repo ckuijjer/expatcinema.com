@@ -154,6 +154,22 @@ export const slugifyMovieTitle = (title: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
 
+// The slug of a movie page, from the title of the film. A title without any
+// a-z or 0-9 (रामायण, 東京物語) has no slug, so then the title the cinemas use,
+// and last the TMDB id, a film always has a page
+export const getMovieSlug = ({
+  title,
+  query,
+  tmdbId,
+}: {
+  title?: string
+  query?: string
+  tmdbId?: number
+}) =>
+  slugifyMovieTitle(title ?? '') ||
+  slugifyMovieTitle(query ?? '') ||
+  (tmdbId ? `tmdb-${tmdbId}` : '')
+
 const SORT_TITLE_ARTICLE_PATTERNS = [
   // English
   [/^(?:a|an|the)\s+/i],
