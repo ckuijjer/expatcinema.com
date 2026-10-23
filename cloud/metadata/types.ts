@@ -53,6 +53,8 @@ export type MetadataMatch = {
   matchedOriginalTitle?: string
   matchedAlternativeTitle?: string
   matchedReleaseDate?: string
+  // the film was picked from equally good candidates by its popularity
+  popularityTieBreak?: boolean
   // for method 'shared-label' and 'title-part': the title that matched
   strippedTitle?: string
   candidates?: Array<{

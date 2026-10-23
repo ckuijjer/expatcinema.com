@@ -67,6 +67,7 @@ import springhaver from './springhaver'
 import studiok from './studiok'
 import themovies from './themovies'
 import worm from './worm'
+import { needsSiblingYearRetry } from '../metadata/siblingYears'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { withTimeout } from './utils/withTimeout'
 import {
@@ -349,7 +350,7 @@ export const scrapers = async () => {
     const secondaryResolvedMetadata = await pMap(
       uniqueTitlesAndMetadata.filter(
         (metadata) =>
-          metadata.match.status !== 'matched' &&
+          needsSiblingYearRetry(metadata) &&
           (matchedYearsByQuery.get(metadata.query)?.size ?? 0) > 0,
       ),
       async (metadata) => {
@@ -367,6 +368,7 @@ export const scrapers = async () => {
           siblingYearHints,
         })
 
+        // a retry that doesn't match keeps what the lookup had
         return retryMetadata.match.status === 'matched'
           ? retryMetadata
           : metadata

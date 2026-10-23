@@ -220,6 +220,7 @@ const searchMetadata = async (
       matchedTitle: tmdbMovie.title,
       matchedOriginalTitle: tmdbMovie.originalTitle,
       matchedReleaseDate: tmdbMovie.releaseDate,
+      popularityTieBreak: bestCandidateSelection?.hasPopularityTieBreak,
       matchedAlternativeTitle: tmdbMovie.alternativeTitles?.find(
         (alternativeTitle) =>
           normalizeMovieTitleForLookup(alternativeTitle) === normalizedTitle,
