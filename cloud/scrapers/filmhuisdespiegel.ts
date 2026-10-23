@@ -9,6 +9,7 @@ import { monthToNumber } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { splitTime } from './utils/splitTime'
 import { cleanDirector } from './utils/cleanDirector'
+import { extractEvent } from './utils/extractEvent'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -144,6 +145,7 @@ const extractFromScreeningPage = async ({
   return [
     {
       title: cleanTitle(page.title),
+      event: extractEvent(page.title).event,
       year: extractReleaseYear(paragraphs),
       director: extractDirector(paragraphs),
       url,

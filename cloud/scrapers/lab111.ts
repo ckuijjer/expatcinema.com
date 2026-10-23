@@ -11,6 +11,7 @@ import { guessYear } from './utils/guessYear'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
 import { cleanDirector } from './utils/cleanDirector'
+import { extractEvent } from './utils/extractEvent'
 import { titleCase } from './utils/titleCase'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
@@ -185,6 +186,7 @@ const extractFromMainPage = async () => {
 
         return {
           title: cleanTitle(movie.title),
+          event: extractEvent(movie.title).event,
           year:
             detailsByUrl.get(movie.url)?.year ??
             extractYearFromTitle(movie.title),
