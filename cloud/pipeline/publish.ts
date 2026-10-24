@@ -108,6 +108,9 @@ export const createPublisher = () => {
     await writeToFile(`review/director-disagreements/${now}.json`)(
       resolved.review.directorDisagreements,
     )
+    await writeToFile(`review/detected-events/${now}.json`)(
+      resolved.review.detectedEvents,
+    )
 
     logger.info('writing all, the combined json, to public S3 bucket')
     await writeToPublicFile('screenings.json')(resolved.screenings)
