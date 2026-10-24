@@ -26,7 +26,7 @@ const xray = Xray({
         ? titleCase(
             value
               .replace(/^Expat Cinema:\s+/i, '')
-              .replace(/ - English subs$/i, ''),
+              .replace(/ - English sub(?:s|titles)$/i, ''),
           )
         : value,
     normalizeWhitespace,
