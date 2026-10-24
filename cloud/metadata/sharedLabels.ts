@@ -78,47 +78,74 @@ const findSharedLabels = (titles: string[]) => {
   )
 }
 
-const stripSharedLabels = (title: string, sharedLabels: Set<string>) => {
-  let stripped = title
+export type SharedLabel = { kind: Kind; label: string }
+
+// A cinema's own name for its programme is no festival or series, nor a note
+const IGNORED_LABEL = /^(?:expat cinema|(?:english|eng) (?:subs|subtitles))$/i
+
+export const isIgnoredLabel = (label: string) => IGNORED_LABEL.test(label)
+
+// The title without its shared labels, and the labels that were removed
+const splitSharedLabels = (title: string, sharedLabels: Set<string>) => {
+  let rest = title
+  const labels: SharedLabel[] = []
 
   // from the end to the start: "Film & Food: Tampopo (Incl. Ramen)"
   for (const kind of ['parenthesis', 'suffix', 'prefix'] as Kind[]) {
-    const parts = SPLITS[kind](stripped)
+    const parts = SPLITS[kind](rest)
 
     if (parts && sharedLabels.has(`${kind}:${labelKey(parts.label)}`)) {
-      stripped = parts.rest
+      rest = parts.rest
+      labels.push({ kind, label: parts.label })
     }
   }
 
-  return stripped
+  return { title: rest, labels }
 }
 
 type ScreeningTitle = { title: string; cinema: string }
 
+export const getSharedLabelKey = ({ cinema, title }: ScreeningTitle) =>
+  `${cinema}\u0000${title}`
+
 // For every scraped title with a label that is shared at its cinema: the title
-// without the label(s). A label counts per cinema, one cinema's
-// "Docs: ..." doesn't say anything about another's.
-export const getTitlesWithoutSharedLabels = (screenings: ScreeningTitle[]) => {
+// without the label(s), and the labels. A label counts per cinema, one cinema's
+// "Docs: ..." doesn't say anything about another's. Keyed by getSharedLabelKey.
+export const getSharedLabelSplits = (screenings: ScreeningTitle[]) => {
   const titlesPerCinema = new Map<string, string[]>()
   for (const { title, cinema } of screenings) {
     titlesPerCinema.set(cinema, [...(titlesPerCinema.get(cinema) ?? []), title])
   }
 
-  const strippedTitles = new Map<string, Set<string>>()
+  const splits = new Map<string, { title: string; labels: SharedLabel[] }>()
 
-  for (const titles of titlesPerCinema.values()) {
+  for (const [cinema, titles] of titlesPerCinema) {
     const sharedLabels = findSharedLabels(titles)
 
     for (const title of new Set(titles)) {
-      const stripped = stripSharedLabels(title, sharedLabels)
+      const split = splitSharedLabels(title, sharedLabels)
 
-      if (stripped !== title) {
-        strippedTitles.set(
-          title,
-          (strippedTitles.get(title) ?? new Set()).add(stripped),
-        )
+      if (split.title !== title) {
+        splits.set(getSharedLabelKey({ cinema, title }), split)
       }
     }
+  }
+
+  return splits
+}
+
+// For every scraped title with a label that is shared at its cinema: the title
+// without the label(s).
+export const getTitlesWithoutSharedLabels = (screenings: ScreeningTitle[]) => {
+  const strippedTitles = new Map<string, Set<string>>()
+
+  for (const [key, { title: stripped }] of getSharedLabelSplits(screenings)) {
+    const title = key.slice(key.indexOf('\u0000') + 1)
+
+    strippedTitles.set(
+      title,
+      (strippedTitles.get(title) ?? new Set()).add(stripped),
+    )
   }
 
   return new Map(

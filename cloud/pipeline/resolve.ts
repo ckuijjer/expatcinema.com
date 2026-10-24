@@ -1,5 +1,11 @@
 import { buildMovies, makeSlugsUnique } from '../metadata/buildMovies'
 import type { MetadataLookups } from '../metadata/resolveMetadata'
+import {
+  getSharedLabelKey,
+  getSharedLabelSplits,
+  isIgnoredLabel,
+  type SharedLabel,
+} from '../metadata/sharedLabels'
 import { getMetadataLookupKey } from '../metadata/titleResolver'
 import type { Metadata } from '../metadata/types'
 import { makeScreeningsUniqueAndSorted } from '../scrapers/utils/makeScreeningsUniqueAndSorted'
@@ -10,6 +16,27 @@ import { Screening } from '../types'
 // and not the director, which is only used for the matching
 export type ResolvedScreening = Omit<Screening, 'director'> & {
   movieId?: string
+}
+
+const sameTitle = (left?: string, right?: string) =>
+  left !== undefined &&
+  right !== undefined &&
+  left.trim().toLowerCase() === right.trim().toLowerCase()
+
+// The festival or series, and the notes, in the labels that were taken from a
+// title: a label before or after it is an event, one between parentheses a note
+const eventAndNotes = (labels: SharedLabel[]) => {
+  const named = labels.filter(({ label }) => !isIgnoredLabel(label))
+  const [event, ...others] = [
+    ...named.filter(({ kind }) => kind === 'prefix'),
+    ...named.filter(({ kind }) => kind === 'suffix'),
+  ]
+  const notes = [
+    ...others,
+    ...named.filter(({ kind }) => kind === 'parenthesis'),
+  ].map(({ label }) => label)
+
+  return { event: event?.label, notes }
 }
 
 // Phase: resolve. Joins the screenings with what they were matched to, and
@@ -29,6 +56,15 @@ export const resolveScreenings = (
     ]),
   )
 
+  // A title that only matched without a label that several titles at its
+  // cinema share ("Docs: Naza"), has that label as its event: it is confirmed
+  // by the film it matched. An event a scraper set itself is kept.
+  const sharedLabelSplits = getSharedLabelSplits(screenings)
+  const detectedEvents = new Map<
+    string,
+    { cinema: string; event: string; titles: Set<string>; screenings: number }
+  >()
+
   const resolvedScreenings: ResolvedScreening[] = makeScreeningsUniqueAndSorted(
     screenings.map((screening) => {
       const matched = metadataByLookupKey.get(
@@ -39,8 +75,38 @@ export const resolveScreenings = (
       // public screenings.json
       const { director, ...withoutDirector } = screening
 
+      const split =
+        matched?.match.method === 'shared-label'
+          ? sharedLabelSplits.get(getSharedLabelKey(screening))
+          : undefined
+      const detected =
+        split && sameTitle(split.title, matched?.match.strippedTitle)
+          ? { title: split.title, ...eventAndNotes(split.labels) }
+          : undefined
+
+      if (detected?.event && !screening.event) {
+        const key = `${screening.cinema}\u0000${detected.event}`
+        const record = detectedEvents.get(key) ?? {
+          cinema: screening.cinema,
+          event: detected.event,
+          titles: new Set<string>(),
+          screenings: 0,
+        }
+
+        record.titles.add(detected.title)
+        record.screenings++
+        detectedEvents.set(key, record)
+      }
+
+      const notes = [
+        ...new Set([...(screening.notes ?? []), ...(detected?.notes ?? [])]),
+      ]
+
       return {
         ...withoutDirector,
+        ...(detected && { title: detected.title }),
+        ...(!screening.event && detected?.event && { event: detected.event }),
+        ...(notes.length > 0 && { notes }),
         movieId: matched?.movieId,
       }
     }),
@@ -85,6 +151,17 @@ export const resolveScreenings = (
       unmatched: metadata
         .filter((entry) => entry.match.status === 'unmatched')
         .map(toTitleMatchRecord),
+      // the events that were found in the title, to check, and to put in the
+      // list of known events when the name should be a fixed one
+      detectedEvents: [...detectedEvents.values()]
+        .map(({ titles, ...event }) => ({
+          ...event,
+          titles: [...titles].sort(),
+        }))
+        .sort(
+          (a, b) =>
+            a.cinema.localeCompare(b.cinema) || a.event.localeCompare(b.event),
+        ),
       // matched, but the director of the screenings isn't one of the film's
       directorDisagreements: metadata
         .filter(

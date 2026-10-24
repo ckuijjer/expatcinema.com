@@ -172,4 +172,152 @@ describe('resolveScreenings', () => {
     )
     warn.mockRestore()
   })
+
+  describe('an event found in the title', () => {
+    const docs = (title: string, overrides: Partial<Screening> = {}) =>
+      screening({
+        title,
+        year: undefined,
+        director: undefined,
+        cinema: 'Rialto',
+        url: `https://example.com/${title}`,
+        ...overrides,
+      })
+
+    const lookup = (query: string, rawTitle: string) =>
+      [
+        getMetadataLookupKey(rawTitle),
+        { query, rawTitles: new Set([rawTitle]) },
+      ] as const
+
+    const sharedLabelMatch = (
+      query: string,
+      tmdbId: number,
+      strippedTitle: string,
+    ): Metadata => ({
+      query,
+      year: undefined,
+      createdAt: '2026-10-24T00:00:00.000Z',
+      movieId: `tmdb:${tmdbId}`,
+      title: strippedTitle,
+      tmdb: { id: tmdbId, releaseDate: '2024-01-01' } as Metadata['tmdb'],
+      match: {
+        status: 'matched',
+        method: 'shared-label',
+        confidence: 1,
+        strippedTitle,
+      },
+    })
+
+    const run = (screenings: Screening[], metadata: Metadata[]) =>
+      resolveScreenings(screenings, {
+        metadata,
+        metadataLookups: new Map(
+          screenings.map((s) => lookup(s.title.toLowerCase(), s.title)),
+        ),
+      })
+
+    test('is the label several titles share, once the title without it matched', () => {
+      const resolved = run(
+        [docs('Docs: Naza'), docs('Docs: Coward')],
+        [
+          sharedLabelMatch('docs: naza', 1, 'Naza'),
+          sharedLabelMatch('docs: coward', 2, 'Coward'),
+        ],
+      )
+
+      expect(resolved.screenings).toEqual([
+        expect.objectContaining({
+          title: 'Coward',
+          event: 'Docs',
+          movieId: 'tmdb:2',
+        }),
+        expect.objectContaining({
+          title: 'Naza',
+          event: 'Docs',
+          movieId: 'tmdb:1',
+        }),
+      ])
+      expect(resolved.review.detectedEvents).toEqual([
+        {
+          cinema: 'Rialto',
+          event: 'Docs',
+          titles: ['Coward', 'Naza'],
+          screenings: 2,
+        },
+      ])
+    })
+
+    test('keeps the event a scraper set itself, and takes a parenthesis as a note', () => {
+      const resolved = run(
+        [
+          docs('Docs: Naza (Incl. Talk)', { event: 'Docs on Tour' }),
+          docs('Docs: Coward (Incl. Talk)'),
+        ],
+        [
+          sharedLabelMatch('docs: naza (incl. talk)', 1, 'Naza'),
+          sharedLabelMatch('docs: coward (incl. talk)', 2, 'Coward'),
+        ],
+      )
+
+      expect(resolved.screenings).toEqual([
+        expect.objectContaining({
+          title: 'Coward',
+          event: 'Docs',
+          notes: ['Incl. Talk'],
+        }),
+        expect.objectContaining({
+          title: 'Naza',
+          event: 'Docs on Tour',
+          notes: ['Incl. Talk'],
+        }),
+      ])
+      expect(resolved.review.detectedEvents).toEqual([
+        { cinema: 'Rialto', event: 'Docs', titles: ['Coward'], screenings: 1 },
+      ])
+    })
+
+    test('is not found for a title that matched as it was, or did not match', () => {
+      const resolved = run(
+        [docs('Docs: Naza'), docs('Docs: Coward')],
+        [
+          {
+            ...sharedLabelMatch('docs: naza', 1, 'Naza'),
+            match: { status: 'matched', method: 'tmdb-search', confidence: 1 },
+          },
+          {
+            query: 'docs: coward',
+            year: undefined,
+            createdAt: '',
+            match: { status: 'unmatched', method: 'unmatched' },
+          },
+        ],
+      )
+
+      expect(
+        resolved.screenings.map(({ title, event }) => [title, event]),
+      ).toEqual([
+        ['Docs: Coward', undefined],
+        ['Docs: Naza', undefined],
+      ])
+      expect(resolved.review.detectedEvents).toEqual([])
+    })
+
+    test('is not a label that only names the programme of the cinema', () => {
+      const resolved = run(
+        [docs('Naza - Expat Cinema'), docs('Coward - Expat Cinema')],
+        [
+          sharedLabelMatch('naza - expat cinema', 1, 'Naza'),
+          sharedLabelMatch('coward - expat cinema', 2, 'Coward'),
+        ],
+      )
+
+      expect(resolved.screenings).toEqual([
+        expect.objectContaining({ title: 'Coward', movieId: 'tmdb:2' }),
+        expect.objectContaining({ title: 'Naza', movieId: 'tmdb:1' }),
+      ])
+      expect(resolved.screenings[0]).not.toHaveProperty('event')
+      expect(resolved.review.detectedEvents).toEqual([])
+    })
+  })
 })

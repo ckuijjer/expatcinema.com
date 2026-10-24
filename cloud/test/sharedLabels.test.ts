@@ -1,5 +1,8 @@
 import getMetadata from '../metadata'
 import {
+  getSharedLabelKey,
+  getSharedLabelSplits,
+  isIgnoredLabel,
   getTitlesWithoutSharedLabels,
   resolveWithoutSharedLabels,
 } from '../metadata/sharedLabels'
@@ -206,6 +209,62 @@ describe('resolveWithoutSharedLabels', () => {
         resolveWithoutSharedLabels(original, ['Naza']),
       ).resolves.toBe(original)
       expect(lookup).not.toHaveBeenCalled()
+    },
+  )
+})
+
+describe('getSharedLabelSplits', () => {
+  test('has the labels that were removed from a title, and what kind they are', () => {
+    const splits = getSharedLabelSplits([
+      screening('Lab111', 'Film & Food: Tampopo (Incl. Ramen)'),
+      screening('Lab111', 'Film & Food: Shall We Dance? (Incl. Ramen)'),
+      screening('Lab111', 'Goodbye, Lenin!'),
+    ])
+
+    expect(
+      splits.get(
+        getSharedLabelKey(
+          screening('Lab111', 'Film & Food: Tampopo (Incl. Ramen)'),
+        ),
+      ),
+    ).toEqual({
+      title: 'Tampopo',
+      labels: [
+        { kind: 'parenthesis', label: 'Incl. Ramen' },
+        { kind: 'prefix', label: 'Film & Food' },
+      ],
+    })
+    expect(
+      splits.has(getSharedLabelKey(screening('Lab111', 'Goodbye, Lenin!'))),
+    ).toBe(false)
+  })
+
+  test('keeps the labels of one cinema apart from those of another', () => {
+    const splits = getSharedLabelSplits([
+      screening('Lab111', 'Docs: Naza'),
+      screening('Lab111', 'Docs: Coward'),
+      screening('Rialto', 'Docs: Ana'),
+    ])
+
+    expect(splits.size).toBe(2)
+    expect(
+      splits.has(getSharedLabelKey(screening('Rialto', 'Docs: Ana'))),
+    ).toBe(false)
+  })
+})
+
+describe('isIgnoredLabel', () => {
+  test.each(['Expat Cinema', 'expat cinema', 'English subs', 'Eng Subtitles'])(
+    'ignores %s',
+    (label) => {
+      expect(isIgnoredLabel(label)).toBe(true)
+    },
+  )
+
+  test.each(['Docs', 'Expat Cinema Night', 'Imagine Film Festival'])(
+    'does not ignore %s',
+    (label) => {
+      expect(isIgnoredLabel(label)).toBe(false)
     },
   )
 })

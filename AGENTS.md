@@ -57,7 +57,7 @@ expatcinema.com/
 1. **Scrape**: `pipeline/scrape.ts` runs the scrapers listed in `scrapers/registry.ts` (`SCRAPERS=a,b` limits them). A scraper that fails or hangs gives no screenings. A scraper delivers the film's `title` (what is looked up on TMDB) and the facts about the screening: `year`, `director`, `event`, `notes`.
 2. **Normalise**: `pipeline/normalise.ts` takes the `event` of a title that a scraper didn't set itself (`scrapers/utils/extractEvent.ts`), removes duplicates and sorts.
 3. **Match**: `metadata/resolveMetadata.ts` makes one lookup per title and year, and finds the TMDB movie: manual overrides, a TMDB search, then the retries for non-matches (shared labels, title parts, sibling years).
-4. **Resolve**: `pipeline/resolve.ts` joins the screenings with their movie (`movieId`, no `director`) and builds `movies.json`, the `title-matches.json` records and the review lists.
+4. **Resolve**: `pipeline/resolve.ts` joins the screenings with their movie (`movieId`, no `director`) and builds `movies.json`, the `title-matches.json` records and the review lists. A title that only matched without a label that several titles at its cinema share (the retry of the match phase) gets that label as its `event` (a label between parentheses as a note) and the title without it: a festival or series is found without being in the list of `extractEvent.ts`. What was found is in `review/detected-events`. Only a label shared by 2 or more titles can be found, so the list stays for an event with one title, and for fixed names.
 5. **Publish**: `pipeline/publish.ts` writes the files (to the buckets, or `cloud/output` locally), the counts to the analytics, and triggers the web deploy.
 
 Only scrape and publish talk to anything outside the Lambda (cinema sites, S3, DynamoDB, the deploy hook). Match talks to TMDB.
@@ -108,6 +108,8 @@ Private:
 - per-scraper raw outputs
 - `review/ambiguous-movies/<timestamp>.json`
 - `review/unmatched-movies/<timestamp>.json`
+- `review/director-disagreements/<timestamp>.json`
+- `review/detected-events/<timestamp>.json`
 
 ## Local Workflows
 

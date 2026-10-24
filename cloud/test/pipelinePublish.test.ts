@@ -54,7 +54,12 @@ const output = {
     ],
     movies: [],
     titleMatches: [],
-    review: { ambiguous: [], unmatched: [], directorDisagreements: [] },
+    review: {
+      ambiguous: [],
+      unmatched: [],
+      directorDisagreements: [],
+      detectedEvents: [],
+    },
   },
 } as unknown as Parameters<ReturnType<typeof createPublisher>>[0]
 
@@ -99,6 +104,7 @@ describe('createPublisher', () => {
           './output/private-bucket/review/ambiguous-movies/<now>.json',
           './output/private-bucket/review/unmatched-movies/<now>.json',
           './output/private-bucket/review/director-disagreements/<now>.json',
+          './output/private-bucket/review/detected-events/<now>.json',
           './output/public-bucket/screenings.json',
           './output/public-bucket/movies.json',
           './output/public-bucket/title-matches.json',
@@ -167,7 +173,7 @@ describe('createPublisher', () => {
       )
       expect(
         keys.filter((key) => key.startsWith('private-bucket/')),
-      ).toHaveLength(5)
+      ).toHaveLength(6)
       expect(documentClient.send).toHaveBeenCalledTimes(1)
       expect(triggerWebDeploy).toHaveBeenCalledTimes(1)
       expect(writeFile).not.toHaveBeenCalled()

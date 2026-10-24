@@ -50,6 +50,7 @@ const outputs = {
   'review/ambiguous-movies.json': review.ambiguous,
   'review/unmatched-movies.json': review.unmatched,
   'review/director-disagreements.json': review.directorDisagreements,
+  'review/detected-events.json': review.detectedEvents,
 }
 
 for (const [name, data] of Object.entries(outputs)) {
