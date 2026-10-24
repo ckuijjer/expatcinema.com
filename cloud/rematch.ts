@@ -30,7 +30,11 @@ const screenings: Screening[] = (
   )
 )
   .flat()
-  .map((screening) => ({ ...screening, date: new Date(screening.date) }))
+  // a screening with a date that isn't one is saved as null, and stays that way
+  .map((screening) => ({
+    ...screening,
+    date: screening.date === null ? new Date(NaN) : new Date(screening.date),
+  }))
 
 const {
   screenings: resolved,
