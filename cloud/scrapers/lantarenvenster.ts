@@ -28,6 +28,20 @@ const cleanTitle = (title: string) =>
     removeYearSuffix(title.replace(/ - Expat Cinema Rotterdam$/i, '').trim()),
   )
 
+// A Filmcollege is a lecture followed by a film: "Filmcollege: Psychosexual
+// Drama + Possession (1981)". The film is the title, the lecture a note
+export const parseTitle = (raw: string) => {
+  const match = raw.match(/^Filmcollege:\s*(.+?)\s+\+\s+(.+)$/i)
+
+  return match
+    ? {
+        title: cleanTitle(match[2]),
+        event: 'Filmcollege',
+        notes: [`Lecture: ${match[1].trim()}`],
+      }
+    : { title: cleanTitle(raw) }
+}
+
 type XRayFromMoviePage = {
   title: string
   year: string
@@ -98,7 +112,7 @@ export const extractScreeningsFromMovieSource = async (
           })
 
           return {
-            title: cleanTitle(movie.title),
+            ...parseTitle(movie.title),
             year,
             director: cleanDirector(movie.director),
             url,

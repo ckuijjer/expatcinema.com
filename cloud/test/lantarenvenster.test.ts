@@ -1,5 +1,6 @@
 import {
   extractScreeningsFromMovieSource,
+  parseTitle,
   parseYear,
 } from '../scrapers/lantarenvenster'
 
@@ -111,5 +112,23 @@ describe('parseYear', () => {
     ['2999'],
   ])('%p is no year', (value) => {
     expect(parseYear(value)).toBeUndefined()
+  })
+})
+
+describe('parseTitle', () => {
+  test('takes the film of a Filmcollege as the title, and the lecture as a note', () => {
+    expect(
+      parseTitle('Filmcollege: Psychosexual Drama + Possession (1981)'),
+    ).toEqual({
+      title: 'Possession',
+      event: 'Filmcollege',
+      notes: ['Lecture: Psychosexual Drama'],
+    })
+  })
+
+  test('leaves other titles alone', () => {
+    expect(parseTitle('Close - Expat Cinema Rotterdam')).toEqual({
+      title: 'Close',
+    })
   })
 })

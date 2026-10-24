@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { createXray } from '../xRay'
+import { extractPlusNote, TitleAndNotes } from './utils/extractNotes'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { monthToNumber } from './utils/monthToNumber'
@@ -109,17 +110,25 @@ export const extractDirector = (paragraphs: string[]) =>
   )
 
 // Drop add-ons and the series a film is shown in, e.g. "No Good Men + Q&A",
-// "Cinekid: Extraordinairy" and "Coming Out Day: Jim Queen"
-export const cleanTitle = (title: string) =>
-  titleCase(
-    removeYearSuffix(
-      title
-        .replace(/\s+\+\s+.*$/, '')
-        .replace(/\s+\|\s+AFFR on Tour$/i, '') // 'Construction Site | AFFR on Tour'
-        .replace(/^(?:Cinekid|Coming Out Day):\s+/i, '')
-        .trim(),
+// "Cinekid: Extraordinairy" and "Coming Out Day: Jim Queen". The add-ons are kept
+// as notes
+export const parseTitle = (raw: string): TitleAndNotes => {
+  const { title, notes } = extractPlusNote(raw)
+
+  return {
+    title: titleCase(
+      removeYearSuffix(
+        title
+          .replace(/\s+\|\s+AFFR on Tour$/i, '') // 'Construction Site | AFFR on Tour'
+          .replace(/^(?:Cinekid|Coming Out Day):\s+/i, '')
+          .trim(),
+      ),
     ),
-  )
+    ...(notes ? { notes } : {}),
+  }
+}
+
+export const cleanTitle = (title: string) => parseTitle(title).title
 
 const extractFromScreeningPage = async ({
   url,
@@ -144,7 +153,7 @@ const extractFromScreeningPage = async ({
 
   return [
     {
-      title: cleanTitle(page.title),
+      ...parseTitle(page.title),
       event: extractEvent(page.title).event,
       year: extractReleaseYear(paragraphs),
       director: extractDirector(paragraphs),

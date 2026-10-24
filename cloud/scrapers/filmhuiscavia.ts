@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { createXray } from '../xRay'
+import { extractPlusNote, TitleAndNotes } from './utils/extractNotes'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { fullMonthToNumberDutch } from './utils/monthToNumber'
@@ -92,20 +93,31 @@ export const extractReleaseYear = (metadataLine?: string) => {
   return year ? Number(year) : undefined
 }
 
-// Drop add-ons to the film title, e.g. "Azart – Come Make Art + Q&A",
-// "Ménilmontant with live score by Kadavergraver" and
-// "Looking Back – by Porn Film Festival Amsterdam"
-export const cleanTitle = (title: string) =>
-  titleCase(
-    removeYearSuffix(
-      title
-        .replace(/\s+\+\s+.*$/, '')
-        .replace(/\s+with live score\b.*$/i, '')
-        .replace(/\s+[–-]\s+by\s+.*$/i, '')
-        .replace(/\s+at\s+Nassaukerk$/i, '')
-        .trim(),
-    ),
-  )
+// The title of the film, and what the cinema adds to it as notes, e.g.
+// "Azart – Come Make Art + Q&A", "Ménilmontant with live score by Kadavergraver"
+// and "Looking Back – by Porn Film Festival Amsterdam"
+export const parseTitle = (raw: string): TitleAndNotes => {
+  const notes: string[] = []
+  const { title: withoutPlus, notes: plusNotes = [] } = extractPlusNote(raw)
+  notes.push(...plusNotes)
+
+  const title = [
+    /\s+(with live score\b.*)$/i,
+    /\s+[–-]\s+(by\s+.*)$/i,
+    /\s+(at\s+Nassaukerk)$/i,
+  ].reduce((rest, pattern) => {
+    const note = rest.match(pattern)?.[1]
+    if (note) notes.push(note)
+    return rest.replace(pattern, '')
+  }, withoutPlus)
+
+  return {
+    title: titleCase(removeYearSuffix(title.trim())),
+    ...(notes.length ? { notes } : {}),
+  }
+}
+
+export const cleanTitle = (title: string) => parseTitle(title).title
 
 // A month page is one article; every screening is an entry separated by
 // <hr id="slug">. Returns [{ anchor: 'slug', html: '<entry html>' }, ...]; the
@@ -152,7 +164,7 @@ const extractFromEntry = async (
 
   return [
     {
-      title: cleanTitle(entry.title),
+      ...parseTitle(entry.title),
       year: extractReleaseYear(metadataLine),
       // The entries have no page of their own, link to the entry in the month page
       url: anchor ? `${monthPageUrl}#${anchor}` : monthPageUrl,

@@ -1,5 +1,6 @@
 import {
   cleanTitle,
+  parseTitle,
   extractReleaseYear,
   findMetadataLine,
   hasEnglishSubtitles,
@@ -134,6 +135,30 @@ describe('filmhuiscavia', () => {
     })
   })
 
+  describe('parseTitle', () => {
+    test.each([
+      ['Azart – Come Make Art + Q&A', 'Azart – Come Make Art', ['Q&A']],
+      [
+        'Mãos à Terra + special event with Cityplot',
+        'Mãos À Terra',
+        ['special event with Cityplot'],
+      ],
+      [
+        'Ménilmontant with live score by Kadavergraver',
+        'Ménilmontant',
+        ['with live score by Kadavergraver'],
+      ],
+      [
+        'Looking Back – by Porn Film Festival Amsterdam',
+        'Looking Back',
+        ['by Porn Film Festival Amsterdam'],
+      ],
+      ['The Territory', 'The Territory', undefined],
+    ])('%p', (input, title, notes) => {
+      expect(parseTitle(input)).toEqual({ title, ...(notes ? { notes } : {}) })
+    })
+  })
+
   describe('cleanTitle', () => {
     test.each([
       ['Azart – Come Make Art + Q&A', 'Azart – Come Make Art'],
@@ -183,6 +208,7 @@ describe('filmhuiscavia', () => {
         },
         {
           title: 'Looking Back',
+          notes: ['by Porn Film Festival Amsterdam'],
           year: undefined,
           url: `${url}#looking-back`,
           cinema: 'Filmhuis Cavia',

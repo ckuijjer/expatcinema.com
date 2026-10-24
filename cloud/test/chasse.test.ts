@@ -57,6 +57,27 @@ describe('chasse', () => {
       time,
     })
 
+    test('takes a Q&A that is added to the title as a note', () => {
+      expect(
+        extractScreeningsFromResults([
+          card(
+            'Youri + Q&a Producer (EN subs)',
+            '/programma/youri-en-subs',
+            'zo 25 okt 2026',
+            '16.30',
+          ),
+        ]),
+      ).toEqual([
+        {
+          title: 'Youri',
+          notes: ['Q&A Producer'],
+          url: 'https://www.chasse.nl/programma/youri-en-subs',
+          cinema: 'Chassé Cinema',
+          date: new Date('2026-10-25T15:30:00Z'),
+        },
+      ])
+    })
+
     test('keeps films with English subtitles, drops the rest and the placeholders', () => {
       const screenings = extractScreeningsFromResults([
         card(

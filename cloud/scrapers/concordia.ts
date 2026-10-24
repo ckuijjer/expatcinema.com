@@ -7,6 +7,7 @@ import { Screening } from '../types'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
 import { cleanDirector } from './utils/cleanDirector'
+import { extractAddOnNote } from './utils/extractNotes'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -96,7 +97,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         const [hour, minute] = splitTime(time)
 
         return {
-          title: titleCase(decode(title)),
+          ...extractAddOnNote(titleCase(decode(title))),
           year: details.get(url)?.year,
           director: details.get(url)?.director,
           url,

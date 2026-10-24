@@ -20,6 +20,10 @@ const logger = parentLogger.createChild({
   },
 })
 
+// "+ Q&A" is not part of the title, but nice to know
+const extractNotes = (title: string) =>
+  /\s*\+\s*q\s*&\s*a\b/i.test(title) ? ['Q&A'] : undefined
+
 const cleanTitle = (title: string) => {
   return titleCase(
     removeYearSuffix(
@@ -116,6 +120,7 @@ const extractFromMoviePage = async (url: string) => {
           return {
             title: cleanTitle(title),
             event: extractEvent(title).event,
+            notes: extractNotes(title),
             year: extractYear(movie.meta, title),
             director: extractDirector(movie.meta),
             url,
