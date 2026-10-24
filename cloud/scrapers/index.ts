@@ -1,365 +1,51 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { PutCommand } from '@aws-sdk/lib-dynamodb'
-import { mkdir, writeFile } from 'fs/promises'
-import { DateTime, Settings } from 'luxon'
-import { dirname, resolve } from 'path'
+import { Settings } from 'luxon'
 
-import { closeBrowser } from '../browser'
-import documentClient from '../documentClient'
 import { resolveMetadata } from '../metadata/resolveMetadata'
+import {
+  combineScreenings,
+  normaliseScraperResult,
+} from '../pipeline/normalise'
+import { createPublisher } from '../pipeline/publish'
+import { resolveScreenings } from '../pipeline/resolve'
+import { runScrapers } from '../pipeline/scrape'
 import { logger } from '../powertools'
-import { triggerWebDeploy } from '../triggerWebDeploy'
-import { Screening } from '../types'
-import amstelveen from './amstelveen'
-import bioscopenleiden from './bioscopenleiden'
-import castellum from './castellum'
-import chasse from './chasse'
-import cinecenter from './cinecenter'
-import cinecitta from './cinecitta'
-import cinemadevlugt from './cinemadevlugt'
-import cinemathepulse from './cinemathepulse'
-import cinerama from './cinerama'
-import concordia from './concordia'
-import debalie from './debalie'
-import desien from './desien'
-import dewittdordrecht from './dewittdordrecht'
-import defilmhallen from './defilmhallen'
-import deuitkijk from './deuitkijk'
-import dokhuis from './dokhuis'
-import eyefilm from './eyefilm'
-import fchyena from './fchyena'
-import filmhuisbussum from './filmhuisbussum'
-import filmhuiscavia from './filmhuiscavia'
-import filmhuisbreda from './filmhuisbreda'
-import filmhuisdenhaag from './filmhuisdenhaag'
-import filmhuisdespiegel from './filmhuisdespiegel'
-import filmtheaterhilversum from './filmtheaterhilversum'
-import filmhuislumen from './filmhuislumen'
-import filmkoepel from './filmkoepel'
-import florafilmtheater from './florafilmtheater'
-import focusarnhem from './focusarnhem'
-import forumgroningen from './forumgroningen'
-import hartlooper from './hartlooper'
-import heerenstraattheater from './heerenstraattheater'
-import hetdocumentairepaviljoen from './hetdocumentairepaviljoen'
-import ketelhuis from './ketelhuis'
-import kinorotterdam from './kinorotterdam'
-import kriterion from './kriterion'
-import lab1 from './lab1'
-import lab111 from './lab111'
-import lantarenvenster from './lantarenvenster'
-import lumiere from './lumiere'
-import lux from './lux'
-import melkweg from './melkweg'
-import natlab from './natlab'
-import rialto from './rialto'
-import rialtovu from './rialtovu'
-import schuur from './schuur'
-import sliekerfilm from './sliekerfilm'
-import slachtstraat from './slachtstraat'
-import springhaver from './springhaver'
-import studiok from './studiok'
-import themovies from './themovies'
-import worm from './worm'
-import { buildMovies } from '../metadata/buildMovies'
-import { withEvent } from './utils/extractEvent'
-import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
-import { withTimeout } from './utils/withTimeout'
-import { getMetadataLookupKey } from '../metadata/titleResolver'
-import type { Metadata } from '../metadata/types'
-
-const SCRAPERS = {
-  amstelveen,
-  bioscopenleiden,
-  castellum,
-  chasse,
-  cinecenter,
-  cinecitta,
-  cinemadevlugt,
-  cinemathepulse,
-  cinerama,
-  concordia,
-  debalie,
-  desien,
-  dewittdordrecht,
-  defilmhallen,
-  deuitkijk,
-  dokhuis,
-  eyefilm,
-  fchyena,
-  filmhuisbussum,
-  filmhuiscavia,
-  filmhuisbreda,
-  filmhuisdenhaag,
-  filmhuisdespiegel,
-  filmtheaterhilversum,
-  filmhuislumen,
-  filmkoepel,
-  florafilmtheater, // uses puppeteer
-  focusarnhem, // uses puppeteer
-  forumgroningen,
-  hartlooper,
-  heerenstraattheater,
-  hetdocumentairepaviljoen,
-  ketelhuis, // uses puppeteer
-  kinorotterdam,
-  kriterion,
-  lab1,
-  lab111, // uses puppeteer
-  lantarenvenster,
-  lumiere, // uses puppeteer
-  lux,
-  melkweg,
-  natlab,
-  rialto,
-  rialtovu,
-  schuur, // uses puppeteer
-  sliekerfilm,
-  slachtstraat,
-  springhaver,
-  studiok,
-  themovies,
-  worm,
-}
+import { getEnabledScrapers, SCRAPERS } from './registry'
 
 // Set the default timezone to Europe/Amsterdam, otherwise AWS Lambda will scrape as UTC and running it locally
 // as Europe/Amsterdam
 Settings.defaultZone = 'Europe/Amsterdam'
 
-const s3Client = new S3Client({})
+const publish = createPublisher()
 
-const PRIVATE_BUCKET = process.env.PRIVATE_BUCKET
-const PUBLIC_BUCKET = process.env.PUBLIC_BUCKET
-if (!PRIVATE_BUCKET || !PUBLIC_BUCKET) {
-  throw new Error('PRIVATE_BUCKET and PUBLIC_BUCKET must be set')
-}
-
-const now = DateTime.fromObject({}).toUTC().toISO()
-
-const writeToFileInBucket =
-  (bucket: string) => (filename: string) => async (data: object) => {
-    const dataJson = JSON.stringify(data, null, 2)
-
-    if (process.env.IS_LOCAL) {
-      const path = `./output/${bucket}/${filename}`
-      logger.info('writing local file', {
-        bucket,
-        filename,
-        path: resolve(path),
-      })
-      await mkdir(dirname(path), { recursive: true })
-      return writeFile(path, dataJson)
-    } else {
-      const params = {
-        Bucket: bucket,
-        Key: filename,
-        Body: dataJson,
-      }
-      return s3Client.send(new PutObjectCommand(params))
-    }
-  }
-
-const writeToFile = writeToFileInBucket(PRIVATE_BUCKET)
-const writeToPublicFile = writeToFileInBucket(PUBLIC_BUCKET)
-
-const writeToAnalytics =
-  (type: string) => async (fields: Record<string, unknown>) => {
-    if (process.env.IS_LOCAL) {
-      const path = `./output/analytics/${type}.json`
-      logger.info('writing local analytics file', {
-        type,
-        path: resolve(path),
-      })
-      await mkdir(dirname(path), { recursive: true })
-      return writeFile(path, JSON.stringify(fields, null, 2))
-    } else {
-      const putCommand = new PutCommand({
-        TableName: process.env.DYNAMODB_ANALYTICS,
-        Item: {
-          type,
-          createdAt: now,
-          ...fields,
-        },
-      })
-
-      return await documentClient.send(putCommand)
-    }
-  }
-
-const getEnabledScrapers = () => {
-  if (process.env.SCRAPERS) {
-    return Object.fromEntries(
-      Object.entries(SCRAPERS).filter(([name, fn]) => {
-        return process.env.SCRAPERS?.split(',').includes(name)
-      }),
-    )
-  }
-
-  return SCRAPERS
-}
-
-// The Lambda is killed after 9 minutes, losing every scraper's results, so a
-// scraper that hangs gets cut off well before that (the slowest take ~1 minute)
-const SCRAPER_TIMEOUT_MS = 4 * 60 * 1000
-
+// The phases, in order: scrape, normalise, match (merge the screenings into
+// lookups, find the movie of each), resolve, publish. Each takes what the one
+// before it returned, see pipeline/ and metadata/resolveMetadata.ts
 export const scrapers = async () => {
   try {
-    const ENABLED_SCRAPERS = getEnabledScrapers()
+    const enabledScrapers = getEnabledScrapers()
 
     logger.info('starting scrapers', {
       availableScrapers: Object.keys(SCRAPERS).length,
-      enabledScrapers: Object.keys(ENABLED_SCRAPERS).length,
-      enabled: Object.keys(ENABLED_SCRAPERS),
+      enabledScrapers: Object.keys(enabledScrapers).length,
+      enabled: Object.keys(enabledScrapers),
     })
 
-    const results = Object.fromEntries(
-      await Promise.all(
-        Object.entries(ENABLED_SCRAPERS).map(async ([name, fn]) => {
-          logger.info('start scraping', { scraper: name })
-
-          const start = Date.now()
-          let result: Screening[] = []
-          try {
-            result = await withTimeout(
-              fn(),
-              SCRAPER_TIMEOUT_MS,
-              `scraper ${name}`,
-            )
-          } catch (error) {
-            logger.error('error scraping (scrapers Promise.all loop)', {
-              scraper: name,
-              error,
-            })
-          }
-
-          logger.info('done scraping', {
-            scraper: name,
-            numberOfResults: result?.length,
-            durationMs: Date.now() - start,
-          })
-
-          return [name, makeScreeningsUniqueAndSorted(result.map(withEvent))]
-        }),
+    const resultsPerScraper = Object.fromEntries(
+      Object.entries(await runScrapers(enabledScrapers)).map(
+        ([name, result]) => [name, normaliseScraperResult(result, name)],
       ),
-    ) as Record<string, Screening[]>
-
-    // close the browser
-    try {
-      await closeBrowser({ logger })
-    } catch (error) {
-      logger.warn('failed closing browser', { error })
-    }
-
-    logger.info('done scraping for all scrapers')
-
-    const allRawScreenings = makeScreeningsUniqueAndSorted(
-      Object.values(results).flat(),
     )
+    const allRawScreenings = combineScreenings(resultsPerScraper)
 
-    const {
+    const { metadataLookups, metadata } =
+      await resolveMetadata(allRawScreenings)
+
+    const resolved = resolveScreenings(allRawScreenings, {
+      metadata,
       metadataLookups,
-      metadata: uniqueTitlesAndMetadataWithSiblingHints,
-    } = await resolveMetadata(allRawScreenings)
-
-    const allWithResolvedMovies = makeScreeningsUniqueAndSorted(
-      allRawScreenings.map((movie) => {
-        const lookupKey = getMetadataLookupKey(movie.title, movie.year)
-        const metadata = uniqueTitlesAndMetadataWithSiblingHints.find(
-          (entry) =>
-            getMetadataLookupKey(entry.query, entry.year) === lookupKey,
-        )
-
-        // The director is only used while scraping, it isn't needed in the
-        // public screenings.json
-        const { director, ...screening } = movie
-
-        return {
-          ...screening,
-          movieId: metadata?.movieId,
-        }
-      }),
-    )
-
-    const movies = buildMovies(uniqueTitlesAndMetadataWithSiblingHints)
-
-    const toTitleMatchRecord = (metadata: Metadata) => ({
-      query: metadata.query,
-      year: metadata.year,
-      titleRaw: Array.from(
-        metadataLookups.get(getMetadataLookupKey(metadata.query, metadata.year))
-          ?.rawTitles ?? [],
-      )[0],
-      titleRawVariants: Array.from(
-        metadataLookups.get(getMetadataLookupKey(metadata.query, metadata.year))
-          ?.rawTitles ?? [],
-      ),
-      movieId: metadata.movieId,
-      title: metadata.title,
-      originalTitle: metadata.originalTitle,
-      imdbId: metadata.imdbId,
-      tmdbId: metadata.tmdb?.id,
-      match: metadata.match,
     })
 
-    const titleMatchesWithSiblingHints =
-      uniqueTitlesAndMetadataWithSiblingHints.map(toTitleMatchRecord)
-
-    const ambiguousMovies = uniqueTitlesAndMetadataWithSiblingHints
-      .filter((metadata) => metadata.match.status === 'ambiguous')
-      .map(toTitleMatchRecord)
-
-    // matched, but the director of the screenings isn't one of the film's
-    const directorDisagreements = uniqueTitlesAndMetadataWithSiblingHints
-      .filter(
-        (metadata) =>
-          metadata.match.status === 'matched' &&
-          metadata.match.directorMatch === 'disagree',
-      )
-      .map(toTitleMatchRecord)
-
-    const unmatchedMovies = uniqueTitlesAndMetadataWithSiblingHints
-      .filter((metadata) => metadata.match.status === 'unmatched')
-      .map(toTitleMatchRecord)
-
-    const privateResults = {
-      ...results,
-      all: allWithResolvedMovies,
-    }
-
-    logger.info('writing all to private S3 bucket')
-    await Promise.all(
-      Object.entries(privateResults).map(
-        async ([name, data]) => await writeToFile(`${name}/${now}.json`)(data),
-      ),
-    )
-
-    await writeToFile(`review/ambiguous-movies/${now}.json`)(ambiguousMovies)
-    await writeToFile(`review/unmatched-movies/${now}.json`)(unmatchedMovies)
-    await writeToFile(`review/director-disagreements/${now}.json`)(
-      directorDisagreements,
-    )
-
-    logger.info('writing all, the combined json, to public S3 bucket')
-    await writeToPublicFile('screenings.json')(allWithResolvedMovies)
-    await writeToPublicFile('movies.json')(movies)
-    await writeToPublicFile('title-matches.json')(titleMatchesWithSiblingHints)
-
-    const countPerScraper = {
-      ...Object.fromEntries(
-        Object.entries(results).map(([name, data]) => [name, data.length]),
-      ),
-      all: allRawScreenings.length,
-      allWithMovieId: allWithResolvedMovies.filter((screening) =>
-        Boolean((screening as Screening & { movieId?: string }).movieId),
-      ).length,
-    }
-
-    logger.info('writing to analytics', { countPerScraper })
-    await writeToAnalytics('count')(countPerScraper)
-
-    if (!process.env.IS_LOCAL) {
-      await triggerWebDeploy()
-    }
+    await publish({ resultsPerScraper, allRawScreenings, resolved })
   } catch (error) {
     logger.error('error scraping (main loop)', { error })
   }

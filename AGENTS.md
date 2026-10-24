@@ -50,6 +50,18 @@ expatcinema.com/
   - manual overrides in `cloud/metadata/manualTitleOverrides.ts`
   - review artifacts for ambiguous and unmatched title resolution cases
 
+### Cloud pipeline phases
+
+`cloud/scrapers/index.ts` only calls the phases, in order. Each takes what the one before it returned:
+
+1. **Scrape**: `pipeline/scrape.ts` runs the scrapers listed in `scrapers/registry.ts` (`SCRAPERS=a,b` limits them). A scraper that fails or hangs gives no screenings. A scraper delivers the film's `title` (what is looked up on TMDB) and the facts about the screening: `year`, `director`, `event`, `notes`.
+2. **Normalise**: `pipeline/normalise.ts` takes the `event` of a title that a scraper didn't set itself (`scrapers/utils/extractEvent.ts`), removes duplicates and sorts.
+3. **Match**: `metadata/resolveMetadata.ts` makes one lookup per title and year, and finds the TMDB movie: manual overrides, a TMDB search, then the retries for non-matches (shared labels, title parts, sibling years).
+4. **Resolve**: `pipeline/resolve.ts` joins the screenings with their movie (`movieId`, no `director`) and builds `movies.json`, the `title-matches.json` records and the review lists.
+5. **Publish**: `pipeline/publish.ts` writes the files (to the buckets, or `cloud/output` locally), the counts to the analytics, and triggers the web deploy.
+
+Only scrape and publish talk to anything outside the Lambda (cinema sites, S3, DynamoDB, the deploy hook). Match talks to TMDB.
+
 ### Web
 
 - Next.js 16 static export
@@ -141,6 +153,8 @@ pnpm scraper scrapers/<name>.ts
 ```
 
 To run a puppeteer-based scraper without a local Chromium or a display (CI, cloud agents), use `pnpm scraper:headless scrapers/<name>.ts`. It runs the scraper like the Lambda does, with the headless `@sparticuz/chromium` browser from `node_modules`.
+
+To see what a change in the matching does without scraping again, match saved screenings (e.g. the private bucket's per-scraper results) with `pnpm rematch out-dir screenings.json...` (`--no-directors` leaves the directors out). It writes the same files as the Lambda to `out-dir`.
 
 Add `POWERTOOLS_LOG_LEVEL=DEBUG` to see intermediate scraping data (raw page contents, per-URL extraction steps, etc.).
 
