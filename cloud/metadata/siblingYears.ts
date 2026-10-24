@@ -21,6 +21,8 @@ export const needsSiblingYearRetry = (
 export const resolveWithSiblingYears = async (
   lookups: Metadata[],
   retry: typeof getMetadata = getMetadata,
+  // the directors the cinemas give for a lookup
+  getDirectors: (metadata: Metadata) => string[] | undefined = () => undefined,
 ) => {
   const matchedYearsByQuery = new Map<string, Set<number>>()
   lookups.forEach((metadata) => {
@@ -52,6 +54,7 @@ export const resolveWithSiblingYears = async (
         title: metadata.query,
         year: metadata.year,
         siblingYearHints,
+        directors: getDirectors(metadata),
       })
 
       // a retry that doesn't match keeps what the lookup had

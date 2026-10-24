@@ -134,6 +134,7 @@ export const getTitlesWithoutSharedLabels = (screenings: ScreeningTitle[]) => {
 export const resolveWithoutSharedLabels = async (
   metadata: Metadata,
   titlesWithoutLabels: string[],
+  directors?: string[],
 ): Promise<Metadata> => {
   if (
     metadata.match.status === 'matched' ||
@@ -143,7 +144,7 @@ export const resolveWithoutSharedLabels = async (
   }
 
   for (const title of titlesWithoutLabels) {
-    const retry = await getMetadata({ title, year: metadata.year })
+    const retry = await getMetadata({ title, year: metadata.year, directors })
 
     // a manual override of the title without the label counts as a match too
     if (retry.match.status === 'matched' || retry.match.status === 'manual') {

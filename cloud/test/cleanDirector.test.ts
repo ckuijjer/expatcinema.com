@@ -16,6 +16,14 @@ describe('cleanDirector', () => {
     )
   })
 
+  test('a text that is too long for names gives undefined', () => {
+    expect(
+      cleanDirector(
+        'Drie vrienden denken dat hun nachten nooit zullen eindigen. Downtown kijkt terug op vrijheid, liefde en verlies in de Amsterdamse gayscene van de jaren 80',
+      ),
+    ).toBeUndefined()
+  })
+
   test('empty gives undefined', () => {
     expect(cleanDirector('  ')).toBeUndefined()
     expect(cleanDirector(null)).toBeUndefined()
