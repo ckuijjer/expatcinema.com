@@ -7,6 +7,7 @@ import { USER_AGENT, createXray } from '../xRay'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { cleanDirector } from './utils/cleanDirector'
+import { extractEvent } from './utils/extractEvent'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -224,6 +225,7 @@ export const extractScreeningsFromMovieHtml = async (
     return [
       {
         title: cleanTitle(movie.title),
+        event: extractEvent(movie.title).event,
         year,
         director,
         url,

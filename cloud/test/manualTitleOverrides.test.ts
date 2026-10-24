@@ -21,22 +21,17 @@ describe('Shall We Dance?', () => {
 describe('The Wig', () => {
   test("is Emiliano Rocha Minter's La peluca, not the 2005 film", () => {
     expect(
-      getManualTitleOverride(
-        'Imagine Film Festival: the Wig (+ the Flesh Dress Short)',
-      )?.tmdbId,
+      getManualTitleOverride('the Wig (+ the Flesh Dress Short)')?.tmdbId,
     ).toBe(1207380)
   })
 })
 
 describe('Tampopo', () => {
   test('is the 1985 film, whatever year a screening gives', () => {
-    expect(
-      getManualTitleOverride('Film & Food: Tampopo (Incl. Ramen)')?.tmdbId,
-    ).toBe(11830)
-    expect(
-      getManualTitleOverride('Film & Food: Tampopo (Incl. Ramen)', 1988)
-        ?.tmdbId,
-    ).toBe(11830)
+    expect(getManualTitleOverride('Tampopo (Incl. Ramen)')?.tmdbId).toBe(11830)
+    expect(getManualTitleOverride('Tampopo (Incl. Ramen)', 1988)?.tmdbId).toBe(
+      11830,
+    )
   })
 })
 
@@ -87,7 +82,7 @@ describe('Cinema Aperitivo: Cold War', () => {
   test("is Paweł Pawlikowski's Cold War (Zimna wojna)", () => {
     expect(
       getManualTitleOverride(
-        'Cinema Aperitivo: Cold War (Incl. Drink and Antipasti Platter)',
+        'Cold War (Incl. Drink and Antipasti Platter)',
         2018,
       )?.tmdbId,
     ).toBe(440298)

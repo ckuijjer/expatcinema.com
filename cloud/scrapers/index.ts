@@ -69,6 +69,7 @@ import themovies from './themovies'
 import worm from './worm'
 import { buildMovies } from '../metadata/buildMovies'
 import { resolveWithSiblingYears } from '../metadata/siblingYears'
+import { withEvent } from './utils/extractEvent'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { withTimeout } from './utils/withTimeout'
 import {
@@ -247,7 +248,7 @@ export const scrapers = async () => {
             durationMs: Date.now() - start,
           })
 
-          return [name, makeScreeningsUniqueAndSorted(result)]
+          return [name, makeScreeningsUniqueAndSorted(result.map(withEvent))]
         }),
       ),
     ) as Record<string, Screening[]>

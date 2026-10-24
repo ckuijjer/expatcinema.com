@@ -10,6 +10,7 @@ import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { splitTime } from './utils/splitTime'
 import { cleanDirector } from './utils/cleanDirector'
+import { extractEvent } from './utils/extractEvent'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -114,6 +115,7 @@ const extractFromMoviePage = async (url: string) => {
 
           return {
             title: cleanTitle(title),
+            event: extractEvent(title).event,
             year: extractYear(movie.meta, title),
             director: extractDirector(movie.meta),
             url,
