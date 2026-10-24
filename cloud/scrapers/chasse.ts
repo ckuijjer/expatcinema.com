@@ -7,6 +7,7 @@ import xRayPuppeteer from '../xRayPuppeteer'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
+import { extractAddOnNote } from './utils/extractNotes'
 import { titleCase } from './utils/titleCase'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
@@ -93,7 +94,7 @@ export const extractScreeningsFromResults = (
     .map((result) => ({ ...result, title: cleanTitle(result.title) }))
     .filter(({ title }) => title)
     .map(({ title, url, date, time }) => ({
-      title,
+      ...extractAddOnNote(title),
       url: new URL(url, BASE_URL).toString(),
       cinema: 'Chassé Cinema',
       date: parseDate(date, time),

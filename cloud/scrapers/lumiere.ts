@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
+import { extractAddOnNote } from './utils/extractNotes'
 import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
@@ -127,7 +128,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   const screenings: Screening[] = [...performances.values()].map(
     ({ movie, performance }) => ({
-      title: movie.title,
+      ...extractAddOnNote(movie.title),
       year: movie.eventData?.year ?? undefined,
       director: cleanDirector(movie.eventData?.director),
       url: movie.link,

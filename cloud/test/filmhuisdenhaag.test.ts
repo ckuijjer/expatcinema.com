@@ -1,4 +1,8 @@
-import { cleanTitle, findSeriesLabels } from '../scrapers/filmhuisdenhaag'
+import {
+  cleanTitle,
+  findSeriesLabels,
+  parseTitle,
+} from '../scrapers/filmhuisdenhaag'
 
 // Titles as the programme API had them on 2026-10-06
 const programme = [
@@ -97,5 +101,42 @@ describe('cleanTitle', () => {
     ],
   ])('keeps what may belong to the title of %s', (title, expected) => {
     expect(cleanTitle(title, seriesLabels)).toBe(expected)
+  })
+})
+
+describe('parseTitle', () => {
+  test.each([
+    ['Youri - met Q&A', { title: 'Youri', notes: ['Q&A'] }],
+    [
+      'Human Traffic - No Lonely Dancefloors - EN subs met inleiding',
+      {
+        title: 'Human Traffic',
+        event: 'No Lonely Dancefloors',
+        notes: ['inleiding'],
+      },
+    ],
+    [
+      'True to Our Inner Daemon - Festival Dag in de Branding - EN subs - met Q&A',
+      {
+        title: 'True to Our Inner Daemon',
+        event: 'Festival Dag in de Branding',
+        notes: ['Q&A'],
+      },
+    ],
+    [
+      'Joe Speedboot - No Limits Festival',
+      { title: 'Joe Speedboot', event: 'No Limits Festival' },
+    ],
+    [
+      'Akira (4K Restoration) - Late Night Anime',
+      { title: 'Akira', event: 'Late Night Anime', notes: ['4K Restoration'] },
+    ],
+    ['Histoires Parallèles - EN subs', { title: 'Histoires Parallèles' }],
+    [
+      'Mission: Impossible - Fallout',
+      { title: 'Mission: Impossible - Fallout' },
+    ],
+  ])('%p', (input, expected) => {
+    expect(parseTitle(input, seriesLabels)).toEqual(expected)
   })
 })

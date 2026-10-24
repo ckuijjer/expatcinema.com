@@ -120,25 +120,50 @@ export const findSeriesLabels = (titles: string[]) => {
   )
 }
 
-export const cleanTitle = (title: string, seriesLabels: Set<string>) => {
-  const [film, ...suffixes] = splitTitle(title)
+// "met Q&A", "EN subs met inleiding"
+const NOTE_LABEL = /^(?:EN subs\s+)?met\s+/i
+
+const RESTORATION = /\s+\((4K Restoration|Re-Release)\)$/i
+
+const isEventLabel = (label: string, seriesLabels: Set<string>) =>
+  FESTIVAL_LABEL.test(label) ||
+  KNOWN_SERIES_KEYS.has(labelKey(label)) ||
+  seriesLabels.has(labelKey(label))
+
+// The title of the film, the festival or series it is part of, and the other
+// things the cinema adds as notes: "Youri - met Q&A" is the film Youri, with a Q&A
+export const parseTitle = (raw: string, seriesLabels: Set<string>) => {
+  const [film, ...suffixes] = splitTitle(raw)
 
   const firstLabel = suffixes.findIndex(
-    (suffix) =>
-      FORMAT_LABEL.test(suffix) ||
-      FESTIVAL_LABEL.test(suffix) ||
-      KNOWN_SERIES_KEYS.has(labelKey(suffix)) ||
-      seriesLabels.has(labelKey(suffix)),
+    (suffix) => FORMAT_LABEL.test(suffix) || isEventLabel(suffix, seriesLabels),
   )
-
-  return [
+  const labels = firstLabel === -1 ? [] : suffixes.slice(firstLabel)
+  const joined = [
     film,
     ...(firstLabel === -1 ? suffixes : suffixes.slice(0, firstLabel)),
+  ].join(' - ')
+
+  const restoration = joined.match(RESTORATION)?.[1]
+  const event = labels.find(
+    (label) => !FORMAT_LABEL.test(label) && isEventLabel(label, seriesLabels),
+  )
+  const notes = [
+    ...labels
+      .filter((label) => NOTE_LABEL.test(label))
+      .map((label) => label.replace(NOTE_LABEL, '').trim()),
+    ...(restoration ? [restoration] : []),
   ]
-    .join(' - ')
-    .replace(/\s+\((4K Restoration|Re-Release)\)$/i, '')
-    .trim()
+
+  return {
+    title: joined.replace(RESTORATION, '').trim(),
+    ...(event ? { event } : {}),
+    ...(notes.length ? { notes } : {}),
+  }
 }
+
+export const cleanTitle = (title: string, seriesLabels: Set<string>) =>
+  parseTitle(title, seriesLabels).title
 
 const hasEnglishSubtitles = (item: ProgramItem) => {
   return (
@@ -202,7 +227,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       const [hour, minute] = splitTime(item.starts_at_time)
 
       return {
-        title: cleanTitle(item.title, seriesLabels),
+        ...parseTitle(item.title, seriesLabels),
         year: releaseYearByUrl.get(`https://filmhuisdenhaag.nl${item.uri}`),
         director: cleanDirector(item.director),
         url: `https://filmhuisdenhaag.nl${item.uri}`,
