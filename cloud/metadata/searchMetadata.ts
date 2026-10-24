@@ -1,5 +1,3 @@
-import leven from 'leven'
-
 import getTmdbClient from '../clients/tmdb'
 import { logger } from '../powertools'
 import { getManualTitleOverride } from './manualTitleOverrides'
@@ -13,6 +11,7 @@ import {
   getMovieId,
   candidateYearAgrees,
   getTitleSearchVariants,
+  pickDisplayTitle,
   normalizeMovieTitleForLookup,
   scoreCandidateWithYearHints,
   selectCandidateWithPopularityTieBreak,
@@ -114,9 +113,7 @@ const buildResolvedMetadata = (
   match: Metadata['match'],
 ): Omit<Metadata, 'query' | 'createdAt'> => {
   const winningTitle = titleCase(
-    [tmdbMovie.title, tmdbMovie.originalTitle].sort(
-      (b, a) => leven(b ?? '', title) - leven(a ?? '', title),
-    )[0] ?? title,
+    pickDisplayTitle(title, tmdbMovie.title, tmdbMovie.originalTitle),
   )
 
   return {

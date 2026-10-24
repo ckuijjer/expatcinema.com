@@ -154,6 +154,25 @@ export const slugifyMovieTitle = (title: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
 
+// Only letters of the Latin script (plus digits, punctuation and spaces). रामायण,
+// 강다니엘 and "Grotesqqque -グロテスク-" are not
+export const isLatinScript = (title: string) =>
+  !/[^\p{Script=Latin}\p{Script=Common}\p{Script=Inherited}]/u.test(title)
+
+// The title that is shown for a film: the TMDB title or the original title,
+// whichever is closest to the title the cinemas use. The original title is only
+// an option when it is written in the Latin script, otherwise it is the TMDB title
+export const pickDisplayTitle = (
+  cinemaTitle: string,
+  tmdbTitle?: string,
+  originalTitle?: string,
+) =>
+  [tmdbTitle, originalTitle]
+    .filter((title): title is string => Boolean(title))
+    .filter((title, index) => index === 0 || isLatinScript(title))
+    .sort((b, a) => leven(b, cinemaTitle) - leven(a, cinemaTitle))[0] ??
+  cinemaTitle
+
 // The slug of a movie page, from the title of the film. A title without any
 // a-z or 0-9 (रामायण, 東京物語) has no slug, so then the title the cinemas use,
 // and last the TMDB id, a film always has a page
