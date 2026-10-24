@@ -3,7 +3,11 @@ import { DateTime } from 'luxon'
 
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
-import { extractAddOnNote } from './utils/extractNotes'
+import {
+  extractAddOnNote,
+  extractAll,
+  extractAnniversaryNote,
+} from './utils/extractNotes'
 import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
@@ -99,6 +103,11 @@ const fetchAllMovies = async () => {
 const isFilm = (movie: LumiereMovie) =>
   Boolean(movie.eventData?.director?.trim())
 
+// "Goodbye Sisters (+ supporting film: Like Friend, Like Deer)", "Shall We
+// Dance? (30th Anniversary)"
+export const parseTitle = (title: string) =>
+  extractAll(title, extractAddOnNote, extractAnniversaryNote)
+
 const hasEnglishSubtitles = ({ tags }: LumierePerformance) =>
   (tags ?? []).some((tag) => /engels ondertiteld|english subtitles/i.test(tag))
 
@@ -128,7 +137,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   const screenings: Screening[] = [...performances.values()].map(
     ({ movie, performance }) => ({
-      ...extractAddOnNote(movie.title),
+      ...parseTitle(movie.title),
       year: movie.eventData?.year ?? undefined,
       director: cleanDirector(movie.eventData?.director),
       url: movie.link,

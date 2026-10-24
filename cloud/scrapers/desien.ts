@@ -6,6 +6,7 @@ import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { cleanDirector } from './utils/cleanDirector'
+import { extractAnniversaryNote } from './utils/extractNotes'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -43,6 +44,9 @@ const ENGLISH_SUBS_TITLE_SUFFIX = /\s*\|\s*eng(lish)? subs$/i
 
 // De Sien prefixes titles with a series or partner, e.g. "UQCF | Rebel Dykes"
 // or "Centraal Museum | News From Home (1977)"; keep only the film title.
+export const parseTitle = (title: string) =>
+  extractAnniversaryNote(cleanTitle(title))
+
 const cleanTitle = (title: string) =>
   titleCase(
     removeYearSuffix(
@@ -88,7 +92,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
   const screenings = results
     .filter(hasEnglishSubtitles)
     .map(({ title, url, date, time, director }) => ({
-      title: cleanTitle(title),
+      ...parseTitle(title),
       year: extractYearFromTitle(title) ?? extractYearFromUrl(url),
       director: cleanDirector(director),
       url,

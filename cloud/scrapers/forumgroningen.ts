@@ -7,6 +7,8 @@ import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSo
 import { fullMonthToNumberEnglish } from './utils/monthToNumber'
 import { extractScreeningsFromPages } from './utils/extractScreeningsFromPages'
 import { cleanDirector } from './utils/cleanDirector'
+import { extractAll, extractAnniversaryNote } from './utils/extractNotes'
+import type { TitleAndNotes } from './utils/extractNotes'
 import { titleCase } from './utils/titleCase'
 import { createXray } from '../xRay'
 
@@ -26,6 +28,18 @@ const cleanTitle = (value: string) =>
     .replace(/^Movies That Matter:\s+/i, '')
     .replace(/^Framed Shorts:\s+/i, '')
     .replace(/^Film Lovers Tuesday:\s+/i, '')
+
+// "The Fight [the William Greaves Director's Cut]"
+const extractBracketNote = (title: string): TitleAndNotes => {
+  const match = title.match(/^(.+?)\s*\[([^\]]+)\]$/)
+
+  return match
+    ? { title: match[1].trim(), notes: [titleCase(match[2].trim())] }
+    : { title }
+}
+
+export const parseTitle = (title: string) =>
+  extractAll(title, extractBracketNote, extractAnniversaryNote)
 
 const xray = createXray({
   filters: {
@@ -121,7 +135,7 @@ const extractFromMoviePage = async ({
           })
 
           return {
-            title: scrapeResult.title,
+            ...parseTitle(scrapeResult.title),
             year: filmYear,
             director,
             url,

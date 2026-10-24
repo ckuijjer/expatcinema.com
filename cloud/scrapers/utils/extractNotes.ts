@@ -41,3 +41,35 @@ export const extractAddOnNote = (title: string): TitleAndNotes => {
     ? { title: match[1].trim(), notes: [tidyNote(match[2])] }
     : withoutNote(title)
 }
+
+// "Shall We Dance? (30th Anniversary)", "Shall We Dance? - 30th Anniversary" or
+// "Shall We Dance? 30th Anniversary", at the end of a title
+const ANNIVERSARY =
+  /(?:\s*\(|\s+[-–]\s+|\s+)(\d+(?:st|nd|rd|th) anniversary)\)?$/i
+
+export const extractAnniversaryNote = (title: string): TitleAndNotes => {
+  const match = title.match(ANNIVERSARY)
+
+  return match
+    ? {
+        title: title.slice(0, match.index).trim(),
+        notes: [match[1].replace(/anniversary/i, 'Anniversary')],
+      }
+    : withoutNote(title)
+}
+
+// Runs the extractors one after the other, each on the title the one before it
+// left, and collects their notes
+export const extractAll = (
+  title: string,
+  ...extractors: ((title: string) => TitleAndNotes)[]
+): TitleAndNotes => {
+  const notes: string[] = []
+  const result = extractors.reduce((current, extract) => {
+    const extracted = extract(current)
+    notes.push(...(extracted.notes ?? []))
+    return extracted.title
+  }, title)
+
+  return { title: result, ...(notes.length > 0 && { notes }) }
+}

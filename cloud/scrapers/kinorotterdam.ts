@@ -10,6 +10,8 @@ import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { parseFkFeedDirector } from './utils/parseFkFeedDirector'
 import { removeYearSuffix } from './utils/removeYearSuffix'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
+import { extractAll, extractAnniversaryNote } from './utils/extractNotes'
+import type { TitleAndNotes } from './utils/extractNotes'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -35,11 +37,18 @@ const removeSpecialPrefix = (title: string) => {
   return title.replace(/^kinoxeur:\s+/i, '')
 }
 
-const removeSpecialSuffixes = (title: string) => {
-  return title
-    .replace(/\s+[0-9]+th anniversary$/i, '')
-    .replace(/\s+[–-]\s+part 1 & 2$/i, '')
-    .replace(/\s+[–-]\s+a 70mm presentation$/i, '')
+// "Amélie (2001) –": a dash without a second part is left behind
+const removeTrailingDash = (title: string): TitleAndNotes => ({
+  title: title.replace(/\s+[–-]$/, ''),
+})
+
+// "Dune – Part 1 & 2" and "2001 – A 70mm Presentation" are kept as notes
+const extractSuffixNote = (title: string): TitleAndNotes => {
+  const match = title.match(
+    /^(.+?)\s+[–-]\s+(part 1 & 2|a 70mm presentation)$/i,
+  )
+
+  return match ? { title: match[1], notes: [titleCase(match[2])] } : { title }
 }
 
 const normalizeAcronyms = (title: string) => {
@@ -48,12 +57,16 @@ const normalizeAcronyms = (title: string) => {
   )
 }
 
-const cleanTitle = (title: string) => {
-  return normalizeAcronyms(
-    titleCase(
-      removeYearSuffix(removeSpecialSuffixes(removeSpecialPrefix(title))),
-    ),
+export const parseTitle = (rawTitle: string): TitleAndNotes => {
+  const { title, notes } = extractAll(
+    removeSpecialPrefix(rawTitle),
+    extractAnniversaryNote,
+    removeTrailingDash,
+    (title) => ({ title: removeYearSuffix(title) }),
+    extractSuffixNote,
   )
+
+  return { title: normalizeAcronyms(titleCase(title)), ...(notes && { notes }) }
 }
 
 const extractFromMainPage = async (): Promise<Screening[]> => {
@@ -69,7 +82,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         ?.filter((time) => fkFeedHasEnglishSubtitles(movie, time))
         .map((time) => {
           return {
-            title: cleanTitle(decode(movie.title)),
+            ...parseTitle(decode(movie.title)),
             year:
               parseFkFeedYear(movie.year) ?? extractYearFromTitle(movie.title),
             director: parseFkFeedDirector(movie.director_name),

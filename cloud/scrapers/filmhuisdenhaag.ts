@@ -7,6 +7,7 @@ import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSo
 import { splitTime } from './utils/splitTime'
 import { createXray } from '../xRay'
 import { cleanDirector } from './utils/cleanDirector'
+import { extractAnniversaryNote } from './utils/extractNotes'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -155,8 +156,13 @@ export const parseTitle = (raw: string, seriesLabels: Set<string>) => {
     ...(restoration ? [restoration] : []),
   ]
 
+  const { title, notes: anniversary = [] } = extractAnniversaryNote(
+    joined.replace(RESTORATION, '').trim(),
+  )
+  notes.push(...anniversary)
+
   return {
-    title: joined.replace(RESTORATION, '').trim(),
+    title,
     ...(event ? { event } : {}),
     ...(notes.length ? { notes } : {}),
   }
