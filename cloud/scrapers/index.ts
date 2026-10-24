@@ -7,6 +7,7 @@ import { dirname, resolve } from 'path'
 import { closeBrowser } from '../browser'
 import documentClient from '../documentClient'
 import { resolveMetadata } from '../metadata/resolveMetadata'
+import { resolveScreenings } from '../pipeline/resolve'
 import { logger } from '../powertools'
 import { triggerWebDeploy } from '../triggerWebDeploy'
 import { Screening } from '../types'
@@ -61,12 +62,9 @@ import springhaver from './springhaver'
 import studiok from './studiok'
 import themovies from './themovies'
 import worm from './worm'
-import { buildMovies } from '../metadata/buildMovies'
 import { withEvent } from './utils/extractEvent'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { withTimeout } from './utils/withTimeout'
-import { getMetadataLookupKey } from '../metadata/titleResolver'
-import type { Metadata } from '../metadata/types'
 
 const SCRAPERS = {
   amstelveen,
@@ -261,69 +259,14 @@ export const scrapers = async () => {
       metadata: uniqueTitlesAndMetadataWithSiblingHints,
     } = await resolveMetadata(allRawScreenings)
 
-    const allWithResolvedMovies = makeScreeningsUniqueAndSorted(
-      allRawScreenings.map((movie) => {
-        const lookupKey = getMetadataLookupKey(movie.title, movie.year)
-        const metadata = uniqueTitlesAndMetadataWithSiblingHints.find(
-          (entry) =>
-            getMetadataLookupKey(entry.query, entry.year) === lookupKey,
-        )
-
-        // The director is only used while scraping, it isn't needed in the
-        // public screenings.json
-        const { director, ...screening } = movie
-
-        return {
-          ...screening,
-          movieId: metadata?.movieId,
-        }
-      }),
-    )
-
-    const movies = buildMovies(uniqueTitlesAndMetadataWithSiblingHints)
-
-    const toTitleMatchRecord = (metadata: Metadata) => ({
-      query: metadata.query,
-      year: metadata.year,
-      titleRaw: Array.from(
-        metadataLookups.get(getMetadataLookupKey(metadata.query, metadata.year))
-          ?.rawTitles ?? [],
-      )[0],
-      titleRawVariants: Array.from(
-        metadataLookups.get(getMetadataLookupKey(metadata.query, metadata.year))
-          ?.rawTitles ?? [],
-      ),
-      movieId: metadata.movieId,
-      title: metadata.title,
-      originalTitle: metadata.originalTitle,
-      imdbId: metadata.imdbId,
-      tmdbId: metadata.tmdb?.id,
-      match: metadata.match,
+    const resolved = resolveScreenings(allRawScreenings, {
+      metadata: uniqueTitlesAndMetadataWithSiblingHints,
+      metadataLookups,
     })
-
-    const titleMatchesWithSiblingHints =
-      uniqueTitlesAndMetadataWithSiblingHints.map(toTitleMatchRecord)
-
-    const ambiguousMovies = uniqueTitlesAndMetadataWithSiblingHints
-      .filter((metadata) => metadata.match.status === 'ambiguous')
-      .map(toTitleMatchRecord)
-
-    // matched, but the director of the screenings isn't one of the film's
-    const directorDisagreements = uniqueTitlesAndMetadataWithSiblingHints
-      .filter(
-        (metadata) =>
-          metadata.match.status === 'matched' &&
-          metadata.match.directorMatch === 'disagree',
-      )
-      .map(toTitleMatchRecord)
-
-    const unmatchedMovies = uniqueTitlesAndMetadataWithSiblingHints
-      .filter((metadata) => metadata.match.status === 'unmatched')
-      .map(toTitleMatchRecord)
 
     const privateResults = {
       ...results,
-      all: allWithResolvedMovies,
+      all: resolved.screenings,
     }
 
     logger.info('writing all to private S3 bucket')
@@ -333,24 +276,28 @@ export const scrapers = async () => {
       ),
     )
 
-    await writeToFile(`review/ambiguous-movies/${now}.json`)(ambiguousMovies)
-    await writeToFile(`review/unmatched-movies/${now}.json`)(unmatchedMovies)
+    await writeToFile(`review/ambiguous-movies/${now}.json`)(
+      resolved.review.ambiguous,
+    )
+    await writeToFile(`review/unmatched-movies/${now}.json`)(
+      resolved.review.unmatched,
+    )
     await writeToFile(`review/director-disagreements/${now}.json`)(
-      directorDisagreements,
+      resolved.review.directorDisagreements,
     )
 
     logger.info('writing all, the combined json, to public S3 bucket')
-    await writeToPublicFile('screenings.json')(allWithResolvedMovies)
-    await writeToPublicFile('movies.json')(movies)
-    await writeToPublicFile('title-matches.json')(titleMatchesWithSiblingHints)
+    await writeToPublicFile('screenings.json')(resolved.screenings)
+    await writeToPublicFile('movies.json')(resolved.movies)
+    await writeToPublicFile('title-matches.json')(resolved.titleMatches)
 
     const countPerScraper = {
       ...Object.fromEntries(
         Object.entries(results).map(([name, data]) => [name, data.length]),
       ),
       all: allRawScreenings.length,
-      allWithMovieId: allWithResolvedMovies.filter((screening) =>
-        Boolean((screening as Screening & { movieId?: string }).movieId),
+      allWithMovieId: resolved.screenings.filter(({ movieId }) =>
+        Boolean(movieId),
       ).length,
     }
 
