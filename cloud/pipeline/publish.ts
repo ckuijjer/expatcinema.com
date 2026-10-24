@@ -22,7 +22,6 @@ export const createPublisher = () => {
   }
 
   const s3Client = new S3Client({})
-  const now = DateTime.fromObject({}).toUTC().toISO()
 
   const writeToFileInBucket =
     (bucket: string) => (filename: string) => async (data: object) => {
@@ -51,7 +50,8 @@ export const createPublisher = () => {
   const writeToPublicFile = writeToFileInBucket(PUBLIC_BUCKET)
 
   const writeToAnalytics =
-    (type: string) => async (fields: Record<string, unknown>) => {
+    (type: string, createdAt: string | null) =>
+    async (fields: Record<string, unknown>) => {
       if (process.env.IS_LOCAL) {
         const path = `./output/analytics/${type}.json`
         logger.info('writing local analytics file', {
@@ -65,7 +65,7 @@ export const createPublisher = () => {
           TableName: process.env.DYNAMODB_ANALYTICS,
           Item: {
             type,
-            createdAt: now,
+            createdAt,
             ...fields,
           },
         })
@@ -84,6 +84,9 @@ export const createPublisher = () => {
     allRawScreenings: Screening[]
     resolved: ReturnType<typeof resolveScreenings>
   }) => {
+    // per run, not when the module loads: a warm Lambda runs this again
+    const now = DateTime.fromObject({}).toUTC().toISO()
+
     const privateResults = {
       ...resultsPerScraper,
       all: resolved.screenings,
@@ -125,7 +128,7 @@ export const createPublisher = () => {
     }
 
     logger.info('writing to analytics', { countPerScraper })
-    await writeToAnalytics('count')(countPerScraper)
+    await writeToAnalytics('count', now)(countPerScraper)
 
     if (!process.env.IS_LOCAL) {
       await triggerWebDeploy()

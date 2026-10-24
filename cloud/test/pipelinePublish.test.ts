@@ -110,6 +110,31 @@ describe('createPublisher', () => {
       expect(triggerWebDeploy).not.toHaveBeenCalled()
     })
 
+    test('names the files of every run after the time of that run, not of the first', async () => {
+      jest.useFakeTimers()
+      try {
+        const publish = createPublisher()
+
+        jest.setSystemTime(new Date('2026-01-01T10:00:00Z'))
+        await publish(output)
+        jest.setSystemTime(new Date('2026-01-01T11:00:00Z'))
+        await publish(output)
+      } finally {
+        jest.useRealTimers()
+      }
+
+      const paths = (writeFile as jest.Mock).mock.calls.map(([path]) =>
+        String(path),
+      )
+
+      expect(paths).toContain(
+        './output/private-bucket/all/2026-01-01T10:00:00.000Z.json',
+      )
+      expect(paths).toContain(
+        './output/private-bucket/all/2026-01-01T11:00:00.000Z.json',
+      )
+    })
+
     test('counts the screenings per scraper and with a movie', async () => {
       await createPublisher()(output)
 
