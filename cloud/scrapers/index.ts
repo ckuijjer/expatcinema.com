@@ -32,7 +32,7 @@ export const scrapers = async () => {
 
     const resultsPerScraper = Object.fromEntries(
       Object.entries(await runScrapers(enabledScrapers)).map(
-        ([name, result]) => [name, normaliseScraperResult(result)],
+        ([name, result]) => [name, normaliseScraperResult(result, name)],
       ),
     )
     const allRawScreenings = combineScreenings(resultsPerScraper)

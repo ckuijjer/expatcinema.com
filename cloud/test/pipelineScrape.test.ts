@@ -3,6 +3,7 @@ import {
   combineScreenings,
   normaliseScraperResult,
 } from '../pipeline/normalise'
+import { logger } from '../powertools'
 import { runScrapers } from '../pipeline/scrape'
 import { getEnabledScrapers, SCRAPERS } from '../scrapers/registry'
 import { Screening } from '../types'
@@ -71,6 +72,45 @@ describe('normalise', () => {
         screening({ title: 'Docs: Naza', event: 'Docs on Tour' }),
       ]),
     ).toEqual([screening({ title: 'Naza', event: 'Docs on Tour' })])
+  })
+
+  test('leaves out a screening without a valid date, with a warning naming the scraper', () => {
+    const warn = jest.spyOn(logger, 'warn').mockImplementation()
+    const valid = screening({ title: 'Possession' })
+
+    expect(
+      normaliseScraperResult(
+        [
+          screening({ title: 'Film Lovers Tuesday', date: new Date('nope') }),
+          screening({ title: 'No date', date: null as unknown as Date }),
+          valid,
+        ],
+        'lab1',
+      ),
+    ).toEqual([valid])
+
+    expect(warn).toHaveBeenCalledTimes(1)
+    expect(warn).toHaveBeenCalledWith(
+      'leaving out screenings without a valid date',
+      expect.objectContaining({
+        scraper: 'lab1',
+        count: 2,
+        screenings: [
+          expect.objectContaining({ title: 'Film Lovers Tuesday' }),
+          expect.objectContaining({ title: 'No date' }),
+        ],
+      }),
+    )
+    warn.mockRestore()
+  })
+
+  test('does not warn when every date is valid', () => {
+    const warn = jest.spyOn(logger, 'warn').mockImplementation()
+
+    normaliseScraperResult([screening({})], 'lab1')
+
+    expect(warn).not.toHaveBeenCalled()
+    warn.mockRestore()
   })
 
   test('combines the results of all scrapers, sorted by date', () => {
