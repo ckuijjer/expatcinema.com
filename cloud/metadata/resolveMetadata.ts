@@ -1,6 +1,7 @@
 import pMap from 'p-map'
 
 import { Screening } from '../types'
+import type { Metadata } from './types'
 import getMetadata from './index'
 import {
   getTitlesWithoutSharedLabels,
@@ -13,18 +14,27 @@ import {
   normalizeMovieTitleForLookup,
 } from './titleResolver'
 
-// Resolves the movie of every unique title and year of the screenings: the
-// title as it is, without the festival or series label several titles of a
-// cinema have, as the part of a title that is the film, and with the years of
-// the same film at other screenings as a hint
+// A lookup: a title and year, and the titles of the screenings that have them
+export type MetadataLookups = Map<
+  string,
+  { query: string; year?: number; rawTitles: Set<string> }
+>
+
+export type MatchResult = {
+  metadataLookups: MetadataLookups
+  // one per lookup
+  metadata: Metadata[]
+}
+
+// Phase: match. Resolves the movie of every unique title and year of the
+// screenings: the title as it is, without the festival or series label several
+// titles of a cinema have, as the part of a title that is the film, and with the
+// years of the same film at other screenings as a hint
 export const resolveMetadata = async (
   allRawScreenings: Screening[],
   { useDirectors = true }: { useDirectors?: boolean } = {},
-) => {
-  const metadataLookups = new Map<
-    string,
-    { query: string; year?: number; rawTitles: Set<string> }
-  >()
+): Promise<MatchResult> => {
+  const metadataLookups: MetadataLookups = new Map()
   // what the cinemas say the director is of the screenings with this title and
   // year
   const directorsByLookupKey = new Map<string, string[]>()

@@ -1,14 +1,9 @@
 import { buildMovies } from '../metadata/buildMovies'
+import type { MetadataLookups } from '../metadata/resolveMetadata'
 import { getMetadataLookupKey } from '../metadata/titleResolver'
 import type { Metadata } from '../metadata/types'
 import { makeScreeningsUniqueAndSorted } from '../scrapers/utils/makeScreeningsUniqueAndSorted'
 import { Screening } from '../types'
-
-// A lookup: a title and year, and the titles of the screenings that have them
-export type MetadataLookups = Map<
-  string,
-  { query: string; year?: number; rawTitles: Set<string> }
->
 
 // What the public screenings.json has: the movie a screening was matched to,
 // and not the director, which is only used for the matching
