@@ -67,14 +67,13 @@ import springhaver from './springhaver'
 import studiok from './studiok'
 import themovies from './themovies'
 import worm from './worm'
-import { needsSiblingYearRetry } from '../metadata/siblingYears'
+import { buildMovies } from '../metadata/buildMovies'
+import { resolveWithSiblingYears } from '../metadata/siblingYears'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { withTimeout } from './utils/withTimeout'
 import {
   getMetadataLookupKey,
-  getMovieSortTitle,
   normalizeMovieTitleForLookup,
-  getMovieSlug,
 } from '../metadata/titleResolver'
 import type { Metadata } from '../metadata/types'
 
@@ -336,63 +335,9 @@ export const scrapers = async () => {
       { concurrency: 5 },
     )
 
-    const matchedYearsByQuery = new Map<string, Set<number>>()
-    uniqueTitlesAndMetadata.forEach((metadata) => {
-      if (metadata.match.status !== 'matched' || metadata.year === undefined) {
-        return
-      }
-
-      const existingYears = matchedYearsByQuery.get(metadata.query) ?? new Set()
-      existingYears.add(metadata.year)
-      matchedYearsByQuery.set(metadata.query, existingYears)
-    })
-
-    const secondaryResolvedMetadata = await pMap(
-      uniqueTitlesAndMetadata.filter(
-        (metadata) =>
-          needsSiblingYearRetry(metadata) &&
-          (matchedYearsByQuery.get(metadata.query)?.size ?? 0) > 0,
-      ),
-      async (metadata) => {
-        const siblingYearHints = Array.from(
-          matchedYearsByQuery.get(metadata.query) ?? [],
-        ).filter((hint) => hint !== metadata.year)
-
-        if (siblingYearHints.length === 0) {
-          return metadata
-        }
-
-        const retryMetadata = await getMetadata({
-          title: metadata.query,
-          year: metadata.year,
-          siblingYearHints,
-        })
-
-        // a retry that doesn't match keeps what the lookup had
-        return retryMetadata.match.status === 'matched'
-          ? retryMetadata
-          : metadata
-      },
-      { concurrency: 5 },
-    )
-
-    const metadataByLookupKey = new Map(
-      uniqueTitlesAndMetadata.map((metadata) => [
-        getMetadataLookupKey(metadata.query, metadata.year),
-        metadata,
-      ]),
-    )
-
-    secondaryResolvedMetadata.forEach((metadata) => {
-      metadataByLookupKey.set(
-        getMetadataLookupKey(metadata.query, metadata.year),
-        metadata,
-      )
-    })
-
-    const uniqueTitlesAndMetadataWithSiblingHints = Array.from(
-      metadataByLookupKey.values(),
-    )
+    // and with the years that the screenings of the same title matched
+    const uniqueTitlesAndMetadataWithSiblingHints =
+      await resolveWithSiblingYears(uniqueTitlesAndMetadata)
 
     const allWithResolvedMovies = makeScreeningsUniqueAndSorted(
       allRawScreenings.map((movie) => {
@@ -413,42 +358,7 @@ export const scrapers = async () => {
       }),
     )
 
-    const movies = Array.from(
-      new Map(
-        uniqueTitlesAndMetadataWithSiblingHints
-          .filter((metadata) => metadata.movieId && metadata.tmdb?.id)
-          .map((metadata) => [
-            metadata.movieId,
-            {
-              movieId: metadata.movieId,
-              slug: getMovieSlug({
-                title: metadata.title,
-                query: metadata.query,
-                tmdbId: metadata.tmdb?.id,
-              }),
-              tmdbId: metadata.tmdb?.id,
-              imdbId: metadata.imdbId,
-              title: metadata.title,
-              sortTitle: getMovieSortTitle(metadata.title ?? ''),
-              tmdb: {
-                id: metadata.tmdb?.id,
-                title: metadata.title,
-                originalTitle: metadata.originalTitle,
-                releaseDate: metadata.tmdb?.releaseDate,
-                posterPath: metadata.tmdb?.posterPath,
-                backdropPath: metadata.tmdb?.backdropPath,
-                overview: metadata.tmdb?.overview,
-                originalLanguage: metadata.tmdb?.originalLanguage,
-                runtime: metadata.tmdb?.runtime,
-                videos: metadata.tmdb?.videos,
-                voteAverage: metadata.tmdb?.voteAverage,
-                genres: metadata.tmdb?.genres ?? [],
-                directors: metadata.tmdb?.directors ?? [],
-              },
-            },
-          ]),
-      ).values(),
-    )
+    const movies = buildMovies(uniqueTitlesAndMetadataWithSiblingHints)
 
     const toTitleMatchRecord = (metadata: Metadata) => ({
       query: metadata.query,
