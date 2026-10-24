@@ -1,6 +1,7 @@
 import { resolveScreenings } from '../pipeline/resolve'
 import { getMetadataLookupKey } from '../metadata/titleResolver'
 import type { Metadata } from '../metadata/types'
+import { logger } from '../powertools'
 import { Screening } from '../types'
 
 const screening = (overrides: Partial<Screening>): Screening => ({
@@ -134,5 +135,41 @@ describe('resolveScreenings', () => {
         metadataLookups,
       }).review.directorDisagreements.map(({ movieId }) => movieId),
     ).toEqual(['tmdb:21484'])
+  })
+
+  test('gives movies that share a slug a unique one, with a warning', () => {
+    const warn = jest.spyOn(logger, 'warn').mockImplementation()
+    const imago = (tmdbId: number, year: number, releaseDate: string) =>
+      ({
+        query: 'imago',
+        year,
+        createdAt: '2026-10-24T00:00:00.000Z',
+        movieId: `tmdb:${tmdbId}`,
+        title: 'Imago',
+        tmdb: { id: tmdbId, releaseDate },
+        match: { status: 'matched', method: 'tmdb-search', confidence: 1 },
+      }) as Metadata
+
+    const { movies } = resolveScreenings([], {
+      metadata: [
+        imago(1119539, 2025, '2025-10-22'),
+        imago(1722186, 2026, '2026-03-01'),
+      ],
+      metadataLookups: new Map(),
+    })
+
+    expect(movies.map(({ slug }) => slug)).toEqual(['imago', 'imago-2026'])
+    expect(warn).toHaveBeenCalledTimes(1)
+    expect(warn).toHaveBeenCalledWith(
+      'movies share a slug',
+      expect.objectContaining({
+        slug: 'imago',
+        movies: [
+          expect.objectContaining({ movieId: 'tmdb:1119539' }),
+          expect.objectContaining({ movieId: 'tmdb:1722186' }),
+        ],
+      }),
+    )
+    warn.mockRestore()
   })
 })
