@@ -4,122 +4,17 @@ import { mkdir, writeFile } from 'fs/promises'
 import { DateTime, Settings } from 'luxon'
 import { dirname, resolve } from 'path'
 
-import { closeBrowser } from '../browser'
 import documentClient from '../documentClient'
 import { resolveMetadata } from '../metadata/resolveMetadata'
+import {
+  combineScreenings,
+  normaliseScraperResult,
+} from '../pipeline/normalise'
 import { resolveScreenings } from '../pipeline/resolve'
+import { runScrapers } from '../pipeline/scrape'
 import { logger } from '../powertools'
 import { triggerWebDeploy } from '../triggerWebDeploy'
-import { Screening } from '../types'
-import amstelveen from './amstelveen'
-import bioscopenleiden from './bioscopenleiden'
-import castellum from './castellum'
-import chasse from './chasse'
-import cinecenter from './cinecenter'
-import cinecitta from './cinecitta'
-import cinemadevlugt from './cinemadevlugt'
-import cinemathepulse from './cinemathepulse'
-import cinerama from './cinerama'
-import concordia from './concordia'
-import debalie from './debalie'
-import desien from './desien'
-import dewittdordrecht from './dewittdordrecht'
-import defilmhallen from './defilmhallen'
-import deuitkijk from './deuitkijk'
-import dokhuis from './dokhuis'
-import eyefilm from './eyefilm'
-import fchyena from './fchyena'
-import filmhuisbussum from './filmhuisbussum'
-import filmhuiscavia from './filmhuiscavia'
-import filmhuisbreda from './filmhuisbreda'
-import filmhuisdenhaag from './filmhuisdenhaag'
-import filmhuisdespiegel from './filmhuisdespiegel'
-import filmtheaterhilversum from './filmtheaterhilversum'
-import filmhuislumen from './filmhuislumen'
-import filmkoepel from './filmkoepel'
-import florafilmtheater from './florafilmtheater'
-import focusarnhem from './focusarnhem'
-import forumgroningen from './forumgroningen'
-import hartlooper from './hartlooper'
-import heerenstraattheater from './heerenstraattheater'
-import hetdocumentairepaviljoen from './hetdocumentairepaviljoen'
-import ketelhuis from './ketelhuis'
-import kinorotterdam from './kinorotterdam'
-import kriterion from './kriterion'
-import lab1 from './lab1'
-import lab111 from './lab111'
-import lantarenvenster from './lantarenvenster'
-import lumiere from './lumiere'
-import lux from './lux'
-import melkweg from './melkweg'
-import natlab from './natlab'
-import rialto from './rialto'
-import rialtovu from './rialtovu'
-import schuur from './schuur'
-import sliekerfilm from './sliekerfilm'
-import slachtstraat from './slachtstraat'
-import springhaver from './springhaver'
-import studiok from './studiok'
-import themovies from './themovies'
-import worm from './worm'
-import { withEvent } from './utils/extractEvent'
-import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
-import { withTimeout } from './utils/withTimeout'
-
-const SCRAPERS = {
-  amstelveen,
-  bioscopenleiden,
-  castellum,
-  chasse,
-  cinecenter,
-  cinecitta,
-  cinemadevlugt,
-  cinemathepulse,
-  cinerama,
-  concordia,
-  debalie,
-  desien,
-  dewittdordrecht,
-  defilmhallen,
-  deuitkijk,
-  dokhuis,
-  eyefilm,
-  fchyena,
-  filmhuisbussum,
-  filmhuiscavia,
-  filmhuisbreda,
-  filmhuisdenhaag,
-  filmhuisdespiegel,
-  filmtheaterhilversum,
-  filmhuislumen,
-  filmkoepel,
-  florafilmtheater, // uses puppeteer
-  focusarnhem, // uses puppeteer
-  forumgroningen,
-  hartlooper,
-  heerenstraattheater,
-  hetdocumentairepaviljoen,
-  ketelhuis, // uses puppeteer
-  kinorotterdam,
-  kriterion,
-  lab1,
-  lab111, // uses puppeteer
-  lantarenvenster,
-  lumiere, // uses puppeteer
-  lux,
-  melkweg,
-  natlab,
-  rialto,
-  rialtovu,
-  schuur, // uses puppeteer
-  sliekerfilm,
-  slachtstraat,
-  springhaver,
-  studiok,
-  themovies,
-  worm,
-}
-
+import { getEnabledScrapers, SCRAPERS } from './registry'
 // Set the default timezone to Europe/Amsterdam, otherwise AWS Lambda will scrape as UTC and running it locally
 // as Europe/Amsterdam
 Settings.defaultZone = 'Europe/Amsterdam'
@@ -184,22 +79,6 @@ const writeToAnalytics =
     }
   }
 
-const getEnabledScrapers = () => {
-  if (process.env.SCRAPERS) {
-    return Object.fromEntries(
-      Object.entries(SCRAPERS).filter(([name, fn]) => {
-        return process.env.SCRAPERS?.split(',').includes(name)
-      }),
-    )
-  }
-
-  return SCRAPERS
-}
-
-// The Lambda is killed after 9 minutes, losing every scraper's results, so a
-// scraper that hangs gets cut off well before that (the slowest take ~1 minute)
-const SCRAPER_TIMEOUT_MS = 4 * 60 * 1000
-
 export const scrapers = async () => {
   try {
     const ENABLED_SCRAPERS = getEnabledScrapers()
@@ -211,48 +90,12 @@ export const scrapers = async () => {
     })
 
     const results = Object.fromEntries(
-      await Promise.all(
-        Object.entries(ENABLED_SCRAPERS).map(async ([name, fn]) => {
-          logger.info('start scraping', { scraper: name })
-
-          const start = Date.now()
-          let result: Screening[] = []
-          try {
-            result = await withTimeout(
-              fn(),
-              SCRAPER_TIMEOUT_MS,
-              `scraper ${name}`,
-            )
-          } catch (error) {
-            logger.error('error scraping (scrapers Promise.all loop)', {
-              scraper: name,
-              error,
-            })
-          }
-
-          logger.info('done scraping', {
-            scraper: name,
-            numberOfResults: result?.length,
-            durationMs: Date.now() - start,
-          })
-
-          return [name, makeScreeningsUniqueAndSorted(result.map(withEvent))]
-        }),
+      Object.entries(await runScrapers(ENABLED_SCRAPERS)).map(
+        ([name, result]) => [name, normaliseScraperResult(result)],
       ),
-    ) as Record<string, Screening[]>
-
-    // close the browser
-    try {
-      await closeBrowser({ logger })
-    } catch (error) {
-      logger.warn('failed closing browser', { error })
-    }
-
-    logger.info('done scraping for all scrapers')
-
-    const allRawScreenings = makeScreeningsUniqueAndSorted(
-      Object.values(results).flat(),
     )
+
+    const allRawScreenings = combineScreenings(results)
 
     const {
       metadataLookups,
