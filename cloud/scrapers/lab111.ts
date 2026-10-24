@@ -12,6 +12,7 @@ import { shortMonthToNumberDutch } from './utils/monthToNumber'
 import { splitTime } from './utils/splitTime'
 import { cleanDirector } from './utils/cleanDirector'
 import { extractEvent } from './utils/extractEvent'
+import type { TitleAndNotes } from './utils/extractNotes'
 import { titleCase } from './utils/titleCase'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
@@ -36,20 +37,45 @@ const detailPageXray = createXray({ logger })
 const hasEnglishSubtitles = (movie: XRayFromMainPage) =>
   movie.metadata.includes('Ondertiteling: Engels')
 
-// A year in the title, e.g. "The Time Masters (1982) Incl. Introduction", is
-// shown next to the title already
-export const cleanTitle = (title: string) => {
-  return titleCase(
-    title
-      .replace(/\s*\((?:19|20)\d{2}\)/g, '')
-      .replace(/ \(4k Restoration\)/i, '')
-      .replace(' (with English subtitles)', '')
-      .replace(/^Club Imagine:\s+/i, '')
-      .replace(/^HoFF x IQMF:\s+/i, '')
-      .replace(/^IQMF:\s+/i, '')
-      .replace(/^Africadelic & Caribbean Creativity Present\s+/i, '')
-      .replace(/^Kaboom Cult Presents\s+/i, ''),
-  )
+// Lab111 puts what is added to a film in the title, mostly between parentheses:
+// "Cold War (Incl. Drink and Antipasti Platter)", "Tampopo (Incl. Ramen)",
+// "Akira (4K Restoration)", "The Wig (+ The Flesh Dress Short)", or after it:
+// "The Time Masters (1982) Incl. Introduction". The title is what is looked up
+// on TMDB, the rest is kept as notes. The year is shown next to the title
+// already, and the English subtitles are why the screening is here
+export const parseTitle = (rawTitle: string): TitleAndNotes => {
+  const notes: string[] = []
+
+  const withoutParentheses = rawTitle
+    .replace(/^Club Imagine:\s+/i, '')
+    .replace(/^HoFF x IQMF:\s+/i, '')
+    .replace(/^IQMF:\s+/i, '')
+    .replace(/^Africadelic & Caribbean Creativity Present\s+/i, '')
+    .replace(/^Kaboom Cult Presents\s+/i, '')
+    .replace(/\s*\(([^()]*)\)/g, (_, text: string) => {
+      const note = text
+        .replace(/^\+\s*/, '')
+        .replace(/\b4k\b/i, '4K')
+        .trim()
+
+      if (
+        !/^(?:19|20)\d{2}$/.test(note) &&
+        !/^with English subtitles$/i.test(note)
+      ) {
+        notes.push(note)
+      }
+
+      return ''
+    })
+
+  const [title, after] = withoutParentheses.split(/\s+(?=Incl\.\s)/i)
+  if (after) notes.push(after.trim())
+
+  return {
+    title: titleCase(title.trim()),
+    // the page has these in lower case: "(incl. drink and antipasti platter)"
+    ...(notes.length > 0 && { notes: notes.map(titleCase) }),
+  }
 }
 
 type XRayFromMainPage = {
@@ -185,7 +211,7 @@ const extractFromMainPage = async () => {
         })
 
         return {
-          title: cleanTitle(movie.title),
+          ...parseTitle(movie.title),
           event: extractEvent(movie.title).event,
           year:
             detailsByUrl.get(movie.url)?.year ??
