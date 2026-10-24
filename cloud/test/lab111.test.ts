@@ -1,5 +1,5 @@
 import {
-  cleanTitle,
+  parseTitle,
   extractReleaseYear,
   parseReleaseYear,
 } from '../scrapers/lab111'
@@ -93,15 +93,38 @@ describe('parseReleaseYear', () => {
   })
 })
 
-describe('lab111 cleanTitle', () => {
+describe('lab111 parseTitle', () => {
   test.each([
+    ['Perfect Days (2023)', { title: 'Perfect Days' }],
+    ['Shall We Dance? (with English subtitles)', { title: 'Shall We Dance?' }],
+    ['Akira (4k Restoration)', { title: 'Akira', notes: ['4K Restoration'] }],
+    [
+      'Cold War (Incl. Drink and Antipasti Platter)',
+      { title: 'Cold War', notes: ['Incl. Drink and Antipasti Platter'] },
+    ],
+    [
+      'Cold War (incl. drink and antipasti platter)',
+      { title: 'Cold War', notes: ['Incl. Drink and Antipasti Platter'] },
+    ],
+    ['Tampopo (Incl. Ramen)', { title: 'Tampopo', notes: ['Incl. Ramen'] }],
+    [
+      'Shall We Dance? (30th Anniversary)',
+      { title: 'Shall We Dance?', notes: ['30th Anniversary'] },
+    ],
+    [
+      'The Wig (+ The Flesh Dress Short)',
+      { title: 'The Wig', notes: ['The Flesh Dress Short'] },
+    ],
     [
       'The Time Masters (1982) Incl. Introduction',
-      'The Time Masters Incl. Introduction',
+      { title: 'The Time Masters', notes: ['Incl. Introduction'] },
     ],
-    ['Perfect Days (2023)', 'Perfect Days'],
-    ['Akira (4K Restoration)', 'Akira'],
-  ])('removes the year from %s', (title, expected) => {
-    expect(cleanTitle(title)).toBe(expected)
+    [
+      'Perfect Days (2023) (Incl. Drink)',
+      { title: 'Perfect Days', notes: ['Incl. Drink'] },
+    ],
+    ['Club Imagine: Cure', { title: 'Cure' }],
+  ])('splits %s into the title and notes', (title, expected) => {
+    expect(parseTitle(title)).toEqual(expected)
   })
 })
