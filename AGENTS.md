@@ -52,6 +52,8 @@ expatcinema.com/
 
 ### Cloud pipeline phases
 
+Diagrams of the phases, the match retries and how events and notes are found: [`docs/pipeline.md`](./docs/pipeline.md). Update them when a phase changes.
+
 `cloud/scrapers/index.ts` only calls the phases, in order. Each takes what the one before it returned:
 
 1. **Scrape**: `pipeline/scrape.ts` runs the scrapers listed in `scrapers/registry.ts` (`SCRAPERS=a,b` limits them). A scraper that fails or hangs gives no screenings. A scraper delivers the film's `title` (what is looked up on TMDB) and the facts about the screening: `year`, `director`, `event`, `notes`.
