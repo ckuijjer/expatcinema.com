@@ -9,6 +9,10 @@ type ScreeningData = {
   year?: number
   title: string
   url: string
+  // the festival or series the screening belongs to
+  event?: string
+  // what is special about this screening: "Q&A", "4K Restoration"
+  notes?: string[]
 }
 
 export type City = {
@@ -41,6 +45,8 @@ export type Screening = {
   title: string
   url: string
   year?: number
+  event?: string
+  notes?: string[]
 }
 
 export const getScreenings = async () => {

@@ -19,6 +19,12 @@ const chipStyle = css({
   fontVariantNumeric: 'tabular-nums',
   color: 'var(--text-color)',
   textDecoration: 'none',
+  // a long label is cut off, the full text is in the title
+  display: 'inline-block',
+  maxWidth: '100%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
   borderRadius: '8px',
   border: '1px solid color-mix(in srgb, var(--text-color) 35%, transparent)',
   _hover: {
@@ -34,34 +40,50 @@ const chipStyle = css({
   },
 })
 
+const labelStyle = css({
+  marginLeft: '6px',
+  fontSize: '14px',
+  color: 'var(--text-muted-color)',
+})
+
 const formatTime = (date: DateTime) =>
   date
     .setZone('Europe/Amsterdam')
     .toLocaleString(DateTime.TIME_24_SIMPLE, { locale: 'en-GB' })
 
 // The times of one day as buttons, for a page where the film and the cinema are
-// already known. The title shows when the film ends, if its runtime is known.
+// already known. A screening with an event or notes has them after the time. The
+// title shows them in full, and when the film ends if its runtime is known.
 export const ScreeningTimeChips = ({
   screenings,
   runtimeMinutes,
 }: {
-  screenings: { url: string; date: DateTime }[]
+  screenings: {
+    url: string
+    date: DateTime
+    event?: string
+    notes?: string[]
+  }[]
   runtimeMinutes?: number | null
 }) => (
   <div className={chipsStyle}>
-    {screenings.map(({ url, date }) => (
-      <a
-        key={`${url}-${date.toISO()}`}
-        href={url}
-        className={chipStyle}
-        title={
-          runtimeMinutes
-            ? `${formatTime(date)} – ${formatTime(date.plus({ minutes: runtimeMinutes }))}`
-            : undefined
-        }
-      >
-        {formatTime(date)}
-      </a>
-    ))}
+    {screenings.map(({ url, date, event, notes }) => {
+      const label = [event, ...(notes ?? [])].filter(Boolean).join(' · ')
+      const ends = runtimeMinutes
+        ? `${formatTime(date)} – ${formatTime(date.plus({ minutes: runtimeMinutes }))}`
+        : undefined
+
+      return (
+        <a
+          key={`${url}-${date.toISO()}`}
+          href={url}
+          className={chipStyle}
+          title={[label, ends].filter(Boolean).join('\n') || undefined}
+        >
+          {formatTime(date)}
+          {label ? <span className={labelStyle}>· {label}</span> : null}
+        </a>
+      )
+    })}
   </div>
 )
