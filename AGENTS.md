@@ -336,6 +336,20 @@ Short and concrete, usually one line, ideally showing an example of the input or
 - One topic per PR. Don't mix refactors or reformatting of unrelated files into a fix.
 - PR bodies say what was wrong, what changed, and how it was verified (e.g. scraper output counts before and after, example screenings with URLs).
 
+### Working habits
+
+Learned from reviews of earlier agent sessions:
+
+- **Count before you claim coverage.** Before saying "all scrapers" or "every cinema", count them from the source (`scrapers/registry.ts`, the directory) and give the number in the same message. Scrapers that need Chromium count too: `LOCAL_CHROMIUM_EXECUTABLE_PATH` in `.env.local` runs them locally.
+- **Compare against `origin/main`, not local `main`.** Run `git fetch` first; a stale local `main` gives false differences in before and after comparisons.
+- **Fix a pattern everywhere it occurs.** After fixing something in one scraper (a prefix, a note, a suffix), grep the other scrapers for the same pattern and report what you found, instead of waiting to be asked.
+- **A duplicate, clash or disagreement is a hint about the data.** Two movies with one slug, a director that disagrees with the match, a year that differs from all other cinemas: it is usually an extraction mistake. Warn about it (the daily check reads WARN and ERROR lines) instead of only deduplicating it.
+- **Say which question you are answering when it can be read two ways.** One line, e.g. "I read this as: how do we detect it, not how do we show it".
+- **Name things when you first use them.** Say what a file, field or review list is and where it lives, e.g. `review/detected-events` is a list in the private bucket.
+- **Say it when something is unverified.** Run the check, or write "not verified"; don't leave a half-checked claim.
+- **Keep the user posted during long work** with one short line about what you are on.
+- **Use the edit tool for code changes** (a scripted slice edit once corrupted a file) and `gh pr create --body-file` for PR bodies (escaped quotes in an inline body end up as literal backslashes).
+
 ## Scraping cinemas that block AWS
 
 Filmhuis Breda, Heerenstraattheater, Cinerama and the film pages of Filmtheater Hilversum block requests from AWS, so on the Lambda their requests go through a relay on a home server (`cloud/clients/scrapeRelay.ts`, needs the `SCRAPE_RELAY_URL` and `SCRAPE_RELAY_TOKEN` secrets). Locally, and without those variables, requests go out directly. Adding a host to `RELAYED_HOSTS` also needs it in the relay's `ALLOWED_HOSTS` (`scrape-relay/` in the maintainer's teatree-docker repo).
