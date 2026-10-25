@@ -70,6 +70,7 @@ With AWS access (local sessions, read-only profile `casper-readonly`):
    - **Broken:** 0 screenings for 3+ consecutive runs, while its median over the previous 14 runs is above 0.
    - **Suspicious:** below 50% of the same weekday one week earlier, and a drop of at least 5 screenings.
    - **Recovered:** a cinema with status `broken` or `idle` that now returns screenings. Report it, so its status can be updated.
+   - **Before reporting a drop or a 0 as broken,** check the cinema's own listing, especially when no errors were logged: often the cinema just has no English-subtitled films for now. Say that in the report, with what the listing shows, and add it to the cinema's note below.
 5. **New errors:** `ERROR` alerts in Slack since yesterday's check, for scrapers other than those already `broken`.
 6. **Waiting PRs:** open PRs with the label `waiting-for-screenings` (`https://api.github.com/repos/ckuijjer/expatcinema.com/issues?labels=waiting-for-screenings&state=open`). These are scrapers for cinemas that don't have English-subtitled screenings yet (status `idle`), kept open instead of merged. For each, run the PR's scraper and see whether it now returns screenings:
    - Find the scraper from the PR's files (`cloud/scrapers/<name>.ts`), fetch the PR head (`git fetch origin pull/<n>/head`) into a scratch worktree outside the repo checkout (`git worktree add /tmp/pr-<n> FETCH_HEAD`), run `corepack enable; pnpm install --frozen-lockfile` there, then `cd cloud && pnpm scraper:headless scrapers/<name>.ts`.
@@ -139,8 +140,8 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | bioscopenleiden          | ok     | fixed 2026-09-28 ("ENGLISH SUBS" tag)                                |
 | castellum                | idle   | no English-subtitled films (2026-09-28)                              |
 | chasse                   | ok     | ok from AWS 2026-10-03 (Chromium + Chrome UA)                        |
-| cinecenter               | ok     |                                                                      |
-| cinecitta                | ok     | block 21-24 Oct (10-08); 0 after is fine                             |
+| cinecenter               | ok     | 12-15 till 10-23, 5 on 10-25: fewer films tagged Eng Subs            |
+| cinecitta                | ok     | EN blocks come and go: 0 till 10-07, ~30 10-09 to 10-22, 0 now       |
 | cinemadevlugt            | idle   | Expat Cinema list empty (2026-09-28)                                 |
 | cinemathepulse           | ok     | fixed 2026-09-28 (URL marker changed)                                |
 | cinerama                 | ok     | fixed 2026-10-01: fetched via teatree relay                          |
@@ -152,7 +153,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | dewittdordrecht          | idle   | no Expat Cinema; all films NL subs (09-28)                           |
 | dokhuis                  | ok     | occasional: film nights with English subs                            |
 | eyefilm                  | ok     |                                                                      |
-| fchyena                  | ok     | ok from AWS 2026-10-03 (Framer); low: 1 EN film                      |
+| fchyena                  | ok     | ok from AWS 2026-10-03 (Framer); low: 1 EN film, 0 from 10-22        |
 | filmhuisbreda            | ok     | relay since 10-01; 0 since 10-10: all films NL subs (10-25)          |
 | filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)                              |
 | filmhuiscavia            | ok     | added 2026-10-02; monthly programme pages                            |
