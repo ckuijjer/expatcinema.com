@@ -4,9 +4,10 @@ import {
   getSharedLabelKey,
   getSharedLabelSplits,
   isIgnoredLabel,
+  splitOffLabel,
   type SharedLabel,
 } from '../metadata/sharedLabels'
-import { getMetadataLookupKey } from '../metadata/titleResolver'
+import { compactTitle, getMetadataLookupKey } from '../metadata/titleResolver'
 import type { Metadata } from '../metadata/types'
 import { makeScreeningsUniqueAndSorted } from '../scrapers/utils/makeScreeningsUniqueAndSorted'
 import { logger } from '../powertools'
@@ -62,8 +63,59 @@ export const resolveScreenings = (
   const sharedLabelSplits = getSharedLabelSplits(screenings)
   const detectedEvents = new Map<
     string,
-    { cinema: string; event: string; titles: Set<string>; screenings: number }
+    {
+      cinema: string
+      event: string
+      status: 'applied' | 'candidate'
+      titles: Set<string>
+      screenings: number
+    }
   >()
+
+  // A title that matched through one part of it ("Cinema Aperitivo: Cold War"
+  // through "Cold War"), has the other part as its event when the film is also
+  // shown under just that part's name: then the rest is something the cinema
+  // adds, not a subtitle. Without such a plain screening it is a candidate to
+  // review.
+  const plainMovieIds = new Set<string>()
+  for (const { title, year } of screenings) {
+    const entry = metadataByLookupKey.get(getMetadataLookupKey(title, year))
+
+    if (
+      entry?.movieId &&
+      entry.match.method !== 'title-part' &&
+      entry.match.method !== 'shared-label'
+    ) {
+      plainMovieIds.add(entry.movieId)
+    }
+  }
+
+  const detectFromTitlePart = (
+    screening: Screening,
+    matched: Metadata | undefined,
+  ) => {
+    const stripped = matched?.match.strippedTitle
+    if (matched?.match.method !== 'title-part' || !stripped) return undefined
+
+    const split = splitOffLabel(screening.title, stripped)
+    if (!split || isIgnoredLabel(split.label)) return undefined
+
+    // "Cold War (Zimna wojna)": the film's own name in another language
+    const isNameOfFilm = [
+      matched.title,
+      matched.originalTitle,
+      ...(matched.tmdb?.alternativeTitles ?? []),
+    ].some((name) => name && compactTitle(name) === compactTitle(split.label))
+    if (isNameOfFilm) return undefined
+
+    return {
+      title: stripped,
+      ...eventAndNotes([split]),
+      corroborated: Boolean(
+        matched.movieId && plainMovieIds.has(matched.movieId),
+      ),
+    }
+  }
 
   const resolvedScreenings: ResolvedScreening[] = makeScreeningsUniqueAndSorted(
     screenings.map((screening) => {
@@ -79,21 +131,34 @@ export const resolveScreenings = (
         matched?.match.method === 'shared-label'
           ? sharedLabelSplits.get(getSharedLabelKey(screening))
           : undefined
-      const detected =
+      const fromSharedLabel =
         split && sameTitle(split.title, matched?.match.strippedTitle)
           ? { title: split.title, ...eventAndNotes(split.labels) }
           : undefined
+      const fromTitlePart = fromSharedLabel
+        ? undefined
+        : detectFromTitlePart(screening, matched)
 
-      if (detected?.event && !screening.event) {
-        const key = `${screening.cinema}\u0000${detected.event}`
+      // an uncorroborated title part only goes to the review list
+      const candidate = fromTitlePart && !fromTitlePart.corroborated
+      const detected = candidate
+        ? undefined
+        : (fromSharedLabel ?? fromTitlePart)
+      const reported = fromSharedLabel ?? fromTitlePart
+
+      if (reported?.event && !screening.event) {
+        const key = `${screening.cinema}\u0000${reported.event}`
+        const status = candidate ? 'candidate' : 'applied'
         const record = detectedEvents.get(key) ?? {
           cinema: screening.cinema,
-          event: detected.event,
+          event: reported.event,
+          status,
           titles: new Set<string>(),
           screenings: 0,
         }
 
-        record.titles.add(detected.title)
+        if (status === 'applied') record.status = 'applied'
+        record.titles.add(reported.title)
         record.screenings++
         detectedEvents.set(key, record)
       }

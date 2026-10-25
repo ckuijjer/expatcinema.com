@@ -81,7 +81,8 @@ const findSharedLabels = (titles: string[]) => {
 export type SharedLabel = { kind: Kind; label: string }
 
 // A cinema's own name for its programme is no festival or series, nor a note
-const IGNORED_LABEL = /^(?:expat cinema|(?:english|eng) (?:subs|subtitles))$/i
+const IGNORED_LABEL =
+  /^(?:expat cinema(?: ro(?:t)?terdam)?|(?:english|eng) (?:subs|subtitles))$/i
 
 export const isIgnoredLabel = (label: string) => IGNORED_LABEL.test(label)
 
@@ -101,6 +102,26 @@ const splitSharedLabels = (title: string, sharedLabels: Set<string>) => {
   }
 
   return { title: rest, labels }
+}
+
+// The label of a title when what is left without it is `rest`: the part before
+// ("Cinema Aperitivo: Cold War") or after ("Cold War - Cinema Aperitivo") it
+export const splitOffLabel = (
+  title: string,
+  rest: string,
+): (SharedLabel & { rest: string }) | undefined => {
+  for (const kind of ['prefix', 'suffix'] as const) {
+    const parts = SPLITS[kind](title)
+
+    if (
+      parts &&
+      parts.rest.trim().toLowerCase() === rest.trim().toLowerCase()
+    ) {
+      return { kind, label: parts.label, rest: parts.rest }
+    }
+  }
+
+  return undefined
 }
 
 type ScreeningTitle = { title: string; cinema: string }
