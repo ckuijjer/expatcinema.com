@@ -35,7 +35,11 @@ Failure modes seen so far, and how to recognise them:
 - **A cinema that returns 0 with no error** can be the cinema's own page failing: Ketelhuis' Expat Cinema page was blank (HTTP 200, zero bytes) on 2026-10-03, also in a browser.
 - **Only `prod` has a schedule.** A dev stage can be deployed, but nothing runs it nightly; an earlier dev stack that did, with the prod Slack channel, produced alerts that looked like prod failures.
 
-Four cinemas block AWS (Filmhuis Breda and Heerenstraattheater via Cloudflare, Cinerama via Kinepolis' firewall, and Filmtheater Hilversum, which answers 503 to most of its film pages). Their pages are fetched through a small relay on the maintainer's home server (teatree), see `cloud/clients/scrapeRelay.ts`. If they suddenly all fail at once with `Error retrieving ... via relay` or a 401/403/5xx from the relay, the relay or its tunnel is down, not the scrapers: check `https://scrape-relay.home.kuijjer.com/health` and tell the maintainer.
+Four cinemas block AWS (Filmhuis Breda and Heerenstraattheater via Cloudflare, Cinerama via Kinepolis' firewall, and Filmtheater Hilversum, which answers 503 to most of its film pages). Their pages are fetched through a small relay on the maintainer's home server (teatree), see `cloud/clients/scrapeRelay.ts`. If they suddenly all fail at once with `Error retrieving ... via relay` or a 401/403/5xx from the relay, it is the relay or its route, not the scrapers: check `https://scrape-relay.home.kuijjer.com/health` and tell the maintainer. Where the 401 comes from tells what is wrong:
+
+- **A 401 `Unauthorized` from Pangolin's edge** (the relay's container is healthy on teatree, `http://192.168.2.46:8097/health` answers `{"ok":true}`) means the basic-auth password Pangolin has for the `scrape-relay` resource is not the relay's `RELAY_TOKEN`. Seen 2026-10-20 to 10-25: the blueprint was re-applied with its placeholder password. Set the password again to `RELAY_TOKEN` (`~/docker/scrape-relay/.env`), as in the README of `scrape-relay/` on teatree.
+- **A 404 `No such service`** is what you get on teatree itself: its split-horizon DNS answers `*.home.kuijjer.com` with the local Caddy, which has no such service. Check from outside the LAN, or with `curl --resolve scrape-relay.home.kuijjer.com:443:<VPS IP>`, before concluding anything.
+- **A 5xx or a timeout** is the tunnel (the `newt` container) or the relay container being down.
 
 ## Data sources
 
@@ -149,19 +153,19 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | dokhuis                  | ok     | occasional: film nights with English subs                            |
 | eyefilm                  | ok     |                                                                      |
 | fchyena                  | ok     | ok from AWS 2026-10-03 (Framer); low: 1 EN film                      |
-| filmhuisbreda            | ok     | fixed 2026-10-01: fetched via teatree relay                          |
+| filmhuisbreda            | ok     | relay since 10-01; 0 since 10-10, cause unknown (10-25)              |
 | filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)                              |
 | filmhuiscavia            | ok     | added 2026-10-02; monthly programme pages                            |
 | filmhuisdenhaag          | ok     |                                                                      |
 | filmhuisdespiegel        | ok     | AFFR on Tour 31 Oct-3 Nov; Dutch subs else                           |
 | filmhuislumen            | ok     |                                                                      |
-| filmkoepel               | idle   | feed only; no EN-subbed films (2026-10-02)                           |
+| filmkoepel               | ok     | feed only; 1 screening a day since 2026-10-14                        |
 | filmtheaterhilversum     | ok     | film pages fetched via teatree relay (10-15); timeouts added (10-03) |
 | florafilmtheater         | ok     | fixed 2026-10-03: sold-out, 2+ showtimes/day                         |
 | focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)                             |
 | forumgroningen           | ok     |                                                                      |
 | hartlooper               | ok     |                                                                      |
-| heerenstraattheater      | ok     | fixed 2026-10-01: fetched via teatree relay                          |
+| heerenstraattheater      | ok     | relay since 10-01; 0 on 10-20 to 10-25 (relay password)              |
 | hetdocumentairepaviljoen | ok     | fixed 2026-09-28 (subtitle label changed)                            |
 | ketelhuis                | ok     | small (1–6); page blank 10-03 (their site)                           |
 | kinorotterdam            | ok     |                                                                      |
