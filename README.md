@@ -2,6 +2,10 @@
 
 [Expat Cinema](https://expatcinema.com) shows foreign movies with english subtitles that are screened in cinemas in the Netherlands. It can be found at https://expatcinema.com.
 
+## How it works
+
+A diagram of the phases, from a cinema's website to the site, is in [`docs/pipeline.md`](./docs/pipeline.md).
+
 ## Deploy Cloud
 
 ### Deploy Prod
