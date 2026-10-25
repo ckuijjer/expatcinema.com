@@ -153,7 +153,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | dokhuis                  | ok     | occasional: film nights with English subs                            |
 | eyefilm                  | ok     |                                                                      |
 | fchyena                  | ok     | ok from AWS 2026-10-03 (Framer); low: 1 EN film                      |
-| filmhuisbreda            | ok     | relay since 10-01; 0 since 10-10, cause unknown (10-25)              |
+| filmhuisbreda            | ok     | relay since 10-01; 0 since 10-10: all films NL subs (10-25)          |
 | filmhuisbussum           | idle   | no English-subtitled films (2026-09-28)                              |
 | filmhuiscavia            | ok     | added 2026-10-02; monthly programme pages                            |
 | filmhuisdenhaag          | ok     |                                                                      |
