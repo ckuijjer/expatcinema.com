@@ -242,6 +242,7 @@ describe('resolveScreenings', () => {
         {
           cinema: 'Rialto',
           event: 'Docs',
+          status: 'applied',
           titles: ['Coward', 'Naza'],
           screenings: 2,
         },
@@ -273,7 +274,13 @@ describe('resolveScreenings', () => {
         }),
       ])
       expect(resolved.review.detectedEvents).toEqual([
-        { cinema: 'Rialto', event: 'Docs', titles: ['Coward'], screenings: 1 },
+        {
+          cinema: 'Rialto',
+          event: 'Docs',
+          status: 'applied',
+          titles: ['Coward'],
+          screenings: 1,
+        },
       ])
     })
 
@@ -318,6 +325,103 @@ describe('resolveScreenings', () => {
       ])
       expect(resolved.screenings[0]).not.toHaveProperty('event')
       expect(resolved.review.detectedEvents).toEqual([])
+    })
+
+    describe('from the part of a title that matched', () => {
+      const coldWar = (
+        method: 'tmdb-search' | 'title-part',
+        query: string,
+        extra: Partial<Metadata> = {},
+      ): Metadata => ({
+        query,
+        year: undefined,
+        createdAt: '2026-10-24T00:00:00.000Z',
+        movieId: 'tmdb:440298',
+        title: 'Cold War',
+        originalTitle: 'Zimna wojna',
+        tmdb: {
+          id: 440298,
+          releaseDate: '2018-06-08',
+          alternativeTitles: ['Cold War 2018'],
+        } as Metadata['tmdb'],
+        match: {
+          status: 'matched',
+          method,
+          confidence: 1,
+          ...(method === 'title-part' && { strippedTitle: 'Cold War' }),
+        },
+        ...extra,
+      })
+
+      const at = (cinema: string, title: string) =>
+        docs(title, { cinema, url: `https://example.com/${cinema}/${title}` })
+
+      test('is the rest of the title when the film is shown under just that part elsewhere', () => {
+        const resolved = run(
+          [
+            at('Lab111', 'Cinema Aperitivo: Cold War'),
+            at('Concordia', 'Cold War'),
+          ],
+          [
+            coldWar('title-part', 'cinema aperitivo: cold war'),
+            coldWar('tmdb-search', 'cold war'),
+          ],
+        )
+
+        expect(
+          resolved.screenings.map(({ cinema, title, event }) => [
+            cinema,
+            title,
+            event,
+          ]),
+        ).toEqual([
+          ['Concordia', 'Cold War', undefined],
+          ['Lab111', 'Cold War', 'Cinema Aperitivo'],
+        ])
+        expect(resolved.review.detectedEvents).toEqual([
+          {
+            cinema: 'Lab111',
+            event: 'Cinema Aperitivo',
+            status: 'applied',
+            titles: ['Cold War'],
+            screenings: 1,
+          },
+        ])
+      })
+
+      test('is only a candidate to review when nothing else shows the film under that name', () => {
+        const resolved = run(
+          [at('Lab111', 'Cinema Aperitivo: Cold War')],
+          [coldWar('title-part', 'cinema aperitivo: cold war')],
+        )
+
+        expect(resolved.screenings).toEqual([
+          expect.objectContaining({ title: 'Cinema Aperitivo: Cold War' }),
+        ])
+        expect(resolved.screenings[0]).not.toHaveProperty('event')
+        expect(resolved.review.detectedEvents).toEqual([
+          expect.objectContaining({
+            event: 'Cinema Aperitivo',
+            status: 'candidate',
+          }),
+        ])
+      })
+
+      test('is not found when the rest is another name of the film', () => {
+        const resolved = run(
+          [at('Lab111', 'Cold War: Zimna wojna'), at('Concordia', 'Cold War')],
+          [
+            coldWar('title-part', 'cold war: zimna wojna'),
+            coldWar('tmdb-search', 'cold war'),
+          ],
+        )
+
+        expect(resolved.screenings.map(({ event }) => event)).toEqual([
+          undefined,
+          undefined,
+        ])
+        expect(resolved.review.detectedEvents).toEqual([])
+      })
     })
   })
 })

@@ -254,12 +254,15 @@ describe('getSharedLabelSplits', () => {
 })
 
 describe('isIgnoredLabel', () => {
-  test.each(['Expat Cinema', 'expat cinema', 'English subs', 'Eng Subtitles'])(
-    'ignores %s',
-    (label) => {
-      expect(isIgnoredLabel(label)).toBe(true)
-    },
-  )
+  test.each([
+    'Expat Cinema',
+    'expat cinema',
+    'Expat Cinema Roterdam',
+    'English subs',
+    'Eng Subtitles',
+  ])('ignores %s', (label) => {
+    expect(isIgnoredLabel(label)).toBe(true)
+  })
 
   test.each(['Docs', 'Expat Cinema Night', 'Imagine Film Festival'])(
     'does not ignore %s',
