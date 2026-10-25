@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import { css, cx } from 'styled-system/css'
 
-import { Cinema } from '../utils/getScreenings'
+import { Cinema, DoubleFeatureFilm } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
 import { PosterPlaceholder } from './PosterPlaceholder'
 import { Time } from './Time'
@@ -120,6 +120,14 @@ const posterIconStyle = css({
   },
 })
 
+// The posters of a double feature next to each other, each on its own way to
+// the page of its film. The gap keeps the bigger targets from overlapping.
+const postersStyle = css({
+  flex: 'none',
+  display: 'flex',
+  gap: '8px',
+})
+
 const screeningRowLinkStyle = css({
   position: 'absolute',
   inset: '0',
@@ -133,6 +141,63 @@ const unmatchedPosterPlaceholderStyle = css({
   backgroundColor: 'transparent',
 })
 
+type PosterProps = {
+  title: string
+  movieId?: string
+  movieUrl?: string
+  posterUrl?: string
+}
+
+// The poster is the way to the movie page on this site; without a movie page it
+// is only a picture, or nothing when there is no poster either
+const Poster = ({ title, movieId, movieUrl, posterUrl }: PosterProps) => {
+  if (posterUrl) {
+    const image = (
+      <Image
+        src={posterUrl}
+        width={48}
+        height={72}
+        alt=""
+        aria-hidden
+        className={listPosterStyle}
+      />
+    )
+
+    return movieUrl ? (
+      <a
+        href={movieUrl}
+        className={posterLinkStyle}
+        data-poster-link
+        aria-label={`More about ${title}`}
+      >
+        {image}
+        <span className={posterOverlayStyle} aria-hidden>
+          <span className={posterIconStyle}>i</span>
+        </span>
+      </a>
+    ) : (
+      image
+    )
+  }
+
+  return movieUrl ? (
+    <a
+      href={movieUrl}
+      className={posterLinkStyle}
+      data-poster-link
+      aria-label={`More about ${title}`}
+    >
+      <PosterPlaceholder
+        title={movieId ? title : undefined}
+        className={movieId ? undefined : unmatchedPosterPlaceholderStyle}
+      />
+      <span className={posterOverlayStyle} aria-hidden>
+        <span className={posterIconStyle}>i</span>
+      </span>
+    </a>
+  ) : null
+}
+
 export const ScreeningRow = ({
   url,
   date,
@@ -143,6 +208,7 @@ export const ScreeningRow = ({
   movieSlug,
   movieHref,
   posterUrl,
+  doubleFeature,
   showCity = true,
   showCinema = true,
   showTitle = true,
@@ -157,6 +223,8 @@ export const ScreeningRow = ({
   movieSlug?: string
   movieHref?: string
   posterUrl?: string
+  // the films of a double feature, this screening is one of them
+  doubleFeature?: (DoubleFeatureFilm & { movieHref?: string })[]
   showCity?: boolean
   showCinema?: boolean
   showTitle?: boolean
@@ -165,27 +233,58 @@ export const ScreeningRow = ({
   const movieUrl =
     movieHref ?? (movieSlug ? getMoviePagePath(movieSlug) : undefined)
 
+  // a double feature is one row with the posters of all its films. The title is
+  // theirs, the year is one film's, so it isn't shown
+  const isDoubleFeature = (doubleFeature?.length ?? 0) > 1
+  const otherFilms = (doubleFeature ?? []).filter(
+    (film) => film.movieId !== movieId,
+  )
+  const films: PosterProps[] = isDoubleFeature
+    ? doubleFeature!.map((film) => ({
+        title: film.title,
+        movieId: film.movieId,
+        movieUrl:
+          film.movieHref ??
+          (film.movieSlug ? getMoviePagePath(film.movieSlug) : undefined),
+        posterUrl: film.posterUrl,
+      }))
+    : [{ title, movieId, movieUrl, posterUrl }]
+
   const mainLine = showTitle ? (
-    <>
-      {title}
-      {year ? <span className={listYearStyle}> ({year})</span> : null}
-    </>
+    isDoubleFeature ? (
+      doubleFeature!.map((film) => film.title).join(' + ')
+    ) : (
+      <>
+        {title}
+        {year ? <span className={listYearStyle}> ({year})</span> : null}
+      </>
+    )
   ) : showCinema ? (
     cinema.name
   ) : null
-  const secondLine = showTitle
+  const cinemaLine = showTitle
     ? showCinema
       ? `${cinema.name}${showCity ? `, ${cinema.city.name}` : ''}`
       : null
     : showCinema && showCity
       ? cinema.city.name
       : null
+  // on the page of one film: what it is shown with
+  const secondLine =
+    isDoubleFeature && !showTitle
+      ? [
+          cinemaLine,
+          `Double feature with ${otherFilms.map((film) => film.title).join(' + ')}`,
+        ]
+          .filter(Boolean)
+          .join(' · ')
+      : cinemaLine
 
   return (
     <div className={showPoster ? containerStyle : textOnlyContainerStyle}>
       <a
         href={url}
-        aria-label={`Open screening for ${title}`}
+        aria-label={`Open screening for ${isDoubleFeature ? doubleFeature!.map((film) => film.title).join(' and ') : title}`}
         className={screeningRowLinkStyle}
       />
       <div className={textGridStyle}>
@@ -198,52 +297,15 @@ export const ScreeningRow = ({
         </div>
       </div>
       {showPoster ? (
-        posterUrl ? (
-          movieUrl ? (
-            <a
-              href={movieUrl}
-              className={posterLinkStyle}
-              data-poster-link
-              aria-label={`More about ${title}`}
-            >
-              <Image
-                src={posterUrl}
-                width={48}
-                height={72}
-                alt=""
-                aria-hidden
-                className={listPosterStyle}
-              />
-              <span className={posterOverlayStyle} aria-hidden>
-                <span className={posterIconStyle}>i</span>
-              </span>
-            </a>
-          ) : (
-            <Image
-              src={posterUrl}
-              width={48}
-              height={72}
-              alt=""
-              aria-hidden
-              className={listPosterStyle}
-            />
-          )
-        ) : movieUrl ? (
-          <a
-            href={movieUrl}
-            className={posterLinkStyle}
-            data-poster-link
-            aria-label={`More about ${title}`}
-          >
-            <PosterPlaceholder
-              title={movieId ? title : undefined}
-              className={movieId ? undefined : unmatchedPosterPlaceholderStyle}
-            />
-            <span className={posterOverlayStyle} aria-hidden>
-              <span className={posterIconStyle}>i</span>
-            </span>
-          </a>
-        ) : null
+        isDoubleFeature ? (
+          <div className={postersStyle}>
+            {films.map((film) => (
+              <Poster key={film.movieId} {...film} />
+            ))}
+          </div>
+        ) : (
+          <Poster {...films[0]} />
+        )
       ) : null}
     </div>
   )

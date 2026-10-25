@@ -5,6 +5,12 @@ import { Metadata } from './types'
 
 const YEAR_TOLERANCE = 1
 
+// Not just a film that starts with the part: the part is the film's title
+export const isTitleOfFilm = (retry: Metadata, part: string) =>
+  [retry.title, retry.originalTitle, retry.tmdb?.title].some(
+    (title) => title && compactTitle(title) === compactTitle(part),
+  )
+
 // "Cine Kilo: Blade", "Böse Spiele - Rimini Sparta": one part of a title with
 // a delimiter is the film, the other is a label, but which one is a guess.
 // So a part only counts when it is the title of a film that was released in
@@ -47,15 +53,9 @@ export const resolveWithTitleParts = async (
     })
     const releaseYear = Number(retry.tmdb?.releaseDate?.slice(0, 4))
 
-    const isTitleOfFilm = [
-      retry.title,
-      retry.originalTitle,
-      retry.tmdb?.title,
-    ].some((title) => title && compactTitle(title) === compactTitle(part))
-
     if (
       retry.match.status === 'matched' &&
-      isTitleOfFilm &&
+      isTitleOfFilm(retry, part) &&
       Math.abs(releaseYear - metadata.year) <= YEAR_TOLERANCE
     ) {
       confirmed.push({ part, retry })

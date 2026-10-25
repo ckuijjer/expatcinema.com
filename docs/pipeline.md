@@ -54,7 +54,10 @@ flowchart TD
   sharedOk -- no --> parts["Retry 2: one part of the title<br/>split on : - – — • > |<br/>must be the film's own title, same year<br/>titleParts.ts"]
   parts --> partsOk{Matched?}
   partsOk -- yes --> matched
-  partsOk -- no --> siblings["Retry 3: with the years that the<br/>same title matched at other screenings<br/>siblingYears.ts"]
+  partsOk -- no --> double["Retry 3: 'A / B', both parts the title of<br/>a different film: a double feature,<br/>a screening per film<br/>doubleFeature.ts"]
+  double --> doubleOk{Matched?}
+  doubleOk -- yes --> matched
+  doubleOk -- no --> siblings["Retry 4: with the years that the<br/>same title matched at other screenings<br/>siblingYears.ts"]
   siblings --> siblingsOk{Matched?}
   siblingsOk -- yes --> matched
   siblingsOk -- no --> unmatched(["Unmatched<br/>review/unmatched-movies"])

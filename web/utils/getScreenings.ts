@@ -6,6 +6,8 @@ type ScreeningData = {
   cinema: string
   date: string
   movieId?: string
+  // the movieIds of all films of a double feature, the screening is one of them
+  doubleFeature?: string[]
   year?: number
   title: string
   url: string
@@ -32,10 +34,21 @@ export type Cinema = {
   logo?: string
 }
 
+// A film of a double feature
+export type DoubleFeatureFilm = {
+  movieId: string
+  title: string
+  movieSlug?: string
+  posterUrl?: string
+}
+
 export type Screening = {
   cinema: Cinema
   date: string
   movieId?: string
+  // all films that are shown with this ticket, in the order they are shown.
+  // A double feature has a screening per film, with the same url and date.
+  doubleFeature?: DoubleFeatureFilm[]
   movieSlug?: string
   posterUrl?: string
   title: string
@@ -73,8 +86,20 @@ export const getScreenings = async () => {
     const movieYear = movie ? getMovieReleaseYear(movie) : undefined
     const movieSlug = movie?.slug
 
+    const doubleFeature = screening.doubleFeature?.map((movieId) => {
+      const film = moviesById.get(movieId)
+
+      return {
+        movieId,
+        title: film?.title ?? screening.title,
+        movieSlug: film?.slug,
+        posterUrl: getMoviePosterUrl(film?.tmdb?.posterPath),
+      }
+    })
+
     return {
       ...screening,
+      doubleFeature,
       title: movie?.title ?? screening.title,
       year: movieYear ?? screening.year,
       movieSlug,

@@ -29,3 +29,11 @@ export const groupAndSortScreenings = (
     (x) => x.date.setZone('Europe/Amsterdam').toISODate() ?? '',
   )
 }
+
+// A double feature has a screening per film, with the same url and date. In a
+// list of screenings of more than one movie it is one row: the one of its first film.
+export const withoutDoubleFeatureRepeats = (screenings: Screening[]) =>
+  screenings.filter(
+    ({ movieId, doubleFeature }) =>
+      !doubleFeature || doubleFeature[0]?.movieId === movieId,
+  )

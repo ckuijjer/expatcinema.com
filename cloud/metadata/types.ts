@@ -5,6 +5,7 @@ export type MatchMethod =
   | 'tmdb-search'
   | 'shared-label'
   | 'title-part'
+  | 'double-feature'
   | 'director'
   | 'director-year'
   | 'unmatched'
@@ -64,6 +65,9 @@ export type MetadataMatch = {
   directorMatch?: DirectorMatch
   // for method 'shared-label' and 'title-part': the title that matched
   strippedTitle?: string
+  // for method 'double-feature': the movieIds of the films that are shown, in
+  // the order of the title
+  doubleFeature?: string[]
   candidates?: Array<{
     movieId: string
     tmdbId: number

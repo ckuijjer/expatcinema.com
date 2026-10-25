@@ -3,6 +3,7 @@ import pMap from 'p-map'
 import { Screening } from '../types'
 import type { Metadata } from './types'
 import getMetadata from './index'
+import { resolveWithDoubleFeature } from './doubleFeature'
 import {
   getTitlesWithoutSharedLabels,
   resolveWithoutSharedLabels,
@@ -22,7 +23,8 @@ export type MetadataLookups = Map<
 
 export type MatchResult = {
   metadataLookups: MetadataLookups
-  // one per lookup
+  // one per lookup, and one for each film of a double feature that no other
+  // lookup has
   metadata: Metadata[]
 }
 
@@ -123,13 +125,60 @@ export const resolveMetadata = async (
     { concurrency: 5 },
   )
 
+  // and as two films, when it is the titles of two of them
+  const withDoubleFeatures = await pMap(
+    uniqueTitlesAndMetadata,
+    (metadata) =>
+      resolveWithDoubleFeature(
+        metadata,
+        Array.from(
+          metadataLookups.get(
+            getMetadataLookupKey(metadata.query, metadata.year),
+          )?.rawTitles ?? [],
+        ),
+      ),
+    { concurrency: 5 },
+  )
+
   // and with the years that the screenings of the same title matched
   const uniqueTitlesAndMetadataWithSiblingHints = await resolveWithSiblingYears(
-    uniqueTitlesAndMetadata,
+    withDoubleFeatures.map(({ metadata }) => metadata),
     getMetadata,
     ({ query, year }) =>
       directorsByLookupKey.get(getMetadataLookupKey(query, year)),
   )
 
-  return { metadataLookups, metadata: uniqueTitlesAndMetadataWithSiblingHints }
+  // the films of a double feature are movies too, which no lookup of a
+  // screening has by itself
+  const known = new Set(
+    uniqueTitlesAndMetadataWithSiblingHints.map(({ movieId }) => movieId),
+  )
+  const doubleFeatureParts = [
+    ...new Map(
+      withDoubleFeatures
+        .flatMap(({ parts }) => parts)
+        .filter(({ movieId }) => !known.has(movieId))
+        .map((part) => [part.movieId, part]),
+    ).values(),
+  ]
+
+  doubleFeatureParts.forEach(({ query, year }) => {
+    const lookupKey = getMetadataLookupKey(query, year)
+
+    if (!metadataLookups.has(lookupKey)) {
+      metadataLookups.set(lookupKey, {
+        query,
+        year,
+        rawTitles: new Set([query]),
+      })
+    }
+  })
+
+  return {
+    metadataLookups,
+    metadata: [
+      ...uniqueTitlesAndMetadataWithSiblingHints,
+      ...doubleFeatureParts,
+    ],
+  }
 }

@@ -18,6 +18,9 @@ import { Screening } from '../types'
 // and not the director, which is only used for the matching
 export type ResolvedScreening = Omit<Screening, 'director'> & {
   movieId?: string
+  // a double feature has a screening per film, with the same url and date, and
+  // in each of them the movieIds of all its films, in the order they are shown
+  doubleFeature?: string[]
 }
 
 const sameTitle = (left?: string, right?: string) =>
@@ -124,8 +127,14 @@ export const resolveScreenings = (
     }
   }
 
+  const metadataByMovieId = new Map(
+    metadata
+      .filter((entry) => entry.movieId)
+      .map((entry) => [entry.movieId, entry]),
+  )
+
   const resolvedScreenings: ResolvedScreening[] = makeScreeningsUniqueAndSorted(
-    screenings.map((screening) => {
+    screenings.flatMap((screening) => {
       const matched = metadataByLookupKey.get(
         getMetadataLookupKey(screening.title, screening.year),
       )
@@ -133,6 +142,21 @@ export const resolveScreenings = (
       // The director is only used while scraping, it isn't needed in the
       // public screenings.json
       const { director, ...withoutDirector } = screening
+
+      // "Man of Marble / Man of Iron" is a screening of each of its films
+      const doubleFeature =
+        matched?.match.method === 'double-feature'
+          ? matched.match.doubleFeature
+          : undefined
+      if (doubleFeature) {
+        return doubleFeature.map((movieId) => ({
+          ...withoutDirector,
+          title: metadataByMovieId.get(movieId)?.title ?? screening.title,
+          year: undefined,
+          doubleFeature,
+          movieId,
+        }))
+      }
 
       const split =
         matched?.match.method === 'shared-label'
@@ -174,13 +198,15 @@ export const resolveScreenings = (
         ...new Set([...(screening.notes ?? []), ...(detected?.notes ?? [])]),
       ]
 
-      return {
-        ...withoutDirector,
-        ...(detected && { title: detected.title }),
-        ...(!screening.event && detected?.event && { event: detected.event }),
-        ...(notes.length > 0 && { notes }),
-        movieId: matched?.movieId,
-      }
+      return [
+        {
+          ...withoutDirector,
+          ...(detected && { title: detected.title }),
+          ...(!screening.event && detected?.event && { event: detected.event }),
+          ...(notes.length > 0 && { notes }),
+          movieId: matched?.movieId,
+        },
+      ]
     }),
   )
 

@@ -173,6 +173,68 @@ describe('resolveScreenings', () => {
     warn.mockRestore()
   })
 
+  describe('a double feature', () => {
+    const film = (title: string, id: number): Metadata => ({
+      query: title.toLowerCase(),
+      year: undefined,
+      createdAt: '2026-10-25T00:00:00.000Z',
+      movieId: `tmdb:${id}`,
+      title,
+      tmdb: { id, releaseDate: '1977-02-25' } as Metadata['tmdb'],
+      match: { status: 'matched', method: 'tmdb-search', confidence: 1 },
+    })
+
+    test('is a screening of each of its films (sorted by title), with both movieIds', () => {
+      const raw = screening({
+        title: 'Man of Marble / Man of Iron',
+        year: undefined,
+        director: undefined,
+        cinema: 'De Balie',
+      })
+      const combined: Metadata = {
+        ...film('Man of Marble', 224),
+        query: 'man of marble / man of iron',
+        match: {
+          status: 'matched',
+          method: 'double-feature',
+          confidence: 1,
+          doubleFeature: ['tmdb:224', 'tmdb:225'],
+        },
+      }
+
+      const resolved = resolveScreenings([raw], {
+        metadata: [combined, film('Man of Iron', 225)],
+        metadataLookups: new Map([
+          [
+            getMetadataLookupKey(raw.title),
+            { query: combined.query, rawTitles: new Set([raw.title]) },
+          ],
+        ]),
+      })
+
+      expect(resolved.screenings).toEqual([
+        expect.objectContaining({
+          title: 'Man of Iron',
+          movieId: 'tmdb:225',
+          doubleFeature: ['tmdb:224', 'tmdb:225'],
+          url: raw.url,
+          date: raw.date,
+        }),
+        expect.objectContaining({
+          title: 'Man of Marble',
+          movieId: 'tmdb:224',
+          doubleFeature: ['tmdb:224', 'tmdb:225'],
+          url: raw.url,
+          date: raw.date,
+        }),
+      ])
+      expect(resolved.movies.map(({ movieId }) => movieId).sort()).toEqual([
+        'tmdb:224',
+        'tmdb:225',
+      ])
+    })
+  })
+
   describe('an event found in the title', () => {
     const docs = (title: string, overrides: Partial<Screening> = {}) =>
       screening({

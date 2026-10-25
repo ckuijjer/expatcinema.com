@@ -8,10 +8,11 @@ import { css } from 'styled-system/css'
 
 import { getCinema } from '../../utils/getCinema'
 import { getCity } from '../../utils/getCity'
-import { Screening } from '../../utils/getScreenings'
+import { DoubleFeatureFilm, Screening } from '../../utils/getScreenings'
 import {
   ScreeningWithLuxonDate,
   groupAndSortScreenings,
+  withoutDoubleFeatureRepeats,
 } from '../../utils/groupAndSortScreenings'
 import { getMoviePagePath } from '../../utils/getMoviePagePath'
 import { useSearch } from '../../utils/hooks'
@@ -23,7 +24,10 @@ export type Row =
   | { component: 'RelativeDate'; props: { children: string } }
   | {
       component: 'ScreeningRow'
-      props: ScreeningWithLuxonDate & { movieHref?: string }
+      props: Omit<ScreeningWithLuxonDate, 'doubleFeature'> & {
+        movieHref?: string
+        doubleFeature?: (DoubleFeatureFilm & { movieHref?: string })[]
+      }
     }
 
 const containerStyle = css({
@@ -51,7 +55,11 @@ export const Calendar = ({
   const { search, searchComponents } = useSearch()
 
   const screeningsByDate = Object.entries(
-    groupAndSortScreenings(screenings),
+    // the page of a movie lists a double feature at each of its films; a list of
+    // movies shows it once, which is when the title is shown
+    groupAndSortScreenings(
+      showTitle ? withoutDoubleFeatureRepeats(screenings) : screenings,
+    ),
   ).sort(([a], [b]) => {
     return +DateTime.fromISO(a) - +DateTime.fromISO(b)
   })
@@ -72,6 +80,12 @@ export const Calendar = ({
           movieHref: screening.movieSlug
             ? getMoviePagePath(screening.movieSlug, currentCity, currentCinema)
             : undefined,
+          doubleFeature: screening.doubleFeature?.map((film) => ({
+            ...film,
+            movieHref: film.movieSlug
+              ? getMoviePagePath(film.movieSlug, currentCity, currentCinema)
+              : undefined,
+          })),
         },
       })),
     ]
