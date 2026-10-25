@@ -86,6 +86,28 @@ const IGNORED_LABEL =
 
 export const isIgnoredLabel = (label: string) => IGNORED_LABEL.test(label)
 
+// What is said about one screening, or one print of the film, not a festival or
+// series it is part of: "Q&A", "4K Restoration", "Director's Cut", "25th
+// Anniversary", "with introduction", "incl. short". Such a label is a note,
+// wherever it stands in the title.
+const NOTE_LABEL = new RegExp(
+  `^(?:${[
+    String.raw`q\s*&\s*a`,
+    String.raw`(?:4k|2k|35\s?mm|70\s?mm|16\s?mm)(?:\s+(?:restoration|restored|remaster(?:ed)?|print))?`,
+    String.raw`(?:restoration|restored|remaster(?:ed)?|re-?release)`,
+    String.raw`(?:(?:director'?s|final|extended|theatrical) cut|uncut)`,
+    String.raw`\d+(?:st|nd|rd|th) anniversary`,
+    String.raw`(?:with|met|incl\.?|inclusief|including)\s.+`,
+    String.raw`intro(?:duction)?(?:\s.+)?`,
+    String.raw`inleiding(?:\s.+)?`,
+    String.raw`live (?:music|score)(?:\s.+)?`,
+    String.raw`(?:3d|imax|dubbed|ondertiteld)`,
+  ].join('|')})$`,
+  'i',
+)
+
+export const isNoteLabel = (label: string) => NOTE_LABEL.test(label.trim())
+
 // The title without its shared labels, and the labels that were removed
 const splitSharedLabels = (title: string, sharedLabels: Set<string>) => {
   let rest = title

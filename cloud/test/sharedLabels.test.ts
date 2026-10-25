@@ -3,6 +3,7 @@ import {
   getSharedLabelKey,
   getSharedLabelSplits,
   isIgnoredLabel,
+  isNoteLabel,
   getTitlesWithoutSharedLabels,
   resolveWithoutSharedLabels,
 } from '../metadata/sharedLabels'
@@ -270,4 +271,36 @@ describe('isIgnoredLabel', () => {
       expect(isIgnoredLabel(label)).toBe(false)
     },
   )
+})
+
+describe('isNoteLabel', () => {
+  test.each([
+    'Q&A',
+    'q & a',
+    '4K',
+    '4K Restoration',
+    'Restored',
+    "Director's Cut",
+    'Final Cut',
+    '25th Anniversary',
+    'with introduction',
+    'met Q&A',
+    'Incl. short film',
+    'Introduction by Jan',
+    'Live score',
+  ])('is a note: %s', (label) => {
+    expect(isNoteLabel(label)).toBe(true)
+  })
+
+  test.each([
+    'Docs',
+    'Cinema Aperitivo',
+    'Imagine Film Festival',
+    'Film & Food',
+    'Talk to Me',
+    'Ciné Première',
+    'Kaboom Cult Presents',
+  ])('is not a note: %s', (label) => {
+    expect(isNoteLabel(label)).toBe(false)
+  })
 })

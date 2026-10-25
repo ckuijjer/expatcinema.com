@@ -422,6 +422,30 @@ describe('resolveScreenings', () => {
         ])
         expect(resolved.review.detectedEvents).toEqual([])
       })
+
+      test('is a note, not an event, when the rest says something about the screening', () => {
+        const resolved = run(
+          [
+            at('Lab111', 'Cold War - 4K Restoration'),
+            at('Concordia', 'Cold War'),
+          ],
+          [
+            coldWar('title-part', 'cold war - 4k restoration'),
+            coldWar('tmdb-search', 'cold war'),
+          ],
+        )
+
+        expect(resolved.screenings).toEqual([
+          expect.objectContaining({ cinema: 'Concordia', title: 'Cold War' }),
+          expect.objectContaining({
+            cinema: 'Lab111',
+            title: 'Cold War',
+            notes: ['4K Restoration'],
+          }),
+        ])
+        expect(resolved.screenings[1]).not.toHaveProperty('event')
+        expect(resolved.review.detectedEvents).toEqual([])
+      })
     })
   })
 })

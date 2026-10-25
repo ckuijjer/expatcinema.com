@@ -4,6 +4,7 @@ import {
   getSharedLabelKey,
   getSharedLabelSplits,
   isIgnoredLabel,
+  isNoteLabel,
   splitOffLabel,
   type SharedLabel,
 } from '../metadata/sharedLabels'
@@ -25,16 +26,22 @@ const sameTitle = (left?: string, right?: string) =>
   left.trim().toLowerCase() === right.trim().toLowerCase()
 
 // The festival or series, and the notes, in the labels that were taken from a
-// title: a label before or after it is an event, one between parentheses a note
+// title: a label before or after it is an event, one between parentheses a
+// note, and a label that says something about the screening ("Q&A", "4K")
+// a note wherever it stands
 const eventAndNotes = (labels: SharedLabel[]) => {
   const named = labels.filter(({ label }) => !isIgnoredLabel(label))
+  // what is said about the screening is a note, wherever it stands
+  const events = named.filter(
+    ({ kind, label }) => kind !== 'parenthesis' && !isNoteLabel(label),
+  )
   const [event, ...others] = [
-    ...named.filter(({ kind }) => kind === 'prefix'),
-    ...named.filter(({ kind }) => kind === 'suffix'),
+    ...events.filter(({ kind }) => kind === 'prefix'),
+    ...events.filter(({ kind }) => kind === 'suffix'),
   ]
   const notes = [
     ...others,
-    ...named.filter(({ kind }) => kind === 'parenthesis'),
+    ...named.filter((label) => !events.includes(label)),
   ].map(({ label }) => label)
 
   return { event: event?.label, notes }
