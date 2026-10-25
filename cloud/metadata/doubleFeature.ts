@@ -6,6 +6,10 @@ import { Metadata } from './types'
 // ticket. The title is the titles of both, so TMDB doesn't know it.
 const SEPARATOR = /\s+\/\s+/
 
+// "5 Centimeters Per Second (2007) / the Garden of Words (2013)": each film
+// can come with its year
+const TRAILING_YEAR = /\s*\((?:19|20)\d{2}\)$/
+
 // A title of exactly two parts, which are each the title of a film, and not the
 // same one ("Hoe lang nog / How much longer" is one film in two languages). A
 // year isn't used: it is the year of one of the films, or none.
@@ -21,7 +25,11 @@ export const resolveWithDoubleFeature = async (
   }
 
   const titleParts = rawTitles
-    .map((rawTitle) => rawTitle.split(SEPARATOR).map((part) => part.trim()))
+    .map((rawTitle) =>
+      rawTitle
+        .split(SEPARATOR)
+        .map((part) => part.replace(TRAILING_YEAR, '').trim()),
+    )
     .find(
       (parts) => parts.length === 2 && parts.every((part) => part.length >= 3),
     )

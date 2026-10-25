@@ -24,6 +24,8 @@ const matched = (title: string, id: string): Metadata => ({
 const films: Record<string, Metadata> = {
   'Man of Marble': matched('Man of Marble', 'tmdb:224'),
   'Man of Iron': matched('Man of Iron', 'tmdb:225'),
+  '5 Centimeters Per Second': matched('5 Centimeters Per Second', 'tmdb:38142'),
+  'The Garden of Words': matched('The Garden of Words', 'tmdb:198375'),
 }
 
 describe('resolveWithDoubleFeature', () => {
@@ -49,6 +51,19 @@ describe('resolveWithDoubleFeature', () => {
       'tmdb:224',
       'tmdb:225',
     ])
+  })
+
+  test('looks up the films without the year that comes with them', async () => {
+    lookup.mockImplementation(async ({ title }) => films[title] ?? unmatched())
+
+    const { metadata } = await resolveWithDoubleFeature(unmatched(), [
+      '5 Centimeters Per Second (2007) / The Garden of Words (2013)',
+    ])
+
+    expect(metadata.match).toMatchObject({
+      method: 'double-feature',
+      doubleFeature: ['tmdb:38142', 'tmdb:198375'],
+    })
   })
 
   test('is not one when a part is no film', async () => {
