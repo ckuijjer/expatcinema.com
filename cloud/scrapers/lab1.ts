@@ -108,6 +108,40 @@ const hasEnglishSubtitles = (subtitles: string) => {
   return /ENG\s+SUBS/i.test(subtitles) // \s+ to catch whatever the &nbsp; in ENG&nbsp;SUBS becomes
 }
 
+const hasEnglishSubs = ({ subtitles }: XRayFromMoviePage) =>
+  hasEnglishSubtitles(subtitles)
+
+// A show on a page in the layout of most films has a <time datetime>. The page of
+// "Film Lovers Tuesday", a weekly discussion club and not a film, is in an older
+// layout, with the day and the time as text: its shows have no date to read
+export const hasDate = ({ date }: Pick<XRayFromMoviePage, 'date'>) =>
+  Boolean(date?.trim())
+
+export const toScreenings = ({
+  title,
+  url,
+  year,
+  director,
+  shows,
+}: {
+  title: string
+  url: string
+  year?: number
+  director?: string
+  shows: XRayFromMoviePage[]
+}): Screening[] =>
+  shows
+    .filter(hasEnglishSubs)
+    .filter(hasDate)
+    .map(({ date }) => ({
+      title: cleanTitle(title),
+      year: year ?? extractYearFromTitle(title),
+      director,
+      url,
+      cinema: 'Lab-1',
+      date: extractDate(date),
+    }))
+
 const extractDate = (time: string) =>
   DateTime.fromISO(time, { zone: 'Europe/Amsterdam' }).toJSDate()
 
@@ -148,18 +182,18 @@ const extractFromMoviePage = async ({
   const year = extractMetadataYear(scrapeResult.metadata ?? [])
   const director = findDirectorInLines(scrapeResult.metadata)
 
-  const screenings: Screening[] = scrapeResult.screenings
-    .filter(({ subtitles }) => hasEnglishSubtitles(subtitles))
-    .map(({ date }) => {
-      return {
-        title: cleanTitle(title),
-        year: year ?? extractYearFromTitle(title),
-        director,
-        url: url,
-        cinema: 'Lab-1',
-        date: extractDate(date),
-      }
-    })
+  const shows = scrapeResult.screenings ?? []
+  const screenings = toScreenings({
+    title,
+    url,
+    year,
+    director,
+    shows,
+  })
+
+  if (screenings.length < shows.filter(hasEnglishSubs).length) {
+    logger.info('leaving out shows without a date', { url })
+  }
 
   logger.debug('screenings', { screenings })
   return screenings
