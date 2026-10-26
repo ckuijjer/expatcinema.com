@@ -32,6 +32,10 @@ const tileVariants = cva({
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
+    // it is a button: take away what the browser gives a button
+    background: 'transparent',
+    font: 'inherit',
+    width: '100%',
   },
   variants: {
     highlighted: {
@@ -55,6 +59,7 @@ const tileVariants = cva({
 })
 
 const tileValueStyle = css({
+  display: 'block',
   fontSize: '48px',
   marginBottom: '8px',
   fontWeight: 'bold',
@@ -81,13 +86,15 @@ const Tile = ({
   isHighlighted?: boolean
 }) => {
   return (
-    <div
+    <button
+      type="button"
       className={tileVariants({ highlighted: isHighlighted })}
       onClick={onClick}
+      aria-pressed={isHighlighted}
     >
-      <div className={tileValueStyle}>{value}</div>
-      <div className={tileLabelStyle}>{title}</div>
-    </div>
+      <span className={tileValueStyle}>{value}</span>
+      <span className={tileLabelStyle}>{title}</span>
+    </button>
   )
 }
 
