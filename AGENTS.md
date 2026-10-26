@@ -347,6 +347,7 @@ Learned from reviews of earlier agent sessions:
 - **Say which question you are answering when it can be read two ways.** One line, e.g. "I read this as: how do we detect it, not how do we show it".
 - **Name things when you first use them.** Say what a file, field or review list is and where it lives, e.g. `review/detected-events` is a list in the private bucket.
 - **Say it when something is unverified.** Run the check, or write "not verified"; don't leave a half-checked claim.
+- **Give a real screening as the example, where possible.** In a PR and in chat, link the screening on the cinema's own site and on expatcinema.com (for instance the film page `https://www.expatcinema.com/movie/shall-we-dance`), not only a title or a JSON excerpt, so the reader can see it for themselves.
 - **Keep the user posted during long work** with one short line about what you are on.
 - **Use the edit tool for code changes** (a scripted slice edit once corrupted a file) and `gh pr create --body-file` for PR bodies (escaped quotes in an inline body end up as literal backslashes).
 
