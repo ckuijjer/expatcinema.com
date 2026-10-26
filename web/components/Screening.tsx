@@ -62,6 +62,8 @@ const mainLineStyle = css({
 // the gap to the tags is on the title, so that a tag that wraps has none
 const titleStyle = css({ marginRight: '6px' })
 
+const labelsLineStyle = css({ minWidth: '0', marginTop: '2px' })
+
 const secondLineStyle = css({
   minWidth: '0',
   fontSize: '14px',
@@ -202,11 +204,19 @@ export const ScreeningRow = ({
           {mainLine ? (
             <div className={mainLineStyle}>
               <span className={titleStyle}>{mainLine}</span>
-              <LabelTags event={event} notes={notes} />
+              {/* after the title, where the title is the first thing in the row */}
+              {showTitle ? <LabelTags event={event} notes={notes} /> : null}
             </div>
           ) : null}
           {secondLine ? (
             <div className={secondLineStyle}>{secondLine}</div>
+          ) : null}
+          {/* without the title the first line is the cinema, a tag next to it
+              would read as part of its name: the tags get a line of their own */}
+          {!showTitle && (event || notes?.length) ? (
+            <div className={labelsLineStyle}>
+              <LabelTags event={event} notes={notes} />
+            </div>
           ) : null}
         </div>
       </div>
