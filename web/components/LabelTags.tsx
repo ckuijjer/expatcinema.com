@@ -1,5 +1,7 @@
 import Link from 'next/link'
 
+import { markSearchFromTag } from '../utils/goatcounter'
+
 import { css, cx } from 'styled-system/css'
 
 // The space to the right of a tag, not to the left of it: a tag that wraps
@@ -59,6 +61,7 @@ export const LabelTags = ({
           href={`?search=${encodeURIComponent(label)}`}
           className={cx(tagStyle, linkStyle)}
           aria-label={`Show all ${label} screenings`}
+          onClick={() => markSearchFromTag(label)}
         >
           {label}
         </Link>

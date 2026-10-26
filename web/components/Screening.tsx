@@ -3,6 +3,7 @@ import Image from 'next/image'
 
 import { css, cx } from 'styled-system/css'
 
+import { countOutbound } from '../utils/goatcounter'
 import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
 import { LabelTags } from './LabelTags'
@@ -198,6 +199,7 @@ export const ScreeningRow = ({
       <a
         href={url}
         aria-label={`Open screening for ${title}`}
+        onClick={() => countOutbound(cinema.slug, movieSlug)}
         className={screeningRowLinkStyle}
       />
       <div className={textGridStyle}>

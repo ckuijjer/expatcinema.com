@@ -6,6 +6,7 @@ import '../styles/globals.css'
 import { defaultDescription, defaultSocialImage } from '../utils/seoMetadata'
 import { bodyFont } from '../utils/theme'
 import { siteUrl } from '../utils/siteUrl'
+import { GoatCounter } from './GoatCounter'
 import { GoogleAnalytics } from './GoogleAnalytics'
 
 Settings.defaultZone = 'Europe/Amsterdam'
@@ -42,6 +43,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={bodyFont.className}>
         <GoogleAnalytics />
+        <GoatCounter />
         {children}
       </body>
     </html>
