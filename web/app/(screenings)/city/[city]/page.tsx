@@ -49,14 +49,17 @@ export default async function CityPage({
   )
 
   return (
-    <Suspense>
+    <>
+      {/* outside the Suspense: its content is rendered in the browser */}
       <JsonLd
         data={buildLocationBreadcrumbJsonLd({
           slug: city,
           name: getCity(city)?.name ?? city,
         })}
       />
-      <App screenings={screenings} currentCity={city} />
-    </Suspense>
+      <Suspense>
+        <App screenings={screenings} currentCity={city} />
+      </Suspense>
+    </>
   )
 }

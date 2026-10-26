@@ -65,7 +65,8 @@ export default async function CinemaPage({
   )
 
   return (
-    <Suspense>
+    <>
+      {/* outside the Suspense: its content is rendered in the browser */}
       {cinemaData ? (
         <JsonLd
           data={[
@@ -77,14 +78,20 @@ export default async function CinemaPage({
           ]}
         />
       ) : null}
-      {cinemaData ? (
-        <Layout>
-          <div className={titleWrapStyle}>
-            <CinemaTitle cinema={cinemaData} />
-          </div>
-        </Layout>
-      ) : null}
-      <App screenings={screenings} currentCity={city} currentCinema={cinema} />
-    </Suspense>
+      <Suspense>
+        {cinemaData ? (
+          <Layout>
+            <div className={titleWrapStyle}>
+              <CinemaTitle cinema={cinemaData} />
+            </div>
+          </Layout>
+        ) : null}
+        <App
+          screenings={screenings}
+          currentCity={city}
+          currentCinema={cinema}
+        />
+      </Suspense>
+    </>
   )
 }
