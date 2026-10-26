@@ -192,7 +192,6 @@ export const ScreeningRow = ({
       : null
 
   // the page the row is on, with the search for the event
-  const eventHref = event ? `?search=${encodeURIComponent(event)}` : undefined
 
   return (
     <div className={showPoster ? containerStyle : textOnlyContainerStyle}>
@@ -209,7 +208,7 @@ export const ScreeningRow = ({
               <span className={titleStyle}>{mainLine}</span>
               {/* after the title, where the title is the first thing in the row */}
               {showTitle ? (
-                <LabelTags event={event} notes={notes} eventHref={eventHref} />
+                <LabelTags event={event} notes={notes} linkToSearch />
               ) : null}
             </div>
           ) : null}
@@ -220,7 +219,7 @@ export const ScreeningRow = ({
               would read as part of its name: the tags get a line of their own */}
           {!showTitle && (event || notes?.length) ? (
             <div className={labelsLineStyle}>
-              <LabelTags event={event} notes={notes} eventHref={eventHref} />
+              <LabelTags event={event} notes={notes} linkToSearch />
             </div>
           ) : null}
         </div>

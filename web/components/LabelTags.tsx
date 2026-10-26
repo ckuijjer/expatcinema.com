@@ -19,7 +19,7 @@ const tagStyle = css({
   borderRadius: '4px',
 })
 
-// The tag of an event that links to the search for it. It sits in a row that
+// The tag that links to the search for its text. It sits in a row that
 // has a link over it, and in text that doesn't take clicks: above them both.
 const linkStyle = css({
   position: 'relative',
@@ -40,33 +40,33 @@ const linkStyle = css({
 })
 
 // The event of a screening and its notes, each as a tag, in the flow of the
-// line of text they come after
+// line of text they come after. With `linkToSearch` a tag is a link that opens
+// the search for its text, and a note is searched for like an event.
 export const LabelTags = ({
   event,
   notes,
-  eventHref,
+  linkToSearch = false,
 }: {
   event?: string
   notes?: string[]
-  // where the tag of the event goes, a notes' tag never links
-  eventHref?: string
+  linkToSearch?: boolean
 }) => (
   <>
-    {event && eventHref ? (
-      <Link
-        href={eventHref}
-        className={cx(tagStyle, linkStyle)}
-        aria-label={`Show all ${event} screenings`}
-      >
-        {event}
-      </Link>
-    ) : event ? (
-      <span className={tagStyle}>{event}</span>
-    ) : null}
-    {notes?.map((note) => (
-      <span key={note} className={tagStyle}>
-        {note}
-      </span>
-    ))}
+    {[event, ...(notes ?? [])].map((label) =>
+      !label ? null : linkToSearch ? (
+        <Link
+          key={label}
+          href={`?search=${encodeURIComponent(label)}`}
+          className={cx(tagStyle, linkStyle)}
+          aria-label={`Show all ${label} screenings`}
+        >
+          {label}
+        </Link>
+      ) : (
+        <span key={label} className={tagStyle}>
+          {label}
+        </span>
+      ),
+    )}
   </>
 )
