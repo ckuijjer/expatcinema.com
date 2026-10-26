@@ -50,7 +50,7 @@ Usable without AWS credentials (cloud agents):
 - Site deploys: `gh run list --workflow web.yml` / `gh api repos/ckuijjer/expatcinema.com/actions/workflows/web.yml/runs`.
 - Slack `#expatcinema`: alerts and earlier reports. The channel is noisy (many `:warning:` lines and Node `DeprecationWarning` stack traces per run), so paging `slack_read_channel` by message count, or bounding it with a hand-computed `oldest` timestamp, can land you on a stale page or miss recent messages entirely. To check for new `:sos:` alerts or find a previous report, search instead, e.g. `slack_search_public` with `keywords: [":sos:"]` and `filters: "in:#expatcinema after:<date>"` (or `on:<date>`).
 
-With AWS access (local sessions, read-only profile `casper-readonly`):
+With AWS access (local sessions, read-only profile `expatcinema-claude-readonly`, a long-lived access key of an IAM user that can only read: the two S3 buckets, the analytics and movie-metadata DynamoDB tables and the CloudWatch logs. Rotate the key about every 90 days):
 
 - Logs: `aws logs tail /aws/lambda/expatcinema-prod-scrapers --since 12h`
 - Private bucket `expatcinema-scrapers-output-prod`: per-scraper raw output, `review/ambiguous-movies/`, `review/unmatched-movies/`, `review/director-disagreements/` and `review/detected-events/` (festivals and series found in a title: cinema, `event`, `status` applied or candidate, the titles and the number of screenings).
