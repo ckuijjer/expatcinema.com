@@ -7,6 +7,10 @@ const normalize = (value: string) => removeDiacritics(value.toLowerCase())
 type ScreeningSearchTarget = {
   title: string
   year?: number
+  // the festival or series the screening belongs to, and what is special
+  // about it: "ENFF", "nagesprek"
+  event?: string
+  notes?: string[]
   cinema: {
     name: string
     city: {
@@ -40,6 +44,8 @@ export const matchesScreeningSearch = <T extends ScreeningSearchTarget>(
       screening.year?.toString() ?? '',
       screening.cinema.name,
       screening.cinema.city.name,
+      screening.event ?? '',
+      ...(screening.notes ?? []),
     ],
     searchComponents,
   )

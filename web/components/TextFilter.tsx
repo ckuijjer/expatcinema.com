@@ -40,7 +40,20 @@ const DebouncedInput = ({
   delay = 200,
   ...rest
 }: DebouncedInputProps) => {
-  const [value, setValue] = useState((rest.value as string) || '')
+  const external = (rest.value as string) || ''
+  const [value, setValue] = useState(external)
+  // The value of the address changes when this input has put its value in it
+  // (which is nothing new), and when something else did, such as a tag of an
+  // event that was clicked: then the input shows that value
+  const [previousExternal, setPreviousExternal] = useState(external)
+  const [pushed, setPushed] = useState(external)
+  if (external !== previousExternal) {
+    setPreviousExternal(external)
+    if (external !== pushed) {
+      setPushed(external)
+      setValue(external)
+    }
+  }
   const onDebounceRef = useRef(onDebounce)
   useLayoutEffect(() => {
     onDebounceRef.current = onDebounce
@@ -48,6 +61,7 @@ const DebouncedInput = ({
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
+      setPushed(value)
       onDebounceRef.current(value)
     }, delay)
 
@@ -73,11 +87,11 @@ export const TextFilter = () => {
   return (
     <div className={containerStyle}>
       <DebouncedInput
-        placeholder="Search for movies, cinema's or cities"
+        placeholder="Search for movies, cinema's, cities or events"
         autoFocus
         value={search}
         onDebounce={setSearch}
-        aria-label="Search for movies, cinema's or cities"
+        aria-label="Search for movies, cinema's, cities or events"
       />
     </div>
   )
