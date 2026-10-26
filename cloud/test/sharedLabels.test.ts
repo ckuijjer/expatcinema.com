@@ -4,6 +4,8 @@ import {
   getSharedLabelSplits,
   isIgnoredLabel,
   isNoteLabel,
+  findDelimiters,
+  splitAtDelimiters,
   getTitlesWithoutSharedLabels,
   resolveWithoutSharedLabels,
 } from '../metadata/sharedLabels'
@@ -271,6 +273,65 @@ describe('isIgnoredLabel', () => {
       expect(isIgnoredLabel(label)).toBe(false)
     },
   )
+})
+
+describe('splitAtDelimiters', () => {
+  test.each([
+    ['Cine Kilo: Blade', ['Cine Kilo', 'Blade']],
+    ['Böse Spiele - Rimini Sparta', ['Böse Spiele', 'Rimini Sparta']],
+    [
+      'Film & Food: Tampopo (Incl. Ramen)',
+      ['Film & Food', 'Tampopo (Incl. Ramen)'],
+    ],
+    ['Cure', ['Cure']],
+  ])('cuts %s at its delimiters', (title, parts) => {
+    expect(splitAtDelimiters(title)).toEqual(parts)
+  })
+
+  test.each([
+    'Goodbye Sisters (+ supporting film: Like Friend, Like Deer)',
+    'Nosferatu (1922 - restored)',
+    'Tampopo (Incl. Ramen | Q&A)',
+  ])('does not cut %s between its parentheses', (title) => {
+    expect(splitAtDelimiters(title)).toEqual([title])
+    expect(findDelimiters(title)).toEqual([])
+  })
+
+  test('cuts at a delimiter after a closed pair of parentheses', () => {
+    expect(
+      splitAtDelimiters('Tampopo (Incl. Ramen): Cinema Aperitivo'),
+    ).toEqual(['Tampopo (Incl. Ramen)', 'Cinema Aperitivo'])
+  })
+
+  test('a parenthesis that is not closed does not hide the delimiters', () => {
+    expect(splitAtDelimiters('Cure (4K: Imagine Film Festival')).toEqual([
+      'Cure (4K',
+      'Imagine Film Festival',
+    ])
+  })
+})
+
+describe('shared labels and parentheses', () => {
+  test('the end of what is between parentheses is no label that titles share', () => {
+    // "Intro)" is not a label, and neither are "Part 1" and "Part 2"
+    expect(
+      getSharedLabelSplits([
+        screening('Lumière', 'Goodbye Sisters (Part 1 - Intro)'),
+        screening('Lumière', 'Shall We Dance? (Part 2 - Intro)'),
+      ]).size,
+    ).toBe(0)
+  })
+
+  test('a label between parentheses that titles share still is one', () => {
+    expect(
+      [
+        ...getSharedLabelSplits([
+          screening('Lumière', 'Goodbye Sisters (Part 1 - Intro)'),
+          screening('Lumière', 'Shall We Dance? (Part 1 - Intro)'),
+        ]).values(),
+      ].map(({ title }) => title),
+    ).toEqual(['Goodbye Sisters', 'Shall We Dance?'])
+  })
 })
 
 describe('isNoteLabel', () => {

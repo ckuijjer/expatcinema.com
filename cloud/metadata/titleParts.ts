@@ -1,5 +1,5 @@
 import getMetadata from './index'
-import { DELIMITER } from './sharedLabels'
+import { splitAtDelimiters } from './sharedLabels'
 import { compactTitle } from './titleResolver'
 import { Metadata } from './types'
 
@@ -27,7 +27,7 @@ export const resolveWithTitleParts = async (
   const parts = Array.from(
     new Set(
       rawTitles
-        .flatMap((rawTitle) => rawTitle.split(DELIMITER))
+        .flatMap((rawTitle) => splitAtDelimiters(rawTitle))
         .map((part) => part.trim())
         .filter((part) => part.length >= 3),
     ),
