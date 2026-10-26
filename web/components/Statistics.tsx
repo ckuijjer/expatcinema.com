@@ -38,6 +38,10 @@ const tileVariants = cva({
       true: {
         borderColor: 'var(--secondary-color)',
         color: 'var(--link-color)',
+        // the secondary color is too dark for an edge on the dark background
+        '@media (prefers-color-scheme: dark)': {
+          borderColor: 'var(--primary-color)',
+        },
       },
       false: {
         borderColor: 'var(--text-muted-color)',
