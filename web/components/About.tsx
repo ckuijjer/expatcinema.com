@@ -122,15 +122,6 @@ export const About = () => {
             </Link>{' '}
             for an overview of scraper activity.
           </p>
-          <PageSection>Privacy</PageSection>
-          <p>
-            Visits and searches on this site are counted anonymously, without
-            cookies, with{' '}
-            <ExternalLink href="https://www.goatcounter.com/">
-              GoatCounter
-            </ExternalLink>
-            .
-          </p>
           <PageSection>Attribution</PageSection>
           <div className={tmdbAttributionStyle}>
             <Link
