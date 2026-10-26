@@ -164,3 +164,75 @@ export const buildBreadcrumbJsonLd = (
     })),
   }
 }
+
+export const buildWebSiteJsonLd = () =>
+  compactJsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${siteUrl}/#website`,
+    name: 'Expat Cinema',
+    url: getCanonicalUrl('/'),
+    inLanguage: 'en',
+  })
+
+type CinemaForJsonLd = {
+  name: string
+  url: string
+  address: {
+    streetAddress: string
+    postalCode: string
+    addressLocality: string
+    googleMapsUrl: string
+  }
+}
+
+export const buildCinemaJsonLd = (
+  cinema: CinemaForJsonLd,
+  citySlug: string,
+  cinemaSlug: string,
+) =>
+  compactJsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'MovieTheater',
+    '@id': `${getCanonicalUrl(`/city/${citySlug}/cinema/${cinemaSlug}`)}#cinema`,
+    name: cinema.name,
+    url: cinema.url,
+    hasMap: cinema.address.googleMapsUrl,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: cinema.address.streetAddress,
+      postalCode: cinema.address.postalCode,
+      addressLocality: cinema.address.addressLocality,
+      addressCountry: 'NL',
+    },
+  })
+
+// Expat Cinema > city > cinema, for the city and cinema pages
+export const buildLocationBreadcrumbJsonLd = (
+  city: { slug: string; name: string },
+  cinema?: { slug: string; name: string },
+) => {
+  const items = [
+    { name: 'Expat Cinema', item: siteUrl },
+    { name: city.name, item: getCanonicalUrl(`/city/${city.slug}`) },
+    ...(cinema
+      ? [
+          {
+            name: cinema.name,
+            item: getCanonicalUrl(`/city/${city.slug}/cinema/${cinema.slug}`),
+          },
+        ]
+      : []),
+  ]
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.item,
+    })),
+  }
+}
