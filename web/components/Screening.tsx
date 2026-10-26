@@ -199,7 +199,7 @@ export const ScreeningRow = ({
       <a
         href={url}
         aria-label={`Open screening for ${title}`}
-        onClick={() => countOutbound(cinema.slug)}
+        onClick={() => countOutbound(cinema.slug, movieSlug)}
         className={screeningRowLinkStyle}
       />
       <div className={textGridStyle}>

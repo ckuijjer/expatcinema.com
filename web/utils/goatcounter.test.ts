@@ -153,11 +153,13 @@ describe('counting', () => {
     countPageView('/city/den-haag')
     countEvent('search/shall')
     countOutbound('filmhuis-den-haag')
+    countOutbound('filmhuis-den-haag', 'frank')
 
     expect(count.mock.calls).toEqual([
       [{ path: '/city/den-haag' }],
       [{ path: 'search/shall', event: true }],
       [{ path: 'outbound/filmhuis-den-haag', event: true }],
+      [{ path: 'outbound/filmhuis-den-haag/frank', event: true }],
     ])
   })
 

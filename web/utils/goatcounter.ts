@@ -24,8 +24,13 @@ export const countEvent = (path: string) => {
 }
 
 // A click on the link of a screening, which opens it on the website of the cinema
-export const countOutbound = (cinemaSlug: string) => {
-  countEvent(`outbound/${cinemaSlug}`)
+// with the film too, when it is matched: outbound/<cinema>/<film>
+export const countOutbound = (cinemaSlug: string, movieSlug?: string) => {
+  countEvent(
+    movieSlug
+      ? `outbound/${cinemaSlug}/${movieSlug}`
+      : `outbound/${cinemaSlug}`,
+  )
 }
 
 const MIN_TERM_LENGTH = 3
