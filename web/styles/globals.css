@@ -8,8 +8,8 @@
 
   --text-color: rgba(0, 0, 0, 0.9);
   --text-muted-color: rgba(0, 0, 0, 0.7);
-  /* for secondary text such as years, at least 4.5:1 on the background */
-  --text-subtle-color: color-mix(in srgb, var(--text-color) 60%, transparent);
+  /* for secondary text such as years and tags, at least 4.5:1 on the background and on the hover highlight, in both themes */
+  --text-subtle-color: color-mix(in srgb, var(--text-color) 64%, transparent);
   --text-inverse-color: rgba(255, 255, 255, 0.9);
   --text-inverse-muted-color: rgba(255, 255, 255, 0.7);
 
