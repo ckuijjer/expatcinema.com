@@ -58,6 +58,21 @@ export const extractAnniversaryNote = (title: string): TitleAndNotes => {
     : withoutNote(title)
 }
 
+// "Schmutz Cinema (18+)": the age rating, at the end of a title. It says
+// something about the screening, not about the film's title.
+const AGE_RATING = /\s*\(\s*(\d{1,2}\s?\+)\s*\)$/
+
+export const extractAgeRatingNote = (title: string): TitleAndNotes => {
+  const match = title.match(AGE_RATING)
+
+  return match
+    ? {
+        title: title.slice(0, match.index).trim(),
+        notes: [match[1].replace(/\s+/g, '')],
+      }
+    : withoutNote(title)
+}
+
 // Runs the extractors one after the other, each on the title the one before it
 // left, and collects their notes
 export const extractAll = (

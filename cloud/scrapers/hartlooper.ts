@@ -7,6 +7,7 @@ import { Screening } from '../types'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { parseFkFeedDirector } from './utils/parseFkFeedDirector'
 import { fkFeedHasEnglishSubtitles } from './utils/fkFeedEnglishSubtitles'
+import { extractAgeRatingNote } from './utils/extractNotes'
 import { titleCase } from './utils/titleCase'
 
 const logger = parentLogger.createChild({
@@ -35,6 +36,13 @@ const extractDate = (time: string) =>
 
 const cleanTitle = (title: string) => titleCase(title)
 
+// "Schmutz Cinema (18+)" is the programme Schmutz Cinema, with an age rating
+export const parseTitle = (raw: string) => {
+  const { title, notes } = extractAgeRatingNote(decode(raw))
+
+  return { title: cleanTitle(title), ...(notes ? { notes } : {}) }
+}
+
 const isLouisHartlooperComplex = (time: FkFeedItem['times'][0]) =>
   time.location !== 'DOM'
 
@@ -56,7 +64,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
         )
         .map((time) => {
           return {
-            title: cleanTitle(decode(movie.title)),
+            ...parseTitle(movie.title),
             year: parseFkFeedYear(movie.year),
             director: parseFkFeedDirector(movie.director_name),
             url: movie.permalink,
