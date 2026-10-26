@@ -22,7 +22,7 @@ export const useSearch = (): UseSearch => {
   const searchComponents =
     search === '' ? [] : removeDiacritics(search.toLowerCase()).split(/\s+/)
 
-  const searchQuery = search ? `?search=${search}` : ''
+  const searchQuery = search ? `?search=${encodeURIComponent(search)}` : ''
 
   const setSearch = (value?: string) => {
     const params = new URLSearchParams(searchParams?.toString() ?? '')
