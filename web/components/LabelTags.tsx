@@ -11,8 +11,9 @@ const tagStyle = css({
   overflowWrap: 'anywhere',
   fontSize: '12px',
   lineHeight: '1.4',
-  color: 'var(--text-color)',
-  border: '1px solid color-mix(in srgb, var(--text-color) 30%, transparent)',
+  // the colors of the time pill and its label
+  color: 'var(--text-muted-color)',
+  border: '1px solid color-mix(in srgb, var(--text-color) 35%, transparent)',
   borderRadius: '4px',
 })
 
