@@ -11,8 +11,8 @@ const tagStyle = css({
   overflowWrap: 'anywhere',
   fontSize: '12px',
   lineHeight: '1.4',
-  // the color of the year, for the text and the border
-  color: 'var(--text-subtle-color)',
+  // the color of the line with the cinema, for the text and the border
+  color: 'var(--text-muted-color)',
   border: '1px solid currentColor',
   borderRadius: '4px',
 })
