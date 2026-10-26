@@ -161,8 +161,8 @@ describe('counting', () => {
     ])
   })
 
-  it('has no code in the repository until the site exists on GoatCounter', () => {
-    expect(GOATCOUNTER_CODE).toBe('')
+  it('has the code of the site, which is a valid subdomain', () => {
+    expect(GOATCOUNTER_CODE).toMatch(/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/)
   })
 
   it('does nothing without window or without GoatCounter on it', () => {
