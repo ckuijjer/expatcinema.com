@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react'
 
 import { css } from 'styled-system/css'
 
-const thumbnailStyle = css({
+const thumbnail = {
   position: 'relative',
   flex: '1 1 0',
   boxSizing: 'border-box',
@@ -20,6 +20,14 @@ const thumbnailStyle = css({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+}
+
+const thumbnailStyle = css(thumbnail)
+
+// Without a backdrop the thumbnail is the highlight color on the page color, so
+// the border and the label are what show where it is
+const plainThumbnailStyle = css(thumbnail, {
+  border: '1px solid var(--text-subtle-color)',
 })
 
 const backdropStyle = css({
@@ -41,7 +49,7 @@ const playIconStyle = css({
   boxShadow: '0 2px 12px rgba(0, 0, 0, 0.4)',
 })
 
-const labelStyle = css({
+const label = {
   position: 'absolute',
   left: '8px',
   bottom: '6px',
@@ -49,6 +57,13 @@ const labelStyle = css({
   fontWeight: '700',
   color: 'white',
   textShadow: '0 1px 3px rgba(0, 0, 0, 0.8)',
+}
+
+const labelStyle = css(label)
+
+const plainLabelStyle = css(label, {
+  color: 'var(--text-muted-color)',
+  textShadow: 'none',
 })
 
 const dialogStyle = css({
@@ -109,7 +124,7 @@ export const TrailerEmbed = ({
     <>
       <button
         type="button"
-        className={thumbnailStyle}
+        className={backdropUrl ? thumbnailStyle : plainThumbnailStyle}
         onClick={open}
         aria-label={`Play trailer for ${title}`}
       >
@@ -125,7 +140,10 @@ export const TrailerEmbed = ({
         <span className={playIconStyle} aria-hidden>
           ▶
         </span>
-        <span className={labelStyle} aria-hidden>
+        <span
+          className={backdropUrl ? labelStyle : plainLabelStyle}
+          aria-hidden
+        >
           Trailer
         </span>
       </button>
