@@ -24,7 +24,8 @@ const chipStyle = css({
   gap: '10px',
   maxWidth: '100%',
   borderRadius: '8px',
-  border: '1px solid color-mix(in srgb, var(--text-color) 35%, transparent)',
+  // at least 3:1 against the background, in both themes
+  border: '1px solid var(--text-subtle-color)',
   _hover: {
     borderColor: 'var(--text-color)',
     backgroundColor: 'var(--background-highlight-color)',
