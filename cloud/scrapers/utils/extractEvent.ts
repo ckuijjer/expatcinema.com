@@ -26,6 +26,10 @@ const EVENTS: { name: string; pattern: RegExp }[] = [
     pattern: /^Palestine Cinema Days(?: Around the World)?:\s+/i,
   },
   { name: 'AFFR on Tour', pattern: /\s+\|\s+AFFR on Tour$/i },
+  // Lantarenvenster: "One Cut of the Dead - NextGen Cinema", the programme its
+  // own page says the screening belongs to. The cinema's title case is lost on
+  // the way ("Nextgen"), the name is the one it writes itself.
+  { name: 'NextGen Cinema', pattern: /\s+-\s+NextGen Cinema$/i },
   { name: 'Cinemasia', pattern: /\s*\|\s*cinemasia\d*$/i },
 ]
 

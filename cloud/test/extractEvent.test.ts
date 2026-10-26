@@ -21,6 +21,18 @@ describe('extractEvent', () => {
     ],
     ['Construction Site | AFFR on Tour', 'Construction Site', 'AFFR on Tour'],
     ['Foo | Cinemasia26', 'Foo', 'Cinemasia'],
+    [
+      'One Cut of the Dead - NextGen Cinema',
+      'One Cut of the Dead',
+      'NextGen Cinema',
+    ],
+    // after the title case of the Lantarenvenster scraper
+    [
+      'One Cut of the Dead - Nextgen Cinema',
+      'One Cut of the Dead',
+      'NextGen Cinema',
+    ],
+    ['Red Rooms (2023) - Nextgen Cinema', 'Red Rooms (2023)', 'NextGen Cinema'],
     ['imagine film festival: Cure', 'Cure', 'Imagine Film Festival'],
   ])('%p', (title, expectedTitle, event) => {
     expect(extractEvent(title)).toEqual({ title: expectedTitle, event })
@@ -32,6 +44,10 @@ describe('extractEvent', () => {
     'National Theatre Live: Fleabag',
     'Docs:',
     'Cure',
+    // a film of the same name, or a subtitle with a dash
+    'NextGen Cinema',
+    'Mission: Impossible - Fallout',
+    'Cinema - Nextgen Cinema Club',
   ])('leaves %p alone', (title) => {
     expect(extractEvent(title)).toEqual({ title, event: undefined })
   })
