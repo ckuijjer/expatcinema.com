@@ -1,10 +1,12 @@
 import { parseTitle as desien } from '../scrapers/desien'
 import { parseTitle as filmhuisdenhaag } from '../scrapers/filmhuisdenhaag'
 import { parseTitle as forumgroningen } from '../scrapers/forumgroningen'
+import { parseTitle as hartlooper } from '../scrapers/hartlooper'
 import { parseTitle as kinorotterdam } from '../scrapers/kinorotterdam'
 import { parseTitle as lumiere } from '../scrapers/lumiere'
 import {
   extractAll,
+  extractAgeRatingNote,
   extractAnniversaryNote,
 } from '../scrapers/utils/extractNotes'
 
@@ -24,6 +26,41 @@ describe('extractAnniversaryNote', () => {
   test('leaves a title without one as it is', () => {
     expect(extractAnniversaryNote('The 5th Element')).toEqual({
       title: 'The 5th Element',
+    })
+  })
+})
+
+describe('extractAgeRatingNote', () => {
+  test.each([
+    ['Schmutz Cinema (18+)', 'Schmutz Cinema', '18+'],
+    ['Schmutz Cinema (16 +)', 'Schmutz Cinema', '16+'],
+    ['Schmutz Cinema ( 18+ )', 'Schmutz Cinema', '18+'],
+  ])('takes the age rating from %s', (raw, title, note) => {
+    expect(extractAgeRatingNote(raw)).toEqual({ title, notes: [note] })
+  })
+
+  test.each([
+    'Cure',
+    'Schmutz Cinema (2026)',
+    'Schmutz Cinema 18+',
+    '18+ (Schmutz)',
+    'Goodbye Sisters (+ supporting film: Like Friend)',
+  ])('leaves %s as it is', (title) => {
+    expect(extractAgeRatingNote(title)).toEqual({ title })
+  })
+})
+
+describe('hartlooper', () => {
+  test('has the age rating as a note, and not in the title', () => {
+    expect(hartlooper('Schmutz Cinema (18+)')).toEqual({
+      title: 'Schmutz Cinema',
+      notes: ['18+'],
+    })
+  })
+
+  test('leaves a title without notes with none', () => {
+    expect(hartlooper('Molly Vs the Machines')).toEqual({
+      title: 'Molly Vs the Machines',
     })
   })
 })

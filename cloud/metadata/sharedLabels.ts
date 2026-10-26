@@ -102,6 +102,7 @@ const NOTE_LABEL = new RegExp(
     String.raw`inleiding(?:\s.+)?`,
     String.raw`live (?:music|score)(?:\s.+)?`,
     String.raw`(?:3d|imax|dubbed|ondertiteld)`,
+    String.raw`\d{1,2}\s?\+`, // an age rating
   ].join('|')})$`,
   'i',
 )

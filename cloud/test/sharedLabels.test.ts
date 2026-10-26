@@ -288,6 +288,8 @@ describe('isNoteLabel', () => {
     'Incl. short film',
     'Introduction by Jan',
     'Live score',
+    '18+',
+    '16 +',
   ])('is a note: %s', (label) => {
     expect(isNoteLabel(label)).toBe(true)
   })
@@ -300,6 +302,8 @@ describe('isNoteLabel', () => {
     'Talk to Me',
     'Ciné Première',
     'Kaboom Cult Presents',
+    '2026',
+    '+',
   ])('is not a note: %s', (label) => {
     expect(isNoteLabel(label)).toBe(false)
   })
