@@ -2,9 +2,11 @@ import type { Metadata } from 'next'
 import { Suspense } from 'react'
 
 import { App } from '../../../../components/App'
+import { JsonLd } from '../../../../components/JsonLd'
 import cities from '../../../../data/city.json'
 import { getCity } from '../../../../utils/getCity'
 import { getScreenings } from '../../../../utils/getScreenings'
+import { buildLocationBreadcrumbJsonLd } from '../../../../utils/jsonLd'
 import {
   buildCityDescription,
   buildSocialMetadata,
@@ -48,6 +50,12 @@ export default async function CityPage({
 
   return (
     <Suspense>
+      <JsonLd
+        data={buildLocationBreadcrumbJsonLd({
+          slug: city,
+          name: getCity(city)?.name ?? city,
+        })}
+      />
       <App screenings={screenings} currentCity={city} />
     </Suspense>
   )

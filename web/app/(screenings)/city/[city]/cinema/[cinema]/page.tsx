@@ -5,11 +5,16 @@ import { css } from 'styled-system/css'
 
 import { App } from '../../../../../../components/App'
 import { CinemaTitle } from '../../../../../../components/CinemaTitle'
+import { JsonLd } from '../../../../../../components/JsonLd'
 import { Layout } from '../../../../../../components/Layout'
 import cinemas from '../../../../../../data/cinema.json'
 import { getCinema } from '../../../../../../utils/getCinema'
 import { getCity } from '../../../../../../utils/getCity'
 import { getScreenings } from '../../../../../../utils/getScreenings'
+import {
+  buildCinemaJsonLd,
+  buildLocationBreadcrumbJsonLd,
+} from '../../../../../../utils/jsonLd'
 import {
   buildCinemaDescription,
   buildSocialMetadata,
@@ -61,6 +66,17 @@ export default async function CinemaPage({
 
   return (
     <Suspense>
+      {cinemaData ? (
+        <JsonLd
+          data={[
+            buildCinemaJsonLd(cinemaData, city, cinema),
+            buildLocationBreadcrumbJsonLd(
+              { slug: city, name: getCity(city)?.name ?? city },
+              { slug: cinema, name: cinemaData.name },
+            ),
+          ]}
+        />
+      ) : null}
       {cinemaData ? (
         <Layout>
           <div className={titleWrapStyle}>
