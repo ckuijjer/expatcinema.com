@@ -137,6 +137,30 @@ export const splitEntries = (html: string) => {
   return entries
 }
 
+// An entry for a film with a short, or for a double programme, has a heading
+// with both ("Lesvia + Mr. Dimitris and Mrs. Dimitroula") and then an <h2> and a
+// metadata line for each film, the short's first. Splits the entry at its <h2>s.
+export const splitSections = (entryHtml: string) =>
+  entryHtml
+    .split(/(?=<h2\b)/i)
+    .slice(1)
+    .filter(() => (entryHtml.match(/<h2\b/gi) ?? []).length > 1)
+
+// The metadata line under the <h2> that is the film of the entry, so that the
+// year and the subtitles are those of Lesvia (2024) and not of the short before
+// it (2019)
+export const findMetadataLineOfFilm = (
+  sections: { title?: string; metadata?: string[] }[],
+  filmTitle: string,
+) =>
+  sections
+    .filter(
+      ({ title }) =>
+        title && cleanTitle(title).toLowerCase() === filmTitle.toLowerCase(),
+    )
+    .map(({ metadata }) => findMetadataLine(metadata ?? []))
+    .find(Boolean)
+
 type XRayFromEntry = {
   paragraphs: string[]
   title: string
@@ -159,12 +183,28 @@ const extractFromEntry = async (
   const date = parseDate((entry.paragraphs ?? []).join(' '), page)
   if (!date || !entry.title) return []
 
-  const metadataLine = findMetadataLine(entry.metadata ?? [])
+  const parsed = parseTitle(entry.title)
+  const sections = await Promise.all(
+    splitSections(entryHtml).map(async (section) => {
+      const result: { title?: string; metadata?: string[] } = await xray(
+        section,
+        {
+          title: 'h2 | normalizeWhitespace | trim',
+          metadata: ['strong | normalizeWhitespace | trim'],
+        },
+      )
+      return result
+    }),
+  )
+
+  const metadataLine =
+    findMetadataLineOfFilm(sections, parsed.title) ??
+    findMetadataLine(entry.metadata ?? [])
   if (!hasEnglishSubtitles(metadataLine)) return []
 
   return [
     {
-      ...parseTitle(entry.title),
+      ...parsed,
       year: extractReleaseYear(metadataLine),
       // The entries have no page of their own, link to the entry in the month page
       url: anchor ? `${monthPageUrl}#${anchor}` : monthPageUrl,

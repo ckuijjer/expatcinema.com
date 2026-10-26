@@ -8,6 +8,8 @@ import {
   parseMonthPageUrl,
   splitEntries,
   extractScreeningsFromMonthHtml,
+  findMetadataLineOfFilm,
+  splitSections,
 } from '../scrapers/filmhuiscavia'
 
 // Shaped like https://filmhuiscavia.nl/programma/oktober-2026 (2026-10-02)
@@ -31,6 +33,26 @@ const MONTH_PAGE = `
 <p><strong>&nbsp;Zaterdag 24 oktober, 20:30&nbsp;</strong></p>
 <h2>Looking Back &ndash; by Porn Film Festival Amsterdam</h2>
 <p><strong>Various | 107&rsquo; | EN subtitles</strong></p>
+<hr />
+<p>Footer</p>
+`
+
+// Shaped like the entry of Lesvia in https://filmhuiscavia.nl/programma/november-2026
+// (2026-10-26): a heading with the film and the short before it, then the short
+// (2019) and then the film (2024), each with its own <h2> and metadata line
+const LESVIA_PAGE = `
+<h1>November</h1>
+<hr id="lesvia" />
+<p><strong>&nbsp;Vrijdag 20 november, 20:30&nbsp;</strong><br />DOCU</p>
+<h2>Lesvia + Mr. Dimitris and Mrs. Dimitroula</h2>
+<p><strong>NL</strong> Lesvia brengt meer dan veertig jaar lesbische identiteit in beeld.</p>
+<p><strong>EN</strong> Lesvia chronicles 40+ years of lesbian identity.</p>
+<h2>Mr. Dimitris and Mrs. Dimitroula&nbsp;</h2>
+<p><strong>Tzeli Hadjidimitriou | 2019 | Greece | 28&rsquo; | EN subtitles&nbsp;&nbsp;</strong></p>
+<p><strong>NL</strong> Dimitris leidt haar leven in Skala Skamnias.</p>
+<h2>Lesvia</h2>
+<p><strong>Tzeli Hadjidimitriou | 2024 | Greece | 78&rsquo; | EN subtitles</strong></p>
+<p><strong>NL&nbsp;</strong> Een film.</p>
 <hr />
 <p>Footer</p>
 `
@@ -217,10 +239,73 @@ describe('filmhuiscavia', () => {
       ])
     })
 
+    test('takes the year of the film of an entry with a short before it, not of the short', async () => {
+      const lesvia = 'https://filmhuiscavia.nl/programma/november-2026'
+
+      expect(await extractScreeningsFromMonthHtml(LESVIA_PAGE, lesvia)).toEqual(
+        [
+          {
+            title: 'Lesvia',
+            notes: ['Mr. Dimitris and Mrs. Dimitroula'],
+            year: 2024,
+            url: `${lesvia}#lesvia`,
+            cinema: 'Filmhuis Cavia',
+            date: new Date('2026-11-20T19:30:00Z'),
+          },
+        ],
+      )
+    })
+
     test('rejects a url that is not a month page', async () => {
       await expect(
         extractScreeningsFromMonthHtml(MONTH_PAGE, 'https://filmhuiscavia.nl/'),
       ).rejects.toThrow('Not a Filmhuis Cavia month page')
+    })
+  })
+
+  describe('splitSections', () => {
+    test('splits an entry with more than one film at its <h2>s', () => {
+      const [entry] = splitEntries(LESVIA_PAGE)
+
+      expect(splitSections(entry.html)).toHaveLength(3)
+    })
+
+    test('is nothing for an entry with one film', () => {
+      const [entry] = splitEntries(MONTH_PAGE)
+
+      expect(splitSections(entry.html)).toEqual([])
+    })
+  })
+
+  describe('findMetadataLineOfFilm', () => {
+    const sections = [
+      {
+        title: 'Lesvia + Mr. Dimitris and Mrs. Dimitroula',
+        metadata: ['NL', 'EN'],
+      },
+      {
+        title: 'Mr. Dimitris and Mrs. Dimitroula',
+        metadata: [
+          'Tzeli Hadjidimitriou | 2019 | Greece | 28’ | EN subtitles',
+          'NL',
+        ],
+      },
+      {
+        title: 'Lesvia',
+        metadata: ['Tzeli Hadjidimitriou | 2024 | Greece | 78’ | EN subtitles'],
+      },
+    ]
+
+    test('is the line under the <h2> of the film', () => {
+      expect(findMetadataLineOfFilm(sections, 'Lesvia')).toContain('| 2024 |')
+    })
+
+    test('does not care about case', () => {
+      expect(findMetadataLineOfFilm(sections, 'LESVIA')).toContain('| 2024 |')
+    })
+
+    test('is nothing when no <h2> has the title', () => {
+      expect(findMetadataLineOfFilm(sections, 'Possession')).toBeUndefined()
     })
   })
 })
