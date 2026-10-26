@@ -11,9 +11,9 @@ const tagStyle = css({
   overflowWrap: 'anywhere',
   fontSize: '12px',
   lineHeight: '1.4',
-  // the color of the year, and the border of the time pill
+  // the color of the year, for the text and the border
   color: 'var(--text-subtle-color)',
-  border: '1px solid color-mix(in srgb, var(--text-color) 35%, transparent)',
+  border: '1px solid currentColor',
   borderRadius: '4px',
 })
 
