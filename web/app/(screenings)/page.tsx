@@ -17,9 +17,12 @@ export const metadata: Metadata = {
 export default async function Home() {
   const screenings = await getScreenings()
   return (
-    <Suspense>
+    <>
+      {/* outside the Suspense: its content is rendered in the browser */}
       <JsonLd data={buildWebSiteJsonLd()} />
-      <App screenings={screenings} showCity />
-    </Suspense>
+      <Suspense>
+        <App screenings={screenings} showCity />
+      </Suspense>
+    </>
   )
 }
