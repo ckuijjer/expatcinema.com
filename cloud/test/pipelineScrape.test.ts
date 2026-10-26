@@ -113,6 +113,21 @@ describe('normalise', () => {
     warn.mockRestore()
   })
 
+  test('takes 1900, which some cinemas have for a film with no year, as no year', () => {
+    expect(
+      normaliseScraperResult([
+        screening({ title: 'Frank', year: 1900 }),
+        screening({ title: 'Cure', year: 1997 }),
+      ]),
+    ).toEqual([
+      screening({ title: 'Cure', year: 1997 }),
+      screening({ title: 'Frank' }),
+    ])
+    expect(
+      'year' in normaliseScraperResult([screening({ year: 1900 })])[0],
+    ).toBe(false)
+  })
+
   test('combines the results of all scrapers, sorted by date', () => {
     const late = screening({ date: new Date('2026-11-02T20:00:00Z') })
     const early = screening({

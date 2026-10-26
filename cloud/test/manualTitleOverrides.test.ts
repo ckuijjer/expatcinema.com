@@ -109,13 +109,6 @@ describe('The Time Masters', () => {
   })
 })
 
-describe('Frank', () => {
-  test("is Lenny Abrahamson's Frank (2014), whatever year a screening gives", () => {
-    expect(getManualTitleOverride('Frank')?.tmdbId).toBe(171372)
-    expect(getManualTitleOverride('Frank', 1900)?.tmdbId).toBe(171372)
-  })
-})
-
 describe('The Promised Land', () => {
   test("is Andrzej Wajda's Ziemia obiecana (1975)", () => {
     expect(getManualTitleOverride('The Promised Land')?.tmdbId).toBe(511)

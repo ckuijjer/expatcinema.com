@@ -9,8 +9,20 @@ import { Screening } from '../types'
 const hasValidDate = ({ date }: Screening) =>
   date instanceof Date && !Number.isNaN(date.getTime())
 
+// 1900 is what some cinema systems have for a film with no year: Filmhuis Den
+// Haag's page for Frank says "Verenigd Koninkrijk, Ierland, Verenigde Staten , 1900"
+// (the film is from 2014), and Lumière gives it to its events. No film shown with
+// English subtitles is from 1900, and a wrong year keeps the matching from the
+// right film, so it is the same as no year
+const PLACEHOLDER_YEAR = 1900
+
+const withoutPlaceholderYear = (screening: Screening): Screening => {
+  const { year, ...rest } = screening
+  return year === PLACEHOLDER_YEAR ? rest : screening
+}
+
 // Phase: normalise. What a scraper returns, without the screenings that have no
-// valid date, with the event it didn't set itself taken from the title, once per
+// valid date and the placeholder year, with the event it didn't set itself taken from the title, once per
 // screening, sorted
 export const normaliseScraperResult = (
   screenings: Screening[],
@@ -31,7 +43,7 @@ export const normaliseScraperResult = (
   }
 
   return makeScreeningsUniqueAndSorted(
-    screenings.filter(hasValidDate).map(withEvent),
+    screenings.filter(hasValidDate).map(withoutPlaceholderYear).map(withEvent),
   )
 }
 

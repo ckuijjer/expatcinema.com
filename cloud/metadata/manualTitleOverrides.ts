@@ -136,12 +136,6 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     addedAt: '2026-10-20',
   },
   {
-    title: 'Frank',
-    tmdbId: 171372,
-    note: "Filmhuis Den Haag's page (filmhuisdenhaag.nl/films/frank-band) and TMDB agree on director (Lenny Abrahamson) and runtime (95 min); the cinema's own page lists the year as 1900 (its countries line reads 'Verenigd Koninkrijk, Ierland, Verenigde Staten , 1900'), so the resolver never considers this a 2014 film.",
-    addedAt: '2026-10-20',
-  },
-  {
     title: 'The Promised Land',
     tmdbId: 511,
     note: "De Balie's Amsterdam Polish Film Festival page is Andrzej Wajda's Ziemia obiecana (1975, 'Wajda's 1975 masterpiece'); the page has no year, so the resolver picked the 2023 Danish Bastarden, which TMDB also titles The Promised Land.",
