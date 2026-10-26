@@ -38,11 +38,10 @@ const chipStyle = css({
   },
 })
 
-// a thin line between the time and the event and notes
+// a thin line between the time and the event and notes, in the color of the label
 const dividerStyle = css({
   alignSelf: 'stretch',
-  borderLeft:
-    '1px solid color-mix(in srgb, var(--text-color) 35%, transparent)',
+  borderLeft: '1px solid var(--text-muted-color)',
 })
 
 // a long label is cut off, the title has all of it
