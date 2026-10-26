@@ -19,12 +19,10 @@ const chipStyle = css({
   fontVariantNumeric: 'tabular-nums',
   color: 'var(--text-color)',
   textDecoration: 'none',
-  // a long label is cut off, the full text is in the title
-  display: 'inline-block',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '10px',
   maxWidth: '100%',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
   borderRadius: '8px',
   border: '1px solid color-mix(in srgb, var(--text-color) 35%, transparent)',
   _hover: {
@@ -40,8 +38,19 @@ const chipStyle = css({
   },
 })
 
+// a thin line between the time and the event and notes
+const dividerStyle = css({
+  alignSelf: 'stretch',
+  borderLeft:
+    '1px solid color-mix(in srgb, var(--text-color) 35%, transparent)',
+})
+
+// a long label is cut off, the title has all of it
 const labelStyle = css({
-  marginLeft: '6px',
+  minWidth: '0',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
   fontSize: '14px',
   color: 'var(--text-muted-color)',
 })
@@ -80,8 +89,13 @@ export const ScreeningTimeChips = ({
           className={chipStyle}
           title={[label, ends].filter(Boolean).join('\n') || undefined}
         >
-          {formatTime(date)}
-          {label ? <span className={labelStyle}>· {label}</span> : null}
+          <span>{formatTime(date)}</span>
+          {label ? (
+            <>
+              <span className={dividerStyle} />
+              <span className={labelStyle}>{label}</span>
+            </>
+          ) : null}
         </a>
       )
     })}

@@ -5,6 +5,7 @@ import { css, cx } from 'styled-system/css'
 
 import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
+import { LabelTags } from './LabelTags'
 import { PosterPlaceholder } from './PosterPlaceholder'
 import { Time } from './Time'
 import {
@@ -58,34 +59,13 @@ const mainLineStyle = css({
   overflowWrap: 'anywhere',
 })
 
+// the gap to the tags is on the title, so that a tag that wraps has none
+const titleStyle = css({ marginRight: '6px' })
+
 const secondLineStyle = css({
   minWidth: '0',
   fontSize: '14px',
   color: 'var(--text-muted-color)',
-})
-
-// The event as a small tag and the notes as plain text next to it
-const labelsStyle = css({
-  minWidth: '0',
-  display: 'flex',
-  flexWrap: 'wrap',
-  alignItems: 'center',
-  columnGap: '8px',
-  rowGap: '2px',
-  marginTop: '2px',
-  fontSize: '14px',
-  color: 'var(--text-muted-color)',
-})
-
-const eventTagStyle = css({
-  minWidth: '0',
-  overflowWrap: 'anywhere',
-  fontSize: '12px',
-  lineHeight: '1.4',
-  padding: '1px 8px',
-  borderRadius: '999px',
-  color: 'var(--text-color)',
-  backgroundColor: 'color-mix(in srgb, var(--text-color) 10%, transparent)',
 })
 
 // The poster is the way to the movie page on this site, the rest of the row
@@ -209,8 +189,6 @@ export const ScreeningRow = ({
       ? cinema.city.name
       : null
 
-  const hasLabels = Boolean(event) || Boolean(notes?.length)
-
   return (
     <div className={showPoster ? containerStyle : textOnlyContainerStyle}>
       <a
@@ -221,15 +199,14 @@ export const ScreeningRow = ({
       <div className={textGridStyle}>
         <Time>{date}</Time>
         <div className={textStyle}>
-          {mainLine ? <div className={mainLineStyle}>{mainLine}</div> : null}
+          {mainLine ? (
+            <div className={mainLineStyle}>
+              <span className={titleStyle}>{mainLine}</span>
+              <LabelTags event={event} notes={notes} />
+            </div>
+          ) : null}
           {secondLine ? (
             <div className={secondLineStyle}>{secondLine}</div>
-          ) : null}
-          {hasLabels ? (
-            <div className={labelsStyle}>
-              {event ? <span className={eventTagStyle}>{event}</span> : null}
-              {notes?.length ? <span>{notes.join(' · ')}</span> : null}
-            </div>
           ) : null}
         </div>
       </div>
