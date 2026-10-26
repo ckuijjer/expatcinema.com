@@ -19,8 +19,13 @@ const chipStyle = css({
   fontVariantNumeric: 'tabular-nums',
   color: 'var(--text-color)',
   textDecoration: 'none',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '10px',
+  maxWidth: '100%',
   borderRadius: '8px',
-  border: '1px solid color-mix(in srgb, var(--text-color) 35%, transparent)',
+  // at least 3:1 against the background, in both themes
+  border: '1px solid var(--text-subtle-color)',
   _hover: {
     borderColor: 'var(--text-color)',
     backgroundColor: 'var(--background-highlight-color)',
@@ -34,34 +39,65 @@ const chipStyle = css({
   },
 })
 
+// a thin line between the time and the event and notes, in the color of the label
+const dividerStyle = css({
+  alignSelf: 'stretch',
+  borderLeft: '1px solid var(--text-muted-color)',
+})
+
+// a long label is cut off, the title has all of it
+const labelStyle = css({
+  minWidth: '0',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  fontSize: '14px',
+  color: 'var(--text-muted-color)',
+})
+
 const formatTime = (date: DateTime) =>
   date
     .setZone('Europe/Amsterdam')
     .toLocaleString(DateTime.TIME_24_SIMPLE, { locale: 'en-GB' })
 
 // The times of one day as buttons, for a page where the film and the cinema are
-// already known. The title shows when the film ends, if its runtime is known.
+// already known. A screening with an event or notes has them after the time. The
+// title shows them in full, and when the film ends if its runtime is known.
 export const ScreeningTimeChips = ({
   screenings,
   runtimeMinutes,
 }: {
-  screenings: { url: string; date: DateTime }[]
+  screenings: {
+    url: string
+    date: DateTime
+    event?: string
+    notes?: string[]
+  }[]
   runtimeMinutes?: number | null
 }) => (
   <div className={chipsStyle}>
-    {screenings.map(({ url, date }) => (
-      <a
-        key={`${url}-${date.toISO()}`}
-        href={url}
-        className={chipStyle}
-        title={
-          runtimeMinutes
-            ? `${formatTime(date)} – ${formatTime(date.plus({ minutes: runtimeMinutes }))}`
-            : undefined
-        }
-      >
-        {formatTime(date)}
-      </a>
-    ))}
+    {screenings.map(({ url, date, event, notes }) => {
+      const label = [event, ...(notes ?? [])].filter(Boolean).join(' · ')
+      const ends = runtimeMinutes
+        ? `${formatTime(date)} – ${formatTime(date.plus({ minutes: runtimeMinutes }))}`
+        : undefined
+
+      return (
+        <a
+          key={`${url}-${date.toISO()}`}
+          href={url}
+          className={chipStyle}
+          title={[label, ends].filter(Boolean).join('\n') || undefined}
+        >
+          <span>{formatTime(date)}</span>
+          {label ? (
+            <>
+              <span className={dividerStyle} aria-hidden />
+              <span className={labelStyle}>{label}</span>
+            </>
+          ) : null}
+        </a>
+      )
+    })}
   </div>
 )

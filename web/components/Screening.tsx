@@ -5,6 +5,7 @@ import { css, cx } from 'styled-system/css'
 
 import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
+import { LabelTags } from './LabelTags'
 import { PosterPlaceholder } from './PosterPlaceholder'
 import { Time } from './Time'
 import {
@@ -57,6 +58,9 @@ const mainLineStyle = css({
   fontSize: '18px',
   overflowWrap: 'anywhere',
 })
+
+// the gap to the tags is on the title, so that a tag that wraps has none
+const titleStyle = css({ marginRight: '6px' })
 
 const secondLineStyle = css({
   minWidth: '0',
@@ -143,6 +147,8 @@ export const ScreeningRow = ({
   movieSlug,
   movieHref,
   posterUrl,
+  event,
+  notes,
   showCity = true,
   showCinema = true,
   showTitle = true,
@@ -157,6 +163,8 @@ export const ScreeningRow = ({
   movieSlug?: string
   movieHref?: string
   posterUrl?: string
+  event?: string
+  notes?: string[]
   showCity?: boolean
   showCinema?: boolean
   showTitle?: boolean
@@ -191,7 +199,12 @@ export const ScreeningRow = ({
       <div className={textGridStyle}>
         <Time>{date}</Time>
         <div className={textStyle}>
-          {mainLine ? <div className={mainLineStyle}>{mainLine}</div> : null}
+          {mainLine ? (
+            <div className={mainLineStyle}>
+              <span className={titleStyle}>{mainLine}</span>
+              <LabelTags event={event} notes={notes} />
+            </div>
+          ) : null}
           {secondLine ? (
             <div className={secondLineStyle}>{secondLine}</div>
           ) : null}

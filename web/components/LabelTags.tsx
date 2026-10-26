@@ -1,0 +1,38 @@
+import { css } from 'styled-system/css'
+
+// The space to the right of a tag, not to the left of it: a tag that wraps
+// starts at the left edge of the text, and the title has the same gap after it
+const tagStyle = css({
+  display: 'inline-block',
+  maxWidth: '100%',
+  marginRight: '6px',
+  padding: '1px 6px',
+  verticalAlign: 'middle',
+  overflowWrap: 'anywhere',
+  fontSize: '12px',
+  lineHeight: '1.4',
+  // the color of the line with the cinema, for the text and the border
+  color: 'var(--text-muted-color)',
+  border: '1px solid currentColor',
+  borderRadius: '4px',
+})
+
+// The event of a screening and its notes, each as a tag, in the flow of the
+// line of text they come after
+export const LabelTags = ({
+  event,
+  notes,
+}: {
+  event?: string
+  notes?: string[]
+}) => (
+  <>
+    {[event, ...(notes ?? [])].map((label) =>
+      label ? (
+        <span key={label} className={tagStyle}>
+          {label}
+        </span>
+      ) : null,
+    )}
+  </>
+)
