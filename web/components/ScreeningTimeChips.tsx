@@ -52,7 +52,7 @@ const labelStyle = css({
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   fontSize: '14px',
-  color: 'var(--text-muted-color)',
+  color: 'var(--text-subtle-color)',
 })
 
 const formatTime = (date: DateTime) =>
@@ -92,7 +92,7 @@ export const ScreeningTimeChips = ({
           <span>{formatTime(date)}</span>
           {label ? (
             <>
-              <span className={dividerStyle} />
+              <span className={dividerStyle} aria-hidden />
               <span className={labelStyle}>{label}</span>
             </>
           ) : null}
