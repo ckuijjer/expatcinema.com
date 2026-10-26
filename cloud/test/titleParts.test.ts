@@ -52,6 +52,24 @@ describe('resolveWithTitleParts', () => {
     })
   })
 
+  test('does not split a title at what the cinema adds between parentheses', async () => {
+    lookup.mockImplementation(async ({ title }) =>
+      title === 'Like Friend, Like Deer)'
+        ? matched('Like Friend, Like Deer', '2026', 'tmdb:1477148')
+        : unmatched(2026),
+    )
+
+    const original = unmatched(2026)
+
+    // "Like Friend, Like Deer" is the supporting film, not the film of the title
+    await expect(
+      resolveWithTitleParts(original, [
+        'Goodbye Sisters (+ supporting film: Like Friend, Like Deer)',
+      ]),
+    ).resolves.toBe(original)
+    expect(lookup).not.toHaveBeenCalled()
+  })
+
   test('needs a year', async () => {
     const original = unmatched()
 

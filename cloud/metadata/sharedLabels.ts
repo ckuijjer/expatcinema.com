@@ -10,6 +10,41 @@ import { Metadata } from './types'
 // ": ", " - ", " – ", " — ", " • ", " > " and "|"
 export const DELIMITER = /:\s+|\s+[-–—•>]\s+|\s*\|\s*/
 
+// The delimiters of a title that are not between parentheses: a ": " or " - " in
+// "Goodbye Sisters (+ supporting film: Like Friend, Like Deer)" is part of what
+// the cinema adds, and does not split the film from a label
+export const findDelimiters = (title: string) => {
+  const inParentheses = new Array<boolean>(title.length).fill(false)
+  const opened: number[] = []
+
+  for (let index = 0; index < title.length; index++) {
+    if (title[index] === '(') opened.push(index)
+    if (title[index] === ')' && opened.length > 0) {
+      // only a pair that is closed counts, and what is inside is inside
+      for (let inner = opened.pop() as number; inner <= index; inner++) {
+        inParentheses[inner] = true
+      }
+    }
+  }
+
+  return [...title.matchAll(new RegExp(DELIMITER, 'g'))].filter(
+    (match) => !inParentheses[match.index ?? 0],
+  )
+}
+
+// A title cut at its delimiters, without the ones between parentheses
+export const splitAtDelimiters = (title: string) => {
+  const parts: string[] = []
+  let start = 0
+
+  for (const match of findDelimiters(title)) {
+    parts.push(title.slice(start, match.index))
+    start = (match.index ?? 0) + match[0].length
+  }
+
+  return [...parts, title.slice(start)]
+}
+
 const labelKey = (label: string) => label.toLowerCase().replace(/\s+/g, '')
 
 const isUsableLabel = (label: string, rest: string) =>
@@ -17,7 +52,7 @@ const isUsableLabel = (label: string, rest: string) =>
 
 // "Imagine Film Festival: Donkey Princess" -> label "Imagine Film Festival"
 const splitPrefix = (title: string) => {
-  const match = DELIMITER.exec(title)
+  const match = findDelimiters(title)[0]
   if (!match) return undefined
 
   const label = title.slice(0, match.index).trim()
@@ -28,8 +63,7 @@ const splitPrefix = (title: string) => {
 
 // "Wintertuinfestival - Yugo Goes to America" -> label "Yugo Goes to America"
 const splitSuffix = (title: string) => {
-  const delimiters = [...title.matchAll(new RegExp(DELIMITER, 'g'))]
-  const last = delimiters.at(-1)
+  const last = findDelimiters(title).at(-1)
   if (!last) return undefined
 
   const rest = title.slice(0, last.index).trim()
