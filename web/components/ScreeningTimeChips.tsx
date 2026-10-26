@@ -52,7 +52,7 @@ const labelStyle = css({
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   fontSize: '14px',
-  color: 'var(--text-subtle-color)',
+  color: 'var(--text-muted-color)',
 })
 
 const formatTime = (date: DateTime) =>
