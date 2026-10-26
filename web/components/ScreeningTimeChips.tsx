@@ -2,6 +2,8 @@ import { DateTime } from 'luxon'
 
 import { css } from 'styled-system/css'
 
+import { countOutbound } from '../utils/goatcounter'
+
 const chipsStyle = css({
   display: 'flex',
   flexWrap: 'wrap',
@@ -69,6 +71,7 @@ export const ScreeningTimeChips = ({
 }: {
   screenings: {
     url: string
+    cinema: { slug: string }
     date: DateTime
     event?: string
     notes?: string[]
@@ -76,7 +79,7 @@ export const ScreeningTimeChips = ({
   runtimeMinutes?: number | null
 }) => (
   <div className={chipsStyle}>
-    {screenings.map(({ url, date, event, notes }) => {
+    {screenings.map(({ url, cinema, date, event, notes }) => {
       const label = [event, ...(notes ?? [])].filter(Boolean).join(' · ')
       const ends = runtimeMinutes
         ? `${formatTime(date)} – ${formatTime(date.plus({ minutes: runtimeMinutes }))}`
@@ -86,6 +89,7 @@ export const ScreeningTimeChips = ({
         <a
           key={`${url}-${date.toISO()}`}
           href={url}
+          onClick={() => countOutbound(cinema.slug)}
           className={chipStyle}
           title={[label, ends].filter(Boolean).join('\n') || undefined}
         >

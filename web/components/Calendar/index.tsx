@@ -2,7 +2,7 @@
 
 import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { css } from 'styled-system/css'
 
@@ -14,6 +14,7 @@ import {
   groupAndSortScreenings,
 } from '../../utils/groupAndSortScreenings'
 import { getMoviePagePath } from '../../utils/getMoviePagePath'
+import { countSearch } from '../../utils/goatcounter'
 import { useSearch } from '../../utils/hooks'
 import { matchesScreeningSearch } from '../../utils/searchMatches'
 import { DirectCalendar } from './DirectCalendar'
@@ -76,6 +77,12 @@ export const Calendar = ({
       })),
     ]
   })
+
+  // a search is counted once it is left alone, with whether it found anything
+  const found = rows.length > 0
+  useEffect(() => {
+    countSearch(search, found)
+  }, [search, found])
 
   const locationLabel = (() => {
     if (currentCinema) {
