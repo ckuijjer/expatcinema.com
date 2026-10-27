@@ -141,6 +141,13 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: "De Balie's Amsterdam Polish Film Festival page is Andrzej Wajda's Ziemia obiecana (1975, 'Wajda's 1975 masterpiece'); the page has no year, so the resolver picked the 2023 Danish Bastarden, which TMDB also titles The Promised Land.",
     addedAt: '2026-10-22',
   },
+  {
+    title: '** La Cosa En La Niebla Aka the Thing in the Fog',
+    year: 2025,
+    tmdbId: 1426755,
+    note: "WORM's page and TMDB agree on director (Chedey Reyes) and runtime (83 vs 85 min) for this Spanish horror comedy; a second TMDB entry for the same title (1707238) has no director or release date listed.",
+    addedAt: '2026-10-27',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(

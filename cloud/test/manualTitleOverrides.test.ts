@@ -114,3 +114,14 @@ describe('The Promised Land', () => {
     expect(getManualTitleOverride('The Promised Land')?.tmdbId).toBe(511)
   })
 })
+
+describe('La Cosa En La Niebla', () => {
+  test("is Chedey Reyes' The Thing in the Fog (2025), not the other TMDB entry for the same title", () => {
+    expect(
+      getManualTitleOverride(
+        '** La Cosa En La Niebla Aka the Thing in the Fog',
+        2025,
+      )?.tmdbId,
+    ).toBe(1426755)
+  })
+})
