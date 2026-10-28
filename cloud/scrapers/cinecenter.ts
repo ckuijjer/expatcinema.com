@@ -64,21 +64,33 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.debug('productions found', { count: productions.length })
 
-  const screenings: Screening[] = productions
-    .filter((p) => p.tags.some((t) => t.name === ENG_SUBS_TAG_NAME))
-    .flatMap((p) => {
-      const title = titleCase(
-        decodeHtmlEntities(p.title.replace(ENG_SUBS_TITLE_PREFIX, '')),
-      )
-      const url = `https://cinecenter.nl/films/${p.slug}/`
+  const withEngSubs = productions.filter((p) =>
+    p.tags.some((t) => t.name === ENG_SUBS_TAG_NAME),
+  )
 
-      return p.screenings.map((s) => ({
-        title,
-        url,
-        cinema: 'Cinecenter',
-        date: s.startAtUtc,
-      }))
+  const screenings: Screening[] = withEngSubs.flatMap((p) => {
+    const title = titleCase(
+      decodeHtmlEntities(p.title.replace(ENG_SUBS_TITLE_PREFIX, '')),
+    )
+    const url = `https://cinecenter.nl/films/${p.slug}/`
+
+    return p.screenings.map((s) => ({
+      title,
+      url,
+      cinema: 'Cinecenter',
+      date: s.startAtUtc,
+    }))
+  })
+
+  // an empty list is silent otherwise, and the cause is either an empty
+  // listing or a changed tag (seen 2026-10-28: 0 after 9, the page fine later)
+  if (screenings.length === 0) {
+    logger.warn('no screenings with the Eng Subs tag', {
+      productions: productions.length,
+      withEngSubs: withEngSubs.length,
+      tags: [...new Set(productions.flatMap((p) => p.tags.map((t) => t.name)))],
     })
+  }
 
   logger.debug('screenings', { screenings })
 
