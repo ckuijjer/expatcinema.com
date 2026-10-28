@@ -49,6 +49,7 @@ import slachtstraat from './slachtstraat'
 import springhaver from './springhaver'
 import studiok from './studiok'
 import themovies from './themovies'
+import ventilator from './ventilator'
 import worm from './worm'
 
 export type Scraper = () => Promise<Screening[]>
@@ -104,6 +105,7 @@ export const SCRAPERS: Record<string, Scraper> = {
   springhaver,
   studiok,
   themovies,
+  ventilator,
   worm,
 }
 

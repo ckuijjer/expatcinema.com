@@ -731,5 +731,18 @@
       "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Filmhuis%20De%20Spiegel%2C%20Burg.%20van%20Grunsvenplein%20145%2C%206411%20AS%2C%20Heerlen%2C%20Netherlands"
     },
     "logo": "filmhuis-de-spiegel.jpg"
+  },
+  {
+    "name": "Ventilator Cinema",
+    "slug": "ventilator-cinema",
+    "scraper": "ventilator",
+    "city": "amsterdam",
+    "url": "https://amsterdamalternative.nl/ventilator",
+    "address": {
+      "streetAddress": "Overtoom 301",
+      "postalCode": "1054 HW",
+      "addressLocality": "Amsterdam",
+      "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Ventilator%20Cinema%2C%20Overtoom%20301%2C%201054%20HW%20Amsterdam%2C%20Netherlands"
+    }
   }
 ]
