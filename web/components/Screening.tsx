@@ -7,6 +7,7 @@ import { countOutbound } from '../utils/goatcounter'
 import { Cinema } from '../utils/getScreenings'
 import { getMoviePagePath } from '../utils/getMoviePagePath'
 import { LabelTags } from './LabelTags'
+import { MovieLink } from './MovieLink'
 import { PosterPlaceholder } from './PosterPlaceholder'
 import { Time } from './Time'
 import {
@@ -229,7 +230,7 @@ export const ScreeningRow = ({
       {showPoster ? (
         posterUrl ? (
           movieUrl ? (
-            <a
+            <MovieLink
               href={movieUrl}
               className={posterLinkStyle}
               data-poster-link
@@ -246,7 +247,7 @@ export const ScreeningRow = ({
               <span className={posterOverlayStyle} aria-hidden>
                 <span className={posterIconStyle}>i</span>
               </span>
-            </a>
+            </MovieLink>
           ) : (
             <Image
               src={posterUrl}
@@ -258,7 +259,7 @@ export const ScreeningRow = ({
             />
           )
         ) : movieUrl ? (
-          <a
+          <MovieLink
             href={movieUrl}
             className={posterLinkStyle}
             data-poster-link
@@ -271,7 +272,7 @@ export const ScreeningRow = ({
             <span className={posterOverlayStyle} aria-hidden>
               <span className={posterIconStyle}>i</span>
             </span>
-          </a>
+          </MovieLink>
         ) : null
       ) : null}
     </div>
