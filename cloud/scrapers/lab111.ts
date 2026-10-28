@@ -14,6 +14,7 @@ import { cleanDirector } from './utils/cleanDirector'
 import { extractEvent } from './utils/extractEvent'
 import type { TitleAndNotes } from './utils/extractNotes'
 import { titleCase } from './utils/titleCase'
+import { warnIfEmpty } from './utils/warnIfEmpty'
 import { normalizeWhitespace, trim } from './utils/xrayFilters'
 
 const logger = parentLogger.createChild({
@@ -228,6 +229,12 @@ const extractFromMainPage = async () => {
           }).toJSDate(),
         }
       })
+    })
+
+    warnIfEmpty(logger, {
+      listed: scrapeResult.length,
+      subtitled: englishSubtitlesMovies.length,
+      screenings: screenings.length,
     })
 
     logger.debug('screenings found', { screenings })

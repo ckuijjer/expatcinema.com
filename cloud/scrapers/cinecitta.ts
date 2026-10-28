@@ -6,6 +6,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { parseFkFeedYear } from './utils/parseFkFeedYear'
 import { titleCase } from './utils/titleCase'
+import { warnIfEmpty } from './utils/warnIfEmpty'
 import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
@@ -105,7 +106,15 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
     logger.debug('before flatten', { screenings })
 
-    return screenings.flat()
+    const flattened = screenings.flat()
+
+    warnIfEmpty(logger, {
+      listed: movies.length,
+      subtitled: moviesWithEnglishSubtitles.length,
+      screenings: flattened.length,
+    })
+
+    return flattened
   } catch (error) {
     logger.error('error scraping cinecitta', { error })
     return []

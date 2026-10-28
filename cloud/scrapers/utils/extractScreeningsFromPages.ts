@@ -42,7 +42,7 @@ export const extractScreeningsFromPages = async <Item>(
     { concurrency },
   )
 
-  return results.flatMap((result, index) => {
+  const screenings = results.flatMap((result, index) => {
     if (result.status === 'fulfilled') {
       return result.value
     }
@@ -54,4 +54,18 @@ export const extractScreeningsFromPages = async <Item>(
 
     return []
   })
+
+  const failed = results.filter((result) => result.status === 'rejected').length
+  const counts = { pages: items.length, failed, screenings: screenings.length }
+
+  // Every page failing is the film pages changing or being blocked, where a
+  // single failure is a flaky page. Pages that load but have nothing is a
+  // quiet week as far as is known here, so that is only logged
+  if (items.length > 0 && failed === items.length) {
+    logger.warn('failed to extract screenings from every page', counts)
+  } else {
+    logger.info('extracted screenings from pages', counts)
+  }
+
+  return screenings
 }
