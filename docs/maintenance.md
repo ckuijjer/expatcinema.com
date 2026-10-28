@@ -35,11 +35,13 @@ Failure modes seen so far, and how to recognise them:
 - **A cinema that returns 0 with no error** can be the cinema's own page failing: Ketelhuis' Expat Cinema page was blank (HTTP 200, zero bytes) on 2026-10-03, also in a browser.
 - **Only `prod` has a schedule.** A dev stage can be deployed, but nothing runs it nightly; an earlier dev stack that did, with the prod Slack channel, produced alerts that looked like prod failures.
 
-Four cinemas block AWS (Filmhuis Breda and Heerenstraattheater via Cloudflare, Cinerama via Kinepolis' firewall, and Filmtheater Hilversum, which answers 503 to most of its film pages). Their pages are fetched through a small relay on the maintainer's home server (teatree), see `cloud/clients/scrapeRelay.ts`. If they suddenly all fail at once with `Error retrieving ... via relay` or a 401/403/5xx from the relay, it is the relay or its route, not the scrapers: check `https://scrape-relay.home.kuijjer.com/health` and tell the maintainer. Where the 401 comes from tells what is wrong:
+Four cinemas block AWS (Filmhuis Breda and Heerenstraattheater via Cloudflare, Cinerama via Kinepolis' firewall, and Filmtheater Hilversum, which answers 503 to most of its film pages). Their pages are fetched through a small relay on the maintainer's home server (teatree), see `cloud/clients/scrapeRelay.ts`. If they suddenly all fail at once with `Error retrieving ... via relay` or a 401/403/5xx from the relay, it is the relay or its route, not the scrapers: check `https://scrape-relay.home.kuijjer.com/health` with the credentials (below) and tell the maintainer. Where the 401 comes from tells what is wrong:
 
-- **A 401 `Unauthorized` from Pangolin's edge** (the relay's container is healthy on teatree, `http://192.168.2.46:8097/health` answers `{"ok":true}`) means the basic-auth password Pangolin has for the `scrape-relay` resource is not the relay's `RELAY_TOKEN`. Seen 2026-10-20 to 10-25: the blueprint was re-applied with its placeholder password. Set the password again to `RELAY_TOKEN` (`~/docker/scrape-relay/.env`), as in the README of `scrape-relay/` on teatree.
+- **A 401 `Unauthorized` from Pangolin's edge, also with the credentials** (the relay's container is healthy on teatree, `http://192.168.2.46:8097/health` answers `{"ok":true}`) means the basic-auth password Pangolin has for the `scrape-relay` resource is not the relay's `RELAY_TOKEN`. Seen 2026-10-20 to 10-25: the blueprint was re-applied with its placeholder password. Set the password again to `RELAY_TOKEN` (`~/docker/scrape-relay/.env`), as in the README of `scrape-relay/` on teatree.
 - **A 404 `No such service`** is what you get on teatree itself: its split-horizon DNS answers `*.home.kuijjer.com` with the local Caddy, which has no such service. Check from outside the LAN, or with `curl --resolve scrape-relay.home.kuijjer.com:443:<VPS IP>`, before concluding anything.
 - **A 5xx or a timeout** is the tunnel (the `newt` container) or the relay container being down.
+
+**A 401 from `/health` without credentials is expected, don't report it.** Pangolin answers every request without the basic-auth password with 401, so the daily check, which has no token, always gets it (it was reported as an ongoing problem from 2026-10-20 to 10-28, while the relay was fine: with the credentials `/health` answered `{"ok":true}` on 10-28). Judge the relay by whether the relayed cinemas (cinerama, filmhuisbreda, filmtheaterhilversum, chasse, heerenstraattheater) get screenings and by `Error retrieving ... via relay` errors, not by that status. With the credentials, the maintainer can run `curl -sS -i -u "scrape-relay:$RELAY_TOKEN" -H "X-Relay-Token: $RELAY_TOKEN" https://scrape-relay.home.kuijjer.com/health` (`RELAY_TOKEN` is in `~/docker/scrape-relay/.env` on teatree), from outside the LAN.
 
 ## Data sources
 
@@ -167,7 +169,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)                             |
 | forumgroningen           | ok     |                                                                      |
 | hartlooper               | ok     |                                                                      |
-| heerenstraattheater      | ok     | relay since 10-01; 0 on 10-20 to 10-25 (relay password)              |
+| heerenstraattheater      | ok     | relay since 10-01; 0 on 10-20 to 10-25 (relay password), 1 on 10-28  |
 | hetdocumentairepaviljoen | ok     | fixed 2026-09-28 (subtitle label changed)                            |
 | ketelhuis                | ok     | small (1–6); page blank 10-03 (their site)                           |
 | kinorotterdam            | ok     |                                                                      |
