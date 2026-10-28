@@ -5,6 +5,7 @@ import { relayJson, shouldRelay } from '../clients/scrapeRelay'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { titleCase } from './utils/titleCase'
+import { warnIfEmpty } from './utils/warnIfEmpty'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -93,7 +94,15 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
     logger.debug('before flatten', { screenings })
 
-    return screenings.flat()
+    const flattened = screenings.flat()
+
+    warnIfEmpty(logger, {
+      listed: programmation.films.length,
+      subtitled: moviesWithEnglishSubtitles.length,
+      screenings: flattened.length,
+    })
+
+    return flattened
   } catch (error) {
     logger.error('error scraping cinerama', { error })
     return []

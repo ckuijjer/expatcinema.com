@@ -11,7 +11,10 @@ const screening = (title: string): Screening => ({
 })
 
 const makeLogger = () =>
-  ({ warn: jest.fn() }) as unknown as Logger & { warn: jest.Mock }
+  ({ warn: jest.fn(), info: jest.fn() }) as unknown as Logger & {
+    warn: jest.Mock
+    info: jest.Mock
+  }
 
 describe('extractScreeningsFromPages', () => {
   test('flattens the screenings from every page', async () => {
@@ -54,10 +57,58 @@ describe('extractScreeningsFromPages', () => {
       { logger },
     )
 
-    expect(logger.warn).toHaveBeenCalledTimes(1)
     expect(logger.warn).toHaveBeenCalledWith(
       'failed to extract screenings from page',
       { url: 'https://example.com/boom', error },
+    )
+  })
+
+  test('warns when every page fails, not when only some do', async () => {
+    const allFail = makeLogger()
+    await extractScreeningsFromPages(
+      ['a', 'b'],
+      async () => {
+        throw new Error('blocked')
+      },
+      { logger: allFail },
+    )
+    expect(allFail.warn).toHaveBeenCalledWith(
+      'failed to extract screenings from every page',
+      { pages: 2, failed: 2, screenings: 0 },
+    )
+
+    const someFail = makeLogger()
+    await extractScreeningsFromPages(
+      ['ok', 'boom'],
+      async (item) => {
+        if (item === 'boom') throw new Error('blip')
+        return [screening(item)]
+      },
+      { logger: someFail },
+    )
+    expect(someFail.warn).not.toHaveBeenCalledWith(
+      'failed to extract screenings from every page',
+      expect.anything(),
+    )
+    expect(someFail.info).toHaveBeenCalledWith(
+      'extracted screenings from pages',
+      { pages: 2, failed: 1, screenings: 1 },
+    )
+  })
+
+  test('pages that load without screenings are only logged as info', async () => {
+    const logger = makeLogger()
+
+    await extractScreeningsFromPages(['a', 'b'], async () => [], { logger })
+
+    expect(logger.warn).not.toHaveBeenCalled()
+    expect(logger.info).toHaveBeenCalledWith(
+      'extracted screenings from pages',
+      {
+        pages: 2,
+        failed: 0,
+        screenings: 0,
+      },
     )
   })
 

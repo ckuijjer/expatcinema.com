@@ -5,6 +5,7 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { extractYearFromTitle } from './utils/extractYearFromTitle'
 import { titleCase } from './utils/titleCase'
+import { warnIfEmpty } from './utils/warnIfEmpty'
 import { cleanDirector } from './utils/cleanDirector'
 
 const logger = parentLogger.createChild({
@@ -201,6 +202,12 @@ const extractFromMainPage = async () => {
 
         return true
       })
+
+    warnIfEmpty(logger, {
+      listed: showsApiResponse.shows.length,
+      subtitled: filteredShows.length,
+      screenings: screenings.length,
+    })
 
     logger.debug('extracted screenings', { screenings })
     return screenings
