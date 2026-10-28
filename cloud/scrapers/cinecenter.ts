@@ -4,6 +4,7 @@ import { decode as decodeHtmlEntities } from 'html-entities'
 import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { titleCase } from './utils/titleCase'
+import { warnIfEmpty } from './utils/warnIfEmpty'
 
 const logger = parentLogger.createChild({
   persistentLogAttributes: {
@@ -64,21 +65,42 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
   logger.debug('productions found', { count: productions.length })
 
-  const screenings: Screening[] = productions
-    .filter((p) => p.tags.some((t) => t.name === ENG_SUBS_TAG_NAME))
-    .flatMap((p) => {
-      const title = titleCase(
-        decodeHtmlEntities(p.title.replace(ENG_SUBS_TITLE_PREFIX, '')),
-      )
-      const url = `https://cinecenter.nl/films/${p.slug}/`
+  const withEngSubs = productions.filter((p) =>
+    p.tags.some((t) => t.name === ENG_SUBS_TAG_NAME),
+  )
 
-      return p.screenings.map((s) => ({
-        title,
-        url,
-        cinema: 'Cinecenter',
-        date: s.startAtUtc,
-      }))
-    })
+  const screenings: Screening[] = withEngSubs.flatMap((p) => {
+    const title = titleCase(
+      decodeHtmlEntities(p.title.replace(ENG_SUBS_TITLE_PREFIX, '')),
+    )
+    const url = `https://cinecenter.nl/films/${p.slug}/`
+
+    return p.screenings.map((s) => ({
+      title,
+      url,
+      cinema: 'Cinecenter',
+      date: s.startAtUtc,
+    }))
+  })
+
+  // the tag is an exact name, so none is more likely a changed tag than a
+  // quiet week
+  warnIfEmpty(
+    logger,
+    {
+      listed: productions.length,
+      subtitled: withEngSubs.length,
+      screenings: screenings.length,
+    },
+    {
+      warnWhenNoneSubtitled: true,
+      details: {
+        tags: [
+          ...new Set(productions.flatMap((p) => p.tags.map((t) => t.name))),
+        ],
+      },
+    },
+  )
 
   logger.debug('screenings', { screenings })
 

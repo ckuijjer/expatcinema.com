@@ -42,4 +42,23 @@ describe('warnIfEmpty', () => {
     expect(logger.warn).not.toHaveBeenCalled()
     expect(logger.info).not.toHaveBeenCalled()
   })
+
+  test('warns on none with English subtitles when asked to, with the details', () => {
+    const logger = makeLogger()
+    warnIfEmpty(
+      logger,
+      { listed: 9, subtitled: 0, screenings: 0 },
+      { warnWhenNoneSubtitled: true, details: { tags: ['Kids'] } },
+    )
+    expect(logger.warn).toHaveBeenCalledWith(
+      'no items with English subtitles',
+      {
+        listed: 9,
+        subtitled: 0,
+        screenings: 0,
+        tags: ['Kids'],
+      },
+    )
+    expect(logger.info).not.toHaveBeenCalled()
+  })
 })
