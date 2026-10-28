@@ -20,7 +20,7 @@ const xray = createXray({ logger })
 const BASE_URL = 'https://worm.org'
 const SEARCH_TERM = 'subtitle'
 
-type SearchResult = {
+export type SearchResult = {
   id: number
   title: string
   url: string
@@ -171,14 +171,50 @@ const extractFromProductionPage = async ({
   ]
 }
 
+// The production pages of what is on the agenda from today. The search finds
+// 131 productions with "subtitle", most of them past, and fetching all of their
+// pages at once got a 429 from worm.org for 108 of them (2026-10-28). The
+// agenda is one request and lists only what is still to come, so only those
+// pages are fetched. /agenda/film/ gives the same list as /agenda/
+const getAgendaUrls = async (): Promise<string[]> => {
+  const hrefs: string[] = await xray(`${BASE_URL}/agenda/`, [
+    '.agenda-item__link@href',
+  ])
+
+  const urls = [
+    ...new Set(hrefs.filter((href) => href?.includes('/production/'))),
+  ]
+
+  if (urls.length === 0) {
+    logger.warn('no productions on the agenda, scraper is probably broken')
+  }
+
+  return urls
+}
+
+export const onlyOnAgenda = (
+  productions: SearchResult[],
+  agendaUrls: string[],
+) => productions.filter(({ url }) => agendaUrls.includes(url))
+
 const extractFromMainPage = async (): Promise<Screening[]> => {
-  const productions = await getProductionResults()
+  const [allProductions, agendaUrls] = await Promise.all([
+    getProductionResults(),
+    getAgendaUrls(),
+  ])
+  const productions = onlyOnAgenda(allProductions, agendaUrls)
+
+  logger.info('productions with subtitles on the agenda', {
+    withSubtitles: allProductions.length,
+    onAgenda: agendaUrls.length,
+    both: productions.length,
+  })
 
   const now = DateTime.now().minus({ hours: 1 }).toJSDate()
   const screenings = await extractScreeningsFromPages(
     productions,
     extractFromProductionPage,
-    { logger, url: ({ url }) => url },
+    { logger, url: ({ url }) => url, concurrency: 3 },
   )
 
   return makeScreeningsUniqueAndSorted(
