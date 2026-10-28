@@ -163,6 +163,27 @@ describe('counting', () => {
     ])
   })
 
+  it('counts a page view with the page before it as the referrer', () => {
+    ;(globalThis as { window?: unknown }).window = {
+      goatcounter: { count },
+      location: { origin: 'https://expatcinema.com' },
+    }
+    const { countPageView } = load('example')
+
+    countPageView('/movie/frank')
+    countPageView('/movie/frank', '/city/den-haag')
+
+    expect(count.mock.calls).toEqual([
+      [{ path: '/movie/frank' }],
+      [
+        {
+          path: '/movie/frank',
+          referrer: 'https://expatcinema.com/city/den-haag',
+        },
+      ],
+    ])
+  })
+
   it('has the code of the site, which is a valid subdomain', () => {
     expect(GOATCOUNTER_CODE).toMatch(/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/)
   })
