@@ -27,7 +27,7 @@ export type SearchResult = {
   subtype: string
 }
 
-type ProductionPage = {
+export type ProductionPage = {
   title: string
   programme: string
   dateText: string
@@ -105,7 +105,7 @@ const parseMetadataParagraph = (paragraph: string) => {
   }
 }
 
-const parseTitleAndYear = (page: ProductionPage) => {
+export const parseTitleAndYear = (page: ProductionPage) => {
   const metadataParagraphs = page.detailParagraphs
     .map(parseMetadataParagraph)
     .filter(({ normalized }) =>
@@ -120,8 +120,10 @@ const parseTitleAndYear = (page: ProductionPage) => {
     /(?<title>.+?)(?:\s*by\s+|\s*Directed by\s+|\s*Dir:\s*).+?\b\d{4}\b/i,
   )?.groups?.title
 
-  const title =
+  // the paragraph can be bold in markdown: "** La Cosa en la Niebla aka ..."
+  const title = (
     titleFromMetadata || decode(page.title).replace(/\s+/g, ' ').trim()
+  ).replace(/^\*+\s*/, '')
 
   return {
     title: titleCase(title),
