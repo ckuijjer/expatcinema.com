@@ -142,7 +142,7 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     addedAt: '2026-10-22',
   },
   {
-    title: '** La Cosa En La Niebla Aka the Thing in the Fog',
+    title: 'La Cosa En La Niebla Aka the Thing in the Fog',
     year: 2025,
     tmdbId: 1426755,
     note: "WORM's page and TMDB agree on director (Chedey Reyes) and runtime (83 vs 85 min) for this Spanish horror comedy; a second TMDB entry for the same title (1707238) has no director or release date listed.",
