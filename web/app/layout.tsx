@@ -7,6 +7,7 @@ import { defaultDescription, defaultSocialImage } from '../utils/seoMetadata'
 import { bodyFont } from '../utils/theme'
 import { siteUrl } from '../utils/siteUrl'
 import { GoatCounter } from './GoatCounter'
+import { ScrollRestoration } from './ScrollRestoration'
 
 Settings.defaultZone = 'Europe/Amsterdam'
 
@@ -42,6 +43,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={bodyFont.className}>
         <GoatCounter />
+        <ScrollRestoration />
         {children}
       </body>
     </html>
