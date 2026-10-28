@@ -1,4 +1,5 @@
 import {
+  ENGLISH_SUBTITLES_OVERRIDES,
   extractPageText,
   hasEnglishSubtitles,
   parseDirector,
@@ -84,5 +85,11 @@ describe('ventilator', () => {
     expect(parseDirector(mumbi)).toBe('Damien Hauser')
     expect(parseDirector(fangs)).toBe('Mohammed Shebl')
     expect(parseDirector(zafzifa)).toBeUndefined()
+  })
+})
+
+describe('ENGLISH_SUBTITLES_OVERRIDES', () => {
+  test("has Inn a State of Siege, whose page doesn't say it has English subtitles", () => {
+    expect(ENGLISH_SUBTITLES_OVERRIDES.has(23253)).toBe(true)
   })
 })

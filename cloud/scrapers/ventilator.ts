@@ -26,6 +26,16 @@ const AGENDA_URL =
 
 const MONTHS = 6
 
+// Screenings that have English subtitles although their page doesn't say so,
+// by the id in the url of the event page (amsterdamalternative.nl/agenda/<id>),
+// with where it comes from
+export const ENGLISH_SUBTITLES_OVERRIDES = new Map<number, string>([
+  [
+    23253,
+    "Inn a State of Siege: the film's producer wrote that it is screened with English subtitles (email, 2026-10-28); its page has no word on subtitles or language",
+  ],
+])
+
 type AgendaItem = {
   id: number
   // seconds since the epoch
@@ -99,7 +109,7 @@ const extractFromEventPage = async ({
 
   logger.debug('event page', { url, text })
 
-  if (!hasEnglishSubtitles(text)) {
+  if (!ENGLISH_SUBTITLES_OVERRIDES.has(id) && !hasEnglishSubtitles(text)) {
     return []
   }
 
