@@ -187,4 +187,5 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | springhaver              | ok     |                                                                      |
 | studiok                  | ok     |                                                                      |
 | themovies                | idle   | no EN-subbed films (checked 2026-10-03)                              |
+| ventilator               | ok     | added 2026-10-28; EN subs only when the film page says so (3 of 8)   |
 | worm                     | ok     |                                                                      |
