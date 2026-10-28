@@ -6,7 +6,12 @@
 import { GOATCOUNTER_CODE } from './goatcounterCode'
 
 type Goatcounter = {
-  count: (vars: { path: string; event?: boolean; title?: string }) => void
+  count: (vars: {
+    path: string
+    event?: boolean
+    title?: string
+    referrer?: string
+  }) => void
 }
 
 const getGoatcounter = (): Goatcounter | undefined => {
@@ -15,8 +20,18 @@ const getGoatcounter = (): Goatcounter | undefined => {
   return typeof goatcounter?.count === 'function' ? goatcounter : undefined
 }
 
-export const countPageView = (path: string) => {
-  getGoatcounter()?.count({ path })
+// `from` is the page the visitor came from within the site. The app opens pages
+// without loading them, so the browser's referrer is still the one the visit
+// began with (Google, say) and GoatCounter wouldn't see the move from the home
+// page to a film. Without `from` the script uses the browser's referrer.
+export const countPageView = (path: string, from?: string) => {
+  const origin =
+    typeof window === 'undefined' ? undefined : window.location?.origin
+
+  getGoatcounter()?.count({
+    path,
+    ...(from && origin && { referrer: `${origin}${from}` }),
+  })
 }
 
 export const countEvent = (path: string) => {
