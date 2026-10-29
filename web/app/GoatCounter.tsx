@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import Script from 'next/script'
 import { useEffect, useRef, useState } from 'react'
 
-import { countPageView } from '../utils/goatcounter'
+import { countPageView, flushSearch } from '../utils/goatcounter'
 import { GOATCOUNTER_CODE } from '../utils/goatcounterCode'
 
 // Counts the visits. The script doesn't count by itself (`no_onload`): the page
@@ -15,6 +15,10 @@ export const GoatCounter = () => {
   const pathname = usePathname()
   const [loaded, setLoaded] = useState(false)
   const previousPathname = useRef<string | undefined>(undefined)
+
+  // a search that is still waiting is counted when the app opens another page,
+  // before the search box of that page can reset it
+  useEffect(() => flushSearch, [pathname])
 
   useEffect(() => {
     if (!loaded) return

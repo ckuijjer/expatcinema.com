@@ -129,6 +129,9 @@ const searchCounter = createSearchCounter(countEvent)
 // `found` is whether the search left any screening
 export const countSearch = searchCounter.search
 
+// Counts the search that is waiting, for when the app opens another page
+export const flushSearch = searchCounter.flush
+
 // A search that is still waiting when the visitor leaves is counted then,
 // not lost
 if (typeof document !== 'undefined') {
