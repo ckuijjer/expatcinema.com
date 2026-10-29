@@ -69,7 +69,9 @@ export const normaliseSearchTerm = (search: string): string | null => {
   return term
 }
 
-const SEARCH_DELAY = 1000
+// Long enough to get past the pauses while typing: with a second, the
+// prefixes of one search (fat, fath, father) were counted as searches of their own
+const SEARCH_DELAY = 3000
 
 // A tag of an event or note that was clicked, so the search that follows is
 // counted as coming from the tag and not from typing
@@ -84,22 +86,30 @@ export const createSearchCounter = (
 ) => {
   let timer: ReturnType<typeof setTimeout> | undefined
   let last: string | undefined
+  let pending: (() => void) | undefined
 
   const cancel = () => {
     if (timer) clearTimeout(timer)
     timer = undefined
+    pending = undefined
   }
 
-  // Counts a search once it has been left alone for a second, and only when it
-  // is something else than the search counted before
+  // Counts the search that is waiting, without waiting any longer
+  const flush = () => {
+    const run = pending
+    cancel()
+    run?.()
+  }
+
+  // Counts a search once it has been left alone for a few seconds, and only
+  // when it is something else than the search counted before
   const search = (value: string, found: boolean) => {
     cancel()
 
     const term = normaliseSearchTerm(value)
     if (!term) return
 
-    timer = setTimeout(() => {
-      timer = undefined
+    pending = () => {
       const fromTag = term === tagTerm
       const kind = fromTag ? 'search-tag' : found ? 'search' : 'search-none'
       const key = `${kind}/${term}`
@@ -107,13 +117,25 @@ export const createSearchCounter = (
       if (key === last) return
       last = key
       count(key)
-    }, delay)
+    }
+    timer = setTimeout(flush, delay)
   }
 
-  return { search, cancel }
+  return { search, cancel, flush }
 }
 
 const searchCounter = createSearchCounter(countEvent)
 
 // `found` is whether the search left any screening
 export const countSearch = searchCounter.search
+
+// Counts the search that is waiting, for when the app opens another page
+export const flushSearch = searchCounter.flush
+
+// A search that is still waiting when the visitor leaves is counted then,
+// not lost
+if (typeof document !== 'undefined') {
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') searchCounter.flush()
+  })
+}

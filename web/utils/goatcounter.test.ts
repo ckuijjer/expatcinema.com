@@ -45,16 +45,29 @@ describe('createSearchCounter', () => {
   })
   afterEach(() => jest.useRealTimers())
 
-  it('counts a search once, after a second without a change', () => {
+  it('counts a search once, after a few seconds without a change', () => {
     const count = jest.fn()
     const { search } = createSearchCounter(count)
 
     search('sha', true)
-    jest.advanceTimersByTime(600)
+    jest.advanceTimersByTime(2000)
     search('shall', true)
-    jest.advanceTimersByTime(600)
+    jest.advanceTimersByTime(2000)
     expect(count).not.toHaveBeenCalled()
-    jest.advanceTimersByTime(400)
+    jest.advanceTimersByTime(3000)
+
+    expect(count).toHaveBeenCalledTimes(1)
+    expect(count).toHaveBeenCalledWith('search/shall')
+  })
+
+  it('counts the search that is waiting when it is flushed, once', () => {
+    const count = jest.fn()
+    const { search, flush } = createSearchCounter(count)
+
+    search('shall', true)
+    flush()
+    jest.advanceTimersByTime(5000)
+    flush()
 
     expect(count).toHaveBeenCalledTimes(1)
     expect(count).toHaveBeenCalledWith('search/shall')
@@ -65,7 +78,7 @@ describe('createSearchCounter', () => {
     const { search } = createSearchCounter(count)
 
     search('Zzzzz', false)
-    jest.advanceTimersByTime(1000)
+    jest.advanceTimersByTime(3000)
 
     expect(count).toHaveBeenCalledWith('search-none/zzzzz')
   })
@@ -75,11 +88,11 @@ describe('createSearchCounter', () => {
     const { search } = createSearchCounter(count)
 
     search('shall', true)
-    jest.advanceTimersByTime(1000)
+    jest.advanceTimersByTime(3000)
     search('shall', true)
-    jest.advanceTimersByTime(1000)
+    jest.advanceTimersByTime(3000)
     search('Shall ', true)
-    jest.advanceTimersByTime(1000)
+    jest.advanceTimersByTime(3000)
 
     expect(count).toHaveBeenCalledTimes(1)
   })
@@ -90,7 +103,7 @@ describe('createSearchCounter', () => {
 
     search('shall', true)
     search('', true)
-    jest.advanceTimersByTime(2000)
+    jest.advanceTimersByTime(3000)
     search('a@b.nl', true)
     jest.advanceTimersByTime(2000)
 
@@ -103,12 +116,12 @@ describe('createSearchCounter', () => {
 
     markSearchFromTag('30th Anniversary')
     search('30th anniversary', true)
-    jest.advanceTimersByTime(1000)
+    jest.advanceTimersByTime(3000)
     // typing it again later is a search
     search('nagesprek', true)
-    jest.advanceTimersByTime(1000)
+    jest.advanceTimersByTime(3000)
     search('30th anniversary', true)
-    jest.advanceTimersByTime(1000)
+    jest.advanceTimersByTime(3000)
 
     expect(count.mock.calls.map(([path]) => path)).toEqual([
       'search-tag/30th anniversary',
