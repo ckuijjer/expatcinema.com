@@ -112,6 +112,12 @@ With AWS access (local sessions, read-only profile `expatcinema-claude-readonly`
 6. **Matches that contradict the year.** Matched titles in `title-matches.json` whose `match.matchedReleaseDate` is more than a year from the screening's `year`. The resolver can pick a more popular film of the same name (`Shall We Dance?` was matched to the 2004 remake for the 1996 film at 7 cinemas). Check each against the cinema's film page; a wrong one is an override (step 5) or a finding for the resolver.
 7. **Stale overrides.** List the overrides older than 90 days (`addedAt`) that no title in `title-matches.json` uses (`method: 'manual-override'`, same `tmdbId`). Only report them: the film may return. Don't remove them.
 
+**Visitors and searches (GoatCounter).** Run `pnpm goatcounter:summary` in `cloud/` (needs `GOATCOUNTER_API_TOKEN`, a read-only token; if it isn't set, skip this and say so in the thread). It prints the last 7 days: visitors, top pages, searches, clicks on a tag, clicks out per cinema and film. Put it in the thread under a _Visitors_ heading, and look at:
+
+- **Searches without a result** (`search-none/…`): a title that two or more people searched for and we don't show is a candidate for a missing film or cinema. Check it against the cinema's own listing (recall) and the unmatched titles (matching), and list what you find.
+- **A cinema with no clicks out** for weeks while it has screenings: its screenings may be wrong or hard to find. Report it, don't conclude from it alone.
+- Don't report visitor numbers as a finding by themselves; give them as context.
+
 A wrong match is worse than no match: it puts a different film's poster and details on a screening. Never loosen the matching to bring the share down. A PR that improves a pattern must keep the existing tests passing and add a test with the real titles it handles.
 
 **Output:** one Slack message with the findings. Put the unmatched share and the title patterns that could be improved in the thread, under a _Matching_ heading, and mention the share in the top-level message when it jumped. Also list the titles that need a human, the matches that contradict the year and the stale overrides there. For clear scraper bugs, a clear title pattern or well-evidenced overrides the agent may open a PR, linked from the thread.

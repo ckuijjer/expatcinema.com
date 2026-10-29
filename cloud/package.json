@@ -25,6 +25,7 @@
     "scrapers:prod": "AWS_PROFILE=casper aws lambda invoke --cli-read-timeout 900 --function-name expatcinema-prod-scrapers output/expatcinema-prod-scrapers.json",
     "rematch": "DOTENV_CONFIG_PATH=.env.local node -r dotenv/config --no-warnings --import tsx rematch.ts",
     "scraper": "IS_LOCAL=true DOTENV_CONFIG_PATH=.env.local AWS_PROFILE=casper node -r dotenv/config --no-warnings --import tsx runScraper.ts",
+    "goatcounter:summary": "DOTENV_CONFIG_PATH=.env.local node -r dotenv/config --no-warnings --import tsx goatcounterSummaryRun.ts",
     "scraper:headless": "node --no-warnings --import tsx runScraper.ts"
   },
   "author": "Casper Kuijjer",
