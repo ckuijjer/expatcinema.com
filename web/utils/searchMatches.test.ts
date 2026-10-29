@@ -9,6 +9,20 @@ const screening = {
 const search = (value: string) => value.split(/\s+/)
 
 describe('matchesScreeningSearch', () => {
+  test('matches the original title and the directors, without diacritics', () => {
+    const film = {
+      ...screening,
+      title: 'Fatherland',
+      originalTitle: 'Ojczyzna',
+      directors: ['Céline Sciamma'],
+    }
+
+    expect(matchesScreeningSearch(film, search('ojczyzna'))).toBe(true)
+    expect(matchesScreeningSearch(film, search('sciamma'))).toBe(true)
+    expect(matchesScreeningSearch(film, search('celine fatherland'))).toBe(true)
+    expect(matchesScreeningSearch(film, search('vaterland'))).toBe(false)
+  })
+
   test('matches without a search', () => {
     expect(matchesScreeningSearch(screening, [])).toBe(true)
   })
