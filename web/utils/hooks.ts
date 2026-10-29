@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { removeDiacritics } from './removeDiacritics'
+import { normalizeSearchText } from './removeDiacritics'
 
 type UseSearch = {
   search: string
@@ -20,7 +20,7 @@ export const useSearch = (): UseSearch => {
   const search = searchParams?.get('search') ?? ''
 
   const searchComponents =
-    search === '' ? [] : removeDiacritics(search.toLowerCase()).split(/\s+/)
+    search === '' ? [] : normalizeSearchText(search).split(/\s+/)
 
   const searchQuery = search ? `?search=${encodeURIComponent(search)}` : ''
 
