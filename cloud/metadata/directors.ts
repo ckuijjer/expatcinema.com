@@ -7,22 +7,12 @@ import { DirectorMatch } from './types'
 // "Andrej Zvjagintsev" and "Andrey Zvyagintsev", "Jûzô Itami" and "Juzo Itami"
 const NAME_SIMILARITY = 0.8
 
-// Letters that don't have a diacritic to remove
-const LETTERS: Record<string, string> = {
-  đ: 'd',
-  ø: 'o',
-  ł: 'l',
-  ß: 'ss',
-  æ: 'ae',
-  œ: 'oe',
-}
-
 // A name has two or three words, a longer text isn't a name (a cinema that
 // gives a description of the film as the director)
 const MAX_NAME_WORDS = 5
 
 const normalizeName = (name: string) =>
-  removeDiacritics(name.toLowerCase().replace(/[đøłßæœ]/g, (c) => LETTERS[c]))
+  removeDiacritics(name.toLowerCase())
     .replace(/\([^)]*\)/g, ' ') // "(1, 3, 4)" after a name
     .replace(/['’`-]/g, '') // "Shin'ichiro", "Kore-eda"
     .replace(/[^a-z0-9\s]/g, ' ')
