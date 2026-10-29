@@ -3,8 +3,8 @@
 //
 //   pnpm goatcounter:summary
 //
-// Needs GOATCOUNTER_API_TOKEN, a token with only the "Read statistics"
-// permission (GoatCounter: Settings > API). The events are counted by the
+// Needs GOATCOUNTER_API_TOKEN, a token that can only read statistics
+// permission (https://expatcinema.goatcounter.com/user/api). The events are counted by the
 // website as `search/<term>`, `search-none/<term>`, `search-tag/<tag>` and
 // `outbound/<cinema>[/<film>]` (web/utils/goatcounter.ts).
 export type Hit = { path: string; count: number; event: boolean }
