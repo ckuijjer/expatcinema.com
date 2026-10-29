@@ -124,7 +124,7 @@ export const Calendar = ({
           {emptyStateMessage}
           {search && local && showTitle ? (
             <>
-              {' '}
+              {'. '}
               <Link
                 href={`/?search=${encodeURIComponent(search)}`}
                 className={searchEverywhereStyle}
