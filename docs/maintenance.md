@@ -114,7 +114,7 @@ With AWS access (local sessions, read-only profile `expatcinema-claude-readonly`
 
 **Visitors and searches (GoatCounter).** Run `pnpm goatcounter:summary` in `cloud/` (needs `GOATCOUNTER_API_TOKEN`, a read-only token; if it isn't set, skip this and say so in the thread). It prints the last 7 days: visitors, top pages, searches, clicks on a tag, clicks out per cinema and film. Put it in the thread under a _Visitors_ heading, and look at:
 
-- **Searches without a result** (`search-none/…`): a title that two or more people searched for and we don't show is a candidate for a missing film or cinema. Check it against the cinema's own listing (recall) and the unmatched titles (matching), and list what you find.
+- **Searches without a result in all cities** (`search-none/…`, searched on the home page): a title that two or more people searched for and we don't show is a candidate for a missing film or cinema. Check it against the cinema's own listing (recall) and the unmatched titles (matching), and list what you find. Those on the page of a city, cinema or film (`search-none-local/…`) are not a gap by themselves: the film may be shown elsewhere. Look at them only for a term that is a film we do show, which means the search is missing it.
 - **A cinema with no clicks out** for weeks while it has screenings: its screenings may be wrong or hard to find. Report it, don't conclude from it alone.
 - Don't report visitor numbers as a finding by themselves; give them as context.
 

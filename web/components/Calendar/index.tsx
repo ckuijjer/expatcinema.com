@@ -2,6 +2,7 @@
 
 import { DateTime } from 'luxon'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import React, { useEffect } from 'react'
 
 import { css } from 'styled-system/css'
@@ -30,6 +31,11 @@ export type Row =
 const containerStyle = css({
   marginTop: '24px',
   marginBottom: '24px',
+})
+
+const searchEverywhereStyle = css({
+  color: 'var(--link-color)',
+  textDecoration: 'underline',
 })
 
 export const Calendar = ({
@@ -78,11 +84,15 @@ export const Calendar = ({
     ]
   })
 
+  // A page of a city, a cinema or a film has only some of the screenings, so
+  // nothing found there says little about the film. The home page has all
+  const local = Boolean(currentCity || currentCinema) || !showTitle
+
   // a search is counted once it is left alone, with whether it found anything
   const found = rows.length > 0
   useEffect(() => {
-    countSearch(search, found)
-  }, [search, found])
+    countSearch(search, found, local)
+  }, [search, found, local])
 
   const locationLabel = (() => {
     if (currentCinema) {
@@ -110,7 +120,20 @@ export const Calendar = ({
   return (
     <div className={containerStyle}>
       {rows.length === 0 ? (
-        <h3 className={listSectionHeadingStyle}>{emptyStateMessage}</h3>
+        <h3 className={listSectionHeadingStyle}>
+          {emptyStateMessage}
+          {search && local && showTitle ? (
+            <>
+              {'. '}
+              <Link
+                href={`/?search=${encodeURIComponent(search)}`}
+                className={searchEverywhereStyle}
+              >
+                Search all cities
+              </Link>
+            </>
+          ) : null}
+        </h3>
       ) : (
         <DirectCalendar
           rows={rows}

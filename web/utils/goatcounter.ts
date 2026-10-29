@@ -103,7 +103,9 @@ export const createSearchCounter = (
 
   // Counts a search once it has been left alone for a few seconds, and only
   // when it is something else than the search counted before
-  const search = (value: string, found: boolean) => {
+  // `local` is a search on a page that has only the screenings of a city, a
+  // cinema or a film: no result there says nothing about the film being missing
+  const search = (value: string, found: boolean, local = false) => {
     cancel()
 
     const term = normaliseSearchTerm(value)
@@ -111,7 +113,13 @@ export const createSearchCounter = (
 
     pending = () => {
       const fromTag = term === tagTerm
-      const kind = fromTag ? 'search-tag' : found ? 'search' : 'search-none'
+      const kind = fromTag
+        ? 'search-tag'
+        : found
+          ? 'search'
+          : local
+            ? 'search-none-local'
+            : 'search-none'
       const key = `${kind}/${term}`
       if (fromTag) tagTerm = null
       if (key === last) return
@@ -126,7 +134,8 @@ export const createSearchCounter = (
 
 const searchCounter = createSearchCounter(countEvent)
 
-// `found` is whether the search left any screening
+// `found` is whether the search left any screening, `local` whether the page
+// has only some of the screenings
 export const countSearch = searchCounter.search
 
 // Counts the search that is waiting, for when the app opens another page
