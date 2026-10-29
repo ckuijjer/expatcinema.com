@@ -86,47 +86,38 @@ const posterLinkStyle = css({
   zIndex: '2',
 })
 
-// An "i" centered on the poster. Devices with a hover show it, with a scrim over
-// the poster, on hover and on keyboard focus; touch devices have no hover, so
-// there it is always there, small and quiet.
-const posterOverlayStyle = css({
+// A small "i" badge in the bottom right corner of the poster, in the style of
+// the play button of the trailer: wine with a pink ring. It marks the poster as
+// the way to the movie page, always visible so that touch devices have it too.
+// The "i" is drawn (a dot and a stem) so that it sits in the middle of the disc.
+const posterBadgeStyle = css({
   position: 'absolute',
-  inset: '8px',
-  borderRadius: '4px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  right: '12px',
+  bottom: '12px',
+  width: '18px',
+  height: '18px',
+  boxSizing: 'border-box',
+  borderRadius: '50%',
+  border: '1.25px solid var(--palette-purple-300)',
+  backgroundColor: 'var(--palette-purple-400)',
+  color: 'var(--palette-purple-300)',
+  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.4)',
   pointerEvents: 'none',
-  transition: 'background-color 0.15s',
-  '@media (hover: hover)': {
-    backgroundColor: 'transparent',
-    '& > span': { opacity: '0', transition: 'opacity 0.15s' },
-    '[data-poster-link]:hover > &, [data-poster-link]:focus-visible > &': {
-      backgroundColor: 'rgba(0, 0, 0, 0.55)',
-      '& > span': { opacity: '1' },
-    },
-  },
 })
 
-const posterIconStyle = css({
-  width: '28px',
-  height: '28px',
-  borderRadius: '50%',
-  border: '2px solid var(--text-inverse-color)',
-  color: 'var(--text-inverse-color)',
-  backgroundColor: 'rgba(0, 0, 0, 0.4)',
-  fontSize: '16px',
-  fontWeight: '700',
-  lineHeight: '24px',
-  textAlign: 'center',
-  '@media (hover: none)': {
-    width: '22px',
-    height: '22px',
-    fontSize: '13px',
-    lineHeight: '18px',
-    opacity: '0.8',
-  },
-})
+const PosterBadge = () => (
+  <svg className={posterBadgeStyle} viewBox="0 0 24 24" aria-hidden>
+    <circle cx="12" cy="7.4" r="1.7" fill="currentColor" />
+    <rect
+      x="10.6"
+      y="10.6"
+      width="2.8"
+      height="8.2"
+      rx="1.2"
+      fill="currentColor"
+    />
+  </svg>
+)
 
 const screeningRowLinkStyle = css({
   position: 'absolute',
@@ -233,7 +224,6 @@ export const ScreeningRow = ({
             <MovieLink
               href={movieUrl}
               className={posterLinkStyle}
-              data-poster-link
               aria-label={`More about ${title}`}
             >
               <Image
@@ -244,9 +234,7 @@ export const ScreeningRow = ({
                 aria-hidden
                 className={listPosterStyle}
               />
-              <span className={posterOverlayStyle} aria-hidden>
-                <span className={posterIconStyle}>i</span>
-              </span>
+              <PosterBadge />
             </MovieLink>
           ) : (
             <Image
@@ -262,16 +250,13 @@ export const ScreeningRow = ({
           <MovieLink
             href={movieUrl}
             className={posterLinkStyle}
-            data-poster-link
             aria-label={`More about ${title}`}
           >
             <PosterPlaceholder
               title={movieId ? title : undefined}
               className={movieId ? undefined : unmatchedPosterPlaceholderStyle}
             />
-            <span className={posterOverlayStyle} aria-hidden>
-              <span className={posterIconStyle}>i</span>
-            </span>
+            <PosterBadge />
           </MovieLink>
         ) : null
       ) : null}
