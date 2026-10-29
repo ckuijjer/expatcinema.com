@@ -47,6 +47,10 @@ export type Screening = {
   year?: number
   event?: string
   notes?: string[]
+  // for the search: what the film is called in its own language, and who
+  // made it. The original title is left out when it is the title
+  originalTitle?: string
+  directors?: string[]
 }
 
 export const getScreenings = async () => {
@@ -78,12 +82,20 @@ export const getScreenings = async () => {
       : undefined
     const movieYear = movie ? getMovieReleaseYear(movie) : undefined
     const movieSlug = movie?.slug
+    const title = movie?.title ?? screening.title
+    const originalTitle = movie?.tmdb?.originalTitle
+    const directors = movie?.tmdb?.directors
 
     return {
       ...screening,
-      title: movie?.title ?? screening.title,
+      title,
       year: movieYear ?? screening.year,
       movieSlug,
+      ...(originalTitle &&
+        originalTitle.toLowerCase() !== title.toLowerCase() && {
+          originalTitle,
+        }),
+      ...(directors?.length && { directors }),
       cinema,
       posterUrl: screening.movieId
         ? getMoviePosterUrl(movie?.tmdb?.posterPath)

@@ -11,6 +11,8 @@ type ScreeningSearchTarget = {
   // about it: "ENFF", "nagesprek"
   event?: string
   notes?: string[]
+  originalTitle?: string
+  directors?: string[]
   cinema: {
     name: string
     city: {
@@ -46,12 +48,19 @@ export const matchesScreeningSearch = <T extends ScreeningSearchTarget>(
       screening.cinema.city.name,
       screening.event ?? '',
       ...(screening.notes ?? []),
+      screening.originalTitle ?? '',
+      ...(screening.directors ?? []),
     ],
     searchComponents,
   )
 
 export const matchesMovieSearch = (movie: Movie, searchComponents: string[]) =>
   matchesSearchComponents(
-    [movie.title, getMovieReleaseYear(movie)?.toString() ?? ''],
+    [
+      movie.title,
+      getMovieReleaseYear(movie)?.toString() ?? '',
+      movie.tmdb?.originalTitle ?? '',
+      ...(movie.tmdb?.directors ?? []),
+    ],
     searchComponents,
   )
