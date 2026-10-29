@@ -175,7 +175,7 @@ Baseline from the 29 runs between 2026-08-31 and 2026-09-28. Statuses: `ok` (mon
 | focusarnhem              | ok     | fixed 2026-09-30 (new site, GraphQL API)                             |
 | forumgroningen           | ok     |                                                                      |
 | hartlooper               | ok     |                                                                      |
-| heerenstraattheater      | ok     | relay since 10-01; 0 on 10-20 to 10-25 (relay password), 1 on 10-28  |
+| heerenstraattheater      | ok     | relay since 10-01; 0 on 10-20 to 10-24 was the relay answering 401 to `/fetch` (an `Error retrieving … via relay` per run, fixed 10-25). Its page (`/subtitlesunday`) lists only the next Subtitle Sunday film ("Verwacht 01-11-2026"), announced a few days before, so 0 without an error is normal: Mondays, and 10-26 to 10-28 until the film of 11-01 was announced on 10-28 (runs of about 2.5 s, no error) |
 | hetdocumentairepaviljoen | ok     | fixed 2026-09-28 (subtitle label changed)                            |
 | ketelhuis                | ok     | small (1–6); page blank 10-03 (their site)                           |
 | kinorotterdam            | ok     |                                                                      |
