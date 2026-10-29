@@ -86,28 +86,23 @@ const posterLinkStyle = css({
   zIndex: '2',
 })
 
-// A glass "i" in the middle of the poster, in the style of the play button of
-// the trailer: a dark translucent disc with a white ring. It marks the poster as
+// A small "i" badge in the bottom right corner of the poster, in the style of
+// the play button of the trailer: wine with a pink ring. It marks the poster as
 // the way to the movie page, always visible so that touch devices have it too.
 // The "i" is drawn (a dot and a stem) so that it sits in the middle of the disc.
 const posterBadgeStyle = css({
   position: 'absolute',
-  left: '50%',
-  top: '50%',
-  width: '28px',
-  height: '28px',
-  transform: 'translate(-50%, -50%)',
+  right: '12px',
+  bottom: '12px',
+  width: '18px',
+  height: '18px',
   boxSizing: 'border-box',
   borderRadius: '50%',
-  border: '1.5px solid var(--text-inverse-color)',
-  backgroundColor: 'rgba(0, 0, 0, 0.55)',
-  color: 'var(--text-inverse-color)',
+  border: '1.25px solid var(--palette-purple-300)',
+  backgroundColor: 'var(--palette-purple-400)',
+  color: 'var(--palette-purple-300)',
   boxShadow: '0 1px 3px rgba(0, 0, 0, 0.4)',
   pointerEvents: 'none',
-  '@media (hover: none)': {
-    width: '22px',
-    height: '22px',
-  },
 })
 
 const PosterBadge = () => (
