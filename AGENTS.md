@@ -290,7 +290,7 @@ Write code that looks like the code around it. When in doubt, look at these smal
 
 ### General
 
-- Prettier settings: no semicolons, single quotes. Don't hand-format; run `pnpm format`.
+- Prettier settings: no semicolons, single quotes. Don't hand-format; run `pnpm format`. A Claude Code hook in `.claude/settings.json` runs prettier on every file Claude edits or writes.
 - Arrow functions assigned to `const`; no `function` declarations, no classes.
 - Prefer small, plain functions over abstractions. Don't add options, parameters, or helpers for cases that don't exist yet.
 - Don't write defensive code for situations that can't happen. Handle the failures that do happen (a missing field on a real page, an unparsable date) where they happen, and log them.
