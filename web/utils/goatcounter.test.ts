@@ -83,6 +83,16 @@ describe('createSearchCounter', () => {
     expect(count).toHaveBeenCalledWith('search-none/zzzzz')
   })
 
+  it('counts a search without result on a page with some of the screenings apart', () => {
+    const count = jest.fn()
+    const { search } = createSearchCounter(count)
+
+    search('naza', false, true)
+    jest.advanceTimersByTime(3000)
+
+    expect(count).toHaveBeenCalledWith('search-none-local/naza')
+  })
+
   it('does not count the same search twice in a row', () => {
     const count = jest.fn()
     const { search } = createSearchCounter(count)

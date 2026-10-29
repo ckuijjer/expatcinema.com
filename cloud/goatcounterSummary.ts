@@ -26,6 +26,7 @@ export const summarise = (hits: Hit[], total?: number) => {
   const pages = new Map<string, number>()
   const searches = new Map<string, number>()
   const noResults = new Map<string, number>()
+  const noResultsLocal = new Map<string, number>()
   const fromTag = new Map<string, number>()
   const cinemas = new Map<string, number>()
   const films = new Map<string, number>()
@@ -40,6 +41,7 @@ export const summarise = (hits: Hit[], total?: number) => {
     const name = rest.join('/')
     if (kind === 'search') add(searches, name, count)
     else if (kind === 'search-none') add(noResults, name, count)
+    else if (kind === 'search-none-local') add(noResultsLocal, name, count)
     else if (kind === 'search-tag') add(fromTag, name, count)
     else if (kind === 'outbound') {
       const [cinema, film] = rest
@@ -54,10 +56,11 @@ export const summarise = (hits: Hit[], total?: number) => {
   return [
     `## GoatCounter, last 7 days`,
     total === undefined ? '' : `Visitors: ${total}`,
-    `Clicks out to a cinema: ${sum(cinemas)}, searches: ${sum(searches) + sum(noResults)} (${sum(noResults)} without a result)`,
+    `Clicks out to a cinema: ${sum(cinemas)}, searches: ${sum(searches) + sum(noResults) + sum(noResultsLocal)} (${sum(noResults)} without a result in all cities, ${sum(noResultsLocal)} on the page of a city, cinema or film)`,
     `### Top pages\n${list(top(pages, 10))}`,
     `### Searches\n${list(top(searches, 10))}`,
-    `### Searches without a result (a missing film or cinema?)\n${list(top(noResults, 20))}`,
+    `### Searches without a result in all cities (a missing film or cinema?)\n${list(top(noResults, 20))}`,
+    `### Searches without a result on the page of a city, cinema or film (not a gap by itself)\n${list(top(noResultsLocal, 20))}`,
     `### Clicks on a tag\n${list(top(fromTag, 10))}`,
     `### Clicks out per cinema\n${list(top(cinemas, 20))}`,
     `### Clicks out per film\n${list(top(films, 10))}`,

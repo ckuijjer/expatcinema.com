@@ -7,6 +7,7 @@ describe('summarise', () => {
     { path: 'search/frank', count: 3, event: true },
     { path: 'search/frank', count: 1, event: true },
     { path: 'search-none/zzzz', count: 2, event: true },
+    { path: 'search-none-local/naza', count: 3, event: true },
     { path: 'search-tag/30th anniversary', count: 4, event: true },
     { path: 'outbound/eye', count: 5, event: true },
     { path: 'outbound/eye/frank', count: 2, event: true },
@@ -18,11 +19,12 @@ describe('summarise', () => {
 
     expect(out).toContain('Visitors: 40')
     expect(out).toContain(
-      'Clicks out to a cinema: 8, searches: 6 (2 without a result)',
+      'Clicks out to a cinema: 8, searches: 9 (2 without a result in all cities, 3 on the page of a city, cinema or film)',
     )
     expect(out).toContain('- /: 50')
     expect(out).toContain('- frank: 4')
     expect(out).toContain('- zzzz: 2')
+    expect(out).toContain('- naza: 3')
     expect(out).toContain('- 30th anniversary: 4')
     expect(out).toContain('- eye: 7')
     expect(out).toContain('- frank (eye): 2')
