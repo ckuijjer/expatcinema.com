@@ -9,7 +9,10 @@ const get = async (path: string, token: string): Promise<any> => {
   const response = await fetch(`${SITE}/api/v0${path}`, {
     headers: { Authorization: `Bearer ${token}` },
   })
-  if (!response.ok) throw new Error(`${path}: ${response.status}`)
+  if (!response.ok) {
+    const body = await response.text()
+    throw new Error(`${path}: ${response.status} ${body.slice(0, 200)}`)
+  }
   // the API allows 4 requests per second
   await new Promise((resolve) => setTimeout(resolve, 300))
   return response.json()
