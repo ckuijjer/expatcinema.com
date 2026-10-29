@@ -35,6 +35,7 @@ const containerStyle = css({
 
 const searchEverywhereStyle = css({
   color: 'var(--link-color)',
+  textDecoration: 'underline',
 })
 
 export const Calendar = ({
@@ -119,17 +120,20 @@ export const Calendar = ({
   return (
     <div className={containerStyle}>
       {rows.length === 0 ? (
-        <>
-          <h3 className={listSectionHeadingStyle}>{emptyStateMessage}</h3>
+        <h3 className={listSectionHeadingStyle}>
+          {emptyStateMessage}
           {search && local && showTitle ? (
-            <Link
-              href={`/?search=${encodeURIComponent(search)}`}
-              className={searchEverywhereStyle}
-            >
-              Search all cities for {search}
-            </Link>
+            <>
+              {' '}
+              <Link
+                href={`/?search=${encodeURIComponent(search)}`}
+                className={searchEverywhereStyle}
+              >
+                Search all cities
+              </Link>
+            </>
           ) : null}
-        </>
+        </h3>
       ) : (
         <DirectCalendar
           rows={rows}
