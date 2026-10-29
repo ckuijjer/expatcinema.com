@@ -28,8 +28,9 @@ type MoviePageResult = {
   details: string[]
 }
 
-const cleanTitle = (title: string) =>
-  titleCase(title.replace(/\s+ENG SUB$/i, ''))
+// The page puts "ENG SUB" before the title ("ENG SUB Naza"), earlier it came after
+export const cleanTitle = (title: string) =>
+  titleCase(title.replace(/^ENG SUB\s+|\s+ENG SUB$/i, ''))
 
 const parseTimestamp = (timestamp: string) => {
   const parsed = DateTime.fromSeconds(Number(timestamp), {
