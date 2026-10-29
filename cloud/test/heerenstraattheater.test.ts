@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest'
+
 import { cleanTitle } from '../scrapers/heerenstraattheater'
 
 describe('heerenstraattheater cleanTitle', () => {
