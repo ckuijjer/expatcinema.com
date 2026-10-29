@@ -1,3 +1,4 @@
+import { normalizeSearchText } from './removeDiacritics'
 import { matchesScreeningSearch } from './searchMatches'
 
 const screening = {
@@ -9,17 +10,30 @@ const screening = {
 const search = (value: string) => value.split(/\s+/)
 
 describe('matchesScreeningSearch', () => {
+  test('matches an apostrophe or a × however it is typed', () => {
+    const film = { ...screening, title: 'L’Inconnue' }
+    const eyes = { ...screening, title: '3×3 Eyes' }
+
+    // the search is normalised as in useSearch
+    const typed = (value: string) => normalizeSearchText(value).split(/\s+/)
+
+    expect(matchesScreeningSearch(film, typed("l'inc"))).toBe(true)
+    expect(matchesScreeningSearch(film, typed('l’inc'))).toBe(true)
+    expect(matchesScreeningSearch(eyes, typed('3x3'))).toBe(true)
+    expect(matchesScreeningSearch(eyes, typed('3×3'))).toBe(true)
+  })
+
   test('matches the original title and the directors, without diacritics', () => {
     const film = {
       ...screening,
       title: 'Fatherland',
       originalTitle: 'Ojczyzna',
-      directors: ['Céline Sciamma'],
+      directors: ['Paweł Pawlikowski'],
     }
 
     expect(matchesScreeningSearch(film, search('ojczyzna'))).toBe(true)
-    expect(matchesScreeningSearch(film, search('sciamma'))).toBe(true)
-    expect(matchesScreeningSearch(film, search('celine fatherland'))).toBe(true)
+    expect(matchesScreeningSearch(film, search('pawlikowski'))).toBe(true)
+    expect(matchesScreeningSearch(film, search('pawel fatherland'))).toBe(true)
     expect(matchesScreeningSearch(film, search('vaterland'))).toBe(false)
   })
 

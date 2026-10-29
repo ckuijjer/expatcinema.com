@@ -1,8 +1,6 @@
 import type { Movie } from './getMovies'
 import { getMovieReleaseYear } from './getMovies'
-import { removeDiacritics } from './removeDiacritics'
-
-const normalize = (value: string) => removeDiacritics(value.toLowerCase())
+import { normalizeSearchText } from './removeDiacritics'
 
 type ScreeningSearchTarget = {
   title: string
@@ -29,7 +27,7 @@ export const matchesSearchComponents = (
     return true
   }
 
-  const normalizedValues = values.map(normalize)
+  const normalizedValues = values.map(normalizeSearchText)
 
   return searchComponents.every((searchComponent) =>
     normalizedValues.some((value) => value.includes(searchComponent)),
