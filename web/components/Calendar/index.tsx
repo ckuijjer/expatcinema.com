@@ -129,7 +129,7 @@ export const Calendar = ({
                 href={`/?search=${encodeURIComponent(search)}`}
                 className={searchEverywhereStyle}
               >
-                Search all cities
+                Search all cinemas
               </Link>
             </>
           ) : null}
