@@ -51,6 +51,8 @@ export type Screening = {
   // made it. The original title is left out when it is the title
   originalTitle?: string
   directors?: string[]
+  runtimeMinutes?: number
+  genres?: string[]
 }
 
 export const getScreenings = async () => {
@@ -85,6 +87,8 @@ export const getScreenings = async () => {
     const title = movie?.title ?? screening.title
     const originalTitle = movie?.tmdb?.originalTitle
     const directors = movie?.tmdb?.directors
+    const runtimeMinutes = movie?.tmdb?.runtime
+    const genres = movie?.tmdb?.genres
 
     return {
       ...screening,
@@ -96,6 +100,8 @@ export const getScreenings = async () => {
           originalTitle,
         }),
       ...(directors?.length && { directors }),
+      ...(runtimeMinutes ? { runtimeMinutes } : {}),
+      ...(genres?.length && { genres }),
       cinema,
       posterUrl: screening.movieId
         ? getMoviePosterUrl(movie?.tmdb?.posterPath)

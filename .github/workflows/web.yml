@@ -96,6 +96,13 @@ jobs:
         run: ${{ env.package-manager-runner }} next build
       - name: Generate a sitemap
         run: ${{ env.package-manager-runner }} next-sitemap
+      # The new layout, served under /next next to the site. It builds into its
+      # own directory (out-next), which becomes out/next
+      - name: Build the new layout under /next
+        run: |
+          ${{ env.package-manager-runner }} build:next
+          cp -r out-next out/next
+          rm -f out/next/CNAME
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:

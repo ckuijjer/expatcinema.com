@@ -270,6 +270,8 @@ pnpm lint
 pnpm build
 ```
 
+The web workflow also builds the new layout (`pnpm build:next`, `NEXT_PUBLIC_SITE_VARIANT=next`) into `out-next` and serves it under `/next` (`pnpm dev:next` runs it locally). `utils/siteVariant.ts` tells the code which of the two it is.
+
 ### Formatting
 
 From the repo root:
