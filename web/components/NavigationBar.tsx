@@ -70,6 +70,8 @@ export const NavigationBar = ({ showSearch = true }) => {
   const { search, setSearch } = useSearch()
 
   useEffect(() => {
+    // Open when a search term comes in (e.g. from the URL), close when it is cleared
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsSearchOpen(search !== '')
   }, [search])
 
