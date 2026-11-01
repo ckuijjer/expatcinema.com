@@ -1,4 +1,3 @@
-
 import { cleanTitle } from '../scrapers/heerenstraattheater'
 
 describe('heerenstraattheater cleanTitle', () => {
