@@ -4,6 +4,12 @@ import type { Row } from '.'
 import { RelativeDate } from '../RelativeDate'
 import { ScreeningRow } from '../Screening'
 import { ScreeningTimeChips } from '../ScreeningTimeChips'
+import {
+  FilmWithScreenings,
+  ScreeningLines,
+  groupByFilm,
+} from '../GroupedScreenings'
+import { isNextVariant } from '../../utils/siteVariant'
 
 type ScreeningRowData = Extract<Row, { component: 'ScreeningRow' }>['props']
 
@@ -47,6 +53,31 @@ export const DirectCalendar = ({
             screenings={screenings}
             runtimeMinutes={runtimeMinutes}
           />
+        </React.Fragment>
+      ))}
+    </>
+  ) : isNextVariant ? (
+    // the new layout: a film once a day, with a line for each of its screenings
+    <>
+      {groupByDate(rows).map(({ heading, screenings }) => (
+        <React.Fragment key={heading}>
+          <RelativeDate>{heading}</RelativeDate>
+          {showTitle ? (
+            groupByFilm(screenings).map((film) => (
+              <FilmWithScreenings
+                key={`${film[0].movieId ?? film[0].title}-${film[0].year}`}
+                screenings={film}
+                showCity={showCity}
+                showCinema={showCinema}
+              />
+            ))
+          ) : (
+            <ScreeningLines
+              screenings={screenings}
+              showCity={showCity}
+              showCinema={showCinema}
+            />
+          )}
         </React.Fragment>
       ))}
     </>

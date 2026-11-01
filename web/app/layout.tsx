@@ -5,6 +5,7 @@ import React from 'react'
 import '../styles/globals.css'
 import { defaultDescription, defaultSocialImage } from '../utils/seoMetadata'
 import { bodyFont } from '../utils/theme'
+import { isNextVariant } from '../utils/siteVariant'
 import { siteUrl } from '../utils/siteUrl'
 import { GoatCounter } from './GoatCounter'
 import { ScrollRestoration } from './ScrollRestoration'
@@ -28,6 +29,8 @@ export const metadata: Metadata = {
   verification: {
     google: 'dL5YABwMMr_oD9pxMofGesLOQ5s3Kq_l0sbLfURov1M',
   },
+  // the new layout under /next is for trying out: keep it out of the search results
+  ...(isNextVariant && { robots: { index: false, follow: false } }),
   icons: { icon: '/favicon.ico' },
   other: {
     'msapplication-TileColor': '#ffffff',
