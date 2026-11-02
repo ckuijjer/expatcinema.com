@@ -1,5 +1,6 @@
 import { css } from 'styled-system/css'
 
+import { isNextVariant } from '../utils/siteVariant'
 import { headerFont } from '../utils/theme'
 
 export const listContainerStyle = css({
@@ -74,8 +75,10 @@ export const listPosterPlaceholderStyle = css({
 
 export const listTitleStyle = css({
   minWidth: '0',
-  paddingTop: '4px',
-  fontSize: '18px',
+  // the new layout: a larger title, centered next to the poster
+  paddingTop: isNextVariant ? '0' : '4px',
+  alignSelf: isNextVariant ? 'center' : 'auto',
+  fontSize: isNextVariant ? '20px' : '18px',
   overflowWrap: 'anywhere',
 })
 

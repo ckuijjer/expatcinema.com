@@ -71,7 +71,9 @@ const lineStyle = css({
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
-  gap: '8px',
+  // a label that does not fit next to the place goes under it
+  flexWrap: 'wrap',
+  gap: '4px 8px',
   minHeight: '38px',
   padding: '6px 10px',
   lineHeight: '1.4',
@@ -91,7 +93,7 @@ const lineLinkStyle = css({
 
 // the text does not take clicks, the link behind it does
 const lineTextStyle = css({
-  flex: '1 1 0',
+  flex: '1 1 auto',
   minWidth: '0',
   display: 'flex',
   alignItems: 'baseline',
