@@ -14,6 +14,14 @@ const chipsStyle = css({
   marginBottom: '18px',
 })
 
+// under a film in a list: close to the title, with the air of the list below
+const compactChipsStyle = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '8px',
+  marginTop: '2px',
+})
+
 const chipStyle = css({
   padding: '8px 14px',
   fontSize: '18px',
@@ -68,6 +76,7 @@ const formatTime = (date: DateTime) =>
 export const ScreeningTimeChips = ({
   screenings,
   runtimeMinutes,
+  compact,
 }: {
   screenings: {
     url: string
@@ -78,8 +87,9 @@ export const ScreeningTimeChips = ({
     notes?: string[]
   }[]
   runtimeMinutes?: number | null
+  compact?: boolean
 }) => (
-  <div className={chipsStyle}>
+  <div className={compact ? compactChipsStyle : chipsStyle}>
     {screenings.map(({ url, cinema, movieSlug, date, event, notes }) => {
       const label = [event, ...(notes ?? [])].filter(Boolean).join(' · ')
       const ends = runtimeMinutes
