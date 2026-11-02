@@ -19,6 +19,10 @@ export type GroupedScreening = ScreeningWithLuxonDate & { movieHref?: string }
 // the cinema. The browser skips the layout and paint of what is off-screen.
 const filmStyle = css({
   marginTop: '28px',
+  // content-visibility clips to the box: the 12px that the rows stick out at
+  // both sides (for the hover) must be inside it
+  marginInline: '-12px',
+  paddingInline: '12px',
   contentVisibility: 'auto',
   containIntrinsicSize: 'auto 120px',
 })
@@ -70,11 +74,15 @@ const lineStyle = css({
   // a label that does not fit next to the place goes under it
   flexWrap: 'wrap',
   gap: '4px 10px',
-  padding: '8px 14px',
+  // as the rows of the other lists: 12px of padding that sticks out at both
+  // sides, so the text lines up with the page and the hover has room around it
+  padding: '8px 12px',
+  margin: '0 -12px',
   lineHeight: '1.2',
-  borderRadius: '8px',
-  border: '1px solid var(--border-color)',
-  _hover: { backgroundColor: 'var(--background-highlight-color)' },
+  _hover: {
+    backgroundColor: 'var(--background-highlight-color)',
+    borderRadius: '10px',
+  },
 })
 
 const lineLinkStyle = css({
