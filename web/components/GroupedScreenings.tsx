@@ -18,7 +18,7 @@ export type GroupedScreening = ScreeningWithLuxonDate & { movieHref?: string }
 // screening. The film (poster, title) goes to the movie page, a line goes to
 // the cinema. The browser skips the layout and paint of what is off-screen.
 const filmStyle = css({
-  marginTop: '20px',
+  marginTop: '28px',
   contentVisibility: 'auto',
   containIntrinsicSize: 'auto 120px',
 })
@@ -69,11 +69,10 @@ const lineStyle = css({
   alignItems: 'center',
   // a label that does not fit next to the place goes under it
   flexWrap: 'wrap',
-  gap: '4px 8px',
-  minHeight: '38px',
-  padding: '6px 10px',
-  lineHeight: '1.4',
-  borderRadius: '10px',
+  gap: '4px 10px',
+  padding: '8px 14px',
+  lineHeight: '1.2',
+  borderRadius: '8px',
   border: '1px solid var(--border-color)',
   _hover: { backgroundColor: 'var(--background-highlight-color)' },
 })
@@ -99,15 +98,17 @@ const lineTextStyle = css({
 
 const timeStyle = css({
   // the same width for every time, so that the places line up
-  flex: '0 0 46px',
-  fontSize: '15px',
-  fontWeight: '700',
+  flex: '0 0 auto',
+  minWidth: '52px',
+  // as on the time chips
+  fontSize: '18px',
   fontVariantNumeric: 'tabular-nums',
 })
 
 const placeStyle = css({
   minWidth: '0',
   fontSize: '14px',
+  color: 'var(--text-muted-color)',
   overflowWrap: 'anywhere',
 })
 
