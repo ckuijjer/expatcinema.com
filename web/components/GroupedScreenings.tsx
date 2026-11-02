@@ -115,8 +115,8 @@ const timeStyle = css({
 
 const placeStyle = css({
   minWidth: '0',
-  fontSize: '14px',
-  color: 'var(--text-muted-color)',
+  // as the time
+  fontSize: '18px',
   overflowWrap: 'anywhere',
 })
 
