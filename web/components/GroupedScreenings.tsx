@@ -8,6 +8,7 @@ import { countOutbound } from '../utils/goatcounter'
 import { ScreeningWithLuxonDate } from '../utils/groupAndSortScreenings'
 import { LabelTags } from './LabelTags'
 import { MovieLink } from './MovieLink'
+import { ScreeningTimeChips } from './ScreeningTimeChips'
 import { PosterPlaceholder } from './PosterPlaceholder'
 import { listPosterStyle, listYearStyle } from './listStyles'
 
@@ -29,7 +30,7 @@ const filmLinkStyle = css({
   alignItems: 'center',
   gap: '12px',
   minHeight: '72px',
-  padding: '12px 12px 6px',
+  padding: '8px 12px',
   margin: '0 -12px',
   textDecoration: 'none',
   color: 'var(--text-color)',
@@ -40,36 +41,30 @@ const filmLinkStyle = css({
   },
 })
 
+const chipsIndentStyle = css({ marginLeft: '60px' })
+
 const filmTextStyle = css({ minWidth: '0', display: 'grid' })
 
 const titleStyle = css({
-  fontSize: '18px',
+  fontSize: '20px',
   lineHeight: '1.3',
   overflowWrap: 'anywhere',
 })
 
-const metaStyle = css({
-  fontSize: '14px',
-  lineHeight: '1.35',
-  color: 'var(--text-muted-color)',
-})
-
-// the width of the poster (48px) and the gap (12px) less the 12px of padding
-// of the line, which puts the text of a line right under the title
+// the box of a line starts where the title does: 12px of padding of the film,
+// the poster (48px) and the gap (12px), less the 12px the film sticks out
 const linesStyle = css({
   display: 'grid',
-  rowGap: '2px',
-  marginTop: '-2px',
-  marginLeft: '48px',
-  marginRight: '-12px',
+  rowGap: '6px',
+  marginTop: '2px',
+  marginLeft: '60px',
 })
 
 // on the page of a film there is no film above the lines: they start at the edge
 const linesOnlyStyle = css({
   display: 'grid',
-  rowGap: '2px',
-  marginLeft: '-12px',
-  marginRight: '-12px',
+  rowGap: '6px',
+  marginTop: '16px',
 })
 
 const lineStyle = css({
@@ -77,13 +72,12 @@ const lineStyle = css({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
-  minHeight: '34px',
-  padding: '6px 12px',
+  minHeight: '38px',
+  padding: '6px 10px',
   lineHeight: '1.4',
-  _hover: {
-    backgroundColor: 'var(--background-highlight-color)',
-    borderRadius: '10px',
-  },
+  borderRadius: '10px',
+  border: '1px solid var(--border-color)',
+  _hover: { backgroundColor: 'var(--background-highlight-color)' },
 })
 
 const lineLinkStyle = css({
@@ -130,17 +124,13 @@ const formatTime = (date: DateTime) =>
 const ScreeningLine = ({
   screening,
   showCity,
-  showCinema,
   title,
 }: {
   screening: GroupedScreening
   showCity: boolean
-  showCinema: boolean
   title: string
 }) => {
-  const place = showCinema
-    ? `${screening.cinema.name}${showCity ? `, ${screening.cinema.city.name}` : ''}`
-    : null
+  const place = `${screening.cinema.name}${showCity ? `, ${screening.cinema.city.name}` : ''}`
 
   return (
     <div className={lineStyle}>
@@ -154,7 +144,7 @@ const ScreeningLine = ({
       />
       <div className={lineTextStyle}>
         <span className={timeStyle}>{formatTime(screening.date)}</span>
-        {place ? <span className={placeStyle}>{place}</span> : null}
+        <span className={placeStyle}>{place}</span>
       </div>
       {screening.event || screening.notes?.length ? (
         <span className={labelsStyle}>
@@ -188,17 +178,6 @@ const Poster = ({ film }: { film: GroupedScreening }) =>
 
 const unmatchedPosterStyle = css({ backgroundColor: 'transparent' })
 
-const filmMeta = (film: GroupedScreening) =>
-  [
-    film.directors?.slice(0, 2).join(', '),
-    [
-      film.runtimeMinutes ? `${film.runtimeMinutes} min` : undefined,
-      film.genres?.slice(0, 2).join(', '),
-    ]
-      .filter(Boolean)
-      .join(' · '),
-  ].filter(Boolean)
-
 export const FilmWithScreenings = ({
   screenings,
   showCity,
@@ -223,11 +202,6 @@ export const FilmWithScreenings = ({
             <span className={listYearStyle}> ({film.year})</span>
           ) : null}
         </div>
-        {filmMeta(film).map((line) => (
-          <div key={line} className={metaStyle}>
-            {line}
-          </div>
-        ))}
       </div>
     </>
   )
@@ -245,17 +219,28 @@ export const FilmWithScreenings = ({
       ) : (
         <div className={filmLinkStyle}>{header}</div>
       )}
-      <div className={linesStyle}>
-        {screenings.map((screening) => (
-          <ScreeningLine
-            key={`${screening.url}-${screening.date.toISO()}`}
-            screening={screening}
-            showCity={showCity}
-            showCinema={showCinema}
-            title={film.title}
+      {showCinema ? (
+        <div className={linesStyle}>
+          {screenings.map((screening) => (
+            <ScreeningLine
+              key={`${screening.url}-${screening.date.toISO()}`}
+              screening={screening}
+              showCity={showCity}
+              title={film.title}
+            />
+          ))}
+        </div>
+      ) : (
+        // on a cinema page the lines would be just a time: the same time chips as
+        // the page of a film at one cinema, under the title
+        <div className={chipsIndentStyle}>
+          <ScreeningTimeChips
+            screenings={screenings}
+            runtimeMinutes={film.runtimeMinutes}
+            compact
           />
-        ))}
-      </div>
+        </div>
+      )}
     </section>
   )
 }
@@ -276,7 +261,6 @@ export const ScreeningLines = ({
         key={`${screening.url}-${screening.date.toISO()}`}
         screening={screening}
         showCity={showCity}
-        showCinema={showCinema}
         title={screening.title}
       />
     ))}
