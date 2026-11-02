@@ -18,7 +18,7 @@ export type GroupedScreening = ScreeningWithLuxonDate & { movieHref?: string }
 // screening. The film (poster, title) goes to the movie page, a line goes to
 // the cinema. The browser skips the layout and paint of what is off-screen.
 const filmStyle = css({
-  marginTop: '20px',
+  marginTop: '28px',
   contentVisibility: 'auto',
   containIntrinsicSize: 'auto 120px',
 })
