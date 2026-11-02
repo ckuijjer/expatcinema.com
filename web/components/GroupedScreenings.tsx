@@ -41,8 +41,6 @@ const filmLinkStyle = css({
   },
 })
 
-const chipsIndentStyle = css({ marginLeft: '60px' })
-
 const filmTextStyle = css({ minWidth: '0', display: 'grid' })
 
 const titleStyle = css({
@@ -51,13 +49,11 @@ const titleStyle = css({
   overflowWrap: 'anywhere',
 })
 
-// the box of a line starts where the title does: 12px of padding of the film,
-// the poster (48px) and the gap (12px), less the 12px the film sticks out
+// the boxes start at the left edge of the poster, right under it
 const linesStyle = css({
   display: 'grid',
   rowGap: '6px',
   marginTop: '2px',
-  marginLeft: '60px',
 })
 
 // on the page of a film there is no film above the lines: they start at the edge
@@ -235,7 +231,7 @@ export const FilmWithScreenings = ({
       ) : (
         // on a cinema page the lines would be just a time: the same time chips as
         // the page of a film at one cinema, under the title
-        <div className={chipsIndentStyle}>
+        <div>
           <ScreeningTimeChips
             screenings={screenings}
             runtimeMinutes={film.runtimeMinutes}
