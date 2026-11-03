@@ -148,6 +148,13 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: "WORM's page and TMDB agree on director (Chedey Reyes) and runtime (83 vs 85 min) for this Spanish horror comedy; a second TMDB entry for the same title (1707238) has no director or release date listed.",
     addedAt: '2026-10-27',
   },
+  {
+    title: 'The Clearing',
+    year: 2027,
+    tmdbId: 1708579,
+    note: "Lantarenvenster's page and TMDB agree on director (Sabine Groenewegen) and runtime (89 min); the page lists the film's year as 2027, one year ahead of its actual 2026 release, so without this the resolver instead matches a more popular, unrelated 'The Clearing' (tmdb:1308637, director disagrees).",
+    addedAt: '2026-11-03',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
