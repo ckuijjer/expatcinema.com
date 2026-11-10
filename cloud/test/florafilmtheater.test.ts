@@ -1,7 +1,9 @@
 import {
+  extractMetadataYear,
   hasEnglishSubtitles,
   splitDateAndTimes,
 } from '../scrapers/florafilmtheater'
+import { extractYearFromTitle } from '../scrapers/utils/extractYearFromTitle'
 
 describe('florafilmtheater', () => {
   describe('splitDateAndTimes', () => {
@@ -30,6 +32,64 @@ describe('florafilmtheater', () => {
       [[], false],
     ])('%p', (metadata, expected) => {
       expect(hasEnglishSubtitles({ metadata })).toBe(expected)
+    })
+  })
+
+  describe('extractMetadataYear', () => {
+    test.each([
+      [
+        [
+          'English SUBS',
+          'Frans gesproken',
+          'Krzysztof Kieślowski',
+          '90 min',
+          '2026',
+        ],
+        2026,
+      ],
+      [['NL SUBS', 'Someone'], undefined],
+      [[], undefined],
+    ])('%p', (metadata, expected) => {
+      expect(extractMetadataYear(metadata)).toBe(expected)
+    })
+  })
+
+  // Flora's own metadata year is the listing year, not always the film's
+  // year: 'Trois couleurs: Blanc (1994) - EN subs' has metadata year '2026'
+  describe('year: title year wins over the metadata year', () => {
+    test.each([
+      [
+        'Trois couleurs: Blanc (1994) - EN subs',
+        [
+          'English SUBS',
+          'Frans gesproken',
+          'Krzysztof Kieślowski',
+          '90 min',
+          '2026',
+        ],
+        1994,
+      ],
+      [
+        'Trois couleurs: Bleu (1993) - EN subs',
+        [
+          'EN SUBS',
+          'Frans, Roemeens, Pools gesproken',
+          'Krzysztof Kieślowski',
+          '90 min',
+          '2026',
+        ],
+        1993,
+      ],
+      // without a year in the title, the metadata year is still used
+      [
+        'Marie Antoinette (2006)',
+        ['NL SUBS', 'Engels gesproken', 'Sofia Coppola', '123 min', '2006'],
+        2006,
+      ],
+    ])('%p', (rawTitle, metadata, expected) => {
+      expect(
+        extractYearFromTitle(rawTitle) ?? extractMetadataYear(metadata),
+      ).toBe(expected)
     })
   })
 })
