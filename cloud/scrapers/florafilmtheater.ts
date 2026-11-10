@@ -69,7 +69,7 @@ export const splitDateAndTimes = (screening: string) => {
   return { date, times }
 }
 
-const extractMetadataYear = (metadata: string[]) => {
+export const extractMetadataYear = (metadata: string[]) => {
   const match = metadata
     .map((entry) => entry.match(/\b((?:19|20)\d{2})\b/))
     .find(Boolean)
@@ -172,9 +172,12 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
             return {
               title: movie.title,
+              // the metadata year is Flora's own listing year, not always the
+              // film's year, e.g. 'Trois couleurs: Blanc (1994) - EN subs'
+              // with metadata year '2026' -> 1994
               year:
-                extractMetadataYear(movie.metadata) ??
-                extractYearFromTitle(movie.rawTitle),
+                extractYearFromTitle(movie.rawTitle) ??
+                extractMetadataYear(movie.metadata),
               director: directors.get(movie.url),
               url: movie.url,
               cinema: 'Flora Filmtheater',
