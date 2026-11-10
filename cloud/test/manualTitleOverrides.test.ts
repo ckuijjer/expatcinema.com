@@ -125,3 +125,29 @@ describe('La Cosa En La Niebla', () => {
     ).toBe(1426755)
   })
 })
+
+describe('Flamenco Sketches', () => {
+  test("is Isaki Lacuesta's Jaleos (2026)", () => {
+    expect(getManualTitleOverride('Flamenco Sketches', 2026)?.tmdbId).toBe(
+      1736729,
+    )
+  })
+})
+
+describe('A Bigger Splash', () => {
+  test("Focus on David Hockney is Jack Hazan's 1973 documentary", () => {
+    expect(
+      getManualTitleOverride('A Bigger Splash – Focus on David Hockney')
+        ?.tmdbId,
+    ).toBe(142195)
+  })
+})
+
+describe('Yugo Goes to America', () => {
+  test('is the Wintertuinfestival screening at Lux', () => {
+    expect(
+      getManualTitleOverride('Wintertuinfestival - Yugo Goes to America')
+        ?.tmdbId,
+    ).toBe(1637716)
+  })
+})
