@@ -125,3 +125,34 @@ describe('La Cosa En La Niebla', () => {
     ).toBe(1426755)
   })
 })
+
+describe('King Boxer - Rumble in Hong Kong', () => {
+  test('is Five Fingers of Death (1972), which TMDB has no "King Boxer" title for', () => {
+    expect(
+      getManualTitleOverride('King Boxer - Rumble in Hong Kong', 1972)?.tmdbId,
+    ).toBe(21964)
+  })
+})
+
+describe('The Eight Diagram Pole Fighter - Rumble in Hong Kong', () => {
+  test("is Lau Kar-leung's 1984 film, whatever year Rialto's page gives", () => {
+    expect(
+      getManualTitleOverride(
+        'The Eight Diagram Pole Fighter - Rumble in Hong Kong',
+        2026,
+      )?.tmdbId,
+    ).toBe(32520)
+    expect(
+      getManualTitleOverride(
+        'The Eight Diagram Pole Fighter - Rumble in Hong Kong',
+      )?.tmdbId,
+    ).toBe(32520)
+  })
+})
+
+describe('Good Bye Lenin!', () => {
+  test("is Wolfgang Becker's Good Bye, Lenin! (2003), whatever year Filmhuis Lumen's page gives", () => {
+    expect(getManualTitleOverride('Good Bye Lenin!', 2023)?.tmdbId).toBe(338)
+    expect(getManualTitleOverride('Good Bye Lenin!')?.tmdbId).toBe(338)
+  })
+})

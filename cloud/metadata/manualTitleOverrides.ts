@@ -148,6 +148,25 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: "WORM's page and TMDB agree on director (Chedey Reyes) and runtime (83 vs 85 min) for this Spanish horror comedy; a second TMDB entry for the same title (1707238) has no director or release date listed.",
     addedAt: '2026-10-27',
   },
+  {
+    title: 'King Boxer - Rumble in Hong Kong',
+    year: 1972,
+    tmdbId: 21964,
+    note: "Rialto's page and TMDB agree on the director (Cheng Chang-ho / Jeong Chang-hwa, the same person in different romanisations) and the year (1972); TMDB lists the film only as Five Fingers of Death, so the English title 'King Boxer' never matches.",
+    addedAt: '2026-11-17',
+  },
+  {
+    title: 'The Eight Diagram Pole Fighter - Rumble in Hong Kong',
+    tmdbId: 32520,
+    note: "Rialto's page and TMDB agree on the director (Liu Chia-liang / Lau Kar-leung) and the synopsis (the Yang family ambushed by the Mongols, the surviving son taking refuge in a monastery); Rialto's page gives the year as 2026, 42 years off TMDB's 1984, so the year is left out of this override.",
+    addedAt: '2026-11-17',
+  },
+  {
+    title: 'Good Bye Lenin!',
+    tmdbId: 338,
+    note: "Filmhuis Lumen's page and TMDB agree on the director (Wolfgang Becker); Lumen's 'Jaar' field says 2023, 20 years off the film's 2003, so the year is left out of this override.",
+    addedAt: '2026-11-17',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
