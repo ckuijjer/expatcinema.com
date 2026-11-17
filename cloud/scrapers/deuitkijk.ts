@@ -44,7 +44,7 @@ const xray = Xray({
   .throttle(10, 300)
   .driver(driver)
 
-const hasEnglishSubtitles = ({ metadata }: { metadata: string[] }) =>
+export const hasEnglishSubtitles = ({ metadata }: { metadata: string[] }) =>
   metadata.some((x) => x.match(/ondertiteling:\s*engels/i))
 
 const parseReleaseYear = (metadata: string[]) => {
@@ -58,7 +58,7 @@ const parseReleaseYear = (metadata: string[]) => {
 const extractDate = (time: string) =>
   DateTime.fromFormat(time, 'dd-MM-yy-HH:mm').toJSDate()
 
-const cleanTitle = (title: string) =>
+export const cleanTitle = (title: string) =>
   titleCase(
     title
       .replace(/^110 Jaar De Uitkijk:/i, '') // Remove the anniversary programme prefix
@@ -68,6 +68,7 @@ const cleanTitle = (title: string) =>
       .replace(/^.* X De Uitkijk:/i, '') // Remove the collaboration prefix
       .replace(/^Film070 Presents:/i, '') // Remove the Film070 guest-programme prefix
       .replace(/^Fight the Power:/i, '') // Remove the Fight the Power programme prefix
+      .replace(/^HoFF\s*\|\s*/i, '') // 'HoFF | Soumsoum, The Night of the Stars (2026)' -> 'Soumsoum, The Night of the Stars (2026)'
       .replace(/\s+incl\.\s+introduction$/i, '') // Remove trailing introduction labels
       .replace(/(?:\s*\([^)]*\))+$/g, '') // Remove one or more trailing parenthetical labels like years or subtitle markers
       .replace(/\s*\|\s*.* X De Uitkijk$/i, '') // Remove the trailing collaboration suffix
