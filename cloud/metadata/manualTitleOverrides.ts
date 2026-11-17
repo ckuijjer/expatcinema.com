@@ -155,6 +155,12 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: "Lantarenvenster's page and TMDB agree on director (Sabine Groenewegen) and runtime (89 min); the page lists the film's year as 2027, one year ahead of its actual 2026 release, so without this the resolver instead matches a more popular, unrelated 'The Clearing' (tmdb:1308637, director disagrees).",
     addedAt: '2026-11-03',
   },
+  {
+    title: 'The Eight Diagram Pole Fighter - Rumble in Hong Kong',
+    tmdbId: 32520,
+    note: "Rialto's page and TMDB agree on the director (Liu Chia-liang / Lau Kar-leung) and the synopsis (the Yang family ambushed by the Mongols, the surviving son taking refuge in a monastery); Rialto's page gives the year as 2026, 42 years off TMDB's 1984, so the year is left out of this override.",
+    addedAt: '2026-11-17',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
