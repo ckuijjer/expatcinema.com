@@ -148,6 +148,25 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: "WORM's page and TMDB agree on director (Chedey Reyes) and runtime (83 vs 85 min) for this Spanish horror comedy; a second TMDB entry for the same title (1707238) has no director or release date listed.",
     addedAt: '2026-10-27',
   },
+  {
+    title: 'Flamenco Sketches',
+    year: 2026,
+    tmdbId: 1736729,
+    note: "Lantarenvenster's and Eye's pages and TMDB agree on the director (Isaki Lacuesta) and the original title (Jaleos) for this 2026 Spanish flamenco documentary.",
+    addedAt: '2026-11-10',
+  },
+  {
+    title: 'A Bigger Splash – Focus on David Hockney',
+    tmdbId: 142195,
+    note: "Filmhuis Lumen's page and TMDB agree on director (Jack Hazan) and runtime (106 min) for the 1973 David Hockney documentary.",
+    addedAt: '2026-11-10',
+  },
+  {
+    title: 'Wintertuinfestival - Yugo Goes to America',
+    tmdbId: 1637716,
+    note: "Lux's page and TMDB agree on the directors (Filip Grujić & Aleksa Borković) and the synopsis (a Yugo road trip across America) for this Serbian documentary; Lux's stated duration (2h) includes the post-film talk with Grujić, TMDB's runtime (87 min) is film-only.",
+    addedAt: '2026-11-10',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(
