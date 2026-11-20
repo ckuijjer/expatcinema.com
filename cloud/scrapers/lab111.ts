@@ -1,3 +1,4 @@
+import type { Logger } from '@aws-lambda-powertools/logger'
 import got from 'got'
 import { DateTime } from 'luxon'
 import pMap from 'p-map'
@@ -34,6 +35,22 @@ const xray = Xray({
   .throttle(10, 300)
 
 const detailPageXray = createXray({ logger })
+
+// The programma page is a WordPress page that can die while it is being built
+// (seen on 2026-11-20, on the entry of Mysterious Skin): the films above
+// the entry are there, everything below it is not, and the response is a 500.
+// The scraper then looks fine with a short list, so say so
+export const warnOnWordPressError = (
+  logger: Logger,
+  { wordPressError, listed }: { wordPressError?: string; listed: number },
+) => {
+  if (wordPressError) {
+    logger.warn(
+      'the programma page has a WordPress error, the list of films is cut off',
+      { wordPressError, listed },
+    )
+  }
+}
 
 const hasEnglishSubtitles = (movie: XRayFromMainPage) =>
   movie.metadata.includes('Ondertiteling: Engels')
@@ -148,19 +165,27 @@ const extractFromMainPage = async () => {
   try {
     logger.debug('main page')
 
-    const scrapeResult: XRayFromMainPage[] = await xray(
+    const { films: scrapeResult, wordPressError } = (await xray(
       // 'http://webcache.googleusercontent.com/search?q=cache:https://www.lab111.nl/programma/',
       'https://www.lab111.nl/programma/',
-      '#programmalist .filmdetails',
-      [
-        {
-          title: 'h2.hidemobile a | trim | normalizeWhitespace',
-          url: 'h2.hidemobile a@href | trim',
-          metadata: '.row.hidemobile | normalizeWhitespace',
-          dates: ['.day td:first-child | trim'],
-        },
-      ],
-    )
+      {
+        films: xray('#programmalist .filmdetails', [
+          {
+            title: 'h2.hidemobile a | trim | normalizeWhitespace',
+            url: 'h2.hidemobile a@href | trim',
+            metadata: '.row.hidemobile | normalizeWhitespace',
+            dates: ['.day td:first-child | trim'],
+          },
+        ]),
+        // what WordPress prints when it dies halfway through the page
+        wordPressError: '.wp-die-message | normalizeWhitespace | trim',
+      },
+    )) as { films: XRayFromMainPage[]; wordPressError?: string }
+
+    warnOnWordPressError(logger, {
+      wordPressError,
+      listed: scrapeResult.length,
+    })
 
     logger.debug('scrape result', { scrapeResult })
 

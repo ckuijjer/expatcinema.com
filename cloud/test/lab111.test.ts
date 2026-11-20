@@ -2,6 +2,7 @@ import {
   parseTitle,
   extractReleaseYear,
   parseReleaseYear,
+  warnOnWordPressError,
 } from '../scrapers/lab111'
 
 // The details of https://www.lab111.nl/movie/akira/, as on 2026-10-07
@@ -126,5 +127,29 @@ describe('lab111 parseTitle', () => {
     ['Club Imagine: Cure', { title: 'Cure' }],
   ])('splits %s into the title and notes', (title, expected) => {
     expect(parseTitle(title)).toEqual(expected)
+  })
+})
+
+describe('warnOnWordPressError', () => {
+  const logger = { warn: jest.fn() } as any
+
+  beforeEach(() => logger.warn.mockClear())
+
+  test('warns when WordPress died halfway through the page', () => {
+    warnOnWordPressError(logger, {
+      wordPressError:
+        'Er heeft zich een kritieke fout voorgedaan op deze site.',
+      listed: 15,
+    })
+
+    expect(logger.warn).toHaveBeenCalledTimes(1)
+    expect(logger.warn.mock.calls[0][1]).toMatchObject({ listed: 15 })
+  })
+
+  test('is quiet for a page without an error', () => {
+    warnOnWordPressError(logger, { wordPressError: undefined, listed: 100 })
+    warnOnWordPressError(logger, { wordPressError: '', listed: 100 })
+
+    expect(logger.warn).not.toHaveBeenCalled()
   })
 })
