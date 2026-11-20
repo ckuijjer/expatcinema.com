@@ -125,3 +125,9 @@ describe('La Cosa En La Niebla', () => {
     ).toBe(1426755)
   })
 })
+
+describe('The Clearing', () => {
+  test("is Sabine Groenewegen's 2026 documentary, not a different, more popular film of the same title", () => {
+    expect(getManualTitleOverride('The Clearing', 2027)?.tmdbId).toBe(1708579)
+  })
+})
