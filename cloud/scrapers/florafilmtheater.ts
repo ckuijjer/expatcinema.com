@@ -77,6 +77,15 @@ const extractMetadataYear = (metadata: string[]) => {
   return match?.[1] ? Number(match[1]) : undefined
 }
 
+// Flora's own metadata year is sometimes the listing year, not the release
+// year, e.g. 'Trois couleurs: Blanc (1994) - EN subs' lists '2026' in its
+// metadata; the year in the title is the one to trust when there is one.
+export const extractReleaseYear = (movie: {
+  rawTitle: string
+  metadata: string[]
+}) =>
+  extractYearFromTitle(movie.rawTitle) ?? extractMetadataYear(movie.metadata)
+
 const splitDate = (date: string) => {
   if (date === 'Vandaag') {
     const { day, month, year } = DateTime.now()
@@ -172,9 +181,7 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
             return {
               title: movie.title,
-              year:
-                extractMetadataYear(movie.metadata) ??
-                extractYearFromTitle(movie.rawTitle),
+              year: extractReleaseYear(movie),
               director: directors.get(movie.url),
               url: movie.url,
               cinema: 'Flora Filmtheater',
