@@ -131,3 +131,19 @@ describe('The Clearing', () => {
     expect(getManualTitleOverride('The Clearing', 2027)?.tmdbId).toBe(1708579)
   })
 })
+
+describe('The Eight Diagram Pole Fighter - Rumble in Hong Kong', () => {
+  test("is Lau Kar-leung's 1984 film, whatever year Rialto's page gives", () => {
+    expect(
+      getManualTitleOverride(
+        'The Eight Diagram Pole Fighter - Rumble in Hong Kong',
+        2026,
+      )?.tmdbId,
+    ).toBe(32520)
+    expect(
+      getManualTitleOverride(
+        'The Eight Diagram Pole Fighter - Rumble in Hong Kong',
+      )?.tmdbId,
+    ).toBe(32520)
+  })
+})
