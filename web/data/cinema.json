@@ -679,6 +679,7 @@
   {
     "name": "De Lieve Vrouw",
     "slug": "de-lieve-vrouw",
+    "scraper": "delievevrouw",
     "city": "amersfoort",
     "url": "https://lievevrouw.nl/",
     "address": {
