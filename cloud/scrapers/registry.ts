@@ -13,6 +13,7 @@ import debalie from './debalie'
 import desien from './desien'
 import dewittdordrecht from './dewittdordrecht'
 import defilmhallen from './defilmhallen'
+import delievevrouw from './delievevrouw'
 import deuitkijk from './deuitkijk'
 import dokhuis from './dokhuis'
 import eyefilm from './eyefilm'
@@ -69,6 +70,7 @@ export const SCRAPERS: Record<string, Scraper> = {
   desien,
   dewittdordrecht,
   defilmhallen,
+  delievevrouw,
   deuitkijk,
   dokhuis,
   eyefilm,
