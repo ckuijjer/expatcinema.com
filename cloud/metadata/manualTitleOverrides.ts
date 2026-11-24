@@ -161,6 +161,13 @@ const rawOverrides: ManualTitleOverrideInput[] = [
     note: "Rialto's page and TMDB agree on the director (Liu Chia-liang / Lau Kar-leung) and the synopsis (the Yang family ambushed by the Mongols, the surviving son taking refuge in a monastery); Rialto's page gives the year as 2026, 42 years off TMDB's 1984, so the year is left out of this override.",
     addedAt: '2026-11-17',
   },
+  {
+    title: 'King Boxer - Rumble in Hong Kong',
+    year: 1972,
+    tmdbId: 21964,
+    note: "Rialto's page and TMDB (listed there as Five Fingers of Death) agree on the director (Cheng Chang-ho / Jeong Chang-hwa) and the synopsis (a martial arts student trained by a master to defeat a rival in a tournament); a plain TMDB search for 'King Boxer' finds no matching 1972 Hong Kong film under that title.",
+    addedAt: '2026-11-24',
+  },
 ]
 
 export const manualTitleOverrides: ManualTitleOverride[] = rawOverrides.map(

@@ -147,3 +147,11 @@ describe('The Eight Diagram Pole Fighter - Rumble in Hong Kong', () => {
     ).toBe(32520)
   })
 })
+
+describe('King Boxer - Rumble in Hong Kong', () => {
+  test("is Cheng Chang-ho's 1972 film, listed on TMDB as Five Fingers of Death", () => {
+    expect(
+      getManualTitleOverride('King Boxer - Rumble in Hong Kong', 1972)?.tmdbId,
+    ).toBe(21964)
+  })
+})
