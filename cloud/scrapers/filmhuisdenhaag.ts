@@ -5,7 +5,6 @@ import { logger as parentLogger } from '../powertools'
 import { Screening } from '../types'
 import { makeScreeningsUniqueAndSorted } from './utils/makeScreeningsUniqueAndSorted'
 import { splitTime } from './utils/splitTime'
-import { createXray } from '../xRay'
 import { cleanDirector } from './utils/cleanDirector'
 import { extractAnniversaryNote } from './utils/extractNotes'
 
@@ -14,8 +13,6 @@ const logger = parentLogger.createChild({
     scraper: 'filmhuisdenhaag',
   },
 })
-
-const xray = createXray({ logger })
 
 type FilmhuisDenhaagAPIResponse = {
   [date: string]: {
@@ -179,14 +176,6 @@ const hasEnglishSubtitles = (item: ProgramItem) => {
   )
 }
 
-const parseReleaseYear = (metadata: string[]) => {
-  const match = metadata
-    .map((entry) => entry.match(/\b((?:19|20)\d{2})\b/))
-    .find(Boolean)
-
-  return match?.[1] ? Number(match[1]) : undefined
-}
-
 const extractFromMainPage = async (): Promise<Screening[]> => {
   const apiResponse: FilmhuisDenhaagAPIResponse = await got(
     'https://filmhuisdenhaag.nl/api/program',
@@ -206,24 +195,11 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
       }))
     })
 
-  const releaseYearByUrl = new Map(
-    await Promise.all(
-      Array.from(
-        new Set(
-          programs.map((item) => `https://filmhuisdenhaag.nl${item.uri}`),
-        ),
-      ).map(async (url) => {
-        const detailPage = await xray(url, {
-          metadata: ['aside .flex.flex-col.space-y-2 p | normalizeWhitespace'],
-        })
-
-        return [url, parseReleaseYear(detailPage.metadata ?? [])] as const
-      }),
-    ),
-  )
-
   const seriesLabels = findSeriesLabels(programs.map(({ title }) => title))
 
+  // The film pages always show the current calendar year next to the
+  // country ("Zweden , 2026"), for a brand new release and a 1957 classic
+  // alike, so it is never the film's release year: no year is extracted.
   const screenings: Screening[] = programs
     .filter(hasEnglishSubtitles)
     .map((item) => {
@@ -234,7 +210,6 @@ const extractFromMainPage = async (): Promise<Screening[]> => {
 
       return {
         ...parseTitle(item.title, seriesLabels),
-        year: releaseYearByUrl.get(`https://filmhuisdenhaag.nl${item.uri}`),
         director: cleanDirector(item.director),
         url: `https://filmhuisdenhaag.nl${item.uri}`,
         cinema: 'Filmhuis Den Haag',
